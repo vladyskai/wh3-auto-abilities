@@ -36,7 +36,8 @@ MELEE_ONLY_TRIG = {"melee_unwavering", "melee", "melee_low_morale", "melee_healt
                    "enemy_ground_melee_infantry", "enemy_melee_noncommander", "self_summon_melee", "glorious_death",
                    "verminking_wavering"}
 SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_ally_shooting",
-              "melee_or_shooting_into_melee", "ally_ammo_low", "ally_missile", "no_enemy_in_range_within_boost"}
+              "melee_or_shooting_into_melee", "ally_ammo_low", "ally_missile", "no_enemy_in_range_within_boost",
+              "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting"}
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee"}

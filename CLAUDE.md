@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `b7efc16df23c1a00f71eb7880dc244ca`, 1,173,792 bytes
-  (round 131, 2026-11-01, the shooting buffs leave the melee trigger; the stances leave the mod). Always re-measure instead of trusting this line.
+- Installed build: md5 `47efd2465d26047dde59f0fed6d03e51`, 1,178,331 bytes
+  (round 132, 2026-11-08, audit batch 1 and the patch-9.0.5 data fixes). Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -59,6 +59,14 @@ source (paths below relative to `mod_source\`):
   other modders' files: not ours to publish), RPFM, the unchanged `hud_battle.twui.xml` copies and
   `claude_code_export/`. Before pushing, check that nothing over 50 MB and nothing from those
   groups is staged.
+
+## 1c. THE LOOP (agreed 2026-11-08)
+
+`docs\WH3_process_proposal_2026-11-08.md`, section 0. Every ability climbs: Open -> Proposed -> Approved ->
+Built -> QA passed (the log of a battle THE USER fights; no self-playing build) -> Field approved. Rounds take
+batches of about 10; every proposal walks the sensor checklist. The trigger audit
+(`toolsudit_triggers.py`, `docs\WH3_trigger_audit_<date>.md`) feeds the batches; re-run it and
+`tools\make_progress_page.py` (`docs\progress.html`) at the end of every round.
 
 ## 2. HARD RULES (settled; never re-litigate)
 
@@ -132,8 +140,8 @@ source (paths below relative to `mod_source\`):
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 131): 700 ABILITIES entries / 752 ability keys / 52 trigger evaluator families.
-Wheel audit (workbook v23): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 752 implemented,
+Current roster (round 132): 700 ABILITIES entries / 752 ability keys / 54 trigger evaluator families.
+Wheel audit (workbook v24): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 752 implemented,
 371 not implemented among the included (22 of them skipped by user decision).
 
 ## 3. BUILD AND INSTALL
@@ -143,7 +151,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261101_shooting_triggers_harness130/build_and_install131.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261108_audit1_patch905_harness131/build_and_install132.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -173,7 +181,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness130: 5,638 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness131: 5,699 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -229,6 +237,11 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   mutually exclusive stances is last priority. Round 131 removed the 9 that were automated.
 - Field counts describe the user's orders in that battle (e.g. a character he sent into melee
   does not shoot). Never use them as an argument against a trigger (user, 2026-11-01).
+- Game version 9.0.5 (patch 2026-11-03) is the data baseline since round 132: `gamedata\wh3\` was re-extracted,
+  drift in `docs\DRIFT_2026-11-08_patch905.md`. After every game patch: re-extract, diff, fix the mod's
+  derived data (ranges, uses, wind-ups, reload table) BEFORE any other work.
+- Claude cannot click in Warhammer III (2026-11-08): screenshots, mouse movement and keys work, clicks
+  are ignored (plain and SendInput modifier clicks). The user builds and fights the QA battle.
 - The mock engine accepts every repeat cast (no cooldown refusal): a world that counts casts must
   stop inside the 2 s guard after the first one.
 
@@ -237,7 +250,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v23_2026-11-01.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v23.py`, verified by `tools\verify_xlsx_v23.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v24_2026-11-08.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v24.py`, verified by `tools\verify_xlsx_v24.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |

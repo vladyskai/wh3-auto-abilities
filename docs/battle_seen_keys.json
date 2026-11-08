@@ -69,6 +69,7 @@
 "wh2_main_item_abilities_rival_hide_talisman",
 "wh2_main_item_abilities_scrying_stone",
 "wh2_main_lord_abilities_feint_and_reposte",
+"wh2_main_spell_bound_the_seerstaff_of_saphery",
 "wh2_main_unit_abilities_drop_rocks",
 "wh2_main_unit_abilities_fury_of_khaine",
 "wh2_main_weapon_abilities_dwarf_gouger",
@@ -142,6 +143,7 @@
 "wh3_dlc29_hero_active_overseer_of_the_unseen",
 "wh3_dlc29_item_abilities_crimson_blade",
 "wh3_dlc29_item_abilities_doom_glaive",
+"wh3_dlc29_lord_abilities_gaze_of_usirian",
 "wh3_dlc29_lord_abilities_lightning_reflexes",
 "wh3_dlc29_lord_abilities_transfix",
 "wh3_dlc29_lord_abilities_verminous_fury",
@@ -154,6 +156,7 @@
 "wh3_dlc29_spell_bound_prayer_fury_of_ulric",
 "wh3_dlc29_spell_bound_the_dreaded_thirteenth",
 "wh3_dlc29_unit_abilities_entice",
+"wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain",
 "wh3_dlc29_weapon_abilities_legbiter",
 "wh3_dlc29_weapon_active_hammer_axe_of_skoll",
 "wh3_main_character_abilities_dazs_song_of_winter_sunlight",
@@ -231,6 +234,7 @@
 "wh_main_rune_abilities_rune_of_oath_and_steel",
 "wh_main_spell_bound_hammer_of_sigmar",
 "wh_main_spell_bound_soulfire",
+"wh_main_unit_abilities_boom",
 "wh_main_unit_abilities_entrenchment",
 "wh_main_unit_abilities_killing_blow",
 "wh_main_weapon_abilities_axe_of_dargo",
@@ -248,6 +252,6 @@
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 144,
+"logs_read": 145,
 "made": "2026-11-08"
 }

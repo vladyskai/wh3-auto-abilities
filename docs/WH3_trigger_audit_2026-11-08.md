@@ -4,8 +4,8 @@ Every automated ability (700 entries) checked against the rules below by `tools/
 
 | Rule | Candidates |
 |---|---:|
-| R1. Shooting-only buffs on a trigger with no shooting arm | 1 |
-| R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these) | 12 |
+| R1. Shooting-only buffs on a trigger with no shooting arm | 0 |
+| R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these) | 0 |
 | R3. Melee-only debuffs on a trigger with a missile arm (rule 10) | 23 |
 | R4. Enemy slows on a trigger that is neither melee nor charge (rule 10) | 19 |
 | R5. Protection against shots on a melee-only trigger | 7 |
@@ -14,26 +14,11 @@ Every automated ability (700 entries) checked against the rules below by `tools/
 
 ## R1. Shooting-only buffs on a trigger with no shooting arm
 
-| Ability | Marker | Trigger now | Effect (game data) |
-|---|---|---|---|
-| Boom! | `boom` | `melee_unwavering` | Armour-Piercing Explosive Damage: +20%; Base Explosive Damage: +25% (to self) |
+None.
 
 ## R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these)
 
-| Ability | Marker | Trigger now | Effect (game data) |
-|---|---|---|---|
-| Embers of the Phoenix | `embers_of_the_phoenix` | `melee_unwavering` | Base Missile Damage: +25%; Base Weapon Damage: +30%; Imbues ignition: 10; Imbues magical attacks (to self and allies in range) |
-| Enchanted Metallurgy | `enchanted_metallurgy` | `metallurgy_melee` | Base Missile Damage: +25%; Base Weapon Damage: +30%; Imbues magical attacks (to self and allies in range) |
-| Enchanted Metallurgy: Flaming | `enchanted_metallurgy_flaming` | `metallurgy_melee` | Base Missile Damage: +50%; Base Weapon Damage: +60%; Imbues ignition: 10; Imbues magical attacks (to self and allies in range) |
-| Enchanted Metallurgy: Piercing | `enchanted_metallurgy_piercing` | `metallurgy_melee` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25%; Imbues magical attacks (to self and allies in range) |
-| Enchanted Metallurgy: Poison | `enchanted_metallurgy_poison` | `metallurgy_melee` | Base Missile Damage: +25%; Base Weapon Damage: +30%; Imbues its target's attacks on contact: wh_main_unit_contact_poison; Imbues magical attacks (to self and allies in range) |
-| Harmonic Convergence | `harmonic_convergence` | `melee_unwavering` | Melee Attack: +24; Melee Defence: +24; Reload Skill: +20 (to self and allies in range) |
-| Horn of Vaul | `horn_of_vaul` | `melee_unwavering` | Base Missile Damage: +25%; Base Weapon Damage: +30% (to self and allies in range) |
-| Master of Alchemy | `master_of_alchemy` | `metallurgy_melee` | Base Missile Damage: +25%; Base Weapon Damage: +30%; Imbues magical attacks (to self and allies in range) |
-| Master of Alchemy: Flaming | `master_of_alchemy_flaming` | `metallurgy_melee` | Base Missile Damage: +50%; Base Weapon Damage: +60%; Imbues ignition: 10; Imbues magical attacks (to self and allies in range) |
-| Master of Alchemy: Piercing | `master_of_alchemy_piercing` | `metallurgy_melee` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25%; Imbues magical attacks (to self and allies in range) |
-| Master of Alchemy: Poison | `master_of_alchemy_poison` | `metallurgy_melee` | Base Missile Damage: +25%; Base Weapon Damage: +30%; Imbues its target's attacks on contact: wh_main_unit_contact_poison; Imbues magical attacks (to self and allies in range) |
-| The Seerstaff of Saphery | `the_seerstaff_of_saphery` | `melee_unwavering` | Melee Attack: +24; Reload Skill: +40 (to self and allies in range) |
+None.
 
 ## R3. Melee-only debuffs on a trigger with a missile arm (rule 10)
 

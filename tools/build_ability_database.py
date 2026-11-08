@@ -703,6 +703,9 @@ def main():
         "ally_missile": "A missile-capable ally in range (`land_units.primary_missile_weapon` non-empty). Casts on that ally.",
         "ally_ammo_low": "An ally in range that is SHOOTING (the firing flag: its ammo_left() dropped) with 70% or less of its ammunition left (`FOURTH.RESTOCK_AT_FRACTION`, 100% minus the 30% refill); the one with the least left wins; an ally refilled in the last `FOURTH.RESTOCK_CLAIM_S` (12 s) is skipped. Casts on that ally.",
         "allies_firing_aura": "At least `FOURTH.FIRING_AURA_MIN` (1) unit inside the aura bound, the caster counting, is SHOOTING past its cast point (first shot + 0.5 x its reload). Ballistics Calibration is cast on the ground at the caster's own position; the other auras on the caster.",
+        "melee_or_shooting_aura": "The Metallurgy melee rule (the owner in melee, or an ally in melee within 24 m), OR the owner or any unit within the aura bound shooting past its cast point. Casts on the unit itself (the aura).",
+        "melee_or_shooting_self_or_ally": "The owner in melee (not wavering) or shooting past its cast point: cast on itself. Otherwise the closest ally in range in melee or shooting: cast on that ally.",
+        "self_shooting": "The unit itself shooting past its cast point. Casts on the unit itself.",
         "self_or_ally_shooting": "The caster SHOOTING past its cast point: cast on itself. Otherwise the closest ally in range that is shooting past its cast point: cast on that ally.",
         "melee_or_self_or_ally_shooting": "In melee and not wavering (as melee_unwavering): cast on itself. Otherwise as self_or_ally_shooting (the caster shooting, else the closest shooting ally in range).",
         "no_enemy_in_range_within_boost": "Not in melee, ammunition left, NO live enemy inside the unit's own missile_range(), and at least one inside missile_range x `FOURTH.FARSIGHT_BAND` (1 + 0.30 x 0.70 = 1.21). Casts on the unit itself.",
@@ -732,6 +735,7 @@ def main():
     CAST_TARGET = {
         "allies_firing_aura": "the caster (Ballistics Calibration: the ground at the caster's own position)",
         "self_or_ally_shooting": "the caster when it shoots, otherwise the closest shooting ally",
+        "melee_or_shooting_self_or_ally": "the caster in melee or when it shoots, otherwise the closest ally in melee or shooting",
         "melee_or_self_or_ally_shooting": "the caster in melee or when it shoots, otherwise the closest shooting ally",
         "eat_da_runts": "the unit itself, else the lowest-health ally in range",
         "glorious_death": "a Slayer ally in melee, else the unit itself (only when the owner is itself a Slayer)",

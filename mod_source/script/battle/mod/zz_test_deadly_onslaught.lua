@@ -957,21 +957,25 @@ local ABILITIES = {
 		badge = "zz_auto_badge_witstealer_sword",
 		keys = { "wh3_main_weapon_abilities_witstealer_sword" },
 		ox = 0, oy = 0 },
-	{ marker = "enchanted_metallurgy", name = "Enchanted Metallurgy", trigger = "metallurgy_melee",
+	{ marker = "enchanted_metallurgy", name = "Enchanted Metallurgy", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_enchanted_metallurgy",
 		keys = { "wh3_main_character_abilities_enchanted_metallurgy" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "enchanted_metallurgy_flaming", name = "Enchanted Metallurgy: Flaming", trigger = "metallurgy_melee",
+	{ marker = "enchanted_metallurgy_flaming", name = "Enchanted Metallurgy: Flaming", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_enchanted_metallurgy_flaming",
 		keys = { "wh3_main_character_abilities_enchanted_metallurgy_flaming" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "enchanted_metallurgy_piercing", name = "Enchanted Metallurgy: Piercing", trigger = "metallurgy_melee",
+	{ marker = "enchanted_metallurgy_piercing", name = "Enchanted Metallurgy: Piercing", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_enchanted_metallurgy_piercing",
 		keys = { "wh3_main_character_abilities_enchanted_metallurgy_piercing" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "enchanted_metallurgy_poison", name = "Enchanted Metallurgy: Poison", trigger = "metallurgy_melee",
+	{ marker = "enchanted_metallurgy_poison", name = "Enchanted Metallurgy: Poison", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_enchanted_metallurgy_poison",
 		keys = { "wh3_main_character_abilities_enchanted_metallurgy_poison" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "bastions_defenders", name = "Bastion's Defenders", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_bastions_defenders",
@@ -1114,21 +1118,25 @@ local ABILITIES = {
 		badge = "zz_auto_badge_lord_of_grand_cathay",
 		keys = { "wh3_dlc24_lord_abilities_lord_of_grand_cathay" },
 		ox = 0, oy = 0 },
-	{ marker = "master_of_alchemy", name = "Master of Alchemy", trigger = "metallurgy_melee",
+	{ marker = "master_of_alchemy", name = "Master of Alchemy", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "master_of_alchemy_flaming", name = "Master of Alchemy: Flaming", trigger = "metallurgy_melee",
+	{ marker = "master_of_alchemy_flaming", name = "Master of Alchemy: Flaming", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_flaming",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_flaming" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "master_of_alchemy_piercing", name = "Master of Alchemy: Piercing", trigger = "metallurgy_melee",
+	{ marker = "master_of_alchemy_piercing", name = "Master of Alchemy: Piercing", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_piercing",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_piercing" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "master_of_alchemy_poison", name = "Master of Alchemy: Poison", trigger = "metallurgy_melee",
+	{ marker = "master_of_alchemy_poison", name = "Master of Alchemy: Poison", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_poison",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_poison" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "master_rune_of_oath_and_steel", name = "Master Rune of Oath & Steel", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_master_rune_of_oath_and_steel",
@@ -1388,7 +1396,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc24_item_abilities_book_of_secrets" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "boom", name = "Boom!", trigger = "melee_unwavering",
+	{ marker = "boom", name = "Boom!", trigger = "self_shooting",
 		badge = "zz_auto_badge_boom",
 		keys = { "wh_main_unit_abilities_boom" },
 		ox = 0, oy = 0 },
@@ -1479,9 +1487,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_elixir_of_might",
 		keys = { "wh2_dlc09_item_abilities_elixir_of_might" },
 		ox = 0, oy = 0 },
-	{ marker = "embers_of_the_phoenix", name = "Embers of the Phoenix", trigger = "melee_unwavering",
+	{ marker = "embers_of_the_phoenix", name = "Embers of the Phoenix", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_embers_of_the_phoenix",
 		keys = { "wh2_main_spell_bound_embers_of_the_phoenix" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "ballistic_enchantment", name = "Enchanted Ballistics", trigger = "allies_firing_aura",
 		badge = "zz_auto_badge_ballistic_enchantment",
@@ -1516,7 +1525,7 @@ local ABILITIES = {
 	{ marker = "gaze_of_usirian", name = "Eternal Gaze", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_gaze_of_usirian",
 		keys = { "wh3_dlc29_lord_abilities_gaze_of_usirian" },
-		range_real = 100,
+		range_real = 50,   -- patch 9.0.5: 100 -> 50 m
 		ox = 0, oy = 0 },
 	{ marker = "eternal_vigour", name = "Eternal Vigour", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_eternal_vigour",
@@ -1626,9 +1635,10 @@ local ABILITIES = {
 		keys = { "wh2_dlc13_lord_abilities_hail_of_fire" },
 		aura_real = 55,
 		ox = 0, oy = 0 },
-	{ marker = "harmonic_convergence", name = "Harmonic Convergence", trigger = "melee_unwavering",
+	{ marker = "harmonic_convergence", name = "Harmonic Convergence", trigger = "melee_or_shooting_self_or_ally",
 		badge = "zz_auto_badge_harmonic_convergence",
 		keys = { "wh3_main_spell_bound_harmonic_convergence" },
+		ally_range_real = 200,
 		ox = 0, oy = 0 },
 	{ marker = "headhunt", name = "Headhunt", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_headhunt",
@@ -1658,9 +1668,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_horn_of_the_wild_hunt",
 		keys = { "wh_dlc05_item_abilities_horn_of_the_wild_hunt" },
 		ox = 0, oy = 0 },
-	{ marker = "horn_of_vaul", name = "Horn of Vaul", trigger = "melee_unwavering",
+	{ marker = "horn_of_vaul", name = "Horn of Vaul", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_horn_of_vaul",
 		keys = { "wh2_main_item_abilities_dragonhorn" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "hornswaggle", name = "Hornswaggle", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_hornswaggle",
@@ -2179,9 +2190,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_lions_shield",
 		keys = { "wh_dlc07_lord_abilities_lions_shield" },
 		ox = 0, oy = 0 },
-	{ marker = "the_seerstaff_of_saphery", name = "The Seerstaff of Saphery", trigger = "melee_unwavering",
+	{ marker = "the_seerstaff_of_saphery", name = "The Seerstaff of Saphery", trigger = "melee_or_shooting_self_or_ally",
 		badge = "zz_auto_badge_the_seerstaff_of_saphery",
 		keys = { "wh2_main_spell_bound_the_seerstaff_of_saphery" },
+		ally_range_real = 200,
 		ox = 0, oy = 0 },
 	{ marker = "the_tricksters_pendant", name = "The Trickster's Pendant", trigger = "enemy_ground_area",
 		badge = "zz_auto_badge_the_tricksters_pendant",
@@ -3551,6 +3563,8 @@ local ABILITIES = {
 -- next attempt in the same log).
 local charge_gate = {
 	hold_s = {
+		-- ROUND 132 (patch 9.0.5): Aken-seth went from unlimited to 3 uses, 120 s recharge.
+		["wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain"] = 120,
 		-- ROUND 130: Restock! - 4 uses, 60 s recharge.
 		["wh2_dlc17_hero_abilities_more_powder_generic"] = 60,
 		-- ROUND 123: the two 3-use hexes on the new enemy_melee trigger
@@ -3849,7 +3863,6 @@ local cast_gate = {
 		["wh3_dlc29_lord_abilities_doom_lord"] = 1,
 		["wh3_dlc29_spell_bound_curse_of_years"] = 1,
 		["wh3_dlc29_spell_bound_invocation_of_nehek"] = 1,
-		["wh3_dlc29_spell_bound_okkams_mindrazor"] = 1,
 		["wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness"] = 1,
 		["wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded"] = 1,
 		["wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust"] = 1,
@@ -6119,6 +6132,9 @@ local function attempt_activation(script_unit, unit, ability_key, reason, ui_id,
 		if FOURTH.ab_family == "shooting" then
 			hp_ok_now = FOURTH.shooting_past_cast_point(ally)
 		end
+		if FOURTH.ab_family == "fighting" then
+			hp_ok_now = FOURTH.fighting(ally)
+		end
 		if not alive_now or not in_bound_now or not hp_ok_now then
 			log("  " .. ab_marker_now .. " SKIPPED: the chosen ally lapsed before the cast"
 				.. " (alive=" .. tostring(alive_now) .. " healthy=" .. tostring(hp_ok_now)
@@ -7761,6 +7777,9 @@ function FOURTH.ab_ally_valid(unit, ally)
 	end
 	if FOURTH.ab_family == "shooting" then
 		return FOURTH.shooting_past_cast_point(ally)
+	end
+	if FOURTH.ab_family == "fighting" then
+		return FOURTH.fighting(ally)
 	end
 	return true
 end
@@ -9665,6 +9684,13 @@ function FOURTH.ab_filter_ok(unit)
 	local f = FOURTH.ab_filter
 	if f == nil then return true end
 	if f == "broken" then return FOURTH.morale_broken(unit) end
+	-- ROUND 132 (patch 9.0.5): Overseer of the Unseen can no longer target a flying
+	-- unit (invalid target flying_currently): a flying ally is skipped. An
+	-- unreadable flight read is not flying.
+	if f == "overseer" then
+		local ok_fly, fly = pcall(function() return unit:is_currently_flying() end)
+		if ok_fly and fly == true then return false end
+	end
 	return FOURTH.class_member(unit, f)
 end
 -- THE SHARED ALLY PICKER (Class B): walk the tracked friendly units and keep
@@ -9699,6 +9725,10 @@ function FOURTH.ab_pick_ally(unit, routing, family)
 					elseif family == "winds" then
 						val = FOURTH.context_value(other, "HealthValue")
 						eligible = (type(val) == "number")
+					elseif family == "fighting" then
+						-- ROUND 132: Seerstaff / Harmonic Convergence - an ally in melee
+						-- or shooting past its cast point (the closest wins)
+						eligible = FOURTH.fighting(other)
 					elseif family == "shooting" then
 						-- ROUND 131: Deranged Munitions / Entrenchment - an ally shooting
 						-- past its cast point (the closest wins, the default rule below)
@@ -9752,6 +9782,8 @@ function FOURTH.ab_pick_ally(unit, routing, family)
 			tostring(FOURTH.ab_marker or "ally"), math.floor(best_hp or 0))
 	elseif family == "wavering" then
 		return tostring(FOURTH.ab_marker or "ally") .. ": wavering ally in range, cast on ally"
+	elseif family == "fighting" then
+		return tostring(FOURTH.ab_marker or "ally") .. ": the caster is neither in melee nor shooting; the closest ally in melee or shooting, cast on ally"
 	elseif family == "shooting" then
 		return tostring(FOURTH.ab_marker or "ally") .. ": the caster is not shooting; the closest ally shooting past its cast point, cast on ally"
 	elseif family == "ammo" then
@@ -12570,6 +12602,57 @@ function FOURTH.evaluate_no_enemy_in_range_within_boost(unit, routing)
 		r, nearest, FOURTH.FARSIGHT_BAND, outer)
 end
 
+-- ============================================================================
+-- ROUND 132 - AUDIT BATCH 1 (user rulings 2026-11-08, all as recommended).
+--   melee_or_shooting_aura (Enchanted Metallurgy x4, Master of Alchemy x4, Embers
+--     of the Phoenix, Horn of Vaul): the Metallurgy melee rule unchanged (the
+--     caster in melee, or the closest ally in melee within 24 m), OR the caster or
+--     any unit within the aura bound (24 m = 70% of 35 m) shooting past its cast
+--     point. Cast on the caster. The user's own 2026-10 rule for Metallurgy ("When
+--     self or ally in range in melee. When ally in range is shooting."), whose
+--     shooting half needed the firing flag.
+--   melee_or_shooting_self_or_ally (The Seerstaff of Saphery, Harmonic
+--     Convergence): the caster in melee (not wavering) or shooting -> self;
+--     otherwise the closest ally within 140 m (70% of 200 m) in melee or shooting.
+--   self_shooting (Boom!): the unit itself shooting past its cast point.
+-- ============================================================================
+
+-- true while the unit is in melee or shooting past its cast point (an
+-- unreadable melee read counts as not in melee)
+function FOURTH.fighting(unit)
+	local ok_m, m = pcall(function() return unit:is_in_melee() end)
+	if ok_m and m == true then return true end
+	return FOURTH.shooting_past_cast_point(unit)
+end
+
+function FOURTH.evaluate_melee_or_shooting_aura(unit, routing)
+	local r = FOURTH.evaluate_metallurgy_melee(unit, routing)
+	if r ~= nil then return r end
+	if routing then return nil end
+	local n, bound = FOURTH.count_allies_firing_near(unit)
+	local own = FOURTH.shooting_past_cast_point(unit) and 1 or 0
+	if n + own < 1 then return nil end
+	return string.format("%s: nobody in melee within reach; %d unit(s) within %sm are shooting past their cast point (%d allies + the caster %s), cast centred on the caster",
+		tostring(FOURTH.ab_marker or "aura"), n + own, tostring(bound), n,
+		(own == 1) and "shooting" or "not shooting")
+end
+
+function FOURTH.evaluate_melee_or_shooting_self_or_ally(unit, routing)
+	if routing then return nil end
+	local r = FOURTH.evaluate_in_melee_self(unit, routing)
+	if r ~= nil then return r .. ", cast on self" end
+	if FOURTH.shooting_past_cast_point(unit) then
+		return "the caster is shooting past its cast point, cast on self"
+	end
+	return FOURTH.ab_pick_ally(unit, routing, "fighting")
+end
+
+function FOURTH.evaluate_self_shooting(unit, routing)
+	if routing then return nil end
+	if not FOURTH.shooting_past_cast_point(unit) then return nil end
+	return "the unit is shooting past its cast point, cast on self"
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -12636,6 +12719,10 @@ FOURTH.evaluators = {
 	self_or_ally_shooting = FOURTH.evaluate_self_or_ally_shooting,
 	melee_or_self_or_ally_shooting = FOURTH.evaluate_melee_or_self_or_ally_shooting,
 	no_enemy_in_range_within_boost = FOURTH.evaluate_no_enemy_in_range_within_boost,
+	-- ROUND 132
+	melee_or_shooting_aura = FOURTH.evaluate_melee_or_shooting_aura,
+	melee_or_shooting_self_or_ally = FOURTH.evaluate_melee_or_shooting_self_or_ally,
+	self_shooting = FOURTH.evaluate_self_shooting,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -12703,6 +12790,9 @@ FOURTH.TRIGGER_TIP = {
 	self_or_ally_shooting = "When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting",
 	melee_or_self_or_ally_shooting = "When armed, fires on this unit in melee or when it is shooting, otherwise on the closest friendly unit in range that is shooting",
 	no_enemy_in_range_within_boost = "When armed, fires when no enemy is in this unit's missile range but one is just beyond it",
+	melee_or_shooting_aura = "When armed, fires when this unit or a friendly unit near it is in melee or shooting",
+	melee_or_shooting_self_or_ally = "When armed, fires on this unit when it is in melee or shooting, otherwise on the closest friendly unit in range that is",
+	self_shooting = "When armed, fires when this unit is shooting",
 	melee_or_shooting_into_melee = "When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee",
 	ally_warmachine_heal = "When armed, fires on the lowest-health war machine ally in range that is at or below 75% health",
 	ally_hellforged_heal = "When armed, fires on the lowest-health Hell-Forged ally in range that is at or below 75% health",
@@ -13443,7 +13533,7 @@ FOURTH.RELOAD_S = {
 	["wh3_dlc29_skv_inf_skavenslave_slingers_vermintide"] = 9,
 	["wh3_dlc29_skv_mon_stormfiend_ratling_cannons"] = 5,
 	["wh3_dlc29_skv_mon_stormfiend_warpfire_projectors"] = 13,
-	["wh3_dlc29_skv_mon_stormfiend_windlaunchers"] = 13,
+	["wh3_dlc29_skv_mon_stormfiend_windlaunchers"] = 14,
 	["wh3_dlc29_skv_mon_stormfiends_ratling_cannons_ror"] = 4,
 	["wh3_dlc29_tmb_veh_skeleton_archer_chariot_0_summoned"] = 6,
 	["wh3_main_chd_art_hobgob_bolt_thrower"] = 12,
