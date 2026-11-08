@@ -1,6 +1,21 @@
 # A better loop for the mod (proposal, 2026-11-08)
 
-Nothing here is decided yet. It is a proposal for the user to amend or approve.
+**Status: agreed by the user on 2026-11-08, with the changes in section 0.** Sections 1 to 6 are the
+original proposal and the trial record; section 0 overrides them where they differ.
+
+## 0. The user's rulings (2026-11-08)
+
+- **No self-playing QA mode.** "If I'm going to start the battle, then I'm going to fight the battle,
+  and then I will be able to control better the units and test properly." There is no separate QA
+  build of the mod.
+- **The QA battle:** Claude gives the army list (chosen to cover as many trigger families as possible);
+  the user builds it once in Custom Battle, saves it if the game allows, and fights it each QA round.
+  Claude reads the log afterwards and reports PASS / FAIL per ability.
+- **Start with the audit** of the 752 automated abilities (after the patch-9.0.5 game-data check).
+- **Batch size about 10** abilities per round; the user rules on the whole batch at once.
+- The ladder, the fact sheets, the sensor checklist and the round steps are approved as written.
+- Open question being researched: whether Claude's desktop clicks can be made to work in the game
+  (section 6).
 
 ## 1. What goes wrong today
 
