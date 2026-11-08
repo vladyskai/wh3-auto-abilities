@@ -1,0 +1,12 @@
+C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261024_airdrop_enemylead_harness112\verify_installed112.py:33: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  ws.send(json.dumps({"id": nid, "data": cmd}))
+installed pack: zz_test_deadly_onslaught.pack
+container type: Movie
+files in pack  : ['script/battle/mod/zz_test_deadly_onslaught.lua', 'ui/common ui/special_ability_tooltip.twui.xml', 'ui/templates/zz_auto_badge.twui.xml', 'ui/zz_auto/auto_badge.png', 'ui/zz_auto/blank.png']
+  script/battle/mod/zz_test_deadly_onslaught.lua     787094 B  md5 8a2aee48c02cfadfe21b60999255b8fc  IDENTICAL: True
+  ui/templates/zz_auto_badge.twui.xml                  2864 B  md5 2debc9b4af50b418e2a3a891deb4a0cc  IDENTICAL: True
+  ui/zz_auto/blank.png                                   69 B  md5 5287946d1ac6397d46239b125dfc91b5  IDENTICAL: True
+  ui/zz_auto/auto_badge.png                             252 B  md5 86baa3055b39a3417a84cf162a2f54aa  IDENTICAL: True
+  ui/common ui/special_ability_tooltip.twui.xml      331235 B  md5 96944455c59d081459615e5ba63876fd  IDENTICAL: True
+ALL FIVE BYTE-IDENTICAL: True
+installed pack md5     : 237702987893b8837d2dbb5df05d566b

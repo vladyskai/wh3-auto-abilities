@@ -1,0 +1,621 @@
+====================================================================================================
+### [233] master_of_alchemy_poison  |  Master of Alchemy: Poison  |  trigger=metallurgy_melee
+  --- KEY: wh3_main_lord_abilities_master_of_alchemy_poison
+      loc_name: Master of Alchemy: Poison
+      spec: active_time=18.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; ai_usage=augment_melee_area ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; unique_id=1157883681
+      phase_junc: phase=wh3_main_lord_abilities_master_of_alchemy_poison self=true friends=true enemies=false
+        phase_row: duration=18.0000 ; effect_type=positive ; imbue_magical=true ; imbue_contact=wh_main_unit_contact_poison ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_missile_damage_base mult 1.2500 ; stat_melee_damage_base mult 1.3000
+      unit_sets: wh3_main_cth_cha_iron_dragon_0
+      ub_type: wh_type_area_of_augments
+      tooltip: Base metals may be transmuted and transformed, so that they might strike harder and better at the Celestial Emperor's enemies.
+====================================================================================================
+### [234] master_rune_of_oath_and_steel  |  Master Rune of Oath & Steel  |  trigger=melee_unwavering
+  --- KEY: wh_dlc06_rune_abilities_master_rune_of_oath_and_steel
+      loc_name: Master Rune of Oath & Steel
+      spec: active_time=44.0000 ; recharge_time=180.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; ai_usage=augment_self_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=3639
+      phase_junc: phase=wh_dlc06_rune_abilities_master_rune_of_oath_and_steel self=true friends=true enemies=false
+        phase_row: duration=44.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add 60.0000
+      ui_effects: Greater effect on [[img:icon_armour]][[/img]]armour
+      ub_type: wh_type_area_of_augments
+      tooltip: Armour inscribed with the Rune of Oath & Steel will not bend or buckle. 
+====================================================================================================
+### [235] master_rune_of_speed  |  Master Rune of Speed  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc17_rune_abilities_master_rune_of_speed
+      loc_name: Master Rune of Speed
+      spec: active_time=40.0000 ; recharge_time=180.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; target_self=true ; always_affect_self=true ; ai_usage=augment_melee_area ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=964823311
+      phase_junc: phase=wh2_dlc17_rune_abilities_master_rune_of_speed self=true friends=true enemies=false
+        phase_row: duration=40.0000 ; effect_type=positive ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_speed mult 1.4500 ; stat_melee_attack add 24.0000
+      ui_effects: Extended effect duration
+      ub_type: wh_type_area_of_augments
+      tooltip: This rune enhances its bearer’s awareness and quickness so that he moves more fluidly, taking faster opponents by surprise.
+====================================================================================================
+### [236] offense_prayer  |  Mantra of Righteousness  |  trigger=melee_unwavering
+  --- KEY: wh3_cp1_character_abilities_offense_prayer
+      loc_name: Mantra of Righteousness
+      spec: active_time=40.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_self=true ; ai_usage=augment_defense_melee_area ; additional_melee_cp=125.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1594049707
+      phase_junc: phase=wh3_cp1_character_abilities_offense_prayer self=true friends=true enemies=false
+        phase_row: duration=40.0000 ; effect_type=positive ; max_damaged_entities=-1 ; imbue_contact=wh2_dlc12_unit_contact_sundered_armour ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_ap mult 1.2500 ; stat_melee_damage_base mult 1.2500
+      invalid_target_flags: unit_is_not_tiger_warrior
+      ub_type: wh_type_area_of_augments
+      tooltip: The might of all Thousand Gods can be called down to the battlefield to anchor the souls of the noble Tigers.
+====================================================================================================
+### [237] okkams_mindrazor  |  Okkam's Mindrazor  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_spell_bound_okkams_mindrazor
+      loc_name: {{tr:unit_abilities_onscreen_name_wh_dlc05_spell_shadow_okkams_mindrazor}}
+      spec: active_time=32.0000 ; recharge_time=46.0000 ; num_uses=2 ; affect_self=true ; always_affect_self=true ; ai_usage=augment_melee_self ; special_ability_display=shadow_long ; additional_melee_cp=200.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1519494306
+      phase_junc: phase=wh_dlc05_spell_shadow_okkams_mindrazor self=true friends=false enemies=false
+        phase_row: duration=32.0000 ; effect_type=positive ; imbue_magical=true ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_damage_ap mult 1.5000 ; stat_melee_damage_base mult 1.5000
+      unit_sets: mp_cap_unit_vmp_inf_lahmian_handmaidens_shadow
+      ub_type: wh_type_augment
+      tooltip: {{tr:unit_abilities_tooltip_text_wh_dlc05_spell_shadow_okkams_mindrazor}}
+====================================================================================================
+### [238] orcs_are_da_best  |  Orcs are da Best!  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_character_abilities_orcs_are_da_best
+      loc_name: Orcs are da Best!
+      spec: active_time=27.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_friendly_units=1 ; target_friends=true ; ai_usage=augment_melee ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=67142511
+      phase_junc: phase=wh3_dlc26_character_abilities_orcs_are_da_best self=false friends=true enemies=false
+        phase_row: duration=27.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_ap mult 1.5000 ; stat_melee_damage_base mult 1.5000
+      ub_type: wh_type_augment
+      tooltip: ...and if sumbody sez else, smash 'em to prove dat!
+====================================================================================================
+### [239] overseer_of_the_unseen  |  Overseer of the Unseen  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_hero_active_overseer_of_the_unseen
+      loc_name: Overseer of the Unseen
+      spec: active_time=44.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_friendly_units=1 ; target_friends=true ; only_affect_target=true ; ai_usage=augment_defense_melee ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1464161655
+      phase_junc: phase=wh3_dlc29_hero_active_overseer_of_the_unseen self=false friends=true enemies=false
+        phase_row: duration=44.0000 ; effect_type=positive ; affects_allies=true
+        stat_effects: stat_melee_attack add 40.0000
+        attributes: cannot_die(positive) ; unbreakable(positive)
+      invalid_target_flags: unit_is_commander_class, unit_is_large
+      ub_type: wh_type_augment
+      tooltip: Lend them Grandfather's aid, my Nurglings, show them his strength given with love.
+====================================================================================================
+### [240] primeval_roar  |  Primeval Roar  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc17_unit_abilities_primeval_roar
+      loc_name: Primeval Roar
+      spec: active_time=31.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; always_affect_self=true ; ai_usage=augment_melee_area ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1978455754
+      phase_junc: phase=wh2_dlc17_unit_abilities_primeval_roar self=true friends=true enemies=false
+        phase_row: duration=31.0000 ; effect_type=positive ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: All Lizardmen are roused at the wailing cry of the Troglodon, its eerie call stirring their savagery.
+====================================================================================================
+### [241] protection_prayer  |  Mantra of Invigoration  |  trigger=ushoran_health
+  --- KEY: wh3_cp1_character_abilities_protection_prayer
+      loc_name: Mantra of Invigoration
+      spec: active_time=32.0000 ; recharge_time=120.0000 ; num_uses=-1 ; affect_self=true ; num_effected_friendly_units=1 ; target_friends=true ; target_self=true ; ai_usage=augment_defense_melee_area ; additional_melee_cp=125.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=178530560
+      phase_junc: phase=wh3_cp1_character_abilities_protection_prayer self=true friends=true enemies=false
+        phase_row: duration=32.0000 ; effect_type=positive ; hp_change_frequency=0.8000 ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true ; heal_amount=0.0052
+      invalid_target_flags: unit_is_not_tiger_warrior
+      ub_type: wh_type_regeneration
+      tooltip: Through fervent supplication, a Clawspeaker may be rejuvenated in body, for he knows mental fortitude cannot overcome the body's failings.
+====================================================================================================
+### [242] rune_of_doom  |  Rune of Doom  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc17_lord_abilities_rune_of_doom
+      loc_name: Rune of Doom
+      spec: active_time=16.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=55.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; always_affect_self=true ; ai_usage=augment_melee_area ; additional_melee_cp=200.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1985710469
+      phase_junc: phase=wh2_dlc17_lord_abilities_rune_of_doom self=true friends=true enemies=false
+        phase_row: duration=16.0000 ; effect_type=positive ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000
+        attributes: causes_fear(positive)
+      ub_type: wh_type_area_of_augments
+      tooltip: Etched upon the Anvil of Doom is a rune that can resonate with deep vibrations felt by both friend and foe.
+====================================================================================================
+### [243] rune_of_oath_and_steel  |  Rune of Oath & Steel  |  trigger=melee_unwavering
+  --- KEY: wh_main_rune_abilities_rune_of_oath_and_steel
+      loc_name: Rune of Oath & Steel
+      spec: active_time=44.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; ai_usage=augment_defense_melee_area ; additional_melee_cp=50.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2137
+      phase_junc: phase=wh_main_rune_abilities_rune_of_oath_and_steel self=true friends=true enemies=false
+        phase_row: duration=44.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add 30.0000
+      sag_groups: wh2_dlc17_lore_rune
+      ub_type: wh_type_area_of_augments
+      tooltip: Armour inscribed with the Rune of Oath & Steel will not bend or buckle. 
+====================================================================================================
+### [244] rune_of_speed  |  Rune of Speed  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc17_rune_abilities_rune_of_speed
+      loc_name: Rune of Speed
+      spec: active_time=30.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; target_self=true ; always_affect_self=true ; ai_usage=augment_melee_area ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1617030087
+      phase_junc: phase=wh2_dlc17_rune_abilities_rune_of_speed self=true friends=true enemies=false
+        phase_row: duration=30.0000 ; effect_type=positive ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_speed mult 1.4500 ; stat_melee_attack add 24.0000
+      sag_groups: wh2_dlc17_lore_rune
+      ub_type: wh_type_area_of_augments
+      tooltip: This rune enhances its bearer’s awareness and quickness so that he moves more fluidly, taking faster opponents by surprise.
+====================================================================================================
+### [245] sausage_busta  |  Bangers & Smash  |  trigger=charge_or_wavering
+  --- KEY: wh2_dlc15_character_abilities_sausage_busta
+      loc_name: Bangers & Smash
+      spec: active_time=36.0000 ; recharge_time=120.0000 ; num_uses=3 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=augment_melee_area ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1966930644
+      phase_junc: phase=wh2_dlc15_character_abilities_sausage_busta self=true friends=true enemies=false
+        phase_row: duration=36.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_charge_bonus mult 1.2000 ; stat_morale add 12.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: These sausages have quite the kick – thrown at an enemy, they violently rupture in a flesh-mangling implosion.
+====================================================================================================
+### [246] shield_of_the_old_ones  |  Shield of the Old Ones  |  trigger=melee_unwavering
+  --- KEY: wh2_main_character_abilities_shield_of_the_old_ones
+      loc_name: Shield of the Old Ones
+      spec: active_time=17.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_ground=true ; target_self=true ; target_ground_under_allies=true ; ai_usage=augment_melee_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=710943816
+      phase_junc: phase=wh2_main_character_abilities_shield_of_the_old_ones self=true friends=true enemies=false
+        phase_row: duration=17.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_morale add 8.0000 ; stat_resistance_all add 20.0000
+      ub_type: wh_type_area_of_ward_save
+      tooltip: The resilience of the Old Ones is channelled into an energy barrier that protects its users from the full brunt of magical attacks against them.
+====================================================================================================
+### [247] slayer_for_chaos  |  Slayer for Chaos  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc23_item_abilities_slayer_for_chaos
+      loc_name: Slayer for Chaos
+      spec: active_time=24.0000 ; recharge_time=120.0000 ; num_uses=1 ; affect_self=true ; ai_usage=augment_defense_melee ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1746092995
+      phase_junc: phase=wh3_dlc23_item_abilities_slayer_for_chaos_grimnir self=true friends=false enemies=false
+        phase_row: duration=24.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 12.0000
+        attributes: cannot_die(positive) ; causes_terror(positive) ; unbreakable(positive)
+      ui_effects: Entities cannot die while ability is active
+      ub_type: wh_type_augment
+      tooltip: Ha! These 'trinkets' gave the Ancestor God Grimnir near immortality – I'm no lesser Dawi than him!
+====================================================================================================
+### [248] spite_of_da_bad_moon  |  Spite of Da Bad Moon  |  trigger=melee_unwavering
+  --- KEY: wh_dlc06_lord_abilities_spite_of_da_bad_moon
+      loc_name: Spite of Da Bad Moon
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; ai_usage=augment_self_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=3681
+      phase_junc: phase=wh_dlc06_lord_abilities_spite_of_da_bad_moon self=true friends=true enemies=false
+        phase_row: duration=20.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_bonus_vs_large add 16.0000 ; stat_melee_damage_ap mult 1.2500 ; stat_melee_damage_base mult 1.2500
+      ub_type: wh_type_area_of_augments
+      tooltip: Da Bad Moon offers heightened pugnacity to its weird and disgusting worshippers, spurring them to dish out even more pain.
+====================================================================================================
+### [249] star_of_avelorn  |  Star of Avelorn  |  trigger=ushoran_health
+  --- KEY: wh2_dlc10_item_abilities_star_of_avelorn
+      loc_name: Star of Avelorn
+      spec: active_time=27.0000 ; recharge_time=120.0000 ; num_uses=2 ; effect_range=15.0000 ; affect_self=true ; num_effected_friendly_units=3 ; target_ground=true ; target_ground_under_allies=true ; ai_usage=augment_melee_healing ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1983718136
+      phase_junc: phase=wh2_dlc10_item_abilities_star_of_avelorn self=true friends=true enemies=false
+        phase_row: duration=27.0000 ; effect_type=positive ; hp_change_frequency=1.0000 ; affects_allies=true ; affects_enemies=true ; heal_amount=0.0080
+      ui_effects: Replenishes [[img:icon_hp]][[/img]]hit points of combatants
+      invalid_usage_flags: climbing, manning_equipment
+      invalid_target_flags: on_a_platform
+      ub_type: wh_type_area_of_regeneration
+      tooltip: A diadem of ithilmar with a radiant gem set within it, said to be a star plucked from the heavens.
+====================================================================================================
+### [250] stay_here_ill_get_help  |  "Stay Here, I'll Get Help!"  |  trigger=wavering_ally_range
+  --- KEY: wh2_dlc09_character_abilities_stay_here_ill_get_help
+      loc_name: Stay Here, I'll Get Help!
+      spec: active_time=35.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_friends=true ; target_ground=true ; target_self=true ; ai_usage=augment_melee_morale ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1864089004
+      phase_junc: phase=wh2_dlc09_character_abilities_stay_here_ill_get_help self=false friends=true enemies=false
+        phase_row: duration=35.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_morale add 16.0000
+      phase_junc: phase=wh2_dlc09_character_abilities_stay_here_ill_get_help_miscast self=true friends=false enemies=false
+        phase_row: duration=35.0000 ; effect_type=positive ; affects_allies=true
+        attributes: stalk(positive) ; unspottable(positive)
+      ui_effects: Tretch receives Stalk and Unspottable
+      invalid_usage_flags: engaged_in_melee
+      ub_type: wh_type_area_of_augments
+      tooltip: It's not running away. It's knowing when and where to be to secure the best advantage.
+====================================================================================================
+### [251] supreme_shield_of_the_old_ones  |  Supreme Shield of the Old Ones  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones
+      loc_name: Supreme Shield of the Old Ones
+      spec: active_time=18.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_ground=true ; target_self=true ; target_ground_under_allies=true ; ai_usage=augment_melee_area ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=223656225
+      phase_junc: phase=wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones self=true friends=true enemies=false
+        phase_row: duration=18.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_resistance_all add 40.0000
+      ub_type: wh_type_area_of_ward_save
+      tooltip: More than just a shield, this one channels the visceral power of the Old Ones to protect its bearer from magical attack.
+====================================================================================================
+### [252] talisman_of_loec  |  Talisman of Loec  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_talisman_of_loec
+      loc_name: Talisman of Loec
+      spec: active_time=67.0000 ; num_uses=1 ; affect_self=true ; ai_usage=augment_melee_self ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=4055
+      phase_junc: phase=wh2_main_item_abilities_talisman_of_loec self=true friends=false enemies=false
+        phase_row: duration=67.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_base mult 1.3000
+      ub_type: wh_type_augment
+      tooltip: Loec the Trickster‘s aid comes at a price. His talisman is strange - a bracelet of two interlocking halves.
+====================================================================================================
+### [253] the_liber_mortis  |  The Liber Mortis  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc09_lord_abilities_the_liber_mortis
+      loc_name: The Liber Mortis
+      spec: active_time=15.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; target_ground=true ; target_self=true ; target_ground_under_allies=true ; ai_usage=augment_defense_melee_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1753515469
+      phase_junc: phase=wh2_dlc09_lord_abilities_the_liber_mortis self=true friends=true enemies=false
+        phase_row: duration=15.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_morale add 8.0000 ; stat_resistance_physical add 40.0000
+      unit_sets: cha_arkhan
+      ub_type: wh_type_area_of_ward_save
+      tooltip: One of the fabled nine Books of Nagash, this tome is one of the most potent sources of Necromantic magic in existence.
+====================================================================================================
+### [254] the_shadows_coil  |  The Shadow's Coil  |  trigger=melee_unwavering
+  --- KEY: wh_dlc05_unit_abilities_the_shadows_coil
+      loc_name: The Shadow's Coil
+      spec: active_time=-1.0000 ; recharge_time=1.0000 ; num_uses=-1 ; affect_self=true ; ai_usage=augment_defense_melee ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=3196
+      phase_junc: phase=wh_dlc05_unit_abilities_the_shadows_coil self=true friends=false enemies=false
+        phase_row: duration=-1.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add -24.0000 ; stat_melee_defence add 24.0000
+      unit_sets: wh2_twa02_wef_glade_captain_unmounted
+      ub_type: wh_type_augment
+      tooltip: The wending and twisting of the Wardancers hardens their spirits and their bodies against would-be attackers.
+====================================================================================================
+### [255] unstoppable_choppas  |  Unstoppable Choppas  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_unit_abilities_unstoppable_choppas
+      loc_name: Unstoppable Choppas
+      spec: active_time=-1.0000 ; recharge_time=1.0000 ; num_uses=-1 ; affect_self=true ; ai_usage=augment_melee ; additional_melee_cp=200.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=257885529
+      phase_junc: phase=wh3_dlc26_unit_abilities_unstoppable_choppas self=true friends=false enemies=false
+        phase_row: duration=-1.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_damage_ap mult 1.5000 ; stat_melee_damage_base mult 1.5000 ; stat_melee_defence add -24.0000
+      unit_sets: wh2_dlc11_grn_all_orc_infantry
+      ub_type: wh_type_augment
+      tooltip: When Orcs are determined to cleave something in half, very few things can stop them from doing so.
+====================================================================================================
+### [256] vial_of_troll_blood  |  Vial of Troll Blood  |  trigger=wavering_self
+  --- KEY: wh_dlc08_item_abilities_vial_of_troll_blood
+      loc_name: Vial of Troll Blood
+      spec: active_time=73.0000 ; recharge_time=90.0000 ; num_uses=1 ; affect_self=true ; num_effected_friendly_units=1 ; ai_usage=augment_melee_self ; additional_melee_cp=200.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2050513885
+      phase_junc: phase=wh_dlc08_item_abilities_vial_of_troll_blood self=true friends=true enemies=false
+        phase_row: duration=73.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        attributes: unbreakable(positive)
+      ub_type: wh_type_augment
+      tooltip: Disgusting as it may be, a shot of Troll blood is just the thing to bolster the drinker's courage, causing an unstoppable bloodlust to rise within them.
+====================================================================================================
+### [257] warpstone_addiction  |  Warpstone Addiction  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_lord_abilities_warpstone_addiction
+      loc_name: Warpstone Addiction
+      spec: active_time=33.0000 ; recharge_time=120.0000 ; num_uses=2 ; affect_self=true ; num_effected_friendly_units=1 ; always_affect_self=true ; ai_usage=augment_defense_melee ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=60936024
+      phase_junc: phase=wh3_dlc29_item_abilities_warpstone_addiction self=true friends=false enemies=false
+        phase_row: duration=33.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_resistance_all add 33.0000
+      ub_type: wh_type_augment
+      tooltip: While Warpstone has unhinged his sanity, it does also have its advantages.
+====================================================================================================
+### [258] warrior_familiar  |  Warrior Familiar  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc27_item_abilities_warrior_familiar
+      loc_name: Warrior Familiar
+      spec: active_time=57.0000 ; recharge_time=90.0000 ; num_uses=1 ; affect_self=true ; always_affect_self=true ; ai_usage=augment_melee_self ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=566489942
+      phase_junc: phase=wh3_dlc27_item_abilities_warrior_familiar self=true friends=false enemies=false
+        phase_row: duration=57.0000 ; effect_type=positive ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_defence add 24.0000
+      ub_type: wh_type_augment
+      tooltip: A warrior familiar accompanies its master and fights to protect them, taking the form of a diminutive Chaos Warrior or tiny monstrous creature.
+====================================================================================================
+### [259] winters_chill  |  Winter’s Chill  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_ability_bound_prayer_winters_chill
+      loc_name: {{tr:character_skills_localised_name_wh3_dlc29_skill_emp_dignitary_unique_priest_of_ulric_winters_chill}}
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=55.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_melee_area ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=908622920
+      phase_junc: phase=wh3_dlc29_spell_bound_prayer_winters_chill self=false friends=false enemies=true
+        phase_row: duration=20.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add -24.0000 ; stat_melee_damage_ap mult 0.7000 ; stat_melee_damage_base mult 0.7000
+      ub_type: wh_type_hex
+      tooltip: {{tr:character_skills_localised_description_wh3_dlc29_skill_emp_dignitary_unique_priest_of_ulric_winters_chill}}
+  --- KEY: wh3_dlc29_spell_bound_prayer_winters_chill
+      loc_name: {{tr:character_skills_localised_name_wh3_dlc29_skill_emp_dignitary_unique_priest_of_ulric_winters_chill}}
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=55.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_melee_area ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1401220909
+      phase_junc: phase=wh3_dlc29_spell_bound_prayer_winters_chill self=false friends=false enemies=true
+        phase_row: duration=20.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add -24.0000 ; stat_melee_damage_ap mult 0.7000 ; stat_melee_damage_base mult 0.7000
+      ub_type: wh_type_hex
+      tooltip: {{tr:character_skills_localised_description_wh3_dlc29_skill_emp_dignitary_unique_priest_of_ulric_winters_chill}}
+====================================================================================================
+### [260] witchbrew  |  Witchbrew  |  trigger=melee_unwavering
+  --- KEY: wh2_main_character_abilities_witchbrew
+      loc_name: Witchbrew
+      spec: active_time=24.0000 ; recharge_time=90.0000 ; num_uses=3 ; affect_self=true ; ai_usage=augment_melee_self ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1073096641
+      phase_junc: phase=wh2_main_character_abilities_witchbrew self=true friends=false enemies=false
+        phase_row: duration=24.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_ap mult 1.5000 ; stat_melee_damage_base mult 1.5000
+        attributes: rampage(positive)
+      ub_type: wh_type_augment
+      tooltip: Distilled from the blood of Hag Queens, this evil brew drives imbibers into an ecstasy of destruction.
+  --- KEY: wh3_dlc24_unit_abilities_witchbrew
+      loc_name: Witchbrew
+      spec: active_time=24.0000 ; recharge_time=90.0000 ; num_uses=1 ; affect_self=true ; ai_usage=augment_melee_self ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1425766652
+      phase_junc: phase=wh2_main_character_abilities_witchbrew self=true friends=false enemies=false
+        phase_row: duration=24.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_ap mult 1.5000 ; stat_melee_damage_base mult 1.5000
+        attributes: rampage(positive)
+      ub_type: wh_type_augment
+      tooltip: Distilled from the blood of Hag Queens, this evil brew drives imbibers into an ecstasy of destruction.
+====================================================================================================
+### [261] worlds_edge_armour  |  World's Edge Armour  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_worlds_edge_armour
+      loc_name: World's Edge Armour
+      spec: active_time=57.0000 ; recharge_time=60.0000 ; num_uses=1 ; affect_self=true ; ai_usage=augment_melee_self ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=4116
+      phase_junc: phase=wh2_main_item_abilities_worlds_edge_armour self=true friends=false enemies=false
+        phase_row: duration=57.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add 60.0000
+      ub_type: wh_type_augment
+      tooltip: Many suits of Dwarfen Gromril have fallen into the clutches of the Skaven. Then they are remade to the ratmen’s liking.
+====================================================================================================
+### [262] znarkharjas_ward  |  Znarkharja's Ward  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_hero_abilities_znarkharjas_ward
+      loc_name: Znarkharja's Ward
+      spec: active_time=26.0000 ; recharge_time=90.0000 ; num_uses=2 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=augment_defense_melee ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2050796324
+      phase_junc: phase=wh3_dlc24_hero_abilities_znarkharjas_ward self=true friends=true enemies=false
+        phase_row: duration=26.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_resistance_all add 10.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: A folk witch's ward is a powerful protection, meant to tend all manner of wound and ailment.
+====================================================================================================
+### [263] accusation  |  Accusation  |  trigger=melee_unwavering
+  --- KEY: wh_main_hero_abilities_accusation
+      loc_name: Accusation
+      spec: active_time=35.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_melee ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2104
+      phase_junc: phase=wh_main_hero_abilities_accusation self=false friends=false enemies=true
+        phase_row: duration=35.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add -30.0000 ; stat_melee_defence add -24.0000 ; stat_resistance_missile add -20.0000 ; stat_resistance_physical add -20.0000
+      ub_type: wh_type_hex
+      tooltip: The Witch Hunter levels his finger across the battlefield and accuses one of the enemy of arch-heresy!
+====================================================================================================
+### [264] acquiescence  |  Acquiescence  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc27_spell_bound_acquiescence
+      loc_name: Acquiescence
+      spec: active_time=25.0000 ; recharge_time=60.0000 ; num_uses=2 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_melee ; special_ability_display=slaanesh_short ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=833956314
+      phase_junc: phase=wh3_dlc27_spell_bound_acquiescence self=false friends=false enemies=true
+        phase_row: duration=25.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_speed mult 0.7500 ; stat_melee_defence add -24.0000
+      ub_type: wh_type_hex
+      tooltip: {{tr:unit_abilities_tooltip_text_wh3_main_spell_slaanesh_acquiescence}}
+====================================================================================================
+### [265] aken_seth_the_staff_of_pain  |  Aken-seth, the Staff of Pain  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_weapon_aken_seth_the_staff_of_pain}}
+      spec: active_time=20.0000 ; recharge_time=120.0000 ; num_uses=-1 ; affect_self=true ; always_affect_self=true ; ai_usage=hex_armour ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1871100866
+      phase_junc: phase=wh3_dlc29_weapon_abilities_aken-seth_the_staff_of_pain self=true friends=false enemies=false
+        phase_row: duration=20.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_spell_mastery mult 1.6000
+      ub_type: wh_type_augment
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_weapon_aken_seth_the_staff_of_pain}}
+====================================================================================================
+### [266] alchemists_elixir_of_iron_skin  |  Alchemist's Elixir of Iron Skin  |  trigger=melee_unwavering
+  --- KEY: wh3_main_item_abilities_alchemists_elixir_of_iron_skin
+      loc_name: Alchemist's Elixir of Iron Skin
+      spec: active_time=25.0000 ; recharge_time=90.0000 ; num_uses=2 ; affect_self=true ; num_effected_friendly_units=1 ; target_friends=true ; target_self=true ; ai_usage=augment_melee ; additional_melee_cp=50.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=234554415
+      phase_junc: phase=wh3_main_item_abilities_alchemists_elixir_of_iron_skin self=true friends=true enemies=false
+        phase_row: duration=25.0000 ; effect_type=positive ; affects_allies=true
+        stat_effects: stat_armour add 90.0000
+      ub_type: wh_type_augment
+      tooltip: To be a Cathayan alchemist afore the disapproving masses takes a thick skin, but the reddish liquid within this phial goes far beyond that.
+====================================================================================================
+### [267] alchemists_elixir_of_puissance  |  Alchemist's Elixir of Puissance  |  trigger=melee_unwavering
+  --- KEY: wh3_main_item_abilities_alchemists_elixir_of_puissance
+      loc_name: Alchemist's Elixir of Puissance
+      spec: active_time=29.0000 ; recharge_time=90.0000 ; num_uses=2 ; affect_self=true ; num_effected_friendly_units=1 ; target_friends=true ; target_self=true ; ai_usage=augment_melee ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=956122553
+      phase_junc: phase=wh3_main_item_abilities_alchemists_elixir_of_puissance self=true friends=true enemies=false
+        phase_row: duration=29.0000 ; effect_type=positive ; affects_allies=true
+        stat_effects: stat_melee_attack add 40.0000
+      ub_type: wh_type_augment
+      tooltip: The fighting prowess of Cathay's greatest can be taken in draught form when a further burst of aggression is needed to tip the balance in the Celestial Emperor's favour.
+====================================================================================================
+### [268] alchemists_elixir_of_venom  |  Alchemist's Elixir of Venom  |  trigger=melee_unwavering
+  --- KEY: wh3_main_item_abilities_alchemists_elixir_of_venom
+      loc_name: Alchemist's Elixir of Venom
+      spec: active_time=36.0000 ; recharge_time=90.0000 ; num_uses=1 ; affect_self=true ; num_effected_friendly_units=1 ; target_friends=true ; target_self=true ; ai_usage=augment_melee ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1160044061
+      phase_junc: phase=wh3_main_item_abilities_alchemists_elixir_of_venom self=true friends=true enemies=false
+        phase_row: duration=36.0000 ; effect_type=positive ; imbue_contact=wh2_dlc17_unit_contact_slow_death ; affects_allies=true
+      ub_type: wh_type_augment
+      tooltip: This concoction enables the taker to not just wound their opponent, but set deadly poison in the lacerated flesh as well.
+====================================================================================================
+### [269] all_hands_hoay  |  All Hands Hoay!  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc11_character_abilities_all_hands_hoay
+      loc_name: All Hands Hoay!
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=augment_morale_area ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=964474164
+      phase_junc: phase=wh2_dlc11_character_abilities_all_hands_hoay self=true friends=true enemies=false
+        phase_row: duration=20.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_damage_ap mult 1.2500 ; stat_melee_damage_base mult 1.2500 ; stat_morale add 16.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: Everyone on deck! We 'ave them now!
+====================================================================================================
+### [270] amulet_of_itzl  |  Amulet of Itzl  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_amulet_of_itzl
+      loc_name: Amulet of Itzl
+      spec: active_time=18.0000 ; recharge_time=60.0000 ; num_uses=1 ; affect_self=true ; ai_usage=augment_defense_melee ; additional_melee_cp=50.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=4044
+      phase_junc: phase=wh2_main_item_abilities_amulet_of_itzl self=true friends=false enemies=false
+        phase_row: duration=18.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_resistance_all add 60.0000
+      ub_type: wh_type_ward_save
+      tooltip: The amulet explodes into a million crystal shards if the wearer is struck, greatly improving their resistance to damage for a short time.
+====================================================================================================
+### [271] amulet_of_phastah  |  Amulet of Pha-Stah  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc09_item_abilities_amulet_of_phastah
+      loc_name: Amulet of Pha-Stah
+      spec: active_time=22.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=55.0000 ; num_effected_enemy_units=-1 ; target_enemies=true ; target_ground=true ; ai_usage=hex_armour_area ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=947546154
+      phase_junc: phase=wh2_dlc09_item_abilities_amulet_of_phastah self=false friends=false enemies=true
+        phase_row: duration=22.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add -30.0000 ; stat_missile_block_chance add -48.0000
+      ub_type: wh_type_area_of_hexes
+      tooltip: This moon-shaped amulet projects a disruptive magical energy onto the enemy's defences.
+====================================================================================================
+### [272] apocalyptic_charge  |  Apocalyptic Charge  |  trigger=melee_unwavering
+  --- KEY: wh_pro04_unit_abilities_apocalyptic_charge
+      loc_name: Apocalyptic Charge
+      spec: active_time=30.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=aoe_centred_on_self ; additional_melee_cp=25.0000 ; additional_missile_cp=25.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=644107673
+      phase_junc: phase=wh_pro04_unit_passive_apocalyptic_charge self=true friends=true enemies=false
+        phase_row: duration=30.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_charge_speed mult 1.1000 ; stat_charge_bonus mult 1.2000
+      ub_type: wh_type_area_of_augments
+      tooltip: If you see him coming run as fast as you can… not that it will do you any good whatsoever!
+====================================================================================================
+### [273] magic_prayer  |  Arcane Hymn  |  trigger=melee_unwavering
+  --- KEY: wh3_cp1_character_abilities_magic_prayer
+      loc_name: Arcane Hymn
+      spec: active_time=27.0000 ; recharge_time=120.0000 ; num_uses=-1 ; affect_self=true ; always_affect_self=true ; ai_usage=augment_defense_melee_area ; additional_melee_cp=125.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1400756979
+      phase_junc: phase=wh3_cp1_character_abilities_magic_prayer self=true friends=false enemies=false
+        phase_row: duration=27.0000 ; effect_type=positive ; max_damaged_entities=-1 ; mana_regen_mod=1.3000 ; affects_allies=true ; affects_enemies=true
+      ub_type: wh_type_augment_of_the_winds
+      tooltip: In hissed arcane melody, the Clawspeaker masterfully binds the Winds into a single, obedient stream.
+====================================================================================================
+### [274] armour_of_caledor  |  Armour of Caledor  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc15_item_abilities_armour_of_caledor
+      loc_name: Armour of Caledor
+      spec: active_time=20.0000 ; recharge_time=180.0000 ; num_uses=3 ; affect_self=true ; ai_usage=augment_spellcasting ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=289368237
+      phase_junc: phase=wh2_dlc15_item_abilities_armour_of_caledor self=true friends=false enemies=false
+        phase_row: duration=20.0000 ; effect_type=positive ; cant_move=true ; hp_change_frequency=1.0000 ; affects_allies=true ; affects_enemies=true ; heal_amount=0.0160
+      ub_type: wh_type_augment
+      tooltip: Donned by the masters of the House of Caledor, this ensorcelled armour has endured over four thousand years of battles.
+====================================================================================================
+### [275] armour_of_the_burrows  |  Armour of the Barrows  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_item_abilities_armour_of_the_burrows
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_armour_armour_of_the_barrows}}
+      spec: active_time=27.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=55.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_melee_area ; additional_melee_cp=134.0000 ; additional_missile_cp=66.0000 ; can_be_copied_to_transformation_unit=true ; unique_id=1148326945
+      phase_junc: phase=wh3_dlc29_item_abilities_armour_of_the_burrows self=false friends=false enemies=true
+        phase_row: duration=27.0000 ; effect_type=negative ; affects_enemies=true ; remove_magical=true
+        stat_effects: stat_melee_damage_ap mult 0.7500 ; stat_melee_damage_base mult 0.7500
+      ub_type: wh_type_area_of_hexes
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_armour_armour_of_the_barrows}}
+====================================================================================================
+### [276] assassins_trophy  |  Assassin's Trophy  |  trigger=melee_unwavering
+  --- KEY: wh2_main_character_abilities_assassins_trophy
+      loc_name: Assassin's Trophy
+      spec: active_time=29.0000 ; recharge_time=60.0000 ; num_uses=-1 ; target_enemies=true ; ai_usage=hex_melee ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=884072960
+      phase_junc: phase=wh2_main_character_abilities_assassins_trophy self=false friends=false enemies=true
+        phase_row: duration=29.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add -24.0000 ; stat_melee_defence add -24.0000
+      invalid_target_flags: unit_is_not_commander_class
+      ub_type: wh_type_hex
+      tooltip: It should be no great surprise that those already adept in the art of silent death continue to improve with time and practice.
+====================================================================================================
+### [277] aura_of_inertia  |  Aura of Inertia  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc13_lord_abilities_aura_of_inertia
+      loc_name: Aura of Inertia
+      spec: active_time=24.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_morale_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1738745272
+      phase_junc: phase=wh2_dlc13_lord_abilities_aura_of_inertia self=false friends=false enemies=true
+        phase_row: duration=24.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_speed mult 0.7500 ; stat_morale add -8.0000
+      ub_type: wh_type_area_of_hexes
+      tooltip: The enemy aren't going anywhere fast – in fact, they're not going anywhere at all!
+====================================================================================================
+### [278] avast_ye  |  Avast Ye!  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc11_character_abilities_avast_ye
+      loc_name: Avast Ye!
+      spec: active_time=14.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=augment_morale_area ; additional_melee_cp=75.0000 ; additional_missile_cp=25.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1898528833
+      phase_junc: phase=wh2_dlc11_character_abilities_avast_ye self=true friends=true enemies=false
+        phase_row: duration=14.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_damage_ap mult 1.2500 ; stat_melee_damage_base mult 1.2500 ; stat_morale add 8.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: Now listen up and listen good, yer salty sea-dogs…
+====================================================================================================
+### [279] axe_of_men  |  Axe of Men  |  trigger=melee_unwavering
+  --- KEY: wh_dlc03_weapon_abilities_axe_of_men
+      loc_name: Axe of Men
+      spec: active_time=46.0000 ; recharge_time=120.0000 ; num_uses=-1 ; affect_self=true ; ai_usage=augment_morale ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2826
+      phase_junc: phase=wh_dlc03_weapon_abilities_axe_of_men self=true friends=false enemies=false
+        phase_row: duration=46.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        attributes: causes_terror(positive) ; unbreakable(positive)
+      ub_type: wh_type_area_of_augments
+      tooltip: The Axe of Men is so-called because it hacks through men as easily as other, lesser axes, hew timber. 
+====================================================================================================
+### [280] barbed_knuckle_boxing  |  Barbed-Knuckle Boxing  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc17_lord_abilities_barbed_knuckle_boxing
+      loc_name: Barbed-Knuckle Boxing
+      spec: active_time=29.0000 ; recharge_time=90.0000 ; num_uses=-1 ; affect_self=true ; always_affect_self=true ; ai_usage=augment_melee ; additional_melee_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1059601698
+      phase_junc: phase=wh2_dlc17_lord_abilities_barbed_knuckle_boxing self=true friends=false enemies=false
+        phase_row: duration=29.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add 24.0000 ; stat_melee_damage_ap mult 1.2500 ; stat_melee_damage_base mult 1.2500
+      ub_type: wh_type_augment
+      tooltip: A brutally simple weapon makes the Doombull’s incredible punching power more than enough to puncture armour and cause dreadful injury.
+====================================================================================================
+### [281] bastet  |  Bastet  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_lord_abilities_bastet
+      loc_name: Bastet
+      spec: active_time=19.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_melee ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1111987816
+      phase_junc: phase=wh3_dlc29_lord_abilities_bastet self=false friends=false enemies=true
+        phase_row: duration=19.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add -60.0000 ; stat_melee_defence add -40.0000
+      ub_type: wh_type_hex
+      tooltip: A slender black silhouette is all that remains of Neferata's feline familiar, foreshadowing bad luck for her foes and protecting her from danger.
+====================================================================================================
+### [282] bitter_sting  |  Bitter Sting  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc27_qb_unit_abilities_bitter_sting
+      loc_name: Bitter Sting
+      spec: active_time=30.0000 ; recharge_time=60.0000 ; num_uses=-1 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_melee ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1891943054
+      phase_junc: phase=wh3_dlc27_qb_unit_abilities_bitter_sting self=false friends=false enemies=true
+        phase_row: duration=30.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_melee_attack add -24.0000 ; stat_melee_defence add -24.0000
+        attributes: cant_run(negative) ; flying(negative)
+      ub_type: wh_type_hex
+      tooltip: The surest mark of enduring malice is prolonging one's depredations on the weak and weary.
+====================================================================================================
+### [283] black_periapt  |  Black Periapt  |  trigger=melee_unwavering
+  --- KEY: wh_main_item_abilities_black_periapt
+      loc_name: Black Periapt
+      spec: active_time=27.0000 ; recharge_time=120.0000 ; num_uses=-1 ; affect_self=true ; ai_usage=augment_spellcasting ; additional_melee_cp=100.0000 ; additional_missile_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2257
+      phase_junc: phase=wh_main_item_abilities_black_periapt self=true friends=false enemies=false
+        phase_row: duration=27.0000 ; effect_type=positive ; mana_regen_mod=1.6000 ; affects_allies=true ; affects_enemies=true
+      ub_type: wh_type_augment_of_the_winds
+      tooltip: The Black Periapt is a grandiose gem of sullen darkness whose power can only be realised in the hands of a spellcaster.  
+====================================================================================================
+### [284] black_staff  |  Black Staff  |  trigger=melee_unwavering
+  --- KEY: wh2_main_spell_bound_black_staff
+      loc_name: Black Staff
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=3 ; affect_self=true ; num_effected_friendly_units=1 ; target_friends=true ; target_self=true ; ai_usage=augment_spellcasting ; additional_melee_cp=50.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=4343
+      phase_junc: phase=wh2_main_spell_bound_black_staff self=true friends=true enemies=false
+        phase_row: duration=20.0000 ; effect_type=positive ; hp_change_frequency=1.0000 ; damage_amount=33 ; max_damaged_entities=1 ; mana_regen_mod=0.8000 ; affects_allies=true ; affects_enemies=true
+      ui_effects: Causes damage to self
+      ub_type: wh_type_augment_of_the_winds
+      tooltip: The caster draws on unstable power from the Realm of Chaos to charge their spells.
+====================================================================================================
+### [285] blade_of_setep  |  Blade of Setep  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc09_weapon_abilities_blade_of_setep
+      loc_name: Blade of Setep
+      spec: active_time=44.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_melee_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2013280379
+      phase_junc: phase=wh2_dlc09_weapon_abilities_blade_of_setep self=false friends=false enemies=true
+        phase_row: duration=44.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add -30.0000 ; stat_resistance_physical add -20.0000
+      ub_type: wh_type_hex
+      tooltip: The very late King Setep's ornate, curved sword shimmers with a blue hue that shatters the foe's armour.
+====================================================================================================
+### [286] blessed_helm_of_the_oblast  |  Blessed Helm of the Oblast  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_item_abilities_blessed_helm_of_the_oblast
+      loc_name: Blessed Helm of the Oblast
+      spec: active_time=30.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; ai_usage=augment_ranged_area ; additional_missile_cp=150.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=2003268659
+      phase_junc: phase=wh3_dlc24_item_abilities_blessed_helm_of_the_oblast self=true friends=true enemies=false
+        phase_row: duration=30.0000 ; effect_type=positive ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add 60.0000 ; stat_resistance_missile add 20.0000
+      ub_type: wh_type_area_of_augments
+      tooltip: This treasured family heirloom has had many owners, and at some point was imbued with power of the Oblast to protect its bearer’s regiment from harm.
+====================================================================================================
+### [287] blight_of_terrors  |  Blight of Terrors  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc16_character_abilities_blight_of_terrors
+      loc_name: Blight of Terrors
+      spec: active_time=20.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=35.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_morale_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1423424859
+      phase_junc: phase=wh2_dlc16_character_abilities_blight_of_terrors self=false friends=false enemies=true
+        phase_row: duration=20.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_morale add -16.0000
+      ub_type: wh_type_area_of_hexes
+      tooltip: Mirthfully looming out from their host, Terrors take on their most fearsome aspect to dampen the spirits of their horrified prey.
+====================================================================================================
+### [288] blight_swarm  |  Blight Swarm  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_blight_swarm
+      loc_name: Blight Swarm
+      spec: active_time=20.0000 ; recharge_time=60.0000 ; num_uses=4 ; num_effected_enemy_units=5 ; target_enemies=true ; ai_usage=hex_melee ; additional_melee_cp=100.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1901084157
+      phase_junc: phase=wh3_main_lord_abilities_blight_swarm self=false friends=false enemies=true
+        phase_row: duration=20.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true ; spreading=wh3_main_lord_abilities_blight_swarm
+        stat_effects: stat_melee_defence add -20.0000
+      ui_effects: Will spread to enemies within the Spread Range metres of affected unit | Affects up to five units
+      ub_type: wh_type_chain_hex
+      tooltip: Flies, drenched in the pustulent gore of rotting intestines, swarm and surround the foe, hampering their blows and haltering their attacks.
+====================================================================================================
+### [289] blood_omens  |  Blood Omens  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_unit_abilities_blood_omens
+      loc_name: Blood Omens
+      spec: active_time=26.0000 ; recharge_time=90.0000 ; num_uses=1 ; effect_range=-1.0000 ; num_effected_enemy_units=-1 ; ai_usage=hex_ranged_area ; additional_melee_cp=75.0000 ; additional_missile_cp=75.0000 ; affect_siege_equipment=true ; can_be_copied_to_transformation_unit=true ; unique_id=1925003496
+      phase_junc: phase=wh3_dlc29_unit_abilities_blood_omens_enemies self=false friends=false enemies=true
+        phase_row: duration=26.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: scalar_charge_speed mult 0.7500 ; scalar_speed mult 0.7500
+        attributes: revealed(positive)
+      unit_sets: mp_cap_unit_vmp_veh_coven_throne
+      ub_type: wh_type_hex
+      tooltip: Lahmians have grown skilled in the art of prescience to stay one step ahead of the agents who hunt them.
+====================================================================================================
+### [290] bloody_onslaught  |  Bloody Onslaught  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_character_abilities_bloody_onslaught
+      loc_name: Bloody Onslaught
+      spec: active_time=38.0000 ; recharge_time=90.0000 ; num_uses=-1 ; num_effected_enemy_units=1 ; target_enemies=true ; ai_usage=hex_armour ; additional_melee_cp=100.0000 ; additional_missile_cp=50.0000 ; affect_siege_equipment=true ; unique_id=1283980048
+      phase_junc: phase=wh3_dlc26_character_abilities_bloody_onslaught self=false friends=false enemies=true
+        phase_row: duration=38.0000 ; effect_type=negative ; affects_allies=true ; affects_enemies=true
+        stat_effects: stat_armour add -30.0000 ; stat_melee_defence add -24.0000
+      ub_type: wh_type_hex
+      tooltip: Skulltaker's single-minded murder-spree drives him towards the heart of every army: its leader.

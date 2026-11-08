@@ -1,0 +1,42 @@
+C:\Users\vlady\Desktop\wh3_auto_ability_test\releases\20261014_classB_ally_harness98\verify98.py:13: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  self.ws = connect(WS, max_size=None, open_timeout=20); self.n = 1; self.ws.recv(timeout=20)
+installed md5        : 6927e4a6a36885274846616bdb53728e
+installed size       : 779636
+pack main == source  : True 444560 bytes
+source sha256        : 16919a72504f24f57fcb41d5227ec3007dfe69f1713ee162ea412e702a935697
+contains 'FOURTH.ALLY_CAST_R50  = 35'                                  : True
+contains 'FOURTH.ALLY_CAST_R60  = 42'                                  : True
+contains 'FOURTH.ALLY_CAST_R75  = 52'                                  : True
+contains 'FOURTH.ALLY_CAST_R100 = 70'                                  : True
+contains 'FOURTH.ALLY_CAST_R150 = 105'                                 : True
+contains 'FOURTH.ALLY_CAST = {'                                        : True
+contains 'ability.range_m = FOURTH.ALLY_CAST[ability.ally_range_real]' : True
+contains 'function FOURTH.ab_fresh_friend_su(unit)'                    : True
+contains 'function FOURTH.ab_pick_ally(unit, routing, family)'         : True
+contains 'function FOURTH.ab_ally_valid(unit, ally)'                   : True
+contains 'FOURTH.ab_caster_su = FOURTH.ab_fresh_friend_su(unit)'       : True
+contains 'FOURTH.ab_ally_su = FOURTH.ab_fresh_friend_su(best_ally)'    : True
+contains 'uc = FOURTH.ab_caster_su.uc'                                 : True
+contains 'target = FOURTH.ab_ally_su.unit'                             : True
+contains 'function FOURTH.evaluate_ally_heal(unit, routing)'           : True
+contains 'function FOURTH.evaluate_ally_heal_melee(unit, routing)'     : True
+contains 'function FOURTH.evaluate_ally_wavering(unit, routing)'       : True
+contains 'function FOURTH.evaluate_ally_melee_buff(unit, routing)'     : True
+contains 'ally_heal = FOURTH.evaluate_ally_heal,'                      : True
+contains 'ally_heal_melee = FOURTH.evaluate_ally_heal_melee,'          : True
+contains 'ally_wavering = FOURTH.evaluate_ally_wavering,'              : True
+contains 'ally_melee_buff = FOURTH.evaluate_ally_melee_buff,'          : True
+contains 'FOURTH.ab_range_m = ability.range_m'                         : True
+contains 'FOURTH.ab_marker = ability.marker'                           : True
+contains 'marker = "butcher", name = "Meat Feast", trigger = "ushoran_h: True
+contains 'unit_in_range(' : False (want False)
+trigger counts        : melee_unwavering=373 charge_or_melee=26 ushoran_health=38 melee_health75=1
+ally trigger counts   : ally_melee_buff=11 ally_heal=3 ally_heal_melee=1 ally_wavering=2
+ally_range_real fields: 18
+enemy counts          : melee_unwavering moved; enemy_engaged_or_shot=89 enemy_ground_area=9 range_real=98
+entries               : 579
+--- game data dir ---
+  present zz_test_deadly_onslaught.pack    md5 6927e4a6a36885274846616bdb53728e  size 779636
+  present zz_probe_dist.pack               md5 d4e67cfb8bc562c7d6f0ff742909c13d  size 20063
+  absent  zz_probe_step.pack              
+  absent  zz_probe_enemy_target.pack      

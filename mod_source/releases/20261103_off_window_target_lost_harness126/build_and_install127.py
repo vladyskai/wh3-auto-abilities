@@ -1,0 +1,2821 @@
+"""Build the mod pack, verify it, install it. One WebSocket session, then done.
+
+ROUND 125: the spell-bar rule and the read-only ammo probe (no roster change).
+ROUND 124: the spell-bar badge test (no roster change; army_spec read from gamedata\\wh3).
+ROUND 123: the hex batch (4 melee_unwavering, 3 charge_or_melee, 3 on the new
+enemy_melee, 1 twin key); the table is 707 entries / 759 keys.
+ROUND 122: ten self-cast melee buffs added on melee_unwavering; the table is
+697 entries / 748 keys, melee_unwavering 370.
+ROUND 121: the ABILITIES table is 687 entries / 738 keys (two whole army-bar entries
+and one army-bar key removed). The ARMY-BAR GATE below refuses the build outright if
+any army_spec key is in the table; every count pin in this script follows the table.
+
+Pack contents (housekeeping 20261004 - the two experiment probes are RETIRED):
+  script/battle/mod/zz_test_deadly_onslaught.lua   the main mod (trigger + right-click toggle)
+  ui/templates/zz_auto_badge.twui.xml              the auto badge template
+  ui/zz_auto/auto_badge.png  ui/zz_auto/blank.png  the badge art
+  ui/common ui/special_ability_tooltip.twui.xml    the tooltip's right-click line, filled in
+
+The throwaway probes (zz_probe_unit_reads.lua, zz_probe_ui_text.lua) shipped until
+2026-10-04; their sources are preserved in releases/20261004_probe_sources_retired/
+and must NOT ship again (the pack-contents check below fails if a zz_probe_ path returns)
+
+No HUD button, no icon files, no localisation file: the control is a right-click on the
+ability's own icon, and the hint is a plain line in the tooltip layout.
+
+ROUND v93: the appended tooltip line is now ONE SHORT clause per ability,
+composed from the trigger each entry rides (FOURTH.TRIGGER_TIP[trigger] ->
+ability.tip); the old generic 'fires by itself while the unit charges'
+sentence is REMOVED from the shipped twui.xml.
+
+ROUND v94: ACCUSATION'S automatic activation - a new reusable evaluator
+`enemy_engaged_or_shot` fires when an enemy unit in range is in melee OR
+under missile fire; the chosen enemy is the CAST TARGET (never the owner),
+cast via the round-4-proven bench_fresh fresh-handle route. Accusation moves
+from melee_unwavering (481 -> 480) to the new trigger; the table stays
+579 entries / 605 keys.
+
+ROUND v95: THE STANDING 70% RANGE RULE (set by the user, ruled ABSOLUTE -
+\"...No exceptions.\"). EVERY trigger-range constant is re-derived as
+floor(0.70 * the ability's REAL game-data range): GLORIOUS DEATH 55->38,
+VERMINKING / METALLURGY / WAVERING 35->24, BLOOD SACRIFICE / EAT DA RUNTS
+100->70 (target_intercept_range; no aura) and ACCUSATION 75->52. The old
+field-tuned 25 m Glorious Death gate is replaced by 38 m at the user's
+direction. The rule ships as FOURTH.RANGE_FRACTION = 0.70.
+
+ROUND v96: THE ACCUSATION MOVE-ORDER ROOT CAUSE. The observer probe
+(zz_probe_dist, tick 59) proved the offer test trusted the engine's loose
+unit_in_range reach read: 'CAND-FIRST ... dist=81.3m first_passing_test=engine
+engine_unit_in_range=t our_52_test=f our_75_test=f' - the mod offered and cast
+at 81.3 m, so the engine WALKED the caster in. The offer test is now the 70%
+CONSTANT ONLY (unit:unit_distance(enemy) <= FOURTH.ACCUSATION_RANGE_M = 52 m),
+the engine helper is REMOVED from the offer path, and the log prints the REAL
+edge-to-edge distance (unit:unit_distance, battle_unit.lua:160) at the target
+choice and the pre-cast re-check.
+
+ROUND v97: THE REST OF CLASS A. 97 of the 98 enemy-aimed entries from the
+audit (Accusation 263 already done) now fire at the ENEMY: 88 ride the
+existing enemy_engaged_or_shot trigger and 9 ride the new enemy_ground_area
+trigger (perform_special_ability_ground on the chosen ENEMY's ground). Each
+entry carries its own REAL target_intercept_range (range_real) mapped at load
+to ONE named 70% constant per real range (12 constants, floor(real*0.70)); the
+offer test is unit:unit_distance(enemy) <= that constant ONLY - never the
+engine's unit_in_range. melee_unwavering 480 -> 383.
+
+ROUND v98: CLASS B (ally-targeted effects cast on self). 17 of the 34
+Class-B entries from the audit now cast ON THE CHOSEN ALLY across four new
+families (ally_melee_buff 11 / ally_heal 3 / ally_heal_melee 1 / ally_wavering
+2); Stay Here, I'll Get Help! (whose ally pick already shipped) gains the cast
+target and its own 70% bound; Meat Feast is an ARMY-BAR ability and is SKIPPED
+(standing rule 10); 15 entries need a user ruling. Each implemented entry
+carries its own REAL target_intercept_range (ally_range_real) mapped at load to
+ONE named 70% constant per real range (5 constants, floor(real*0.70)); the offer
+test is unit:unit_distance(ally) <= that constant ONLY - never the engine's
+unit_in_range - and the cast goes through the FRESH caster controller AND the
+FRESH ally unit, re-enumerated the SAME tick. melee_unwavering 383 -> 373,
+charge_or_melee 29 -> 26, ushoran_health 41 -> 38, melee_health75 2 -> 1.
+ROUND v100 (2026-10-17): REMOVAL. Meat Feast (wh3_main_prisoners_butcher)
+and Massacre (wh3_main_prisoners_massacre) were implemented but sit OUTSIDE
+the single in-wheel rule (both source_type = army). Per the user's decision
+of 2026-10-17 they are REMOVED from the ABILITIES table: 579 -> 577 entries,
+605 -> 603 keys, melee_unwavering 363 -> 362, ushoran_health 34 -> 33.
+Grut's Sickle and every other ability are untouched.
+
+ROUND v101 (2026-10-17): BOSS-ONLY EXCLUSION + GATE OF KHORNE.
+(A) Every active ability whose only grant path is a `_boss` unit is excluded.
+    Five were IMPLEMENTED and are REMOVED: Greater Faith Bastion
+    (wh_dlc06_quest_abilities_grand_faiths_bastion), Bitter Sting
+    (wh3_dlc27_qb_unit_abilities_bitter_sting), Frenzied Challenge
+    (wh3_dlc27_qb_unit_abilities_frenzied_challenge), Visions of Madness
+    (wh3_dlc27_qb_unit_abilities_visions_of_madness) and Guttural Roar
+    (wh3_dlc27_qb_unit_abilities_guttural_roar). 577 -> 573 entries,
+    603 -> 599 keys, melee_unwavering 362 -> 360, enemy_engaged_or_shot
+    89 -> 86.
+(B) Gate of Khorne (wh3_main_character_abilities_gate_of_khorne) is ADDED:
+    its own `enemy_ground_melee` trigger - among enemies within its 70% bound
+    (50 m -> 35 m) keep those FIGHTING (in melee), take the CLOSEST and place
+    the summon on THAT ENEMY's ground via perform_special_ability_ground with
+    the fresh caster controller. Its own reason string names the enemy type
+    and the REAL distance; the cast target is never the caster.
+    melee_unwavering self-cast and every other ability are untouched.
+"""
+"""
+
+ROUND v102 (2026-10-17): THE SUMMON ROUND.
+(A) THE REST OF THE SUMMON CLASS - every in-wheel, non-illusion,
+    GROUND-CASTABLE `wh_type_summon_unit` row derived from the game's own data
+    (spawned_unit set + type wh_type_summon_unit + spawn_is_decoy false +
+    target_ground true + in-wheel + not boss-only + not implemented): 57 entries
+    / 68 keys. They ride the PROVEN `enemy_ground_melee` trigger (Gate of
+    Khorne's): the closest FIGHTING enemy inside the ability's own 70% bound,
+    the summon placed on THAT ENEMY's ground. ONE of them (The Tallyman's
+    Blades Upgraded) declares target_intercept_range = -1.0 - NO real range -
+    so it carries `unbounded = true` and skips the distance test.
+(D) THE NINE unlabelled real spawners (Beast Pack, Blacktoof's Conjuration,
+    Call to Gwindalor, Lesser Raise Dead, Savage Dominion, Savage Predators,
+    Tide of Death, Tide of Pox, Wake Da Idol): 9 entries / 9 keys on the same
+    trigger and the same enemy-ground form.
+(B) Nurgling Tide gets its OWN trigger `self_summon_melee` - the user's rule,
+    verbatim: "that one should only trigger when the caster himself is in
+    melee." Owner alive + not routing + is_in_melee() true; the cast goes on
+    the OWNER through the unit form, with a freshly re-fetched caster
+    controller, a hold and a pre-cast re-check of the same state. NO RANGE
+    BOUND: a self cast has no distance to measure (its row has
+    target_intercept_range = 0, no target flags at all, affect_self = true).
+(E) Eye of Khorne is a FINISHER on the NEW `enemy_low_health_noncommander`
+    trigger: any enemy inside its 70% bound (50 m -> 35 m) BELOW 20% HEALTH
+    that is NOT a Lord or Hero; the LOWEST-health one wins (closest as the
+    tiebreak). It casts through the UNIT form (target_enemies = true,
+    target_ground = false).
+(F) The Dreaded Thirteenth (FOUR keys, ONE entry) rides the NEW
+    `enemy_melee_noncommander` trigger: the closest non-commander enemy in
+    melee inside its 70% bound (100 m -> 70 m), placed on that enemy's ground.
+(THE LORD/HERO TEST) FOURTH.commander_keys is DERIVED from the game's own
+    class/caste columns: every land_units key whose `class` is "com" (the
+    engine's commander class - its own invalid-target flags are named
+    unit_is_commander_class / unit_is_not_commander_class) UNION every
+    land_units key reached from a main_units row whose `caste` is "lord" or
+    "hero" (which catches the six Krell variants still marked inf_mel). It is
+    matched by EXACT WHOLE-KEY equality against battle_unit:type(); 
+    battle_unit:unit_class() == "com" is the fallback; neither readable ->
+    FAIL CLOSED (treated as a commander).
+(C) THE FOUR ILLUSIONS stay EXCLUDED (spawn_is_decoy; engine-refused while
+    engaged in melee) - none was ever in the mod, and the gate below proves all
+    four keys are absent.
+COUNTS: 573 -> 642 entries (573 + 69), 599 -> 682 keys (599 + 83);
+    melee_unwavering stays 360, enemy_engaged_or_shot stays 86,
+    enemy_ground_area stays 9, enemy_ground_melee 1 -> 67.
+
+ROUND v103: TWO FIELD-FAILURE FIXES (diagnosis: docs/WH3_bug_diagnosis_nurgling_eye.md).
+(A) THE CHARGE GATE. Nurgling Tide (3 uses / 90 s recharge) kept casting: the
+    field log holds 55 ACCEPTED attempts at a 2.0 s cadence over 108 s, its
+    button greyed from t=74 s on, and its uses refilled at 67+90 / 69+90 /
+    71+90 s. can_perform answers TRUE while a multi-use pool is EMPTY, so the
+    2 s guard re-spent the pool forever. All 129 abilities whose
+    unit_spec_abil num_uses > 1 now carry their own recharge_time in
+    charge_gate.hold_s; after a successful cast the pair is held for exactly
+    that long - ONE use per charge cycle, the pool never drains. Single-use
+    abilities are untouched: the engine refuses those by itself.
+(B) THE ONE HEALTH READ. HealthPercent answers a FRACTION (0..1): 336 field
+    picks printed ONLY 0%/1% while the picked unit fought on for 84 s, so
+    every hp<20 test was true and Eye of Khorne cast on units far above 20%.
+    Every HealthPercent consumer now goes through FOURTH.health_pct, which
+    prefers battle_unit:unary_hitpoints() (a documented fraction) and scales
+    any 0..1 answer by 100. ABILITIES unchanged: 642 entries / 682 keys.
+
+ROUND v104 (2026-10-17): TWO ITEMS.
+(A) THE IN-FLIGHT GATE. The user's Nurgling Tide theory: the ability needs about
+    4 s to activate while the guard is only 2 s, so the mod re-issues the order
+    and REPLACES the cast that is still resolving. The game's own row declares
+    wind_up_time 3.0 s (no other activation field, no phase row), and the API's
+    queued twin documents the non-queued call as an ORDER - "Queued orders start
+    when the current order completes" - so a second order inside the wind-up
+    replaces the first. Every key whose row declares a wind-up (136) now carries
+    it in cast_gate.wind_up_s; after a successful cast the pair is held for
+    wind_up + 2 s slack (never less than the guard). The charge gate STAYS.
+(B) THE ALLY-AWARE HEALTH FAMILY. Star of Avelorn (ground-targeted group heal,
+    target_ground_under_allies, 15 m aura, 3 friendly units) only fired when the
+    CASTER was below 75%, at her own feet. 13 entries whose game text says the
+    effect reaches allies now fire when THIS unit OR a friendly unit inside the
+    ability's own reach is at or below 75%, choose the LOWEST-health unit, and
+    cast per the ability's own targeting: ground under the ally (2), the ally
+    itself (9), or the caster for a self-centred aura (2). The reach is the
+    standing 70% rule (aura_real/ally_range_real -> floor(real * 0.70)).
+
+ROUND v105 (2026-10-17): TZ'ARKAN ON A LOW-HEALTH TRIGGER + THE TRANSFORMS SKIPPED.
+(A) TZ'ARKAN. The user's rule: "activate Tz'arkan when caster health is below
+    15%". ONE new entry ("tzarkan") carries all FIVE Tz'arkan keys (base, _mp,
+    _snikch, _spite, _spite_mp) on ONE new trigger family, health_below_15:
+    the owner is ALIVE, NOT routing, and its health - through FOURTH.health_pct,
+    the ONE 0-100 reader, NEVER raw HealthPercent - is BELOW 15. The cast is on
+    the OWNER ITSELF through the unit form, with the caster's controller
+    re-fetched FRESH that tick; no range bound is read (a self cast has no
+    distance). The exact percentage is logged at the decision and again at the
+    PRE-CAST RE-CHECK, which SKIPS the cast when the unit died or rose above
+    the line inside the wind-up. The in-flight and charge gates apply through
+    the shared tables (3.0 s wind-up on four keys, 1.5 s on Snikch).
+    THE THRESHOLD IS DELIBERATE and ONE constant (FOURTH.TZARKAN_PCT = 15): the
+    transform is likely one-way and the wind-up can let a 14% caster die before
+    it resolves - raise the constant if field tests show that.
+    Counts: 642 -> 643 entries, 682 -> 687 keys, 42 -> 43 evaluators.
+(B) THE REST OF THE TRANSFORMS ARE SKIPPED BY THE USER'S DECISION (no
+    automation wanted): Formless Horror x4, Transformation of the Dragon x6,
+    Burrow and Surface - 12 keys, NONE of them implemented, so NOTHING is in
+    this pack for them. The tracker and the master spreadsheet record
+    "skipped (user decision 2026-10-17: no automation wanted)".
+(C) ROUND v106 - THE BOMBARDMENT ROUND (two user-approved families).
+    (1) Soulfire (both keys) + Arachneruption on the NEW trigger
+        melee_skip_commanders: fire when the CASTER is in melee, but SKIP when
+        every enemy it is engaged with is a Lord or a Hero. The engagement set
+        is the enemy enumerator's ALIVE + is_in_melee() units whose
+        edge-to-edge unit_distance() to the caster is <= FOURTH.ENGAGE_CONTACT_M
+        (12 m); each member is classified by FOURTH.enemy_is_commander (the
+        1,409-key derived set, unit_class()=="com" fallback, FAIL CLOSED). The
+        judged set is logged (type + flag + real distance) once per (unit,
+        marker) and again only when it changes; no enemy readable -> the
+        caster's current_target() -> plain in-melee.
+    (2) 30 of the user's 32 bombardment abilities on the NEW trigger
+        enemy_ground_melee_infantry: the CLOSEST enemy inside the ability's own
+        70% bound that is IN MELEE and IS INFANTRY (battle_unit:is_infantry(),
+        unit_class exact-match fallback inf_mel/inf_mis/inf_spr, FAIL CLOSED).
+        The cast follows each row's own flags: 24 ground-targeted keys use
+        perform_special_ability_ground(key, enemy position); 6 unit-targeted
+        keys (lesser_doombolt, rod_of_torment, tome_of_furion,
+        wand_of_the_kharaidon, traitors_sword, wraith_storm) use
+        perform_special_ability(key, enemy). The chosen enemy is re-checked
+        immediately before the cast (alive, in melee, still infantry, inside
+        the bound).
+    TWO OF THE 32 ARE REPORTED, NOT IMPLEMENTED: Thorsen's Thunderstorm (both
+    keys are army_spec / ARMY-bar - out of wheel scope) and Warp Lightning Rod
+    (target flags all false, range 0 - no enemy target exists to cast at).
+    Counts: 643 -> 675 entries, 687 -> 721 keys, 43 -> 45 evaluators.
+
+ROUND 107 (2026-10-18): Call of Tor joins melee_skip_commanders; the 11
+"on top of" abilities (12 entries / 19 keys) ride the NEW
+air_drop_on_infantry evaluator (enemy INFANTRY inside the row's 70%
+bound, airborne / out of melee where the row says so, self-centred
+cast, logged pre-cast re-check); the PER-UNIT serialisation window
+(wind-up + 2 s, min 2.5 s) stops two ready abilities on one unit from
+replacing each other. Counts: 675 -> 688 entries, 721 -> 741 keys,
+45 -> 46 evaluators.
+
+ROUND 112 (2026-10-24): THE ENEMY-SIDE LEAD DIAL + THE TWO DIAGNOSTIC FIXES.
+    The Sky-junk diagnosis (docs/WH3_skyjunk_diagnosis.md): four armed, airborne,
+    every-poll-evaluated bombers let the zombies walk THROUGH underneath and did
+    not fire, because the enemy's projected centre was carried the FULL 1.5 s
+    ahead (3.45 m at 2.3 m/s) PAST the hoverer - the projected gap bottomed at
+    ~5 m and GREW to 10 m, largest exactly when the enemy was underneath.
+    (1) FOURTH.AIR_DROP_ENEMY_LEAD = 0.3 scales ONLY the enemy's velocity term:
+        enemy_projected = enemy + v_enemy * AIR_DROP_DELAY_S * AIR_DROP_ENEMY_LEAD.
+        0.0 = the enemy's current position; 1.0 = the old full carry; 0.3 ships
+        because the release is not instantaneous but 1.5 s is far too much.
+    (2) The watch line prints EXACT distances below 15 m (the 6 m bound sat
+        inside a 5 m band, so the deciding number was destroyed).
+    (3) Every air-drop line is prefixed with the unit's ui id ("[1003] ..."),
+        because four identical Sky-junks made the diagnosis a 231 MB log dive.
+    (4) The decision/watch/skip/re-check lines print ALL FOUR dials.
+    The caster dials, the 6 m bound, AIR_DROP_INHERIT, air_only / no_melee, the
+    self-centred cast, the fail-closed reads and the re-projecting pre-cast
+    re-check are UNCHANGED. Counts UNCHANGED: 689 entries / 742 keys,
+    air_drop_on_infantry 12 / 19.
+
+ROUND 113 (2026-10-25): THE PATH TEST, THE DERIVED FRONTAGE AND THE
+SINGLE-ENTITY EXCLUSION (the user's sixth air-drop report: a hovering Sky-junk
+BESIDE a 20-model zombie block never fired while the block walked past - the
+enemy's CENTRE stayed 10+ m away even though its models swept under the caster;
+and one fired at a LORD).
+    (1) THE TEST IS THE ENEMY'S PATH, NOT ITS POINT. The segment is
+        enemy_current -> enemy_projected (the enemy's own dials, unchanged) and
+        the number that decides is the SHORTEST HORIZONTAL DISTANCE FROM THAT
+        SEGMENT TO THE CASTER'S PROJECTED POINT (point-to-segment arithmetic on
+        x/z, parameter clamped to 0..1). A point cannot describe a block: a
+        20-model formation is 10 m wide in two ranks, so its centre stays 10 m
+        away while a MODEL of it passes under the flyer.
+    (2) THE FRONTAGE CREDIT IS DERIVED, NOT GUESSED: fire when
+        perp <= AIR_DROP_CENTER_M + FOURTH.ad_frontage(enemy), where
+        ad_frontage returns a HALF-width - ordered_width()/2 when that read is
+        sane, otherwise ceil(men/2) * radius under ONE documented assumption
+        (two ranks), clamped to 1..12 m, failing closed to 0.
+    (3) THE PER-MODEL RADIUS IS A CONSTANT (0.6 m): battle Lua cannot join
+        land_units.man_entity -> battle_entities.radius at battle time, so the
+        value comes from the extracted tables (modal 0.6 m over the 942 infantry
+        rows, median 0.7 m). One dial, documented.
+    (4) THE SINGLE-ENTITY EXCLUSION: a candidate whose
+        initial_number_of_men() == 1 is skipped, once per episode, as
+        "single entity (1 model)". EXACT equality (zero models cannot exist), and
+        INITIAL not current (a depleted 20-model block is still a block). The
+        commander key set is deliberately NOT consulted here - every
+        infantry-class lord/hero in the data is one model, so the count covers it.
+    (5) The pre-cast re-check RE-RUNS the same segment test on fresh reads.
+    KEPT EXACTLY: the four dials, the 6 m bound, AIR_DROP_INHERIT, air_only /
+    no_melee, the self-centred cast and every fail-closed read. Counts UNCHANGED:
+    689 entries / 742 keys, air_drop_on_infantry 12 / 19.
+
+ROUND 116 (2026-10-18): THE WAIT IS MEASURED, NOT FIXED - THE ENEMY'S VELOCITY.
+    The user's ruling, verbatim: "if the enemy unit is running away, then it is
+    too soon. If the enemy moving is running towards, then it is too late. ...
+    But it must be calculated the moment the edge to edge distance is below our
+    theshold. Then, if the unit is running towards the caster, then the delay
+    would be 0. If running away, then the delay would be 2. If stationary or
+    perpedicular, then should be 1. ... the delay is dynamic in this way."
+    THE FORMULA:
+        axis  = normalise(caster.position - enemy.position)      (x/z)
+        v     = speed * normalise(ordered_position - position)
+        proj  = dot(v, axis) / (speed * |axis|)   clamped to +-1
+        delay = AIR_DROP_DWELL_MID_S - AIR_DROP_DWELL_SWING_S * proj, floor 0
+    with MID = 1.0 s and SWING = 1.0 s (closing 0 s / across 1 s / receding 2 s).
+    MEASURED ONCE at the first contact of a pair, stored on the pair row with
+    the cosine and the velocity source, NEVER re-measured inside that contact;
+    a re-contact measures again. The 0.2 s fast pass, the 250 ms poll, the
+    candidate filter, air_only / no_melee, the self-centred cast, the
+    short-crossing fallback and the re-verifying pre-cast re-check are kept.
+    THE READ-VERIFICATION LOG: every contact episode prints the RAW answers
+    (is_moving, is_moving_fast, slow_speed, fast_speed, position,
+    ordered_position, |h|), the cosine, the delay and the velocity source, with
+    UNREADABLE where a read failed, so ordered_position()'s real behaviour is
+    visible in the field log. Counts UNCHANGED: 689 / 742, air-drop 12 / 19.
+
+ROUND 117 (2026-10-18): THE DETECTION MOVES FROM THE EDGE TO THE CENTRE.
+    The user's ruling, verbatim: "Let's keep our current calculation but just
+    replace the detection on edge with detection on the distance to center.
+    Let's say 6 meters for now. I'll test."
+    THE ONE NUMBER THAT MOVED is the gap that decides UNDER. It was the engine's
+    bounding-box EDGE gap (`unit:unit_distance(enemy)`, battle_unit.lua:160)
+    against AIR_DROP_EDGE_M = 0.1 m; it is now the GROUND-PLANE
+    CENTRE-to-CENTRE distance between the caster's and the enemy's own
+    position() reads (x/z only - get_y is HEIGHT - via
+    position():distance_xz with a sqrt(dx^2 + dz^2) fallback), against
+    FOURTH.AIR_DROP_CENTER_M = 6.0 m. FOURTH.ad_centre_gap is BACK as the ONE
+    measurement the rule makes; AIR_DROP_EDGE_M is RETIRED (nothing else in the
+    file used it).
+    RE-MEASURED EVERYWHERE THE OLD NUMBER WAS TAKEN: the candidate's measured
+    gap for ranking, the UNDER test, the contact stamping, the dwell / waiting
+    and separation lines, the short-crossing fallback, the pre-cast re-check,
+    every decision log line (edge= -> centre=, 2 decimals), the family's
+    inventory bound and the tooltip sentence.
+    KEPT EXACTLY: the candidate filter, the velocity-aware delay MEASURED ONCE
+    PER CONTACT, the short-crossing fallback (0.3 s), the 0.2 s fast pass, the
+    250 ms poll, air_only / no_melee, the self-centred cast, the gates and the
+    read-verification lines. Counts UNCHANGED: 689 / 742, air-drop 12 / 19.
+ROUND 118 (2026-10-18): THE AIR-DROP DELAY IS GONE. THE CENTRE STAYS.
+The user's ruling, verbatim: "I tried it. Let's keep the distance to center and
+remove the delay we had completely." The trigger now casts on the evaluation
+that first measures the nearest valid enemy's CENTRE inside 6 m: no dwell, no
+dynamic velocity delay, no cosine, no per-pair contact row, no timestamps, no
+short-crossing fallback, no raw movement/heading read-verification log. The
+centre helper, the candidate filter, the 0.2 s fast pass (30 m gate), the
+250 ms poll, air_only / no_melee, the self-centred cast, every fail-closed read,
+the gates and the pre-cast re-check are KEPT.
+
+"""
+import hashlib
+import json
+import sys
+import re
+import shutil
+import os
+from websockets.sync.client import connect
+
+WS_URL = "ws://127.0.0.1:45127/ws"
+SRC_ROOT = r"C:/Users/vlady/Desktop/WH3_mod/mod_source"
+ROUND114 = True
+
+FILES = [
+    (SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+     "script/battle/mod/zz_test_deadly_onslaught.lua"),
+    (SRC_ROOT + "/ui/templates/zz_auto_badge.twui.xml",
+     "ui/templates/zz_auto_badge.twui.xml"),
+    (SRC_ROOT + "/ui/zz_auto/blank.png", "ui/zz_auto/blank.png"),
+    (SRC_ROOT + "/ui/zz_auto/auto_badge.png",
+     "ui/zz_auto/auto_badge.png"),
+    (SRC_ROOT + "/ui/common ui/special_ability_tooltip.twui.xml",
+     "ui/common ui/special_ability_tooltip.twui.xml"),
+]
+
+OUT_PACK = SRC_ROOT + "/dist/zz_test_deadly_onslaught.pack"
+GAME_PACK = r"C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack"
+
+HINT = "Automatic: click the M/A badge to switch automatic use on or off"
+
+
+class Client:
+    def __init__(self, url):
+        self.ws = connect(url, max_size=None, open_timeout=15)
+        self.next_id = 1
+        print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+
+    def send(self, command):
+        req_id = self.next_id
+        self.next_id += 1
+        self.ws.send(json.dumps({"id": req_id, "data": command}))
+        while True:
+            msg = json.loads(self.ws.recv(timeout=180))
+            if msg.get("id") == req_id:
+                return msg.get("data")
+            print("  (unsolicited)", json.dumps(msg)[:160])
+
+
+def step(label, command):
+    print(f"\n== {label}")
+    resp = c.send(command)
+    print(f"  <= {json.dumps(resp)[:200]}")
+    return resp
+
+
+# =====================================================================
+# ROUND 121 GATE - REFUSE TO BUILD IF ANY ARMY-BAR (army_spec) KEY IS IN THE
+# ABILITIES TABLE.
+#
+# The user's ruling, round 121, verbatim: "The triggers will not work if the
+# ability is not in the ability wheel on the lower left corner of the battle
+# screen, meaning 'you'd lose working triggers' makes no sense. Therefore, ALL
+# ARMY ABILITIES PLEASE EXCLUDE."
+#
+# An army-bar ability (a key in the army_spec junction) has no button on the
+# battle ability wheel, so perform_special_ability can never be called for it:
+# such an entry can never fire. It is dead weight by definition, not a roster
+# choice. This assertion has NO exceptions list and runs BEFORE any stale pack
+# is deleted or any WebSocket command is sent - a violating table does not
+# build at all.
+# =====================================================================
+ARMY_SPEC_TSV = r"C:/Users/vlady/Desktop/WH3_mod/gamedata/wh3/army_spec.tsv"  # was Temp until round 124
+MOD_LUA = FILES[0][0]
+
+
+def _army_bar_keys():
+    with open(ARMY_SPEC_TSV, encoding="utf-8", errors="replace") as f:
+        f.readline()
+        out = set()
+        for line in f:
+            if line.startswith("#"):
+                continue
+            c = line.rstrip("\n").split("\t")
+            if c and c[0].strip():
+                out.add(c[0].strip())
+        return out
+
+
+def _abilities_keys(path):
+    src = open(path, encoding="utf-8").read()
+    a = src.index("local ABILITIES = {")
+    b = src.index("\n}", a)
+    region = re.sub(r"--[^\n]*", "", src[a:b])   # a commented-out key is not a key
+    keys = []
+    for m in re.finditer(r"keys = \{(.*?)\}", region, re.S):
+        keys += re.findall(r'"([^"]+)"', m.group(1))
+    return keys
+
+
+_army = _army_bar_keys()
+_mod_keys = _abilities_keys(MOD_LUA)
+_hits = sorted(set(k for k in _mod_keys if k in _army))
+assert not _hits, (
+    "BUILD REFUSED (round 121 army-bar gate): %d ABILITIES key(s) are in the army_spec junction. "
+    "An army-bar ability is NOT on the battle ability wheel, so perform_special_ability can never "
+    "be called for it and the entry can never fire - it must not ship (user ruling: ALL ARMY "
+    "ABILITIES EXCLUDE). Offending keys: %s" % (len(_hits), _hits))
+print("ARMY-BAR GATE OK: %d ABILITIES keys, none of them in the %d-key army_spec junction"
+      % (len(_mod_keys), len(_army)))
+
+for p in (OUT_PACK, GAME_PACK):
+    if os.path.exists(p):
+        os.remove(p)
+        print("removed stale:", p)
+
+hashes = {}
+for _src, _in_pack in FILES:
+    _data = open(_src, "rb").read()
+    hashes[_in_pack] = (len(_data), hashlib.sha256(_data).hexdigest())
+    print(f"source {_src.split('/')[-1]:34s} {len(_data):>8d} bytes  sha256 {hashes[_in_pack][1][:32]}")
+
+c = Client(WS_URL)
+step("1 select game", {"SetGameSelected": ["warhammer_3", False]})
+key = step("2 new pack", "NewPack")["String"]
+step("3 add the main script and the four ui files",
+     {"AddPackedFiles": [key, [f[0] for f in FILES], [{"File": f[1]} for f in FILES], None]})
+step("4 type = Movie", {"SetPackFileType": [key, "Movie"]})
+
+info = step("5 list contents", {"GetPackFileDataForTreeView": key})
+container, files = info["ContainerInfoVecRFileInfo"]
+in_pack_paths = sorted(f["path"] for f in files)
+expected = sorted(_in_pack for _src, _in_pack in FILES)
+print("   container:", container["pfh_file_type"], "| files:", in_pack_paths)
+assert in_pack_paths == expected, f"pack contents wrong: {in_pack_paths} != {expected}"
+
+ok_all = True
+for _src, in_pack in FILES:
+    raw = c.send({"GetPackedFileRawData": [key, in_pack]})
+    packed = bytes(raw["VecU8"])
+    got = hashlib.sha256(packed).hexdigest()
+    want_len, want = hashes[in_pack]
+    ok = (got == want and len(packed) == want_len)
+    ok_all = ok_all and ok
+    print(f"   {in_pack:48s} {len(packed):>8d} bytes  MATCHES SOURCE: {ok}")
+assert ok_all, "content mismatch - refusing to install"
+
+# what we shipped must contain what we expect
+t_raw = bytes(c.send({"GetPackedFileRawData": [key, "ui/common ui/special_ability_tooltip.twui.xml"]})["VecU8"])
+t_txt = t_raw.decode("utf-8", "replace")
+print("\n== 6 what the pack must contain")
+script_txt = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+                  encoding="utf-8", errors="replace").read()
+print(f"   tooltip hint line present                 : {HINT in t_txt}")
+print(f"   the double-click toggles are gone         : "
+      f"{'Double Click Unit Card' not in script_txt}"
+      f" and {'ComponentLDBLClickUp' not in script_txt}")
+dead = sum(script_txt.count(t) for t in ('zz_rclick', 'check_rclick_property'))
+print(f"   dead property-route code left behind      : {dead} (want 0)")
+assert HINT in t_txt, "tooltip hint missing"
+# ROUND v93 (the per-ability tooltip line - nothing above is loosened): the appended
+# tooltip line is now composed PER ENTRY from the trigger the entry actually rides;
+# the old one-size generic sentence is GONE.
+assert "this ability fires by itself while the unit charges" not in t_txt, \
+    "the old generic tooltip sentence is back in the shipped twui.xml"
+assert "FOURTH.TRIGGER_TIP = {" in script_txt, "the per-trigger tooltip wording map is missing"
+assert "ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]" in script_txt, \
+    "the per-entry tooltip wiring is missing"
+assert "this ability fires by itself while the unit charges" not in script_txt, \
+    "the old generic tooltip sentence is back in the script"
+for _tip in ("When armed, fires when this unit is in melee",
+             "When armed, fires when an ally in range is wavering",
+             "When armed, fires when this unit is tired or worse",
+             "When armed, fires when a Slayer ally in range is in melee",
+             "When armed, fires on the lowest-health ally in range when it is at or below 75% health"):
+    assert _tip in script_txt, "a required tooltip wording is missing: " + _tip
+assert "Double Click Unit Card" not in script_txt, "the double-click command handler should be gone"
+assert "ComponentLDBLClickUp" not in script_txt, "the double-click component listener should be gone"
+# the claim path copies the engine's key value before ANY string operation
+# (as_plain_string) and the scan probe reports keytype/copyok/lenok; the old
+# AddScriptEventReporter gate died with the call itself.
+assert "badge creation deferred to the tick" in script_txt, "the deferred badge creation line is missing"
+assert "as_plain_string" in script_txt, "the engine-key copy helper is missing from the claim path"
+assert "scan probe: keytype=" in script_txt, "the scan probe keytype line is missing"
+# round 7: the bounded re-scan loop (the brisk window; the dead local-ceiling
+# slot stays freed so the chunk compiles under Lua's 200-local limit).
+assert "local brisk_walk_until = -1" in script_txt, "the round-7 window local is missing"
+assert "brisk_walk_until = ui_ticks + 48" in script_txt, "the fresh-window open is missing"
+assert "CHARGE_ORDER_TOLERANCE_M" not in script_txt, "the freed local-ceiling slot came back"
+assert "zz_auto_" in script_txt, "the badge component is missing from the script"
+assert "onslaught" in script_txt, "the ability marker is missing from the script"
+assert "SetText" in script_txt, "the badge letter switch (SetText) is missing"
+for tok in ("zz_rclick", "check_rclick_property"):
+    assert tok not in script_txt, f"dead right-click code left in the script: {tok}"
+
+# round 35 (extensions - nothing above is loosened): the second ability
+# (Foe-Seeker) must ship, driven by the ABILITIES table, and the 60/90 s
+# timers must NOT come back.
+assert "foe_seeker" in script_txt, "the foe_seeker ability is missing from the script"
+assert "wh_main_character_abilities_foe_seeker" in script_txt, "the foe_seeker key is missing"
+assert "wh_dlc03_character_abilities_foe_seeker" in script_txt, "the foe_seeker dlc key variant is missing"
+assert "zz_auto_badge_fs" in script_txt, "the Foe-Seeker badge id is missing from the script"
+# ROUND v81 (the three approved trigger changes - nothing above is loosened):
+#   * Deadly Onslaught fires on the charge window OR in melee (both arms on);
+#   * Foe-Seeker's trigger is "tired" - read via battle_unit:fatigue_state(),
+#     exact matching only, a one-time notice when unreadable;
+#   * the "running" trigger is DELETED - it must never come back.
+assert "elseif ability.trigger == \"running\" then" not in script_txt, "the deleted running trigger is back in the script"
+assert "reason = \"running\"" not in script_txt, "the old running reason text is back in the script"
+assert "fast = unit:is_moving_fast()," in script_txt, "the charge detector's fast read is missing"
+assert "melee = unit:is_in_melee()," in script_txt, "the charge detector's melee read is missing"
+assert "local FIRE_ON_MELEE  = true" in script_txt, "the approved in-melee arm is not switched on"
+assert 'marker = "foe_seeker", name = "Foe-Seeker", trigger = "tired"' in script_txt, "the fatigue trigger is missing from the script"
+assert "FOURTH.fatigue_states = {" in script_txt, "the exact-match fatigue state map is missing"
+assert "FOURTH.fatigue_fire = {" in script_txt, "the tired-or-worse fire set is missing"
+assert "function FOURTH.fatigue_state(unit)" in script_txt, "the fatigue reader is missing"
+assert "return unit:fatigue_state() end" in script_txt, "the plain fatigue getter read is missing"
+assert "foe_seeker fatigue: read UNAVAILABLE" in script_txt, "the one-time unreadable notice is missing"
+assert "foe_seeker fatigue: UNRECOGNISED value" in script_txt, "the unrecognised-state notice is missing"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "check_readiness" in script_txt, "the readiness gate is missing from the script"
+assert "GUARD_SECONDS = 2" in script_txt, "the short 2 s guard is missing from the script"
+for tok in ("ABILITY_RECHARGE_SECONDS", "ACTIVATION_BRAKE_TICKS", "MIN_SECONDS_BETWEEN_FIRES"):
+    assert tok not in script_txt, f"a 60/90 s timer token is back in the script: {tok}"
+
+# ROUND v82 (the approved in-melee-self batch + critique-2 item 8 - nothing
+# above is loosened): every ability entry carries its own evaluate(unit,
+# routing), wired at load from the trigger name; the if/elseif trigger chain
+# is GONE; the approved batch (28 entries, 29 keys, all on blood_lust's
+# melee_unwavering rule) ships with its ONE shared evaluator and its own
+# badges.
+assert "ability.trigger ==" not in script_txt, "the old trigger chain is back in the script"
+assert "function FOURTH.evaluate_charge(unit, routing)" in script_txt, "the charge evaluator is missing"
+assert "function FOURTH.evaluate_tired(unit, routing)" in script_txt, "the tired evaluator is missing"
+assert "function FOURTH.evaluate_melee(unit, routing)" in script_txt, "the melee evaluator is missing"
+assert "function FOURTH.evaluate_melee_low_morale(unit, routing)" in script_txt, "the melee_low_morale evaluator is missing"
+assert "function FOURTH.evaluate_in_melee_self(unit, routing)" in script_txt, "the shared in-melee-self evaluator is missing"
+assert "FOURTH.evaluators = {" in script_txt, "the trigger -> evaluator map is missing"
+# ROUND 123: the melee-only enemy-unit trigger (No Escape, Transfix dlc29, Flash Bomb).
+assert ("function FOURTH.evaluate_enemy_melee(unit, routing)\n\tFOURTH.eg_melee_only = true\n"
+        "\treturn FOURTH.eg_pick_enemy(unit, routing, false)\nend") in script_txt, \
+    "the enemy_melee evaluator is missing or changed"
+assert "\tenemy_melee = FOURTH.evaluate_enemy_melee," in script_txt, "enemy_melee is not wired in the map"
+assert script_txt.count('trigger = "enemy_melee"') == 3, "enemy_melee is not 3 entries"
+assert "wh3_main_lord_abilities_daemonic_possession" not in script_txt, \
+    "Daemonic Possession must not be automated (user decision, round 123)"
+print("ROUND 123 GATE OK: enemy_melee evaluator wired, 3 entries, no Daemonic Possession")
+# ROUND 125: the spell-bar RULE replaces the round-124 placement test, and the
+# read-only ammo probe is in (user rulings 2026-11-03).
+assert "SPELLBAR_BADGES" not in script_txt and "spellbar_id" not in script_txt, \
+    "the removed round-124 spell-bar placement test is back in the source"
+assert "if state.button == nil and not on_spell_bar and key_is_ours(ability, key) then" in script_txt, \
+    "the spell-bar rule (never claim a button_spell button) is missing"
+assert "function FOURTH.ammo_probe(units)" in script_txt and \
+    script_txt.count("pcall(FOURTH.ammo_probe, tracked_units)") == 1, "the ammo probe is missing or called twice"
+print("ROUND 125 GATE OK: spell-bar buttons are never claimed; the ammo probe is in")
+# ROUND 126: the firing flag from the game's reload table (generated, never hand-typed).
+import subprocess as _sp
+_gen = _sp.run([sys.executable, r"C:/Users/vlady/Desktop/WH3_mod/tools/gen_reload_table.py", "--check",
+                FILES[0][0]], capture_output=True, text=True)
+assert _gen.returncode == 0, "BUILD REFUSED (round 126): " + (_gen.stdout + _gen.stderr).strip()
+assert "AMMO_SAME_VOLLEY_S" not in script_txt and "st.gap_s" not in script_txt, \
+    "the deleted round-125 measured-gap window is back in the source"
+assert "function FOURTH.ammo_in_range(u)" in script_txt and "FOURTH.AMMO_CAST_FRACTION = 0.5" in script_txt, \
+    "the cast point / in-range code is missing"
+print("ROUND 126 GATE OK: " + _gen.stdout.strip())
+# ROUND 127: OFF window max(2 x reload, 20 s); a disappeared target logs "target lost".
+assert "FOURTH.AMMO_OFF_FACTOR = 2 " in script_txt and "FOURTH.AMMO_OFF_MIN_S = 20 " in script_txt \
+    and "AMMO_WINDOW_DEFAULT_S" not in script_txt, "the round-127 OFF window is missing"
+assert "target lost (no current target)" in script_txt, "the target-lost fix is missing"
+print("ROUND 127 GATE OK: OFF = max(2 x reload, 20 s); a lost target is logged, not formatted")
+assert "ability.evaluate = FOURTH.evaluators[ability.trigger]" in script_txt, "the entry wiring loop is missing"
+assert "local reason = ability.evaluate(unit, routing)" in script_txt, "the single dispatch call is missing"
+assert 'marker = "aether_sword"' in script_txt, "the batch's first entry is missing"
+assert 'marker = "strike_of_nehekhara"' in script_txt, "the batch's last entry is missing"
+assert "wh3_dlc20_weapon_abilities_aether_sword" in script_txt, "the batch's first key is missing"
+assert "wh2_dlc09_character_abilities_strike_of_nehekhara" in script_txt, "the batch's last key is missing"
+assert "wh3_main_lord_abilities_deathbringer" in script_txt and "wh3_main_lord_abilities_deathbringer_upgraded" in script_txt, "the deathbringer keys are missing"
+assert 'badge = "zz_auto_badge_aether_sword"' in script_txt, "a batch badge id is missing from the script"
+assert 'badge = "zz_auto_badge_deathbringer"' in script_txt, "the deathbringer badge id is missing from the script"
+
+# ROUND v83 (BLOCK 2 - the second in-melee-self batch + the five new trigger
+# types). Nothing above is loosened. The 27 approved simple entries ride the
+# SAME shared evaluator; the four new-trigger entries ship with their own
+# evaluators; the summoned Foe-Seeker is a THIRD key on the existing foe_seeker
+# entry; and the context read, the ally-target slot and the Ushoran hysteresis
+# field all ship.
+BLOCK2_SIMPLE = [
+    ("dolorous_blade", "wh_dlc07_hero_abilities_dolorous_blade"),
+    ("dragon_spear", "wh2_dlc16_weapon_abilities_dragon_spear"),
+    ("dreaded_duelist", "wh2_dlc11_lord_abilities_dreaded_duelist"),
+    ("dwarf_gouger", "wh2_main_weapon_abilities_dwarf_gouger"),
+    ("enrage", "wh_pro04_unit_abilities_enrage"),
+    ("entice", "wh3_dlc29_unit_abilities_entice"),
+    ("everyone_has_their_price", "wh3_main_lord_abilities_everyone_has_their_price"),
+    ("evisceration", "wh2_dlc16_hero_abilities_evisceration"),
+    ("eye_jabber", "wh3_dlc29_spell_bound_eye_jabber"),
+    ("eye_gouger", "wh3_dlc29_spell_bound_eye_gouger"),
+    ("eye_of_the_storm", "wh3_main_lord_abilities_eye_of_the_storm"),
+    ("faiths_bastion", "wh_main_hero_abilities_faiths_bastion"),
+    ("fangsword_of_eltharion", "wh2_dlc15_weapon_abilities_fangsword_of_eltharion"),
+    ("feint_and_reposte", "wh2_main_lord_abilities_feint_and_reposte"),
+    ("filth_mace", "wh_main_weapon_abilities_filth_mace"),
+    ("fluid_injection", "wh2_dlc16_unit_abilities_fluid_injection"),
+    ("gaze_of_khorne", "wh3_dlc26_lord_abilities_gaze_of_khorne"),
+    ("fury_of_the_land", "wh3_dlc24_character_abilities_fury_of_the_land"),
+    ("fury_of_ursun", "wh3_main_lord_abilities_fury_of_ursun"),
+    ("ghal_maraz", "wh_main_weapon_abilities_ghal_maraz"),
+    ("giant_leap", "wh3_dlc24_character_abilities_giant_leap"),
+    ("gitsnik", "wh_main_weapon_abilities_gitsnik"),
+    ("gotrek_doom", "wh2_pro08_character_abilities_gotrek_doom"),
+    ("shield_of_faith_upgraded", "wh_dlc04_spell_bound_shield_of_faith_upgraded"),
+    ("great_gutgouger", "wh3_dlc26_weapon_abilities_great_gutgouger"),
+    ("halo_of_maidenly_wrath", "wh2_dlc14_lord_abilities_halo_of_maidenly_wrath"),
+    ("hammer_axe_of_skoll", "wh3_dlc29_weapon_active_hammer_axe_of_skoll"),
+]
+for _marker, _key in BLOCK2_SIMPLE:
+    assert 'marker = "%s"' % _marker in script_txt, "block-2 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-2 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-2 key missing: " + _key
+# the corrected single-l key must be used; the tracker's double-l typo must not
+# appear anywhere.
+assert "wh2_dlc11_lord_abilities_dreaded_duelist" in script_txt, "the corrected 'dreaded_duelist' key is missing"
+assert "wh2_dlc11_lord_abilities_dreaded_duelist".replace("duelist", "duellist") not in script_txt, \
+    "the double-l 'dreaded_duellist' typo came back"
+# the four own-evaluator trigger entries
+BLOCK2_NEWT = [
+    ("eagle_feather_torc", "wh3_dlc27_item_abilities_eagle_feather_torc", "barrier_broken"),
+    ("fangspike", "wh3_dlc26_weapon_abilities_fangspike", "charge_or_melee"),
+    ("ghoul_king_of_ushoran", "wh2_dlc11_lord_abilities_ghoul_king_of_ushoran", "ushoran_health"),
+    ("glorious_death", "wh3_dlc25_lord_abilities_glorious_death", "glorious_death"),
+]
+for _marker, _key, _trig in BLOCK2_NEWT:
+    assert 'marker = "%s"' % _marker in script_txt, "new-trigger marker missing: " + _marker
+    assert '"%s"' % _key in script_txt, "new-trigger key missing: " + _key
+    assert 'trigger = "%s"' % _trig in script_txt, "new-trigger trigger name missing: " + _trig
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "new-trigger badge missing: " + _marker
+assert "wh_main_character_abilities_foe_seeker_summoned" in script_txt, "the summoned Foe-Seeker key is missing"
+for _fn in ("function FOURTH.evaluate_barrier_broken(unit, routing)",
+            "function FOURTH.evaluate_charge_or_melee(unit, routing)",
+            "function FOURTH.evaluate_ushoran_health(unit, routing)",
+            "function FOURTH.evaluate_glorious_death(unit, routing)"):
+    assert _fn in script_txt, "a block-2 evaluator is missing: " + _fn
+for _map in ("barrier_broken = FOURTH.evaluate_barrier_broken,",
+             "charge_or_melee = FOURTH.evaluate_charge_or_melee,",
+             "ushoran_health = FOURTH.evaluate_ushoran_health,",
+             "glorious_death = FOURTH.evaluate_glorious_death,"):
+    assert _map in script_txt, "a block-2 evaluator map entry is missing: " + _map
+assert "function FOURTH.context_value(unit, field)" in script_txt, "the context-value reader is missing"
+assert "FOURTH.cast_target = nil" in script_txt and "uc:perform_special_ability(ability_key, target or unit)" in script_txt, \
+    "the ally-target dispatch is missing"
+assert "FOURTH.ushoran_high" not in script_txt, "the removed Ushoran hysteresis field came back"
+assert 'string.format("barrier broken (BarrierHp %.0f/%.0f)"' in script_txt, "the barrier-broken reason is missing"
+assert 'reason = "in melee (charge or melee)"' in script_txt, "the fangspike melee reason is missing"
+assert 'string.format("health %d%% (<= 75%%)"' in script_txt, "the ushoran health reason is missing"
+# ROUND v85 (job 1): GLORIOUS DEATH CASTS ON SELF. The trigger is unchanged,
+# but every firing arm now writes the OWNER into FOURTH.cast_target - the old
+# ally-target reasons and the ally cast-target write are GONE.
+assert 'reason = "slayer in melee (self-cast)"' in script_txt, "the Slayer self-cast reason is missing"
+assert 'reason = "self in melee (self-cast)"' in script_txt, "the self self-cast reason is missing"
+assert 'reason = "slayer ally in melee (priority)"' not in script_txt, "the removed ally-target reason came back"
+assert 'reason = "self slayer fallback (in melee)"' not in script_txt, "the removed ally self-fallback reason came back"
+assert 'reason = "ally in melee (priority)"' not in script_txt, "the removed any-ally fallback reason came back"
+assert 'reason = "self fallback (no other melee ally)"' not in script_txt, "the removed any-ally self reason came back"
+assert "FOURTH.cast_target = best_unit" not in script_txt, "the removed ally cast-target write came back"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+# ROUND v85 (job 2): BLOCK 3 - 38 approved entries (35 in-melee-self on the
+# existing melee_unwavering evaluator + 3 charge-or-melee on the existing
+# charge_or_melee evaluator). NO new evaluator, NO new chunk locals.
+BLOCK3_SELF = [
+    ("legbiter", "wh3_dlc29_weapon_abilities_legbiter"),
+    ("hellfire_sword", "wh_main_weapon_abilities_hellfire_sword"),
+    ("helm_of_discord", "wh_main_weapon_abilities_helm_of_discord"),
+    ("helm_of_many_eyes", "wh_dlc01_item_passive_helm_of_many_eyes"),
+    ("heroic_killing_blow_2", "wh3_main_pro_character_abilities_heroic_killing_blow_2"),
+    ("heroic_killing_blow_dlc07", "wh_dlc07_character_abilities_heroic_killing_blow"),
+    ("heroic_killing_blow_main", "wh_main_character_abilities_heroic_killing_blow"),
+    ("hydra_blade", "wh2_main_weapon_abilities_hydra_blade"),
+    ("inevitable_horror", "wh3_dlc26_character_abilities_inevitable_horror"),
+    ("karaghul", "wh2_pro08_weapon_abilities_karaghul"),
+    ("killing_blow_1", "wh3_main_pro_character_abilities_heroic_killing_blow_1"),
+    ("killing_blow", "wh_main_unit_abilities_killing_blow"),
+    ("liarsbane", "wh3_dlc25_weapon_abilities_liarsbane"),
+    ("lightning_reflexes", "wh2_dlc11_lord_abilities_lightning_reflexes"),
+    ("locus_of_beguilement", "wh3_main_character_abilities_locus_of_beguilement"),
+    ("locus_of_grace", "wh3_main_character_abilities_locus_of_grace"),
+    ("locus_of_wrath", "wh3_main_character_abilities_locus_of_wrath"),
+    ("lucky_banner", "wh2_dlc15_item_abilities_lucky_banner"),
+    ("mace_of_ulumak", "wh2_dlc13_weapon_abilities_mace_of_ulumak"),
+    ("mananns_luck", "wh2_dlc11_lord_abilities_mananns_luck"),
+    ("master_of_the_skies", "wh2_dlc12_lord_abilities_master_of_the_skies"),
+    ("mimic_waaagh", "wh2_dlc15_unit_abilities_mimic_waaagh"),
+    ("mimic_grom_waaagh", "wh2_dlc15_unit_abilities_mimic_grom_waaagh"),
+    ("monstrous_strength", "wh2_dlc13_lord_abilities_monstrous_strength"),
+    ("mortal_blow", "wh3_main_daemon_arms_abilities_mortal_blow"),
+    ("mortal_blow_upgraded", "wh3_main_daemon_arms_abilities_mortal_blow_upgraded"),
+    ("mumbo_jumbo_chant", "wh3_dlc26_character_abilities_mumbo_jumbo_chant"),
+    ("strike_of_nagash", "wh2_dlc09_character_abilities_strike_of_nagash"),
+    ("nurgles_favoured_son", "wh3_dlc25_lord_abilities_nurgles_favoured_son"),
+    ("opal_amulet", "wh_main_item_abilities_opal_amulet"),
+    ("oracle_of_eternity", "wh3_main_lord_abilities_oracle_of_eternity"),
+    ("pendant_of_slaanesh", "wh_main_item_abilities_pendant_of_slaanesh"),
+    ("plaguefathers_oration", "wh3_main_lord_abilities_plaguefathers_oration"),
+    ("primal_roar", "wh2_dlc13_lord_abilities_primal_roar"),
+    ("puncture", "wh3_dlc26_character_abilities_puncture"),
+]
+BLOCK3_CHARGE = [
+    ("heart_piercing", "wh2_dlc11_lord_abilities_heart_piercing"),
+    ("horn_of_the_first_beast", "wh_dlc03_item_abilities_horn_of_the_first_beast"),
+    ("morglor_the_mangler", "wh3_dlc26_weapon_abilities_morglor_the_mangler"),
+]
+assert len(BLOCK3_SELF) == 35 and len(BLOCK3_CHARGE) == 3
+for _marker, _key in BLOCK3_SELF:
+    assert 'marker = "%s"' % _marker in script_txt, "block-3 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-3 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-3 key missing: " + _key
+for _marker, _key in BLOCK3_CHARGE:
+    assert 'marker = "%s"' % _marker in script_txt, "block-3 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-3 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-3 key missing: " + _key
+# ROUND v90: the shared melee_unwavering trigger and the charge_or_melee trigger
+# grew again (blocks 7-9 add 45 in-melee-self + 6 charge-and-in-melee).
+assert script_txt.count('trigger = "melee_unwavering"') == 374, \
+    "the melee_unwavering entry count is not 374 (Massacre + 2 boss-only removed)"
+assert script_txt.count('trigger = "charge_or_melee"') == 28, \
+    "the charge_or_melee entry count is not 28 (round 123: +3 enemy-speed hexes)"
+
+# ROUND v84 (the user's two field-test corrections - nothing above is loosened):
+#   * GLORIOUS DEATH's candidate set is SLAYER UNITS ONLY. Who is a Slayer is
+#     the DERIVED land_units type-key list (FOURTH.slayer_keys), tested by
+#     EXACT WHOLE-KEY equality only (no string.find). A NON-Slayer ally is
+#     NEVER targeted (the old any-in-melee-ally fallback is gone); the self
+#     fallback fires only when the OWNER is a Slayer and in melee.
+#   * GHOUL KING OF USHORAN's HYSTERESIS is REMOVED - plain own health <= 75%.
+SLAYER_KEYS = [
+    "wh_main_dwf_inf_slayers",
+    "wh2_dlc10_dwf_inf_giant_slayers",
+    "wh3_dlc25_dwf_cha_daemon_slayer",
+    "wh3_dlc25_dwf_cha_dragon_slayer",
+    "wh3_dlc25_dwf_inf_slayer_pirates",
+    "wh3_dlc25_dwf_inf_slayer_pirates_ror",
+    "wh3_dlc25_dwf_inf_slayers_grudge_unit",
+    "wh_dlc06_dwf_inf_dragonback_slayers_0",
+    "wh3_dlc25_dwf_inf_doomseekers",
+    "wh3_dlc25_dwf_inf_doomseekers_ror",
+]
+assert "FOURTH.slayer_keys = {" in script_txt, "the Slayer type-key list is missing"
+for _k in SLAYER_KEYS:
+    assert ('["%s"] = true' % _k) in script_txt, "a derived Slayer key is missing: " + _k
+assert "function FOURTH.is_slayer(unit)" in script_txt, "the Slayer reader is missing"
+assert "return FOURTH.slayer_keys[t] == true" in script_txt, \
+    "the Slayer membership test is not the exact whole-key lookup"
+assert "and FOURTH.is_slayer(other) then" in script_txt, "the Glorious Death ally scan is not Slayer-filtered"
+assert "FOURTH.is_slayer(unit) and unit:is_in_melee()" in script_txt, \
+    "the Glorious Death self-cast is not gated on the owner being a Slayer"
+# the old outer melee guard is gone from Glorious Death (3 remaining guard paths)
+assert script_txt.count("unit:is_in_melee() and not routing") == 4, \
+    "the old Glorious Death outer melee guard is back"
+assert 'type(hp) == "number" and hp <= 75 then' in script_txt, "the plain Ushoran <=75% test is missing"
+
+# ROUND v87 (the field-tested range correction - nothing above is loosened): the
+# Glorious Death trigger range is the STANDING 70% RULE value: floor(0.70 x the
+# ability's 55 m game-data aura) = 38 m. The user ruled the rule ABSOLUTE, so the
+# old field-tuned 25 m gate is gone. The gate
+# logic (closest in-range in-melee Slayer chosen; gap re-checked immediately
+# before the cast and the cast SKIPPED on drift; owner-in-melee self arm NEVER
+# gated) is the round-86 machinery, untouched. The four dead icon-read locals
+# stay removed (freed in round 86 to keep the chunk under Lua's 200-local limit).
+assert "local GLORIOUS_DEATH_RANGE_M = 38" in script_txt, "the 70% Glorious Death range constant is missing"
+assert "local GLORIOUS_DEATH_RANGE_M = 55" not in script_txt, "the old 55 m range constant came back"
+assert "THE STANDING 70% RULE" in script_txt, "the standing-70%-rule comment is missing"
+assert "55 * 0.70 = 38.5 -> 38" in script_txt, "the Glorious Death 70%% derivation comment is missing"
+assert "function FOURTH.gd_ally_gap(unit, ally)" in script_txt, "the gap helper is missing"
+assert "ally:unit_distance(unit)" in script_txt, "the gate does not reuse the unit_distance primitive"
+assert "function FOURTH.gd_ally_in_range(unit, ally)" in script_txt, "the range test helper is missing"
+assert "gap <= GLORIOUS_DEATH_RANGE_M" in script_txt, "the range comparison does not use the named constant"
+assert "FOURTH.gd_ally = best_ally" in script_txt, "the closest-ally choice is missing"
+assert script_txt.count("FOURTH.gd_ally = nil") == 3, "the chosen-ally clears are not exactly three"
+assert "glorious_death SKIPPED:" in script_txt, "the pre-cast drift skip is missing"
+assert "glorious_death ally: ui" in script_txt, "the chosen-ally log line is missing"
+for _dead in ("local ICON_INDEX", "local original_icon", "local original_state", "local function read_icon"):
+    assert _dead not in script_txt, f"a removed dead local came back: {_dead}"
+
+
+# ROUND v88 (THE BIG IMPLEMENTATION ROUND - blocks 4, 5 and 6 + two new
+# triggers - nothing above is loosened): 87 new ability entries. 80 ride the
+# SHARED melee_unwavering evaluator (54 block-4/5 approved in-melee-self + 26
+# auto-accepted trivial self-buffs, 15 from block 5 and 11 from block 6's
+# standing rule 9) and 5 ride the EXISTING charge_or_melee evaluator, so the
+# trigger counts are now 171 and 9. The table is 189 entries / 195 keys. TWO
+# NEW TRIGGER TYPES ship: WILL OF THE VERMINKING (trigger verminking_wavering)
+# and POTION OF TOUGHNESS (trigger melee_health75). ARMY-BAR abilities are a
+# STANDING EXCLUSION - no army_abilities key may ever be in the mod.
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+assert "FOURTH.VERMINKING_RANGE_M = 24" in script_txt, "the 70% Verminking range constant is missing"
+assert "THE STANDING 70% RULE" in script_txt, "the standing-70%-rule comment is missing"
+assert "35.0000 m = effect_range" in script_txt, "the game-data range source note is missing"
+assert "function FOURTH.evaluate_verminking_wavering(unit, routing)" in script_txt, \
+    "the Verminking evaluator is missing"
+assert "function FOURTH.vm_ally_gap(unit, ally)" in script_txt, "the Verminking gap helper is missing"
+assert "function FOURTH.vm_ally_in_range(unit, ally)" in script_txt, "the Verminking range helper is missing"
+assert "will_of_the_verminking SKIPPED:" in script_txt, "the Verminking drift skip is missing"
+assert 'reason = "wavering ally in melee (self-cast)"' in script_txt, "the Verminking reason is missing"
+assert "function FOURTH.evaluate_potion_health(unit, routing)" in script_txt, \
+    "the Potion evaluator is missing"
+assert 'string.format("in melee, health %d%% (<= 75%%)"' in script_txt, "the Potion reason is missing"
+for _mk, _ky, _tg in (("will_of_the_verminking", "wh3_dlc29_lord_abilities_will_of_the_verminking", "verminking_wavering"),
+                      ("potion_of_toughness", "wh_main_item_abilities_potion_of_toughness", "melee_health75")):
+    assert 'marker = "%s"' % _mk in script_txt, "new-trigger marker missing: " + _mk
+    assert '"%s"' % _ky in script_txt, "new-trigger key missing: " + _ky
+    assert 'trigger = "%s"' % _tg in script_txt, "new-trigger trigger name missing: " + _tg
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "new-trigger badge missing: " + _mk
+assert "verminking_wavering = FOURTH.evaluate_verminking_wavering," in script_txt, "the Verminking map entry is missing"
+assert "melee_health75 = FOURTH.evaluate_potion_health," in script_txt, "the Potion map entry is missing"
+# a sample of every new group (in-melee-self, charge-or-melee, block-6 auto)
+for _mk, _ky in (("quickblood", "wh3_dlc29_lord_abilities_lightning_reflexes"),
+                 ("the_eternal_blade", "wh3_main_weapon_abilities_the_eternal_blade"),
+                 ("star_lance", "wh2_dlc15_weapon_abilities_star_lance"),
+                 ("potion_of_strength", "wh_main_item_abilities_potion_of_strength"),
+                 ("doom_glaive", "wh3_dlc29_item_abilities_doom_glaive")):
+    assert 'marker = "%s"' % _mk in script_txt, "sample marker missing: " + _mk
+    assert '"%s"' % _ky in script_txt, "sample key missing: " + _ky
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "sample badge missing: " + _mk
+# THE ARMY-BAR STANDARD: no army-bar ability may ever be automated.
+assert "army_abilities" not in script_txt, "an ARMY-BAR key is in the mod (standing exclusion)"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+assert script_txt.count("FOURTH.vm_ally = nil") == 3, "the Verminking chosen-ally clears are not exactly three"
+
+# ROUND v89 (THE ENCHANTED METALLURGY FAMILY - nothing above is loosened): ONE
+# new trigger metallurgy_melee across FOUR keys. The user's trigger is "when
+# self or ally in range is in melee; when ally in range is shooting". The MELEE
+# half ships (owner in melee OR a friendly unit in melee within the
+# conservative FOURTH.METALLURGY_RANGE_M = 25 m; cast on self; closest ally,
+# pre-cast gap re-check, skip on drift). The SHOOTING half COULD NOT be built:
+# the battle API exposes NO per-unit is-firing / is-shooting read, so NO proxy
+# is invented. The table grows 189 -> 193 entries (195 -> 199 keys). NO new
+# chunk locals - the constant + state ride the FOURTH helper bag.
+MTL = [
+    ("enchanted_metallurgy", "wh3_main_character_abilities_enchanted_metallurgy"),
+    ("enchanted_metallurgy_flaming", "wh3_main_character_abilities_enchanted_metallurgy_flaming"),
+    ("enchanted_metallurgy_piercing", "wh3_main_character_abilities_enchanted_metallurgy_piercing"),
+    ("enchanted_metallurgy_poison", "wh3_main_character_abilities_enchanted_metallurgy_poison"),
+]
+for _mk, _ky in MTL:
+    assert 'marker = "%s"' % _mk in script_txt, "metallurgy marker missing: " + _mk
+    assert '"%s"' % _ky in script_txt, "metallurgy key missing: " + _ky
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "metallurgy badge missing: " + _mk
+assert script_txt.count('trigger = "metallurgy_melee"') == 8, "the metallurgy trigger count is not 8 (four Enchanted Metallurgy + four Master of Alchemy)"
+assert "FOURTH.METALLURGY_RANGE_M = 24" in script_txt, "the 70% metallurgy range constant is missing"
+assert "function FOURTH.evaluate_metallurgy_melee(unit, routing)" in script_txt, "the metallurgy evaluator is missing"
+assert "function FOURTH.mtl_ally_gap(unit, ally)" in script_txt, "the metallurgy gap helper is missing"
+assert "function FOURTH.mtl_ally_in_range(unit, ally)" in script_txt, "the metallurgy range helper is missing"
+assert "metallurgy_melee = FOURTH.evaluate_metallurgy_melee," in script_txt, "the metallurgy map entry is missing"
+assert 'reason = "in-melee ally (metallurgy self-cast)"' not in script_txt, "the old reason-shape came back"
+assert 'return "in melee (metallurgy self-cast)"' in script_txt, "the owner-in-melee reason is missing"
+assert 'return "in-melee ally (metallurgy self-cast)"' in script_txt, "the ally-in-melee reason is missing"
+assert "enchanted_metallurgy SKIPPED:" in script_txt, "the metallurgy drift skip is missing"
+assert "enchanted_metallurgy ally: ui" in script_txt, "the metallurgy chosen-ally line is missing"
+# the SHOOTING half was NOT built: no invented firing predicate of any kind
+assert "is_firing" not in script_txt, "an invented is_firing predicate is in the mod"
+assert "is_shooting" not in script_txt, "an invented is_shooting predicate is in the mod"
+assert "FOURTH.mtl_ally = nil" in script_txt, "the metallurgy chosen-ally field is missing"
+assert script_txt.count("FOURTH.mtl_ally = nil") == 3, "the metallurgy chosen-ally clears are not exactly three"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+
+
+# ROUND v90 (BLOCKS 7-9 - THE NEW TRIGGER TYPES - nothing above is loosened): 69
+# new entries / 73 keys, derived programmatically from WH3_ability_tracker.md
+# section 3a (every `approved (...)` row not already in the mod + the two
+# backlog `redesigned` abilities #36/#46 + the one `pending review` #32). The
+# four shipped Enchanted Metallurgy rows are SKIPPED as already present. FIVE
+# NEW triggers: charge_only (Ferocious Battle Howl - the charge window WITHOUT
+# the melee arm), wavering_self (the owner wavering, fail-closed),
+# wavering_self_or_ally (owner wavering OR an in-melee wavering ally within the
+# conservative 25 m FOURTH.WAVERING_RANGE_M - the game-data 35 m aura),
+# charge_or_wavering (the charge window OR wavering), and wavering_ally_range
+# ("Stay Here, I'll Get Help!" - a wavering ally in range with NO ally-melee
+# requirement: the Verminking shape minus its melee gate). The redesigned #46
+# Dazh's Song rides the EXISTING tired trigger; #36 Commanding Presence rides
+# wavering_self_or_ally. All new triggers cast ON SELF with the pre-cast gap
+# re-check / drift skip. The table grows 193 -> 262 entries (199 -> 272 keys);
+# NO new chunk locals (every constant/state rides the FOURTH bag).
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+assert script_txt.count('trigger = "charge_only"') == 1, "the charge_only entry count is not 1"
+assert script_txt.count('trigger = "wavering_self"') == 3, "the wavering_self entry count is not 3"
+assert script_txt.count('trigger = "wavering_self_or_ally"') == 2, "the wavering_self_or_ally entry count is not 2"
+assert script_txt.count('trigger = "charge_or_wavering"') == 1, "the charge_or_wavering entry count is not 1"
+assert script_txt.count('trigger = "wavering_ally_range"') == 1, "the wavering_ally_range entry count is not 1"
+assert script_txt.count('trigger = "metallurgy_melee"') == 8, "the metallurgy_melee entry count is not 8"
+assert script_txt.count('trigger = "ushoran_health"') == 20, "the ushoran_health entry count is not 20 (harness 104: 13 moved to the ally-aware triggers)"
+assert script_txt.count('trigger = "health_aura_ground"') == 2, "the health_aura_ground entry count is not 2 (Star of Avelorn + Gulyas)"
+assert script_txt.count('trigger = "health_aura_ally"') == 9, "the health_aura_ally entry count is not 9"
+assert script_txt.count('trigger = "health_aura_self"') == 2, "the health_aura_self entry count is not 2 (Salyak's Lullaby + Locus of Fecundity)"
+assert script_txt.count('trigger = "melee_health75"') == 1, "the melee_health75 entry count is not 1 (Captain of the Phoenix Guard moved to ally_heal_melee)"
+assert script_txt.count('trigger = "tired"') == 2, "the tired entry count is not 2"
+assert "FOURTH.WAVERING_RANGE_M = 24" in script_txt, "the 70% wavering range constant is missing"
+assert "THE STANDING 70% RULE" in script_txt, "the standing-70%-rule comment is missing"
+assert "effect_range" in script_txt, "the game-data range source note is missing"
+for _fn in ("function FOURTH.evaluate_charge_only(unit, routing)",
+            "function FOURTH.evaluate_wavering_self(unit, routing)",
+            "function FOURTH.evaluate_wavering_self_or_ally(unit, routing)",
+            "function FOURTH.evaluate_charge_or_wavering(unit, routing)",
+            "function FOURTH.evaluate_wavering_ally_range(unit, routing)",
+            "function FOURTH.ws_ally_gap(unit, ally)", "function FOURTH.ws_ally_in_range(unit, ally)",
+            "function FOURTH.wa_ally_gap(unit, ally)", "function FOURTH.wa_ally_in_range(unit, ally)"):
+    assert _fn in script_txt, "a block-7-9 evaluator/helper is missing: " + _fn
+for _map in ("charge_only = FOURTH.evaluate_charge_only,",
+             "wavering_self = FOURTH.evaluate_wavering_self,",
+             "wavering_self_or_ally = FOURTH.evaluate_wavering_self_or_ally,",
+             "charge_or_wavering = FOURTH.evaluate_charge_or_wavering,",
+             "wavering_ally_range = FOURTH.evaluate_wavering_ally_range,"):
+    assert _map in script_txt, "a block-7-9 evaluator map entry is missing: " + _map
+assert "wavering_self_or_ally SKIPPED:" in script_txt, "the self-or-ally drift skip is missing"
+assert "wavering_ally_range SKIPPED:" in script_txt, "the wavering-ally-range drift skip is missing"
+assert script_txt.count("FOURTH.ws_ally = nil") == 3, "the ws_ally clears are not exactly three"
+assert script_txt.count("FOURTH.wa_ally = nil") == 3, "the wa_ally clears are not exactly three"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+assert 'reason = "wavering (self)"' in script_txt, "the wavering-self reason is missing"
+assert 'reason = "wavering (self-or-ally)"' in script_txt, "the self-or-ally self reason is missing"
+assert 'reason = "wavering in-melee ally (self-cast, self-or-ally)"' in script_txt, "the self-or-ally ally reason is missing"
+assert 'reason = "wavering ally in range, cast on ally"' in script_txt, "the wavering-ally-in-range reason is missing"
+assert "is_firing" not in script_txt and "is_shooting" not in script_txt, "an invented firing predicate is in the mod"
+# every new entry: its marker, its badge id and each of its keys must be present.
+BLOCK789 = [
+    ("bastions_defenders", { "wh3_dlc24_character_abilities_bastions_defenders" }),
+    ("battle_of_wills", { "wh3_dlc29_unit_abilities_battle_of_wills" }),
+    ("bironas_timewarp", { "wh_main_spell_bound_bironas_timewarp" }),
+    ("breath_of_hatred", { "wh3_dlc23_bound_abilities_breath_of_hatred", "wh3_dlc23_character_abilities_breath_of_hatred" }),
+    ("captain_of_the_phoenix_guard", { "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard" }),
+    ("cash_cascade", { "wh3_dlc26_character_abilities_cash_cascade" }),
+    ("chanson_of_caging", { "wh3_dlc27_lord_abilities_chanson_of_caging" }),
+    ("commanding_presence", { "wh3_dlc29_lord_active_commanding_presence" }),
+    ("curse_of_years", { "wh3_dlc29_spell_bound_curse_of_years" }),
+    ("da_boss_as_a_plan", { "wh3_dlc26_character_abilities_da_boss_as_a_plan" }),
+    ("dazs_song_of_winter_sunlight", { "wh3_main_character_abilities_dazs_song_of_winter_sunlight", "wh3_twa06_unit_abilities_dazs_song_of_winter_sunlight" }),
+    ("death_frenzy", { "wh2_dlc16_spell_bound_death_frenzy" }),
+    ("dragonhorn", { "wh2_dlc15_lord_abilities_dragonhorn" }),
+    ("empowering_shrooms", { "wh3_dlc26_character_abilities_empowering_shrooms" }),
+    ("favour_of_the_fay", { "wh_dlc07_lord_abilities_favour_of_the_fay" }),
+    ("ferocious_battle_howl", { "wh3_dlc29_spell_bound_prayer_ferocious_battle_howl" }),
+    ("ferocious_fury_of_ulric", { "wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric" }),
+    ("ferocious_winters_chill", { "wh3_dlc29_spell_bound_prayer_ferocious_winters_chill" }),
+    ("flame_incarnate", { "wh3_main_character_abilities_flame_incarnate" }),
+    ("fury_of_khaine", { "wh2_main_unit_abilities_fury_of_khaine" }),
+    ("fury_of_ulric", { "wh3_dlc29_spell_bound_prayer_fury_of_ulric" }),
+    ("gaze_of_khaine", { "wh2_dlc10_lord_abilities_gaze_of_khaine" }),
+    ("gulyas", { "wh3_dlc24_lord_abilities_gulyas" }),
+    ("helm_of_yvresse", { "wh2_dlc15_item_abilities_helm_of_yvresse" }),
+    ("helping_hand", { "wh2_pro08_character_abilities_helping_hand" }),
+    ("immovable_bulwark", { "wh3_dlc26_unit_abilities_immovable_bulwark" }),
+    ("inspired_assault_i", { "wh3_main_lord_abilities_inspired_assault_i" }),
+    ("inspired_assault_ii", { "wh3_main_lord_abilities_inspired_assault_ii" }),
+    ("inspired_assault_iii", { "wh3_main_lord_abilities_inspired_assault_iii" }),
+    ("inspired_defence_i", { "wh3_main_lord_abilities_inspired_defence_i" }),
+    ("inspired_defence_ii", { "wh3_main_lord_abilities_inspired_defence_ii" }),
+    ("inspired_defence_iii", { "wh3_main_lord_abilities_inspired_defence_iii" }),
+    ("lord_of_grand_cathay", { "wh3_dlc24_lord_abilities_lord_of_grand_cathay" }),
+    ("master_of_alchemy", { "wh3_main_lord_abilities_master_of_alchemy" }),
+    ("master_of_alchemy_flaming", { "wh3_main_lord_abilities_master_of_alchemy_flaming" }),
+    ("master_of_alchemy_piercing", { "wh3_main_lord_abilities_master_of_alchemy_piercing" }),
+    ("master_of_alchemy_poison", { "wh3_main_lord_abilities_master_of_alchemy_poison" }),
+    ("master_rune_of_oath_and_steel", { "wh_dlc06_rune_abilities_master_rune_of_oath_and_steel" }),
+    ("master_rune_of_speed", { "wh2_dlc17_rune_abilities_master_rune_of_speed" }),
+    ("offense_prayer", { "wh3_cp1_character_abilities_offense_prayer" }),
+    ("okkams_mindrazor", { "wh3_dlc29_spell_bound_okkams_mindrazor" }),
+    ("orcs_are_da_best", { "wh3_dlc26_character_abilities_orcs_are_da_best" }),
+    ("overseer_of_the_unseen", { "wh3_dlc29_hero_active_overseer_of_the_unseen" }),
+    ("primeval_roar", { "wh2_dlc17_unit_abilities_primeval_roar" }),
+    ("protection_prayer", { "wh3_cp1_character_abilities_protection_prayer" }),
+    ("rune_of_doom", { "wh2_dlc17_lord_abilities_rune_of_doom" }),
+    ("rune_of_oath_and_steel", { "wh_main_rune_abilities_rune_of_oath_and_steel" }),
+    ("rune_of_speed", { "wh2_dlc17_rune_abilities_rune_of_speed" }),
+    ("sausage_busta", { "wh2_dlc15_character_abilities_sausage_busta" }),
+    ("shield_of_the_old_ones", { "wh2_main_character_abilities_shield_of_the_old_ones" }),
+    ("slayer_for_chaos", { "wh3_dlc23_item_abilities_slayer_for_chaos" }),
+    ("spite_of_da_bad_moon", { "wh_dlc06_lord_abilities_spite_of_da_bad_moon" }),
+    ("star_of_avelorn", { "wh2_dlc10_item_abilities_star_of_avelorn" }),
+    ("stay_here_ill_get_help", { "wh2_dlc09_character_abilities_stay_here_ill_get_help" }),
+    ("supreme_shield_of_the_old_ones", { "wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones" }),
+    ("talisman_of_loec", { "wh2_main_item_abilities_talisman_of_loec" }),
+    ("the_liber_mortis", { "wh2_dlc09_lord_abilities_the_liber_mortis" }),
+    ("the_shadows_coil", { "wh_dlc05_unit_abilities_the_shadows_coil" }),
+    ("unstoppable_choppas", { "wh3_dlc26_unit_abilities_unstoppable_choppas" }),
+    ("vial_of_troll_blood", { "wh_dlc08_item_abilities_vial_of_troll_blood" }),
+    ("warpstone_addiction", { "wh3_dlc29_lord_abilities_warpstone_addiction" }),
+    ("warrior_familiar", { "wh3_dlc27_item_abilities_warrior_familiar" }),
+    ("winters_chill", { "wh3_dlc29_ability_bound_prayer_winters_chill", "wh3_dlc29_spell_bound_prayer_winters_chill" }),
+    ("witchbrew", { "wh2_main_character_abilities_witchbrew", "wh3_dlc24_unit_abilities_witchbrew" }),
+    ("worlds_edge_armour", { "wh2_main_item_abilities_worlds_edge_armour" }),
+    ("znarkharjas_ward", { "wh3_dlc24_hero_abilities_znarkharjas_ward" }),
+]
+assert len(BLOCK789) == 66, "the block-7-9 entry list is not 66 (Greater Faith Bastion removed in 101)"
+_nk789 = 0
+for _mk, _kys in BLOCK789:
+    assert 'marker = "%s"' % _mk in script_txt, "block-7-9 marker missing: " + _mk
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "block-7-9 badge missing: " + _mk
+    for _ky in _kys:
+        assert '"%s"' % _ky in script_txt, "block-7-9 key missing: " + _ky
+        _nk789 = _nk789 + 1
+assert _nk789 == 70, "the block-7-9 key count is not 70 (got %d)" % _nk789
+
+# ROUND v91: THE 327 AUTO-ACCEPTED ABILITIES - a BULK DATA APPEND riding the THREE
+# EXISTING evaluators (no new trigger types). 311 new entries / 327 new keys;
+# the table grows 262 -> 573 entries (272 -> 599 keys). The rows were derived
+# programmatically from WH3_ability_tracker.md section 3a (every `approved
+# (auto: <trigger>)` row). Base + DLC/summoned twin keys ride ONE entry; two
+# NAME-collision entries take a name-derived marker (horn_of_vaul, whip_of_misery).
+assert "THE 327 AUTO-ACCEPTED ABILITIES (this round)" in script_txt, "the auto-327 block header is missing"
+assert "311 entries /" in script_txt and "327 database keys" in script_txt, "the auto-327 counts note is missing"
+AUTO327 = [
+    ("accusation", { "wh_main_hero_abilities_accusation" }),
+    ("acquiescence", { "wh3_dlc27_spell_bound_acquiescence" }),
+    ("aken_seth_the_staff_of_pain", { "wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain" }),
+    ("alchemists_elixir_of_iron_skin", { "wh3_main_item_abilities_alchemists_elixir_of_iron_skin" }),
+    ("alchemists_elixir_of_puissance", { "wh3_main_item_abilities_alchemists_elixir_of_puissance" }),
+    ("alchemists_elixir_of_venom", { "wh3_main_item_abilities_alchemists_elixir_of_venom" }),
+    ("all_hands_hoay", { "wh2_dlc11_character_abilities_all_hands_hoay" }),
+    ("amulet_of_itzl", { "wh2_main_item_abilities_amulet_of_itzl" }),
+    ("amulet_of_phastah", { "wh2_dlc09_item_abilities_amulet_of_phastah" }),
+    ("apocalyptic_charge", { "wh_pro04_unit_abilities_apocalyptic_charge" }),
+    ("magic_prayer", { "wh3_cp1_character_abilities_magic_prayer" }),
+    ("armour_of_caledor", { "wh2_dlc15_item_abilities_armour_of_caledor" }),
+    ("armour_of_the_burrows", { "wh3_dlc29_item_abilities_armour_of_the_burrows" }),
+    ("assassins_trophy", { "wh2_main_character_abilities_assassins_trophy" }),
+    ("aura_of_inertia", { "wh2_dlc13_lord_abilities_aura_of_inertia" }),
+    ("avast_ye", { "wh2_dlc11_character_abilities_avast_ye" }),
+    ("axe_of_men", { "wh_dlc03_weapon_abilities_axe_of_men" }),
+    ("barbed_knuckle_boxing", { "wh2_dlc17_lord_abilities_barbed_knuckle_boxing" }),
+    ("bastet", { "wh3_dlc29_lord_abilities_bastet" }),
+    ("berry_wine", { "wh2_dlc16_item_abilities_berry_wine" }),
+    ("black_periapt", { "wh_main_item_abilities_black_periapt" }),
+    ("black_staff", { "wh2_main_spell_bound_black_staff" }),
+    ("blade_of_setep", { "wh2_dlc09_weapon_abilities_blade_of_setep" }),
+    ("blessed_helm_of_the_oblast", { "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast" }),
+    ("blight_swarm", { "wh3_main_lord_abilities_blight_swarm" }),
+    ("blight_of_terrors", { "wh2_dlc16_character_abilities_blight_of_terrors" }),
+    ("blood_chalice", { "wh3_dlc29_hero_abilities_blood_chalice" }),
+    ("blood_chalice_of_bathori", { "wh_pro02_item_abilities_blood_chalice_of_bathori" }),
+    ("blood_omens", { "wh3_dlc29_unit_abilities_blood_omens" }),
+    ("bloodthirst", { "wh3_main_lord_abilities_bloodthirst" }),
+    ("bloody_onslaught", { "wh3_dlc26_character_abilities_bloody_onslaught" }),
+    ("blooood", { "wh_main_unit_abilities_blooood" }),
+    ("book_of_arkhan", { "wh_main_spell_bound_book_of_arkhan" }),
+    ("book_of_hoeth", { "wh2_main_item_abilities_book_of_hoeth" }),
+    ("book_of_secrets", { "wh3_dlc24_item_abilities_book_of_secrets" }),
+    ("boom", { "wh_main_unit_abilities_boom" }),
+    ("undeath_morkharn_breath_of_darkness", { "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness" }),
+    ("undeath_morkharn_breath_of_darkness_upgraded", { "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded" }),
+    ("bugmans_xxxxxx", { "wh3_dlc26_item_abilities_bugmans_xxxxxx" }),
+    ("call_of_violence", { "wh_dlc03_character_abilities_call_of_violence" }),
+    ("cascading_fire_cloak", { "wh3_main_spell_bound_cascading_fire_cloak" }),
+    ("chalice_of_dark_rain", { "wh_dlc03_item_abilities_chalice_of_dark_rain" }),
+    ("channelling_staff", { "wh_main_item_abilities_channelling_staff" }),
+    ("charmed_shield", { "wh_main_weapon_abilities_charmed_shield" }),
+    ("cold_blooded", { "wh2_main_character_abilities_cold_blooded" }),
+    ("colossal_strike", { "wh3_dlc24_character_abilities_colossal_strike", "wh3_dlc24_character_abilities_colossal_strike_summoned" }),
+    ("crimson_juggernaut", { "wh3_dlc26_character_abilities_crimson_juggernaut" }),
+    ("crown_of_command", { "wh_main_item_abilities_crown_of_command" }),
+    ("cube_of_darkness", { "wh2_main_item_abilities_cube_of_darkness" }),
+    ("curse_of_khsar", { "wh2_dlc09_character_abilities_curse_of_khsar" }),
+    ("daemonic_onslaught", { "wh3_main_daemon_legs_abilities_daemonic_onslaught" }),
+    ("slezuzus_voice", { "wh3_dlc27_character_abilities_slezuzus_voice" }),
+    ("dark_fortune", { "wh_main_item_abilities_dark_fortune" }),
+    ("deadly_onslaught", { "wh_dlc03_character_abilities_deadly_onslaught" }),
+    ("deranged_munitions", { "wh3_dlc25_lord_abilities_deranged_munitions" }),
+    ("deranged_munitions_upgraded", { "wh3_dlc25_lord_abilities_deranged_munitions_upgraded" }),
+    ("dont_even_try_it", { "wh2_dlc15_lord_abilities_dont_even_try_it" }),
+    ("doom_and_darkness_gunnery_school", { "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school", "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness", "wh_dlc08_spell_bound_death_doom_and_darkness" }),
+    ("doom_lord", { "wh3_dlc29_lord_abilities_doom_lord" }),
+    ("dreaming_ring_i", { "wh2_dlc16_item_abilities_dreaming_ring_i" }),
+    ("dreaming_ring_ii", { "wh2_dlc16_item_abilities_dreaming_ring_ii" }),
+    ("dreaming_ring_iii", { "wh2_dlc16_item_abilities_dreaming_ring_iii" }),
+    ("earth_blood", { "wh2_dlc16_spell_bound_earth_blood", "wh3_main_spell_bound_earth_blood" }),
+    ("earthing_rod", { "wh_main_item_abilities_earthing_rod" }),
+    ("el_syf", { "wh_dlc05_weapon_abilities_el_syf" }),
+    ("elixir_of_might", { "wh2_dlc09_item_abilities_elixir_of_might" }),
+    ("elfish_healing_herbs", { "wh3_dlc27_unit_abilities_elfish_healing_herbs" }),
+    ("embers_of_the_phoenix", { "wh2_main_spell_bound_embers_of_the_phoenix" }),
+    ("ballistic_enchantment", { "wh2_dlc11_character_abilities_ballistic_enchantment" }),
+    ("enhanced_skavenbrew", { "wh3_dlc29_item_abilities_enhanced_skavenbrew" }),
+    ("entangle", { "wh2_dlc10_character_abilities_entangle" }),
+    ("entrenchment", { "wh_main_unit_abilities_entrenchment" }),
+    ("gaze_of_usirian", { "wh3_dlc29_lord_abilities_gaze_of_usirian" }),
+    ("eternal_vigour", { "wh3_dlc29_character_abilities_eternal_vigour" }),
+    ("extra_ingredients", { "wh3_main_character_abilities_extra_ingredients" }),
+    ("favoured_by_the_matriarch", { "wh3_dlc27_hero_abilities_favoured_by_the_matriarch" }),
+    ("fear_of_aramar", { "wh2_dlc10_item_abilities_fear_of_aramar" }),
+    ("fearsome_roar", { "wh3_dlc24_unit_abilities_fearsome_roar" }),
+    ("mark_of_the_monster", { "wh3_dlc29_character_active_mark_of_the_monster" }),
+    ("fermented_fungi", { "wh2_dlc15_lord_abilities_fermented_fungi" }),
+    ("fight_or_die", { "wh_dlc08_lord_abilities_fight_or_die" }),
+    ("fistful_of_laurels", { "wh3_main_item_abilities_fistful_of_laurels" }),
+    ("flesh_to_stone", { "wh2_dlc16_spell_bound_flesh_to_stone" }),
+    ("fleshy_abundance", { "wh3_dlc20_spell_bound_fleshy_abundance" }),
+    ("focus_instincts", { "wh2_dlc12_lord_abilities_focus_instincts" }),
+    ("forbidden_rod", { "wh_main_item_abilities_forbidden_rod" }),
+    ("frost_shard_glaive", { "wh3_main_weapon_abilities_frost_shard_glaive" }),
+    ("full_power", { "wh3_dlc25_unit_abilities_full_power" }),
+    ("funnel_of_flame", { "wh2_dlc13_lord_abilities_funnel_of_flame" }),
+    ("gaze_of_fate", { "wh3_main_lord_abilities_gaze_of_fate" }),
+    ("get_em", { "wh3_dlc25_character_abilities_get_em" }),
+    ("get_back_ere", { "wh_main_character_abilities_get_back_ere" }),
+    ("soulnetter", { "wh3_main_weapon_abilities_soulnetter" }),
+    ("glacial_defence", { "wh3_twa08_unit_abilities_glacial_defence" }),
+    ("glory_seeker", { "wh3_dlc29_hero_active_glory_seeker" }),
+    ("glory_seeker_upgraded", { "wh3_dlc29_hero_active_glory_seeker_upgraded" }),
+    ("gruts_sickle", { "wh3_main_item_abilities_gruts_sickle" }),
+    ("guiding_strike", { "wh3_cp1_lord_abilities_guiding_strike" }),
+    ("hagtree_fetish", { "wh_dlc03_item_abilities_hagtree_fetish" }),
+    ("hail_of_fire", { "wh2_dlc13_lord_abilities_hail_of_fire" }),
+    ("harmonic_convergence", { "wh3_main_spell_bound_harmonic_convergence" }),
+    ("headhunt", { "wh3_dlc26_character_abilities_headhunt" }),
+    ("hellish_vigour", { "wh3_dlc29_lord_abilities_hellish_vigour" }),
+    ("hellish_vigour_upgraded", { "wh3_dlc29_lord_abilities_hellish_vigour_upgraded" }),
+    ("hidden_huntress", { "wh3_cp1_lord_abilities_hidden_huntress" }),
+    ("hidden_huntress_upgraded", { "wh3_cp1_lord_abilities_hidden_huntress_upgraded" }),
+    ("hieratic_jar", { "wh2_dlc09_item_abilities_hieratic_jar" }),
+    ("horn_of_vaul", { "wh2_main_item_abilities_dragonhorn" }),
+    ("horn_of_the_wild_hunt", { "wh_dlc05_item_abilities_horn_of_the_wild_hunt" }),
+    ("hornswaggle", { "wh2_dlc11_character_abilities_hornswaggle" }),
+    ("howl_of_the_great_beast", { "wh3_dlc24_unit_abilities_howl_of_the_great_beast" }),
+    ("hunter_of_champions", { "wh_dlc08_character_abilities_hunter_of_champions" }),
+    ("hunters_snare", { "wh2_dlc13_lord_abilities_hunters_snare" }),
+    ("hunters_trap", { "wh2_dlc13_lord_abilities_hunters_trap" }),
+    ("spell_slaanesh_hysterical_frenzy_bound", { "wh3_main_spell_slaanesh_hysterical_frenzy_bound" }),
+    ("immortal_will", { "wh_main_hero_abilities_immortal_will" }),
+    ("inspired_marksmanship_i", { "wh3_main_lord_abilities_inspired_marksmanship_i" }),
+    ("inspired_marksmanship_ii", { "wh3_main_lord_abilities_inspired_marksmanship_ii" }),
+    ("inspired_marksmanship_iii", { "wh3_main_lord_abilities_inspired_marksmanship_iii" }),
+    ("invocation_of_nehek", { "wh3_dlc29_spell_bound_invocation_of_nehek" }),
+    ("iron_hand_captain", { "wh3_dlc27_character_abilities_iron_hand_captain" }),
+    ("jagged_dagger", { "wh_dlc03_item_abilities_jagged_dagger" }),
+    ("locus_of_abjuration", { "wh3_main_character_abilities_locus_of_abjuration" }),
+    ("locus_of_change", { "wh3_main_character_abilities_locus_of_change" }),
+    ("locus_of_conjuration", { "wh3_main_character_abilities_locus_of_conjuration" }),
+    ("locus_of_fecundity", { "wh3_main_character_abilities_locus_of_fecundity" }),
+    ("locus_of_fury", { "wh3_main_character_abilities_locus_of_fury" }),
+    ("locus_of_swiftness", { "wh3_main_character_abilities_locus_of_swiftness" }),
+    ("looming_dread", { "wh2_dlc14_lord_abilities_looming_dread" }),
+    ("lord_of_dragons", { "wh2_dlc15_lord_abilities_lord_of_dragons" }),
+    ("magical_animus", { "wh_main_character_abilities_magical_animus" }),
+    ("makaissons_persuader", { "wh3_dlc25_weapon_abilities_makaissons_persuader" }),
+    ("mark_of_yin", { "wh3_dlc24_unit_abilities_mark_of_yin" }),
+    ("mark_of_the_plague_fleet", { "wh3_dlc29_item_active_mark_of_the_plague_fleet" }),
+    ("marked_by_ulthar", { "wh_dlc06_unit_abilities_marked_by_ulthar" }),
+    ("marked_for_eatin", { "wh3_dlc26_unit_abilities_marked_for_eatin" }),
+    ("master_predator", { "wh2_dlc17_lord_abilities_master_predator" }),
+    ("master_rune_of_breaking", { "wh2_dlc17_rune_abilities_master_rune_of_breaking" }),
+    ("master_rune_of_negation", { "wh_dlc06_rune_abilities_master_rune_of_negation" }),
+    ("master_rune_of_slowness", { "wh2_dlc17_rune_abilities_master_rune_of_slowness" }),
+    ("beguile", { "wh_dlc04_lord_abilities_beguile" }),
+    ("master_of_the_black_arts", { "wh_main_lord_abilities_master_of_the_black_arts" }),
+    ("mastered_strike", { "wh3_cp1_lord_abilities_mastered_strike" }),
+    ("maw_shard", { "wh3_main_item_abilities_maw_shard" }),
+    ("miasma_of_despair", { "wh2_dlc13_lord_abilities_miasma_of_despair" }),
+    ("mighty_oath_stone", { "wh_dlc06_lord_abilities_mighty_oath_stone" }),
+    ("mighty_roar", { "wh2_dlc15_unit_abilities_mighty_roar" }),
+    ("mimic_cold_blooded", { "wh2_dlc15_unit_abilities_mimic_cold_blooded" }),
+    ("mimic_feint_and_riposte", { "wh2_dlc15_unit_abilities_mimic_feint_and_riposte" }),
+    ("mimic_grand_hammer_of_faith", { "wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith" }),
+    ("unit_bound_missile_mirror", { "wh3_dlc24_unit_bound_missile_mirror" }),
+    ("mither", { "wh2_dlc15_hero_abilities_mither" }),
+    ("moonshine", { "wh2_dlc11_item_abilities_moonshine" }),
+    ("more_power", { "wh3_dlc23_unit_abilities_more_power" }),
+    ("morgrims_eye", { "wh3_dlc23_item_abilities_morgrims_eye" }),
+    ("muster_of_malevolents", { "wh2_dlc16_character_abilities_muster_of_malevolents" }),
+    ("neuroparasites", { "wh2_dlc16_unit_abilities_neuroparasites" }),
+    ("necrotic_phylactry", { "wh3_dlc25_item_abilities_necrotic_phylactry" }),
+    ("neferras_scrolls_of_mighty_incantations", { "wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations" }),
+    ("net_dem_up", { "wh3_dlc26_unit_abilities_net_dem_up" }),
+    ("net_of_amyntok", { "wh_dlc04_spell_bound_net_of_amyntok" }),
+    ("null_stone", { "wh3_dlc27_item_abilities_null_stone" }),
+    ("oath_of_vengeance", { "wh2_dlc10_lord_abilities_oath_of_vengeance" }),
+    ("oil_flask", { "wh2_dlc13_lord_abilities_oil_flask" }),
+    ("ottos_scythe", { "wh3_dlc29_item_active_ottos_scythe" }),
+    ("pack_trap", { "wh3_dlc24_unit_abilities_pack_trap" }),
+    ("pageant_of_shrikes", { "wh2_dlc16_character_abilities_pageant_of_shrikes" }),
+    ("patch_up", { "wh2_dlc13_character_abilities_patch_up" }),
+    ("pearl_of_infinite_bleakness", { "wh2_main_item_abilities_pearl_of_infinite_bleakness" }),
+    ("pestilent_potions", { "wh3_dlc20_item_abilities_pestilent_potions" }),
+    ("pestilent_regeneration", { "wh3_main_daemon_head_abilities_pestilent_regeneration" }),
+    ("phas_protection", { "wh3_main_spell_bound_phas_protection" }),
+    ("pilgrimage_of_skulls", { "wh3_dlc26_lord_abilities_pilgrimage_of_skulls" }),
+    ("plague_of_rust", { "wh3_main_spell_bound_plague_of_rust" }),
+    ("plaque_of_dominion", { "wh2_main_item_abilities_plaque_of_dominion" }),
+    ("potion_of_charoi", { "wh2_main_lord_abilities_potion_of_charoi" }),
+    ("potion_of_farsight", { "wh3_main_item_abilities_potion_of_farsight" }),
+    ("potion_of_foolhardiness", { "wh_main_item_abilities_potion_of_foolhardiness" }),
+    ("potion_of_healing", { "wh_main_item_abilities_potion_of_healing" }),
+    ("potion_of_speed", { "wh_main_item_abilities_potion_of_speed" }),
+    ("power_familiar", { "wh3_dlc27_item_abilities_power_familiar" }),
+    ("power_siphon", { "wh2_dlc11_lord_abilities_power_siphon" }),
+    ("power_stone", { "wh_main_item_abilities_power_stone" }),
+    ("predatory_instincts", { "wh3_cp1_lord_abilities_predatory_instincts" }),
+    ("prey_of_anath_raema", { "wh_dlc05_character_abilities_prey_of_anath_raema" }),
+    ("prey_of_the_blood_god", { "wh3_pro12_hero_abilities_prey_of_the_blood_god" }),
+    ("prismatic_amplifier", { "wh3_main_item_abilities_prismatic_amplifier" }),
+    ("purge_the_weak", { "wh3_main_daemon_wings_abilities_purge_the_weak" }),
+    ("radiant_gem_of_hoeth", { "wh2_main_spell_bound_radiant_gem_of_hoeth" }),
+    ("rally", { "wh_main_character_abilities_rally" }),
+    ("dispatch_the_swarm_attack", { "wh3_dlc29_hero_active_dispatch_the_swarm_attack" }),
+    ("dispatch_the_swarm_attack_upgraded", { "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded" }),
+    ("tomb_king_rally", { "wh2_dlc09_character_abilities_tomb_king_rally" }),
+    ("tomb_king_rally_upgraded", { "wh2_dlc09_character_abilities_tomb_king_rally_upgraded" }),
+    ("red_fury", { "wh_main_character_abilities_red_fury" }),
+    ("reforge", { "wh3_dlc23_character_abilities_reforge" }),
+    ("regenerating_flesh", { "wh_main_item_abilities_regenerating_flesh" }),
+    ("regrowth", { "wh2_dlc16_spell_bound_regrowth" }),
+    ("remouldered", { "wh2_dlc16_lord_abilities_remouldered" }),
+    ("restore", { "wh2_dlc09_character_abilities_restore" }),
+    ("revivification_crystal", { "wh2_main_unit_abilities_revivification_crystal" }),
+    ("item_passive_rock_eye", { "wh3_main_item_passive_rock_eye" }),
+    ("rune_of_breaking", { "wh2_dlc17_rune_abilities_rune_of_breaking" }),
+    ("rune_of_negation", { "wh_main_rune_abilities_rune_of_negation" }),
+    ("rune_of_slowness", { "wh2_dlc17_rune_abilities_rune_of_slowness" }),
+    ("rune_of_thungni", { "wh3_dlc23_item_abilities_rune_of_thungni" }),
+    ("sadistic_snare", { "wh3_dlc23_lord_abilities_sadistic_snare" }),
+    ("saint_annushkas_finger_bone", { "wh3_main_item_abilities_saint_annushkas_finger_bone" }),
+    ("salyaks_lullaby", { "wh3_main_character_abilities_salyaks_lullaby" }),
+    ("sceptre_of_stability", { "wh_main_item_abilities_sceptre_of_stability" }),
+    ("scroll_of_destiny", { "wh3_main_item_abilities_scroll_of_destiny" }),
+    ("scroll_of_leeching", { "wh_main_item_abilities_scroll_of_leeching" }),
+    ("scroll_of_power", { "wh_main_item_abilities_scroll_of_power" }),
+    ("scroll_of_shielding", { "wh_main_item_abilities_scroll_of_shielding" }),
+    ("shield_of_chaqua", { "wh2_dlc12_unit_abilities_shield_of_chaqua" }),
+    ("shield_of_thorns", { "wh2_dlc17_spell_bound_shield_of_thorns", "wh_dlc05_spell_bound_shield_of_thorns" }),
+    ("dispatch_the_swarm_protect", { "wh3_dlc29_hero_active_dispatch_the_swarm_protect" }),
+    ("dispatch_the_swarm_protect_upgraded", { "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded" }),
+    ("shock_collar", { "wh2_dlc16_hero_abilities_shock_collar" }),
+    ("silence_the_prey", { "wh3_main_character_abilities_silence_the_prey" }),
+    ("skalm", { "wh2_main_item_abilities_skalm" }),
+    ("skars_kraken_killer", { "wh3_main_weapon_abilities_skars_kraken_killer" }),
+    ("skavenbrew", { "wh2_main_item_abilities_skavenbrew" }),
+    ("skjalandirs_fall", { "wh3_dlc23_character_abilities_skjalandirs_fall" }),
+    ("skull_of_rarkos", { "wh_dlc03_item_abilities_skull_of_rarkos" }),
+    ("snowflake_pendant", { "wh3_main_item_abilities_snowflake_pendant" }),
+    ("spearfishers_net", { "wh2_dlc11_lord_abilities_spearfishers_net" }),
+    ("spell_wrought_sceptre", { "wh3_dlc23_weapon_abilities_spell_wrought_sceptre" }),
+    ("spider_web_attack", { "wh3_dlc26_character_abilities_spider_web_attack" }),
+    ("staff_of_damnation", { "wh_main_spell_bound_staff_of_damnation" }),
+    ("staff_of_nagash", { "wh2_dlc09_item_abilities_staff_of_nagash" }),
+    ("staff_of_tomorrow", { "wh3_main_weapon_abilities_staff_of_tomorrow" }),
+    ("staff_of_volans", { "wh_main_item_abilities_staff_of_volans" }),
+    ("staff_of_wu_xing", { "wh3_main_item_abilities_staff_of_wu_xing" }),
+    ("starwood_staff", { "wh2_main_item_abilities_starwood_staff" }),
+    ("stave_of_avelorn", { "wh2_dlc10_item_abilities_stave_of_avelorn" }),
+    ("storm_hammer", { "wh3_dlc29_spell_bound_storm_hammer" }),
+    ("sword_of_filth", { "wh3_dlc25_weapon_abilities_sword_of_filth" }),
+    ("tacticians_rally", { "wh3_dlc24_character_abilities_tacticians_rally" }),
+    ("taunt", { "wh2_dlc11_character_abilities_taunt" }),
+    ("tendrils_of_the_sea", { "wh3_dlc29_hero_active_tendrils_of_the_sea" }),
+    ("terrorgheist_skull", { "wh_dlc08_item_abilities_terrorgheist_skull" }),
+    ("averland_runefang", { "wh2_dlc13_weapon_abilities_averland_runefang" }),
+    ("the_bane_shield", { "wh2_main_item_abilities_the_bane_shield" }),
+    ("the_black_tongue", { "wh3_dlc27_character_abilities_the_black_tongue" }),
+    ("the_chromatic_tome", { "wh3_main_item_abilities_the_chromatic_tome" }),
+    ("the_dark_master", { "wh3_main_lord_abilities_the_dark_master" }),
+    ("enfeebling_foe", { "wh3_dlc23_spell_bound_enfeebling_foe", "wh3_dlc27_spell_bound_enfeebling_foe", "wh3_main_spell_bound_enfeebling_foe", "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror" }),
+    ("the_golden_eye_of_tzeentch", { "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch" }),
+    ("the_guiding_eye", { "wh2_main_item_abilities_the_guiding_eye" }),
+    ("the_hammer_of_karak_drazh", { "wh_main_weapon_abilities_the_hammer_of_karak_drazh" }),
+    ("undeath_sulekhim_hand_of_dust", { "wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust" }),
+    ("the_liber_noctus", { "wh_dlc04_item_abilities_the_liber_noctus" }),
+    ("lions_shield", { "wh_dlc07_lord_abilities_lions_shield" }),
+    ("the_praise_of_slaanesh", { "wh3_dlc27_lord_abilities_the_praise_of_slaanesh" }),
+    ("the_seerstaff_of_saphery", { "wh2_main_spell_bound_the_seerstaff_of_saphery" }),
+    ("the_tricksters_pendant", { "wh2_main_item_abilities_the_tricksters_pendant" }),
+    ("the_vial_of_hashut", { "wh3_dlc23_item_abilities_the_vial_of_hashut" }),
+    ("the_vortex_shard", { "wh2_main_item_abilities_the_vortex_shard" }),
+    ("the_wintertooth_crown", { "wh_dlc08_item_abilities_the_wintertooth_crown" }),
+    ("wissenland_runefang", { "wh2_dlc13_weapon_abilities_wissenland_runefang" }),
+    ("the_withering", { "wh3_dlc23_spell_bound_the_withering", "wh3_twa08_spell_bound_the_withering" }),
+    ("they_needs_stabbin", { "wh2_dlc15_character_abilities_they_needs_stabbin" }),
+    ("thorns_aura", { "wh3_dlc24_hero_abilities_thorns_aura" }),
+    ("thunderburner", { "wh3_dlc25_unit_abilities_thunderburner" }),
+    ("thunderburner_upgraded", { "wh3_dlc25_unit_abilities_thunderburner_upgraded" }),
+    ("titan_headsman", { "wh3_dlc25_hero_abilities_titan_headsman" }),
+    ("torment_blade", { "wh3_main_weapon_abilities_torment_blade" }),
+    ("tricksters_shard", { "wh_main_item_abilities_tricksters_shard" }),
+    ("trollguts", { "wh3_dlc26_spell_bound_trollguts" }),
+    ("trophy_heads", { "wh2_main_lord_abilities_trophy_heads", "wh3_main_daemon_wings_abilities_trophy_heads" }),
+    ("twilight_horn_i", { "wh2_dlc16_item_abilities_twilight_horn_i" }),
+    ("undeath_resurgent", { "wh_main_character_abilities_undeath_resurgent" }),
+    ("unholy_clamour", { "wh2_main_mount_abilities_unholy_clamour" }),
+    ("unlimited_power", { "wh2_dlc12_lord_abilities_unlimited_power" }),
+    ("ursuns_roar_2", { "wh3_main_pro_character_abilities_ursuns_roar_2" }),
+    ("ursuns_roar", { "wh3_main_character_abilities_ursuns_roar", "wh3_main_pro_character_abilities_ursuns_roar", "wh3_main_pro_character_abilities_ursuns_roar_1", "wh3_main_pro_character_abilities_ursuns_roar_3" }),
+    ("van_horstmanns_speculum", { "wh_main_item_abilities_van_horstmanns_speculum" }),
+    ("verminous_fury", { "wh3_dlc29_lord_abilities_verminous_fury" }),
+    ("virulent_contagion", { "wh3_main_lord_abilities_virulent_contagion" }),
+    ("virulent_contagion_upgraded", { "wh3_main_lord_abilities_virulent_contagion_upgraded" }),
+    ("void_pendulum", { "wh3_main_item_abilities_void_pendulum" }),
+    ("vorozhejas_foresight", { "wh3_dlc24_hero_abilities_vorozhejas_foresight" }),
+    ("waaagh_in_combat", { "wh3_dlc26_unit_abilities_waaagh_in_combat", "wh_main_character_abilities_waaagh" }),
+    ("wand_of_jet", { "wh_main_item_abilities_wand_of_jet" }),
+    ("warp_gaze", { "wh_pro04_unit_abilities_warp_gaze" }),
+    ("warpstiletto", { "wh3_dlc29_item_abilities_warpstiletto" }),
+    ("warpstone_tokens", { "wh3_dlc29_item_abilities_warpstone_tokens" }),
+    ("watched_by_the_watcher", { "wh3_dlc24_character_abilities_watched_by_the_watcher" }),
+    ("were_you_goin", { "wh3_dlc26_character_abilities_were_you_goin" }),
+    ("whip_of_agony", { "wh2_twa03_weapon_abilities_whip_of_agony" }),
+    ("whip_of_misery", { "wh2_main_spell_bound_whip_of_agony" }),
+    ("whiplash", { "wh2_dlc14_lord_abilities_whiplash" }),
+    ("whispering_mist", { "wh3_dlc29_hero_abilities_whispering_mist" }),
+    ("whispering_skull", { "wh3_dlc29_item_abilities_whispering_skull" }),
+    ("wild_abandon", { "wh3_dlc26_lord_abilities_wild_abandon" }),
+    ("willing_prey", { "wh3_main_lord_abilities_willing_prey" }),
+    ("winds_of_change", { "wh3_main_daemon_body_abilities_winds_of_change" }),
+    ("word_of_change", { "wh3_main_daemon_head_abilities_word_of_change" }),
+    ("word_of_pain", { "wh2_dlc10_spell_bound_word_of_pain", "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use" }),
+    ("woven_mist", { "wh_dlc05_unit_abilities_woven_mist" }),
+    ("wrath_of_the_storm", { "wh3_main_lord_abilities_wrath_of_the_storm" }),
+    ("wrathful_reaper", { "wh3_main_lord_abilities_wrathful_reaper" }),
+    ("wristbands_of_black_gold", { "wh3_dlc29_item_abilities_wristbands_of_black_gold" }),
+    ("youre_next", { "wh2_dlc15_lord_abilities_youre_next" }),
+]
+assert len(AUTO327) == 305, ("the auto-327 entry list is not 305 (4 boss-only removed in 101; 2 army-bar entries removed in round 121)")
+_nk327 = 0
+for _mk, _kys in AUTO327:
+    assert 'marker = "%s"' % _mk in script_txt, "auto-327 marker missing: " + _mk
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "auto-327 badge missing: " + _mk
+    for _ky in _kys:
+        assert '"%s"' % _ky in script_txt, "auto-327 key missing: " + _ky
+        _nk327 = _nk327 + 1
+assert _nk327 == 320, ("the auto-327 key count is not 320 (got %d; 3 army-bar keys removed in round 121)" % _nk327)
+
+# ROUND v92: THE FINAL ROSTER BUILD - the SIX built individual abilities from
+# the remaining-abilities triage (WH3_remaining_triage.md section 3 INDIVIDUAL
+# table). TWO NEW ally-heal triggers, each its OWN evaluator: blood_sacrifice
+# (cast on the lowest-health ally in range at or below 75%) and eat_da_runts
+# (cast on self at or below 75%, ELSE the lowest-health ally in range). FOUR
+# further entries ride the EXISTING shared melee_unwavering evaluator (in-melee
+# self): Locus of Virulence, The Dance of Dreaming, The Waltz of Lethargy,
+# Ultimate Verdict. Each new trigger casts on the CHOSEN ALLY, uses a
+# conservative named 25 m range constant, and RE-CHECKS the gap and the ally's
+# health before the cast (skip on drift). The table grows 573 -> 579 entries
+# (599 -> 605 keys); melee_unwavering 477 -> 481. NO new chunk locals (the
+# constant and state ride the FOURTH helper bag).
+assert "THE FINAL ROSTER ROUND (this round)" in script_txt, "the final-roster block header is missing"
+assert "function FOURTH.evaluate_blood_sacrifice(unit, routing)" in script_txt, "the blood-sacrifice evaluator is missing"
+assert "function FOURTH.evaluate_eat_da_runts(unit, routing)" in script_txt, "the eat-da-runts evaluator is missing"
+assert "function FOURTH.bs_ally_valid(unit, ally)" in script_txt, "the blood-sacrifice validity helper is missing"
+assert "function FOURTH.edr_ally_valid(unit, ally)" in script_txt, "the eat-da-runts validity helper is missing"
+assert "FOURTH.BLOOD_SACRIFICE_RANGE_M = 70" in script_txt, "the 70% blood-sacrifice range constant is missing"
+assert "FOURTH.EAT_DA_RUNTS_RANGE_M = 70" in script_txt, "the 70% eat-da-runts range constant is missing"
+assert "blood_sacrifice = FOURTH.evaluate_blood_sacrifice," in script_txt, "the blood-sacrifice map entry is missing"
+assert "eat_da_runts = FOURTH.evaluate_eat_da_runts," in script_txt, "the eat-da-runts map entry is missing"
+assert "blood_sacrifice SKIPPED:" in script_txt, "the blood-sacrifice drift skip is missing"
+assert "eat_da_runts SKIPPED:" in script_txt, "the eat-da-runts drift skip is missing"
+assert 'string.format("blood sacrifice: lowest-health ally %d%% (<= 75%%), cast on ally"' in script_txt, "the blood-sacrifice reason is missing"
+assert 'string.format("eat da runts: self health %d%% (<= 75%%), cast on self"' in script_txt, "the eat-da-runts self reason is missing"
+assert script_txt.count('trigger = "blood_sacrifice"') == 1, "the blood_sacrifice entry count is not 1"
+assert script_txt.count('trigger = "eat_da_runts"') == 1, "the eat_da_runts entry count is not 1"
+assert script_txt.count("FOURTH.bs_ally = nil") == 3, "the bs_ally clears are not exactly three"
+assert script_txt.count("FOURTH.edr_ally = nil") == 3, "the edr_ally clears are not exactly three"
+FINAL6 = [
+    ("blood_sacrifice", "wh3_dlc26_lord_abilities_blood_sacrifice"),
+    ("eat_da_runts", "wh3_dlc26_unit_abilities_eat_da_runts"),
+    ("locus_of_virulence", "wh3_main_character_abilities_locus_of_virulence"),
+    ("the_dance_of_dreaming", "wh3_dlc27_lord_abilities_the_dance_of_dreaming"),
+    ("the_waltz_of_lethargy", "wh3_dlc27_lord_abilities_the_waltz_of_lethargy"),
+    ("ultimate_verdict", "wh3_cp1_character_abilities_terrifying_presence"),
+]
+assert len(FINAL6) == 6, "the final-roster entry list is not 6"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+_nk92 = 0
+for _mk, _ky in FINAL6:
+    assert 'marker = "%s"' % _mk in script_txt, "final-roster marker missing: " + _mk
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "final-roster badge missing: " + _mk
+    assert '"%s"' % _ky in script_txt, "final-roster key missing: " + _ky
+    _nk92 = _nk92 + 1
+assert _nk92 == 6, "the final-roster key count is not 6 (got %d)" % _nk92
+
+# ---------------------------------------------------------------------------
+# ROUND v94: ACCUSATION'S ENEMY-TARGETED TRIGGER (enemy_engaged_or_shot).
+# ---------------------------------------------------------------------------
+assert 'function FOURTH.evaluate_enemy_engaged_or_shot(unit, routing)' in script_txt, \
+    "the enemy-targeted evaluator is missing"
+assert 'enemy_engaged_or_shot = FOURTH.evaluate_enemy_engaged_or_shot,' in script_txt, \
+    "the enemy trigger map entry is missing"
+assert 'marker = "accusation", name = "Accusation", trigger = "enemy_engaged_or_shot"' in script_txt, \
+    "Accusation does not ride the new trigger"
+assert 'enemy_engaged_or_shot = "When armed, fires when an enemy unit in range is in melee or under missile fire",' in script_txt, \
+    "the accusation tooltip wording is missing"
+assert 'FOURTH.ACCUSATION_RANGE_M = 52' in script_txt, "the 70% accusation range constant is missing"
+assert 'bm:get_scriptunits_for_main_enemy_army_to_local_player()' in script_txt, \
+    "the enemy army enumerator read is missing"
+assert 'function FOURTH.eg_fresh_caster_su(unit)' in script_txt, \
+    "the proven fresh-caster re-fetch helper is missing"
+assert 'enemy:is_under_missile_attack()' in script_txt, "the enemy missile-read is missing"
+assert 'reason = "enemy in melee (targeting " .. etype .. ")"' in script_txt, \
+    "the in-melee arm reason is missing"
+assert 'reason = "enemy under missile fire (targeting " .. etype .. ")"' in script_txt, \
+    "the under-fire arm reason is missing"
+assert ' SKIPPED: the chosen enemy lapsed before the cast' in script_txt, \
+    "the accusation pre-cast lapse skip is missing"
+assert 'accusation: enemy is_under_missile_attack read UNAVAILABLE' in script_txt, \
+    "the one-time unreadable-missile notice is missing"
+assert 'target: \'' in script_txt, "the chosen-target line is missing"
+assert script_txt.count('trigger = "enemy_engaged_or_shot"') == 85, \
+    "the enemy trigger count is not 85 (3 boss-only removed; Warden's Cage removed in round 121)"
+assert script_txt.count('trigger = "melee_unwavering"') == 374, \
+    "the melee_unwavering count is not 374 (Massacre + 2 boss-only removed)"
+assert script_txt.count("FOURTH.eg_enemy = nil") == 3, "the eg_enemy clears are not exactly three"
+assert script_txt.count("FOURTH.eg_caster_su = nil") == 2, "the eg_caster_su clears are not exactly two"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+# ---------------------------------------------------------------------------
+# ROUND v95: THE STANDING 70% RANGE RULE (the user ruled it ABSOLUTE -
+# "...No exceptions."). Every trigger-range constant == floor(real * 0.70),
+# where real is the ability's own game-data range (unit_spec_abil.tsv
+# effect_range for an aura, else target_intercept_range).
+# ---------------------------------------------------------------------------
+assert "FOURTH.RANGE_FRACTION = 0.70" in script_txt, "the standing range-rule constant is missing"
+_RULE95 = (("local GLORIOUS_DEATH_RANGE_M", 55, 38),
+           ("FOURTH.VERMINKING_RANGE_M", 35, 24),
+           ("FOURTH.METALLURGY_RANGE_M", 35, 24),
+           ("FOURTH.WAVERING_RANGE_M", 35, 24),
+           ("FOURTH.BLOOD_SACRIFICE_RANGE_M", 100, 70),
+           ("FOURTH.EAT_DA_RUNTS_RANGE_M", 100, 70),
+           ("FOURTH.ACCUSATION_RANGE_M", 75, 52))
+for _tok, _real, _want in _RULE95:
+    assert int(_real * 0.70 + 1e-9) == _want, "the documented 70%% target is wrong for " + _tok
+    assert ("%s = %d" % (_tok, _want)) in script_txt, "the 70%% range constant is missing: " + _tok
+for _old_zero in ("local GLORIOUS_DEATH_RANGE_M = 25",
+                  "FOURTH.VERMINKING_RANGE_M = 25", "FOURTH.METALLURGY_RANGE_M = 25",
+                  "FOURTH.WAVERING_RANGE_M = 25", "FOURTH.BLOOD_SACRIFICE_RANGE_M = 25",
+                  "FOURTH.EAT_DA_RUNTS_RANGE_M = 25", "FOURTH.ACCUSATION_RANGE_M = 75"):
+    assert _old_zero not in script_txt, "an old (non-70%) range constant is still present: " + _old_zero
+# the charge-window pair is NOT an ability range and is deliberately untouched
+assert "CHARGE_MIN_DISTANCE_M    = 12" in script_txt and "CHARGE_MAX_DISTANCE_M    = 60" in script_txt, \
+    "the charge-window constants changed (they are not 70%-rule ranges)"
+
+
+# ROUND v96: THE ACCUSATION MOVE-ORDER ROOT CAUSE (nothing above is loosened).
+# The offer test is the 70% CONSTANT ONLY and never the engine's unit_in_range;
+# the chosen-target and pre-cast re-check logs print the REAL distance.
+assert "function FOURTH.eg_enemy_within_bound(unit, enemy)" in script_txt, \
+    "the constant-only offer test is missing"
+assert "and FOURTH.eg_enemy_within_bound(unit, enemy) then" in script_txt, \
+    "the offer gate is not wired to the constant-only test"
+assert "function FOURTH.eg_enemy_in_range(unit, enemy)" not in script_txt, \
+    "the old engine-helper offer test is back"
+assert "unit_in_range(" not in script_txt, \
+    "the engine unit_in_range call is back in the offer path"
+assert "return gap <= FOURTH.ACCUSATION_RANGE_M" in script_txt, \
+    "the offer test does not compare the gap to the 70% constant"
+assert "battle_unit.lua:160" in script_txt, \
+    "the distance-primitive citation is missing"
+assert '") distance="' in script_txt, \
+    "the target-choice log does not print the real distance"
+assert '.. "m bound=" .. tostring(bound) .. "m")' in script_txt, \
+    "the target-choice log does not print the bound"
+assert '", distance="' in script_txt, \
+    "the pre-cast re-check log does not print the real distance"
+assert '.. ") within "' not in script_txt, \
+    "the misleading static within-Nm log label is back"
+
+
+# ROUND v97: THE REST OF CLASS A (nothing above is loosened). The 12 named 70%
+# enemy-cast constants, the real->bound map, the 96 range_real fields, the load-loop
+# wiring, the shared picker and the enemy-ground evaluator/helper/key-set.
+assert "FOURTH.ENEMY_CAST = {" in script_txt, "the real->bound map is missing"
+assert "ability.range_m = FOURTH.ENEMY_CAST[ability.range_real]" in script_txt, \
+    "the load-loop real->bound mapping is missing"
+# ROUND 106: 163 Class-A/B + 30 bombardment entries = 193 range_real fields.
+assert script_txt.count("\t\trange_real = ") == 207, "the range_real fields are not 207"
+assert "function FOURTH.eg_pick_enemy(unit, routing, ground)" in script_txt, \
+    "the shared enemy picker is missing"
+assert "local bound = FOURTH.eg_range_m" in script_txt and "return gap <= bound" in script_txt, \
+    "the per-ability bound is not read"
+assert "function FOURTH.evaluate_enemy_ground_area(unit, routing)" in script_txt, \
+    "the enemy-ground evaluator is missing"
+assert "enemy_ground_area = FOURTH.evaluate_enemy_ground_area," in script_txt, \
+    "the enemy-ground trigger is not wired"
+assert "function FOURTH.enemy_ground_cast(uc, enemy, ability_key)" in script_txt, \
+    "the enemy-ground cast helper is missing"
+assert "enemy_ground_keys = {" in script_txt, "the enemy-ground key set is missing"
+assert "FOURTH.eg_range_m = ability.range_m" in script_txt and \
+    "FOURTH.eg_marker = ability.marker" in script_txt, \
+    "the poll does not set the current ability bound/marker"
+assert script_txt.count('trigger = "enemy_ground_area"') == 9, "the enemy-ground trigger count is not 9"
+assert "unit_in_range(" not in script_txt, "the engine unit_in_range call is back"
+assert "FOURTH.ENEMY_CAST_R15  = 10" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R15  = 10"
+assert "FOURTH.ENEMY_CAST_R20  = 14" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R20  = 14"
+assert "FOURTH.ENEMY_CAST_R30  = 21" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R30  = 21"
+assert "FOURTH.ENEMY_CAST_R35  = 24" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R35  = 24"
+assert "FOURTH.ENEMY_CAST_R50  = 35" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R50  = 35"
+assert "FOURTH.ENEMY_CAST_R70  = 49" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R70  = 49"
+assert "FOURTH.ENEMY_CAST_R75  = 52" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R75  = 52"
+assert "FOURTH.ENEMY_CAST_R100 = 70" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R100 = 70"
+assert "FOURTH.ENEMY_CAST_R150 = 105" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R150 = 105"
+assert "FOURTH.ENEMY_CAST_R180 = 126" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R180 = 126"
+assert "FOURTH.ENEMY_CAST_R200 = 140" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R200 = 140"
+assert "FOURTH.ENEMY_CAST_R500 = 350" in script_txt, "the 70% enemy-cast constant is missing: FOURTH.ENEMY_CAST_R500 = 350"
+assert '["wh2_dlc09_item_abilities_amulet_of_phastah"] = true,' in script_txt, "enemy-ground key missing: wh2_dlc09_item_abilities_amulet_of_phastah"
+assert '["wh_dlc03_item_abilities_chalice_of_dark_rain"] = true,' in script_txt, "enemy-ground key missing: wh_dlc03_item_abilities_chalice_of_dark_rain"
+assert '["wh2_dlc09_character_abilities_curse_of_khsar"] = true,' in script_txt, "enemy-ground key missing: wh2_dlc09_character_abilities_curse_of_khsar"
+assert '["wh2_dlc10_character_abilities_entangle"] = true,' in script_txt, "enemy-ground key missing: wh2_dlc10_character_abilities_entangle"
+assert '["wh3_dlc25_character_abilities_get_em"] = true,' in script_txt, "enemy-ground key missing: wh3_dlc25_character_abilities_get_em"
+assert '["wh2_dlc13_lord_abilities_hunters_snare"] = true,' in script_txt, "enemy-ground key missing: wh2_dlc13_lord_abilities_hunters_snare"
+assert '["wh2_dlc13_lord_abilities_hunters_trap"] = true,' in script_txt, "enemy-ground key missing: wh2_dlc13_lord_abilities_hunters_trap"
+assert '["wh2_main_item_abilities_the_tricksters_pendant"] = true,' in script_txt, "enemy-ground key missing: wh2_main_item_abilities_the_tricksters_pendant"
+assert '["wh_main_item_abilities_tricksters_shard"] = true,' in script_txt, "enemy-ground key missing: wh_main_item_abilities_tricksters_shard"
+
+
+# ROUND v98: CLASS B (ally-targeted effects cast on self). The five named 70%
+# ally-cast constants, the ally real->bound map, the 18 ally_range_real fields,
+# the load-loop wiring, the fresh-friend helper, the shared ally picker, the four
+# family evaluators, the fresh-handle cast branch and the poll slots.
+assert "FOURTH.ALLY_CAST = {" in script_txt, "the ally real->bound map is missing"
+assert "ability.range_m = FOURTH.ALLY_CAST[ability.ally_range_real]" in script_txt, \
+    "the load-loop ally real->bound mapping is missing"
+assert script_txt.count("\t\tally_range_real = ") == 41, "the ally_range_real fields are not 41 (32 + the 9 ally-aware entries)"
+
+# ROUND v104 (A): THE IN-FLIGHT GATE.
+assert "local cast_gate = {" in script_txt, "the cast_gate table is missing"
+assert '["wh3_main_lord_abilities_nurgling_tide"] = 3,' in script_txt, "Nurgling Tide's 3 s wind-up is missing from cast_gate"
+assert script_txt.count("local IN_FLIGHT_SETTLE_SECONDS = 2") == 1, "the in-flight slack constant is missing"
+assert "local hold_s = ability.wind_up_s + IN_FLIGHT_SETTLE_SECONDS" in script_txt, "the in-flight hold arithmetic is missing"
+assert "cast_gate.until_tick[ui_id]" in script_txt, "the per-pair in-flight deadline is missing"
+assert "cast_gate.logged[id_slot] = nil" in script_txt, "the in-flight gate is not purged with a dropped unit"
+assert "ability.wind_up_s" in script_txt, "the load mapping for wind_up_s is missing"
+assert "in-flight gate " in script_txt, "the in-flight gate log line is missing"
+
+# ROUND v104 (B): THE ALLY-AWARE HEALTH FAMILY.
+for _fn in ("function FOURTH.evaluate_health_aura_ground(unit, routing)",
+            "function FOURTH.evaluate_health_aura_ally(unit, routing)",
+            "function FOURTH.evaluate_health_aura_self(unit, routing)",
+            "function FOURTH.ah_pick(unit, routing)",
+            "function FOURTH.ally_ground_cast(uc, ally, ability_key)",
+            "function FOURTH.ah_log_ally(ally, hp, gap, cast_note)"):
+    assert _fn in script_txt, "the ally-aware helper is missing: " + _fn
+assert "health_aura_ground = FOURTH.evaluate_health_aura_ground," in script_txt, "the ground trigger is not wired"
+assert "health_aura_ally = FOURTH.evaluate_health_aura_ally," in script_txt, "the ally trigger is not wired"
+assert "health_aura_self = FOURTH.evaluate_health_aura_self," in script_txt, "the self-aura trigger is not wired"
+assert "ability.aura_m = math.floor(ability.aura_real * FOURTH.RANGE_FRACTION + 1e-9)" in script_txt, "the 70% aura bound is missing"
+assert 'marker = "star_of_avelorn", name = "Star of Avelorn", trigger = "health_aura_ground"' in script_txt, "Star of Avelorn is not on the ally-aware ground trigger"
+assert "if FOURTH.ah_ground then" in script_txt, "the ally-ground cast branch is missing"
+assert "FOURTH.ah_chosen" in script_txt, "the chosen-unit slot is missing"
+assert "ally-ground cast" in script_txt, "the ally-ground cast log line is missing"
+assert "FOURTH.ALLY_CAST_R50  = 35" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R50  = 35"
+assert "FOURTH.ALLY_CAST_R60  = 42" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R60  = 42"
+assert "FOURTH.ALLY_CAST_R75  = 52" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R75  = 52"
+assert "FOURTH.ALLY_CAST_R100 = 70" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R100 = 70"
+assert "FOURTH.ALLY_CAST_R150 = 105" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R150 = 105"
+assert "function FOURTH.ab_fresh_friend_su(unit)" in script_txt, \
+    "the fresh-friend helper is missing"
+assert "function FOURTH.ab_pick_ally(unit, routing, family)" in script_txt, \
+    "the shared ally picker is missing"
+assert "function FOURTH.ab_ally_valid(unit, ally)" in script_txt, \
+    "the ally validity helper is missing"
+assert "FOURTH.ab_caster_su = FOURTH.ab_fresh_friend_su(unit)" in script_txt and \
+    "FOURTH.ab_ally_su = FOURTH.ab_fresh_friend_su(best_ally)" in script_txt, \
+    "the fresh caster/ally re-fetch is missing"
+assert "uc = FOURTH.ab_caster_su.uc" in script_txt and "target = FOURTH.ab_ally_su.unit" in script_txt, \
+    "the fresh-handle ally cast branch is missing"
+assert "FOURTH.ab_range_m = ability.range_m" in script_txt and \
+    "FOURTH.ab_marker = ability.marker" in script_txt, \
+    "the poll does not set the current ability ally bound/marker"
+assert "function FOURTH.evaluate_ally_heal(unit, routing)" in script_txt, "the ally_heal evaluator is missing"
+assert "ally_heal = FOURTH.evaluate_ally_heal," in script_txt, "the ally_heal trigger is not wired"
+assert "function FOURTH.evaluate_ally_heal_melee(unit, routing)" in script_txt, "the ally_heal_melee evaluator is missing"
+assert "ally_heal_melee = FOURTH.evaluate_ally_heal_melee," in script_txt, "the ally_heal_melee trigger is not wired"
+assert "function FOURTH.evaluate_ally_wavering(unit, routing)" in script_txt, "the ally_wavering evaluator is missing"
+assert "ally_wavering = FOURTH.evaluate_ally_wavering," in script_txt, "the ally_wavering trigger is not wired"
+assert "function FOURTH.evaluate_ally_melee_buff(unit, routing)" in script_txt, "the ally_melee_buff evaluator is missing"
+assert "ally_melee_buff = FOURTH.evaluate_ally_melee_buff," in script_txt, "the ally_melee_buff trigger is not wired"
+assert script_txt.count('trigger = "ally_melee_buff"') == 14, "the ally_melee_buff count is not 11"
+assert script_txt.count('trigger = "ally_heal"') == 3, "the ally_heal count is not 3"
+assert script_txt.count('trigger = "ally_heal_melee"') == 1, "the ally_heal_melee count is not 1"
+assert script_txt.count('trigger = "ally_wavering"') == 2, "the ally_wavering count is not 2"
+# ROUND v100 (2026-10-17): the TWO ARMY-BAR ENTRIES ARE REMOVED. They were
+# implemented but sit OUTSIDE the single in-wheel rule; their keys, markers
+# and badge ids must be GONE. Grut's Sickle is a DIFFERENT, in-wheel item
+# ability (the max-HP ally pick rule) and must be untouched.
+assert "wh3_main_prisoners_butcher" not in script_txt, "the removed Meat Feast key is back"
+assert "wh3_main_prisoners_massacre" not in script_txt, "the removed Massacre key is back"
+assert 'marker = "butcher"' not in script_txt, "the removed Meat Feast entry is back"
+assert 'marker = "massacre"' not in script_txt, "the removed Massacre entry is back"
+assert "zz_auto_badge_butcher" not in script_txt and "zz_auto_badge_massacre" not in script_txt, \
+    "a removed badge id is back"
+assert 'marker = "gruts_sickle"' in script_txt and "wh3_main_item_abilities_gruts_sickle" in script_txt, \
+    "Grut's Sickle was touched"
+assert "function FOURTH.evaluate_ally_winds(unit, routing)" in script_txt \
+    and 'family == "winds"' in script_txt, "the Grut's Sickle max-HP pick rule was touched"
+assert "unit_in_range(" not in script_txt, "the engine unit_in_range call is back"
+assert "is_firing" not in script_txt and "is_shooting" not in script_txt, \
+    "an invented firing predicate is in the mod"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+
+# ROUND v99: THE TARGET-CLASS-GATED CLASS-B ENTRIES (nothing above is loosened).
+# The 15 NEEDS-RULING rows ship as ALLY-TARGETED casts: the 7 derived class-key
+# lists, the class reader/gate helpers, the 200 m ally constant, the infinite
+# bound text, the ten new evaluators + their map/TIP wiring, the winds (max-hp)
+# pick rule and the fresh-handle/hold/lapse machinery.
+assert "FOURTH.class_keys = {" in script_txt, "the derived class-key tables are missing"
+for _nm, _sz in (("beast", 55), ("monster", 235), ("warmachine", 68), ("construct", 29),
+                 ("hellforged", 13), ("missile", 493), ("overseer", 918)):
+    _i = script_txt.find(_nm + " = {")
+    assert _i >= 0, "the " + _nm + " class list is missing"
+    _j = script_txt.find("},", _i)
+    assert script_txt[_i:_j].count("] = true,") == _sz, "the " + _nm + " list size is not " + str(_sz)
+assert "function FOURTH.class_member(unit, name)" in script_txt, "the class reader is missing"
+assert "function FOURTH.ab_filter_ok(unit)" in script_txt, "the class gate is missing"
+assert "function FOURTH.morale_broken(unit)" in script_txt, "the morale-broken read is missing"
+assert "function FOURTH.ab_bound_text()" in script_txt, "the bound-text helper is missing"
+assert "if FOURTH.ab_infinite then return true end" in script_txt, "the infinite bound is not honoured"
+assert "none (infinite range per wiki)" in script_txt, "the infinite-range log text is missing"
+assert script_txt.count("FOURTH.ab_filter = nil") == 2, "the class-gate slot is not defined+cleared"
+assert script_txt.count("FOURTH.ab_infinite = nil") == 2, "the infinite slot is not defined+cleared"
+assert "FOURTH.ALLY_CAST_R200 = 140" in script_txt, "the 70% ally-cast constant is missing: FOURTH.ALLY_CAST_R200 = 140"
+assert "\t[200] = FOURTH.ALLY_CAST_R200," in script_txt, "the 200 m ally map entry is missing"
+assert 'family == "winds"' in script_txt, "the winds (max-hp) family is missing"
+assert 'FOURTH.context_value(other, "HealthValue")' in script_txt, "the HealthValue read is missing"
+for _f in ("overseer", "beast", "broken", "missile", "warmachine_heal", "hellforged_heal",
+           "monster_heal", "construct_heal", "infinite_buff", "winds"):
+    assert "function FOURTH.evaluate_ally_" + _f + "(unit, routing)" in script_txt, \
+        "the ally_" + _f + " evaluator is missing"
+    assert "ally_" + _f + " = FOURTH.evaluate_ally_" + _f + "," in script_txt, \
+        "the ally_" + _f + " trigger is not wired"
+assert script_txt.count('trigger = "ally_overseer"') == 1 and script_txt.count('trigger = "ally_beast"') == 1, \
+    "the overseer/beast trigger counts are wrong"
+assert script_txt.count('trigger = "ally_broken"') == 1 and script_txt.count('trigger = "ally_missile"') == 3, \
+    "the broken/missile trigger counts are wrong"
+assert script_txt.count('trigger = "ally_warmachine_heal"') == 1 and \
+    script_txt.count('trigger = "ally_hellforged_heal"') == 1 and \
+    script_txt.count('trigger = "ally_monster_heal"') == 1 and \
+    script_txt.count('trigger = "ally_construct_heal"') == 1, "a class-heal trigger count is wrong"
+assert script_txt.count('trigger = "ally_infinite_buff"') == 0 and script_txt.count('trigger = "ally_winds"') == 1, \
+    "the infinite/winds trigger counts are wrong"
+assert "unit_in_range(" not in script_txt, "the engine unit_in_range call is back"
+
+
+# ---------------------------------------------------------------------------
+# ROUND v101: the five boss-only removals and GATE OF KHORNE.
+# ---------------------------------------------------------------------------
+for _mk, _ky in (("grand_faiths_bastion", "wh_dlc06_quest_abilities_grand_faiths_bastion"),
+                 ("bitter_sting", "wh3_dlc27_qb_unit_abilities_bitter_sting"),
+                 ("frenzied_challenge", "wh3_dlc27_qb_unit_abilities_frenzied_challenge"),
+                 ("visions_of_madness", "wh3_dlc27_qb_unit_abilities_visions_of_madness"),
+                 ("guttural_roar", "wh3_dlc27_qb_unit_abilities_guttural_roar")):
+    assert 'marker = "%s"' % _mk not in script_txt, "the boss-only marker is still in the table: " + _mk
+    assert _ky not in script_txt, "the boss-only key is still in the script: " + _ky
+    assert 'zz_auto_badge_%s"' % _mk not in script_txt, "the boss-only badge id is still in the script: " + _mk
+assert script_txt.count('trigger = "enemy_engaged_or_shot"') == 85, \
+    "the enemy_engaged_or_shot count is not 85 (3 boss-only removed; Warden's Cage removed in round 121)"
+assert script_txt.count('trigger = "melee_unwavering"') == 374, \
+    "the melee_unwavering count is not 374 (2 boss-only removed)"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+# the ten boss-only keys that never shipped stay absent
+for _ky in ("wh2_dlc10_quest_abilities_fiery_head", "wh2_dlc10_quest_abilities_regenerating_head",
+            "wh_dlc08_quest_abilities_howling_winter", "wh_dlc08_quest_abilities_master_of_souls",
+            "wh_dlc04_quest_abilities_servant_of_nagash", "wh3_dlc27_qb_unit_abilities_dissolving_bone",
+            "wh3_dlc27_qb_unit_abilities_terrible_malice", "wh3_dlc27_qb_unit_abilities_copious_phlegm",
+            "wh2_dlc10_quest_abilities_magic_fiery_convocation", "wh2_dlc10_quest_abilities_flame_storm"):
+    assert _ky not in script_txt, "an excluded boss-only key is in the mod: " + _ky
+# GATE OF KHORNE
+GATE_KEY = "wh3_main_character_abilities_gate_of_khorne"
+assert 'marker = "gate_of_khorne"' in script_txt, "the Gate of Khorne entry is missing"
+assert 'trigger = "enemy_ground_melee"' in script_txt, "Gate of Khorne's trigger is missing"
+assert '"%s"' % GATE_KEY in script_txt, "Gate of Khorne's key is missing"
+assert '["%s"] = true,' % GATE_KEY in script_txt, "Gate of Khorne is not in enemy_ground_keys"
+assert 'range_real = 50,' in script_txt, "Gate of Khorne's real 50 m range is missing"
+assert "FOURTH.ENEMY_CAST_R50  = 35" in script_txt, "the 70% 50 m constant (35) is missing"
+assert "function FOURTH.evaluate_enemy_ground_melee(unit, routing)" in script_txt, \
+    "the melee-only enemy-ground evaluator is missing"
+assert "enemy_ground_melee = FOURTH.evaluate_enemy_ground_melee," in script_txt, \
+    "the Gate of Khorne evaluator map entry is missing"
+assert 'enemy_ground_melee = "When armed, fires when an enemy in range is fighting in melee' in script_txt, \
+    "the Gate of Khorne tooltip wording is missing"
+assert "FOURTH.eg_melee_only = nil" in script_txt, "the melee-only flag slot/clear is missing"
+assert script_txt.count("FOURTH.eg_melee_only = nil") >= 2, "the melee-only flag is not cleared in the poll"
+assert "local melee_only = (FOURTH.eg_melee_only == true)" in script_txt, \
+    "the picker does not read the melee-only flag"
+assert "local eg_melee_only_now = (FOURTH.eg_melee_only == true)" in script_txt, \
+    "the pre-cast re-check does not read the melee-only flag"
+assert 'reason = "closest fighting (in-melee) enemy within bound (targeting "' in script_txt, \
+    "Gate of Khorne's own reason string is missing"
+assert 'FOURTH.enemy_ground_cast(uc, FOURTH.eg_enemy, ability_key)' in script_txt, \
+    "the enemy-ground cast route is missing"
+assert "unit_in_range(" not in script_txt, "a unit_in_range call is back in the script"
+
+
+# ---------------------------------------------------------------------------
+# ROUND v102: THE SUMMON ROUND.
+# ---------------------------------------------------------------------------
+NURG = "wh3_main_lord_abilities_nurgling_tide"
+EYE = "wh3_dlc26_lord_abilities_eye_of_khorne"
+D13 = "wh3_dlc29_spell_bound_the_dreaded_thirteenth"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+assert script_txt.count('trigger = "enemy_ground_melee"') == 67, \
+    "enemy_ground_melee is not 67 (1 gate + 57 A + 9 D)"
+assert script_txt.count('trigger = "self_summon_melee"') == 1, "the self-summon trigger is missing"
+assert script_txt.count('trigger = "enemy_low_health_noncommander"') == 1, "the finisher trigger is missing"
+assert script_txt.count('trigger = "enemy_melee_noncommander"') == 1, "the D13 trigger is missing"
+assert script_txt.count('trigger = "melee_unwavering"') == 374, "melee_unwavering moved (374 after round 123)"
+assert script_txt.count('trigger = "enemy_engaged_or_shot"') == 85, "enemy_engaged_or_shot moved (85 after round 121)"
+for _mk, _trig, _key in (
+        ("nurgling_tide", "self_summon_melee", NURG),
+        ("eye_of_khorne", "enemy_low_health_noncommander", EYE),
+        ("the_dreaded_thirteenth", "enemy_melee_noncommander", D13),
+        ("gate_of_nurgle", "enemy_ground_melee", "wh3_main_character_abilities_gate_of_nurgle"),
+        ("beast_pack", "enemy_ground_melee", "wh2_dlc16_lord_abilities_beast_pack"),
+        ("wake_da_idol", "enemy_ground_melee", "wh3_main_item_abilities_zak_aloooog")):
+    assert 'marker = "%s"' % _mk in script_txt, "summon marker missing: " + _mk
+    assert 'badge = "zz_auto_badge_%s"' % _mk in script_txt, "summon badge missing: " + _mk
+    assert 'trigger = "%s"' % _trig in script_txt, "summon trigger missing: " + _trig
+    assert '"%s"' % _key in script_txt, "summon key missing: " + _key
+# every A/D/F key sits in the enemy-ground set (91 entries: 10 prior + 81 new)
+_g0 = script_txt.find("enemy_ground_keys = {")
+_g1 = script_txt.find("\t},\n", _g0)
+assert _g0 > 0 and _g1 > _g0
+# ROUND 106: 91 + the bombardment family's 25 ground-targeted keys = 116.
+assert script_txt[_g0:_g1].count('"] = true,') == 115, "enemy_ground_keys is not 115 entries (the cataclysm Gate key left in round 121)"
+for _k in ("wh2_dlc16_hero_abilities_tide_of_death", "wh2_dlc16_hero_abilities_tide_of_pox",
+           "wh2_dlc15_item_abilities_blacktoofs_conjuration",
+           "wh2_dlc16_spell_bound_vampires_lesser_raise_dead",
+           "wh2_dlc17_spell_bound_savage_dominion",
+           "wh3_dlc26_hero_abilities_savage_predators",
+           "wh2_dlc16_lord_abilities_call_to_gwindalor",
+           D13, D13 + "_1", D13 + "_thanquol", D13 + "_thanquol_1"):
+    assert '["%s"] = true,' % _k in script_txt[_g0:_g1], "ground key missing from the set: " + _k
+# the self-summon is NOT a ground key, and Eye of Khorne is NOT either
+assert '["%s"] = true,' % NURG not in script_txt[_g0:_g1], "Nurgling Tide must not be a ground key"
+assert EYE not in script_txt[_g0:_g1], "Eye of Khorne must not be an enemy-ground key"
+# the four illusions stay out
+for _k in ("wh2_dlc10_lord_abilities_deadly_mislead", "wh3_dlc24_lord_item_deceiving_shadows",
+           "wh2_dlc14_unit_abilities_doppelgang", "wh2_dlc10_lord_abilities_mislead"):
+    assert _k not in script_txt, "an illusion summon is in the mod: " + _k
+# the commander test
+assert "FOURTH.commander_keys = {" in script_txt, "the derived commander key set is missing"
+_c0 = script_txt.find("FOURTH.commander_keys = {")
+_c1 = script_txt.find("\n}\n", _c0)
+assert script_txt[_c0:_c1].count('"] = true,') >= 1400, "the commander key set is too small"
+assert '["wh3_main_kho_cha_skarbrand_0"] = true,' in script_txt[_c0:_c1], "a known Lord is missing"
+assert '["wh2_dlc09_tmb_inf_skeleton_warriors_0"] = true,' not in script_txt[_c0:_c1], \
+    "a line unit is in the commander set"
+assert "function FOURTH.enemy_is_commander(enemy)" in script_txt, "the commander test is missing"
+assert "enemy:unit_class()" in script_txt, "the unit_class fallback is missing"
+assert "FOURTH.HEALTH_LINE_PCT = 20" in script_txt, "the 20% finisher line is missing"
+assert "hp < FOURTH.HEALTH_LINE_PCT" in script_txt, "the finisher is not strictly below the line"
+assert script_txt.count("\t\trange_real = ") == 207, "range_real count is not 207"
+assert script_txt.count("\t\tunbounded = true,") == 1, "the one unbounded entry is not flagged"
+assert "FOURTH.eg_no_bound == true then return true end" in script_txt, "the no-bound test is missing"
+assert "function FOURTH.evaluate_self_summon_melee(unit, routing)" in script_txt, "the self-summon evaluator is missing"
+assert "function FOURTH.evaluate_enemy_low_health_noncommander(unit, routing)" in script_txt, "the finisher evaluator is missing"
+assert "function FOURTH.evaluate_enemy_melee_noncommander(unit, routing)" in script_txt, "the D13 evaluator is missing"
+assert "self_summon_melee = FOURTH.evaluate_self_summon_melee," in script_txt
+assert "enemy_low_health_noncommander = FOURTH.evaluate_enemy_low_health_noncommander," in script_txt
+assert "enemy_melee_noncommander = FOURTH.evaluate_enemy_melee_noncommander," in script_txt
+assert 'self_summon_melee = "When armed, fires when this unit itself is fighting in melee' in script_txt
+assert 'enemy_low_health_noncommander = "When armed, fires on the lowest-health enemy' in script_txt
+assert 'enemy_melee_noncommander = "When armed, fires on the closest enemy' in script_txt
+assert "SKIPPED: the caster left melee before the self cast" in script_txt
+assert "pre-cast re-check: the caster is still in melee" in script_txt
+assert "lowest-health non-commander enemy below" in script_txt
+assert 'reason = "closest non-commander enemy in melee within bound (targeting "' in script_txt
+assert "FOURTH.ss_self = nil" in script_txt and "FOURTH.eg_noncommander = nil" in script_txt
+assert "FOURTH.ENEMY_CAST_R45  = 31" in script_txt and "FOURTH.ENEMY_CAST_R90  = 63" in script_txt
+assert "unit_in_range(" not in script_txt, "a unit_in_range call is back"
+assert "string.find(" not in script_txt, "a string.find call is back"
+
+# ROUND v103: THE CHARGE GATE (multi-USE abilities) + THE ONE HEALTH READ.
+assert "local charge_gate = {" in script_txt, "the charge-gate table is missing"
+assert script_txt.count('"] = ') >= 129, "the charge-gate table lost entries"
+assert '["wh3_main_lord_abilities_nurgling_tide"] = 90,' in script_txt, \
+    "Nurgling Tide is not held for its own 90 s recharge"
+assert "ability.charge_s" in script_txt, "the charge_s mapping is missing"
+assert "charge_gate.until_tick[ui_id]" in script_txt, "the poll's charge gate is missing"
+assert "held_until ~= nil and tick_count < held_until" in script_txt, "the charge hold test is missing"
+assert "math.floor((ability.charge_s * 1000) / POLL_MS)" in script_txt, "the next-use deadline is missing"
+assert 'charge gate " .. ability.marker' in script_txt, "the one-line charge-gate notice is missing"
+assert "function FOURTH.health_pct(unit)" in script_txt, "the ONE health reader is missing"
+assert "unit:unary_hitpoints()" in script_txt, "the engine's fraction health read is missing"
+assert "return FOURTH.health_pct(enemy)" in script_txt, "the enemy health read is not routed"
+assert script_txt.count('FOURTH.context_value(unit, "HealthPercent")') == 1, \
+    "a raw HealthPercent read is back outside the ONE reader"
+
+
+# ROUND v105 (2026-10-17): TZ'ARKAN ON THE NEW LOW-HEALTH TRIGGER - ONE entry,
+# FIVE keys, below 15% of the ONE health reader, cast on SELF, with a pre-cast
+# re-check that logs the exact percentage and skips a dead or risen caster.
+# Nothing above is loosened.
+TZ_KEYS = [
+    "wh2_dlc14_lord_abilities_tzarkan",
+    "wh2_dlc14_lord_abilities_tzarkan_mp",
+    "wh2_dlc14_lord_abilities_tzarkan_snikch",
+    "wh2_dlc14_lord_abilities_tzarkan_spite",
+    "wh2_dlc14_lord_abilities_tzarkan_spite_mp",
+]
+assert script_txt.count('marker = "tzarkan"') == 1, "the tzarkan entry is missing (or duplicated)"
+assert 'name = "Tz\'arkan", trigger = "health_below_15",' in script_txt, \
+    "the tzarkan entry is not on the new low-health trigger"
+assert 'badge = "zz_auto_badge_tzarkan"' in script_txt, "the tzarkan badge id is missing"
+for _k in TZ_KEYS:
+    assert '"%s"' % _k in script_txt, "a Tz'arkan key is missing: " + _k
+assert "FOURTH.TZARKAN_PCT = 15" in script_txt, "the 15% threshold constant is missing"
+assert "function FOURTH.evaluate_tzarkan_low_health(unit, routing)" in script_txt, \
+    "the tzarkan evaluator is missing"
+assert "health_below_15 = FOURTH.evaluate_tzarkan_low_health," in script_txt, \
+    "the tzarkan trigger is not wired in the evaluator map"
+assert 'health_below_15 = "When armed, fires when this unit is below 15% health"' in script_txt, \
+    "the tzarkan tooltip sentence is missing"
+_TZ_EV = script_txt[script_txt.find("function FOURTH.evaluate_tzarkan_low_health(unit, routing)"):]
+_TZ_EV = _TZ_EV[:_TZ_EV.find("\nend")]
+assert "FOURTH.health_pct(unit)" in _TZ_EV, "the evaluator does not use the ONE health reader"
+assert "HealthPercent" not in _TZ_EV, "the evaluator reads raw HealthPercent (the 0..1 fraction trap)"
+assert script_txt.count("if FOURTH.tz_self then") == 2, \
+    "the tzarkan cast handle and pre-cast re-check are not both present"
+assert "FOURTH.tz_self = nil" in script_txt and "FOURTH.tz_caster_su = nil" in script_txt, \
+    "the tzarkan cast slots are not declared"
+assert "tzarkan SKIPPED: the caster lapsed before the cast" in script_txt, \
+    "the pre-cast skip line is missing"
+assert "tzarkan pre-cast re-check: the caster is still below the line" in script_txt, \
+    "the pre-cast re-check line is missing"
+assert '["wh2_dlc14_lord_abilities_tzarkan"] = 3,' in script_txt, \
+    "Tz'arkan's own 3 s wind-up is missing from the in-flight gate"
+assert '["wh2_dlc14_lord_abilities_tzarkan_snikch"] = 1.5,' in script_txt, \
+    "the Snikch key's 1.5 s wind-up is missing from the in-flight gate"
+assert "BELOW the %d%% line" in script_txt, "the decision reason does not carry the exact percentage"
+
+# THE 12 TRANSFORMS THE USER SKIPPED ARE NOT AUTOMATED - no key of theirs may
+# appear in the shipped script at all (they were never in the ABILITIES table).
+SKIPPED_TRANSFORMS = [
+    "wh3_dlc24_lord_abilities_formless_horror",
+    "wh3_dlc24_lord_abilities_formless_horror_changeling",
+    "wh3_dlc24_lord_abilities_formless_horror_quest_battle",
+    "wh3_dlc24_lord_abilities_formless_horror_quest_battle_changeling_form",
+    "wh3_dlc24_lord_abilities_jade_dragon_dragon_form",
+    "wh3_dlc24_lord_abilities_jade_dragon_human_form",
+    "wh3_main_lord_abilities_iron_dragon_dragon_form",
+    "wh3_main_lord_abilities_iron_dragon_human_form",
+    "wh3_main_lord_abilities_storm_dragon_dragon_form",
+    "wh3_main_lord_abilities_storm_dragon_human_form",
+    "wh3_dlc27_unit_abilities_dread_maw_underground",
+    "wh3_dlc27_unit_abilities_dread_maw_surface",
+]
+for _k in SKIPPED_TRANSFORMS:
+    assert '"%s"' % _k not in script_txt, "a user-skipped transform key is in the mod: " + _k
+
+# HOUSEKEEPING 20261004: the two throwaway experiment probes were RETIRED from the
+# pack (zz_probe_unit_reads.lua and zz_probe_ui_text.lua - their experiments are
+# finished and their findings are recorded). Their sources are preserved in
+# releases/20261004_probe_sources_retired/ and must NOT ship again:
+assert not any("zz_probe_" in p for p in in_pack_paths), "a retired probe is back in the pack"
+for _retired in ("zz_probe_ui_text.lua", "zz_probe_unit_reads.lua"):
+    _retired_path = SRC_ROOT + "/releases/20261004_probe_sources_retired/" + _retired
+    assert os.path.exists(_retired_path), f"the preserved retired probe source is missing: {_retired_path}"
+
+
+# ---------------------------------------------------------------------------
+# ROUND 107 (2026-10-18): THE REMAINING BOMBARDMENT WORK.
+#   (1) Call of Tor joins Soulfire's trigger: melee_skip_commanders now has
+#       THREE entries (Soulfire 2 keys, Arachneruption, Call of Tor).
+#   (2) The "on top of" family: 12 entries / 19 keys on the NEW
+#       air_drop_on_infantry evaluator - an enemy INFANTRY unit inside the
+#       row's 70% bound (7 m of its 10 m), airborne where the row says so,
+#       out of melee where the row says so, self-centred cast, logged
+#       pre-cast re-check.
+#   (3) The PER-UNIT serialisation window: after any successful cast no OTHER
+#       ability may be issued on that unit for wind-up + 2 s (min 2.5 s), so
+#       two ready abilities fire in sequence instead of replacing each other.
+# ---------------------------------------------------------------------------
+AIR = [
+    ("death_from_above", "wh2_dlc09_unit_abilities_death_from_above"),
+    ("drop_rocks", "wh2_main_unit_abilities_drop_rocks"),
+    ("drop_rocks", "wh2_dlc12_unit_abilities_drop_rocks_character"),
+    ("drop_rocks", "wh2_dlc12_unit_abilities_drop_rocks_of_chotec"),
+    ("drop_rocks", "wh2_dlc12_unit_abilities_drop_rocks_of_sundering"),
+    ("drop_sphere_of_tepok", "wh2_dlc12_lord_abilities_drop_sphere_of_tepok"),
+    ("drop_sphere_of_tepok", "wh2_dlc12_lord_abilities_drop_sphere_of_tepok_upgraded"),
+    ("fire_bombs", "wh3_dlc25_unit_abilities_gyrobomber_fire_bomb"),
+    ("fire_bombs", "wh3_dlc25_unit_abilities_thunderbarge_fire_bomb"),
+    ("gyrobomber_bomb", "wh_main_unit_abilities_gyrobomber_bomb"),
+    ("gyrobomber_bomb", "wh_main_unit_abilities_gyrocopter_bomb"),
+    ("gyrocopter_bomb_anti_large", "wh3_dlc25_unit_abilities_gyrocopter_bomb_anti_large"),
+    ("sky_junk_bomb", "wh3_main_unit_abilities_sky_junk_bomb"),
+    ("skyhammer_bomb", "wh_dlc06_unit_abilities_skyhammer_bomb"),
+    ("skyhammer_bomb", "wh_dlc06_unit_abilities_skyhammer_fire_bomb"),
+    ("wake_of_fire", "wh2_main_unit_abilities_wake_of_fire"),
+    ("searing_torrent", "wh3_twa07_unit_abilities_searing_torrent"),
+    ("nan_gau_grenades", "wh3_dlc24_unit_abilities_nan_gau_grenades"),
+    ("undeath_from_above", "wh3_dlc29_unit_abilities_undeath_from_above"),
+]
+assert len(AIR) == 19, "the air-drop key list is not 19"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is not 12 entries"
+for _mk, _ky in AIR:
+    assert 'marker = "%s"' % _mk in script_txt, "air-drop marker missing: " + _mk
+    assert '"%s"' % _ky in script_txt, "air-drop key missing: " + _ky
+assert script_txt.count("\t\trange_real = 10,") == 12, "the air-drop range_real fields are not 12"
+assert "FOURTH.ENEMY_CAST_R10  = 7" in script_txt, "the 10 m -> 7 m 70% constant is missing"
+assert "\t[10]  = FOURTH.ENEMY_CAST_R10," in script_txt, "the 10 m map entry is missing"
+if not ROUND114: assert "FOURTH.AIR_DROP_CENTER_M = 6" in script_txt, "the air-drop bound constant is not the 6 m centre value"
+if not ROUND114: assert "AIR_DROP_BOUND_M" not in script_txt, "the retired edge-to-edge bound is still in the file"
+assert "if ability.evaluate == FOURTH.evaluate_air_drop_on_infantry then" in script_txt, \
+    "the air-drop family does not bypass the 70% map"
+assert 'air_only = true,' in script_txt and 'air_only = false,' in script_txt, "the air_only flags are missing"
+assert script_txt.count('air_only = false,') == 2, \
+    "the two documented NON-air-gated entries are not exactly two (Drop Sphere, Searing Torrent)"
+assert 'no_melee = true,' in script_txt and 'no_melee = false,' in script_txt, "the no_melee flags are missing"
+if not ROUND114: assert 'function FOURTH.ad_pick(unit, routing)' in script_txt, "the air-drop picker is missing"
+assert 'function FOURTH.evaluate_air_drop_on_infantry(unit, routing)' in script_txt, \
+    "the air-drop evaluator is missing"
+assert "air_drop_on_infantry = FOURTH.evaluate_air_drop_on_infantry," in script_txt, \
+    "the air-drop trigger is not wired"
+if not ROUND114: assert 'air_drop_on_infantry = "When armed, fires when this unit is over an infantry unit in range, airborne where the ability requires it",' in script_txt, \
+    "the air-drop tooltip sentence is missing"
+assert "unit:is_currently_flying()" in script_txt, "the flight read is missing"
+assert "FOURTH.enemy_is_infantry(enemy)" in script_txt, "the infantry read is missing from the picker"
+assert "FOURTH.eg_enemy_gap(unit, enemy)" in script_txt, "the overlap proxy is missing"
+if not ROUND114: assert "SKIPPED: the drop lapsed before the cast" in script_txt, "the air-drop lapse line is missing"
+if not ROUND114: assert "pre-cast re-check: still over an INFANTRY enemy" in script_txt, "the air-drop re-check line is missing"
+assert "if FOURTH.ad_enemy ~= nil then" in script_txt, "the air-drop pre-cast block is missing"
+assert "FOURTH.ad_air_only = (ability.air_only == true)" in script_txt, "the poll does not set the air_only flag"
+assert "FOURTH.ad_no_melee = (ability.no_melee == true)" in script_txt, "the poll does not set the no_melee flag"
+# the air-drop keys are SELF-CENTRED - they must NEVER be in the ground-key set
+_g0 = script_txt.find("enemy_ground_keys = {")
+_g1 = script_txt.find("\t},\n", _g0)
+assert _g0 > 0 and _g1 > _g0
+for _mk, _ky in AIR:
+    assert ('["%s"] = true,' % _ky) not in script_txt[_g0:_g1], \
+        "an air-drop key is in enemy_ground_keys: " + _ky
+
+# CALL OF TOR
+assert 'marker = "call_of_tor", name = "Call of Tor", trigger = "melee_skip_commanders"' in script_txt, \
+    "Call of Tor is not on Soulfire's trigger"
+assert '"wh3_twa07_spell_bound_call_of_tor"' in script_txt, "Call of Tor's key is missing"
+assert '["wh3_twa07_spell_bound_call_of_tor"] = 90,' in script_txt, "Call of Tor's charge-gate row is missing"
+assert '["wh3_twa07_spell_bound_call_of_tor"] = 1,' in script_txt, "Call of Tor's 1 s wind-up is missing"
+
+# THE PER-UNIT SERIALISATION WINDOW
+assert "FOURTH.SERIAL_MIN_HOLD_SECONDS = 2.5" in script_txt, "the stagger constant is missing"
+assert "unit_until = {}," in script_txt, "the per-unit window slot is missing"
+assert "unit_marker = {}," in script_txt, "the per-unit marker slot is missing"
+assert "unit_logged = {}," in script_txt, "the per-unit log slot is missing"
+assert "and cast_gate.unit_marker[ui_id] ~= ability.marker" in script_txt, \
+    "the gate does not read the per-unit marker"
+assert "local unit_hold_s = ((ability.wind_up_s or 0) + IN_FLIGHT_SETTLE_SECONDS)" in script_txt, \
+    "the per-unit hold arithmetic is missing"
+assert "if unit_hold_s < FOURTH.SERIAL_MIN_HOLD_SECONDS then" in script_txt, \
+    "the per-unit stagger clamp is missing"
+assert "cast_gate.unit_until[ui_id] = tick_count + math.floor((unit_hold_s * 1000) / POLL_MS)" in script_txt, \
+    "the per-unit window is never armed"
+assert "cast_gate.unit_until[id_slot] = nil" in script_txt, "the per-unit window is not purged"
+assert "per-unit cast gate " in script_txt, "the per-unit wait/arm log lines are missing"
+assert "if cast_gate.unit_marker[ui_id] ~= ability.marker then" in script_txt, \
+    "a same-marker repeat would re-arm the window (starvation)"
+
+
+# ============================================================================
+# ROUND 106 - THE BOMBARDMENT ROUND (two approved families). The gates below
+# name the NEW tokens only, so a stale build (the pre-106 source) fails here.
+# ============================================================================
+assert script_txt.count('trigger = "enemy_ground_melee_infantry"') == 30, \
+    "the bombardment family is not 30 entries on enemy_ground_melee_infantry"
+assert script_txt.count('trigger = "melee_skip_commanders"') == 4, \
+    "Soulfire + Arachneruption + Call of Tor + Warp Lightning Rod are not the four melee_skip_commanders entries"
+assert 'marker = "soulfire"' in script_txt and 'marker = "arachneruption"' in script_txt, \
+    "the two family-1 entries are missing"
+assert 'name = "Soulfire", trigger = "melee_skip_commanders"' in script_txt, \
+    "Soulfire is not on the new trigger"
+assert 'keys = { "wh_main_spell_bound_soulfire",' in script_txt, \
+    "Soulfire's base key is not in its entry"
+assert '"wh_dlc04_spell_bound_soulfire_upgraded" },' in script_txt, \
+    "Grand Soulfire does not ride the same entry"
+assert 'name = "Arachneruption", trigger = "melee_skip_commanders"' in script_txt, \
+    "Arachneruption is not on the new trigger"
+assert 'melee_skip_commanders = FOURTH.evaluate_melee_skip_commanders,' in script_txt, \
+    "the melee_skip_commanders evaluator is not wired"
+assert 'enemy_ground_melee_infantry = FOURTH.evaluate_enemy_ground_melee_infantry,' in script_txt, \
+    "the enemy_ground_melee_infantry evaluator is not wired"
+assert 'melee_skip_commanders = "When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero",' in script_txt, \
+    "the melee_skip_commanders tooltip sentence is missing"
+assert 'enemy_ground_melee_infantry = "When armed, fires on the closest infantry unit in range that is fighting in melee",' in script_txt, \
+    "the enemy_ground_melee_infantry tooltip sentence is missing"
+assert "function FOURTH.enemy_is_infantry(enemy)" in script_txt, "the infantry reader is missing"
+assert "enemy:is_infantry()" in script_txt, "the infantry reader does not use the engine's own read"
+assert 'cls == "inf_mel"' in script_txt and 'cls == "inf_mis"' in script_txt \
+    and 'cls == "inf_spr"' in script_txt, "the unit_class fallback is missing"
+assert "FOURTH.ENGAGE_CONTACT_M = 12" in script_txt, "the engagement contact constant is missing"
+assert "function FOURTH.engagement_set(unit)" in script_txt, "the engagement set reader is missing"
+assert 'elseif mode == "infantry" then' in script_txt, "the picker has no infantry mode"
+assert "if FOURTH.eg_infantry then" in script_txt, "the pre-cast infantry re-check is missing"
+assert "FOURTH.ENEMY_CAST_R300 = 210" in script_txt, "the 300 m bound is missing"
+assert "[300] = FOURTH.ENEMY_CAST_R300," in script_txt, "the 300 m map entry is missing"
+# the 24 GROUND-TARGETED bombardment keys (the 6 unit-targeted ones must NOT
+# be in the ground set - they cast on the enemy unit itself)
+for _gk in ("wh2_dlc10_item_bound_assault_of_stone", "wh3_main_weapon_abilities_axe_of_tor",
+            "wh3_main_mount_bound_celestial_comet", "wh3_main_mount_bound_celestial_lightning",
+            "wh_dlc07_item_abilities_chalice_of_potions", "wh3_main_spell_bound_comet_of_casandora",
+            "wh_dlc08_item_abilities_great_horn_of_dragon_ogre", "wh3_dlc23_lord_abilities_flame_and_shadow",
+            "wh_dlc05_weapon_abilities_hawks_talon", "wh2_dlc13_character_ability_ishas_rain",
+            "wh2_dlc17_spell_bound_urannons_thunderbolt_upgraded", "wh3_dlc29_unit_abilities_lightning_strike",
+            "wh_main_lord_abilities_lord_of_the_storm", "wh3_dlc29_spell_bound_warp_lightning",
+            "wh3_dlc29_unit_abilities_meteor_strike", "wh3_dlc25_lord_abilities_nemesis_crown",
+            "wh_main_spell_bound_piercing_bolts_of_burning", "wh3_dlc25_character_abilities_pigeon_bomb",
+            "wh2_main_spell_bound_rod_of_the_storm", "wh2_dlc10_item_abilities_sceptre_of_stone",
+            "wh3_twa08_spell_bound_searing_doom", "wh3_dlc20_spell_bound_slicing_shards",
+            "wh3_main_spell_slaanesh_slicing_shards_bound", "wh_dlc05_weapon_abilities_the_bow_of_loren",
+            "wh2_dlc17_spell_bound_urannons_thunderbolt"):
+    assert '["%s"] = true,' % _gk in script_txt, "a ground-targeted bombardment key is missing: " + _gk
+for _uk in ("wh2_dlc10_spell_bound_lesser_doombolt", "wh3_dlc20_item_abilities_rod_of_torment",
+            "wh2_main_spell_bound_tome_of_furion", "wh2_main_spell_bound_wand_of_the_kharaidon",
+            "wh3_main_weapon_abilities_the_traitors_sword", "wh2_dlc11_lord_abilities_wraith_storm"):
+    assert '["%s"] = true,' % _uk not in script_txt, \
+        "a UNIT-targeted bombardment key was put in the GROUND set: " + _uk
+# the two reported skips must NOT be in the table
+assert '"wh3_dlc20_cataclysm_bound_thorsens_thunderstorm"' not in script_txt, \
+    "Thorsen's Thunderstorm is army-bar and must not be implemented"
+assert '"wh2_dlc16_unit_abilities_warp_lightning_rod"' in script_txt, \
+    "Warp Lightning Rod is missing from the table"
+assert 'marker = "warp_lightning_rod", name = "Warp Lightning Rod", trigger = "melee_skip_commanders"' in script_txt, \
+    "Warp Lightning Rod is not on Soulfire's trigger"
+assert '["wh2_dlc16_unit_abilities_warp_lightning_rod"] = 60,' in script_txt, \
+    "Warp Lightning Rod's 60 s charge-gate row is missing"
+assert '["wh2_dlc16_unit_abilities_warp_lightning_rod"] = 1,' in script_txt, \
+    "Warp Lightning Rod's 1 s wind-up row is missing"
+assert "Clan Moulder" in script_txt and "LOBOTOMY" in script_txt, \
+    "the Clan Moulder Lobotomy mutation note is missing"
+# the two new gate tables must carry the new keys
+assert '["wh2_dlc15_unit_abilities_arachneruption"] = 90,' in script_txt, \
+    "Arachneruption's 90 s recharge is missing from the charge gate"
+assert '["wh2_dlc10_item_bound_assault_of_stone"] = 3,' in script_txt, \
+    "Assault of Stone's 3 s wind-up is missing from the cast gate"
+
+
+
+# ============================================================================
+# ROUND 108 (2026-10-18): THE 1 m AIR-DROP TEST BOUND + WARP LIGHTNING ROD.
+#
+#   (1) the air-drop overlap bound is 1 m - the user's own test value, NOT
+#       floor(10 x 0.70) = 7 m - carried by ONE constant and wired by an
+#       evaluator-identity bypass of the 70% map.
+#   (2) Warp Lightning Rod (wh2_dlc16_unit_abilities_warp_lightning_rod) on
+#       melee_skip_commanders, exactly like Soulfire / Call of Tor, with its
+#       Clan Moulder Lobotomy mutation note (the missing carrier junction).
+# ============================================================================
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is not 12 entries"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6\n") == 1, \
+    "the 6 m air-drop CENTRE constant is not defined exactly once"
+assert script_txt.count("if ability.evaluate == FOURTH.evaluate_air_drop_on_infantry then") == 1, \
+    "the air-drop bound bypass is not wired exactly once"
+if not ROUND114: assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the air-drop entries do not take the one centre constant"
+if not ROUND114: assert "the user's own test value, NOT the 70% rule" in script_txt, \
+    "the source does not state that 6 m is the user's own test value"
+if not ROUND114: assert "EDGE-TO-EDGE" in script_txt and "CENTRES are 15 m apart" in script_txt, \
+    "the source does not explain the edge-to-edge failure (boxes near, CENTRES far)"
+if not ROUND114: assert "ONE value to tune" in script_txt and "LOWER FOURTH.AIR_DROP_CENTER_M" in script_txt, \
+    "the source does not say the 6 m value is ONE value to tune"
+assert "wh2_main_unit_abilities_drop_rocks" in script_txt, \
+    "the field-tested row (Drop Rocks) is missing from the air-drop family"
+
+# ============================================================================
+# ROUND 109 (2026-10-18): THE AIR DROP IS A HORIZONTAL CENTRE TEST.
+#
+#   unit_distance() is EDGE-TO-EDGE (battle_unit.lua:160): two bounding boxes
+#   can be half a metre apart while their CENTRES are 15 m apart, so the 1 m
+#   edge bound still fired while the flyer was nowhere near over the target.
+#   The rule is now |centre(caster) - centre(enemy)| on the GROUND PLANE
+#   (x/z - get_y is HEIGHT, so a 3D read would be 30-60 m from a unit directly
+#   underneath) against FOURTH.AIR_DROP_CENTER_M = 6 m, ONE documented
+#   constant standing in for the formation footprint (the API has no per-unit
+#   radius / bbox / size read at all).
+# ============================================================================
+if not ROUND114: assert script_txt.count("FOURTH.ad_centre_gap(unit, enemy)") == 3, \
+    "the centre-gap helper is not defined once and called twice (picker + re-check)"
+if not ROUND114: assert "function FOURTH.ad_centre_gap(unit, enemy)" in script_txt, \
+    "the centre-gap helper is missing"
+if not ROUND114: assert "function FOURTH.ad_pos(x, z)" in script_txt, \
+    "the x/z position formatter is missing"
+_gap0 = script_txt.find("function FOURTH.ad_centre_gap(unit, enemy)")
+_gap1 = script_txt.find("\nend", _gap0)
+_gap = script_txt[_gap0:_gap1]
+if not ROUND114: assert "get_x()" in _gap and "get_z()" in _gap, "the helper does not read the ground-plane x/z"
+assert "get_y()" not in _gap, "the helper reads HEIGHT (get_y) - a 3D distance would fire never"
+if not ROUND114: assert "distance_xz" in _gap and "math.sqrt" in _gap, \
+    "the helper does not use distance_xz with an x/z fallback"
+if not ROUND114: assert "' is UNDER the caster" in script_txt, "the target line does not say UNDER"
+# SUPERSEDED IN ROUND 113 (tightened, not removed): `radius=none` was true while
+# the 6 m constant stood in for the whole footprint. The line now names the
+# PER-MODEL radius constant, the frontage credit derived from it and the
+# threshold, so the gate demands all four.
+if not ROUND114: assert "per_model_radius=" in script_txt, \
+    "the target line does not name the per-model radius constant"
+if not ROUND114: assert "frontage=" in script_txt and "threshold=" in script_txt, \
+    "the target line does not print the frontage credit and the threshold"
+if not ROUND114: assert "function FOURTH.ad_frontage(unit, men_now)" in script_txt, \
+    "the frontage helper is missing"
+if not ROUND114: assert "watch: nearest INFANTRY " in script_txt, \
+    "the why-it-did-not-fire line is missing"
+assert "gap <= bound" in script_txt, "the picker does not gate on the centre distance"
+_rech0 = script_txt.find("if FOURTH.ad_enemy ~= nil then")
+_rech1 = script_txt.find("-- SELF-SUMMON RE-CHECK", _rech0)
+assert _rech0 > 0 and _rech1 > _rech0
+_rech = script_txt[_rech0:_rech1]
+if not ROUND114: assert "FOURTH.ad_centre_gap" in _rech and "FOURTH.eg_enemy_gap" not in _rech, \
+    "the pre-cast re-check does not use the same CENTRE test"
+
+assert script_txt.count('trigger = "melee_skip_commanders"') == 4, \
+    "melee_skip_commanders is not four entries"
+assert 'marker = "warp_lightning_rod", name = "Warp Lightning Rod", trigger = "melee_skip_commanders"' in script_txt, \
+    "Warp Lightning Rod is not on Soulfire's trigger"
+assert 'keys = { "wh2_dlc16_unit_abilities_warp_lightning_rod" },' in script_txt, \
+    "Warp Lightning Rod's single key is missing"
+assert '["wh2_dlc16_unit_abilities_warp_lightning_rod"] = 60,' in script_txt, \
+    "Warp Lightning Rod's 60 s charge gate is missing"
+assert '["wh2_dlc16_unit_abilities_warp_lightning_rod"] = 1,' in script_txt, \
+    "Warp Lightning Rod's 1 s wind-up is missing"
+assert "NO carrier" in script_txt and "NOT a default" in script_txt, \
+    "the missing-carrier explanation is missing"
+# WLR is SELF-CENTRED: it must never be in the ground-key set nor carry the
+# air-drop usage flags
+_g0 = script_txt.find("enemy_ground_keys = {")
+_g1 = script_txt.find("\t},\n", _g0)
+assert _g0 > 0 and _g1 > _g0
+assert '["wh2_dlc16_unit_abilities_warp_lightning_rod"] = true,' not in script_txt[_g0:_g1], \
+    "Warp Lightning Rod was put in the ground-key set"
+assert script_txt.count('("warp_lightning_rod", "Warp Lightning Rod"') == 0, \
+    "Warp Lightning Rod must not ride the air-drop helper table"
+
+# ============================================================================
+# ROUND 110 (2026-10-18): THE AIR DROP IS PREDICTED, NOT SAMPLED.
+#
+#   The user's third field report: firing on Drop Rocks (Terradon Riders) is still
+#   early or misses - the rocks take about 1-2 s to fall and the flier keeps
+#   moving. TWO-BODY RELATIVE-MOTION PREDICTION now ships, under the user's own
+#   assumption ("I think the rocks don't keep the momentum, so let's work with
+#   that assumption. Let's implement it and I'll test it."): the ordnance lands
+#   STRAIGHT DOWN from the caster's position at RELEASE, so
+#       caster(t+d) = caster(t) + v_caster * d      <- the impact point
+#       enemy (t+d) = enemy (t)  + v_enemy  * d
+#   and the drop fires when the PROJECTED horizontal centre separation is inside
+#   the SAME 6 m bound. d = FOURTH.AIR_DROP_DELAY_S = 1.5 s, a TUNABLE constant
+#   between the 1 s and 2 s the user observed - NOT a game value: no ability row
+#   carries a fall time. The velocity is REBUILT from the only reads the API
+#   has - is_moving(), is_moving_fast(), slow_speed() / fast_speed() (m/s) and a
+#   heading from ordered_position() (normalise(ordered - current)); bearing()
+#   ("the current orientation ... in degrees") is the documented CASTER-ONLY
+#   fallback, since the dump never states how its degrees map onto x/z. Every
+#   unreadable read is ZERO velocity with a NAMED source, never invented motion.
+#   FOURTH.AIR_DROP_INHERIT = false is the ONE FLAG that adds v*d a SECOND time
+#   (impact = caster + v*d*2) if the field shows the rocks DO keep the momentum.
+#   Counts UNCHANGED: 689 entries / 742 keys, air_drop_on_infantry 12 / 19,
+#   46 evaluators - behaviour only.
+# ============================================================================
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_DELAY_S = 1.5\n") == 1, \
+    "the 1.5 s fall-delay constant is not defined exactly once"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_INHERIT = false\n") == 1, \
+    "the momentum flag is not defined exactly once, or it does not ship FALSE"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6\n") == 1, \
+    "the 6 m centre bound moved (it must stay exactly one definition)"
+if not ROUND114: assert "FOURTH.ad_velocity" in script_txt and "function FOURTH.ad_velocity(unit, allow_bearing)" in script_txt, \
+    "the velocity helper is missing"
+_vel0 = script_txt.find("function FOURTH.ad_velocity(unit, allow_bearing)")
+_vel1 = script_txt.find("\nend", _vel0)
+_vel = script_txt[_vel0:_vel1]
+for _tok in ("is_moving()", "is_moving_fast()", "slow_speed()", "fast_speed()",
+             "ordered_position()", "bearing()"):
+    if not ROUND114: assert _tok in _vel, "the velocity helper does not read " + _tok
+if not ROUND114: assert 'if moving ~= true then return 0, 0, 0, "stationary" end' in _vel, \
+    "a unit that is not moving does not get a ZERO velocity"
+for _src in ('"moving-unreadable"', '"no-speed"', '"no-heading"'):
+    if not ROUND114: assert _src in _vel, "an unreadable velocity source is not named: " + _src
+if not ROUND114: assert "len >= 0.5" in _vel, "the degenerate-ordered-point gate is missing"
+if not ROUND114: assert "if allow_bearing then" in _vel, "the bearing fallback is not caster-gated"
+if not ROUND114: assert script_txt.count("if allow_bearing then") == 1, \
+    "the bearing fallback must be offered in exactly one place (ad_velocity)"
+if not ROUND114: assert "function FOURTH.ad_lead(unit, t, allow_bearing)" in script_txt, \
+    "the two-body state/projection helper is missing"
+if not ROUND114: assert "local px, pz = x + vx * t, z + vz * t" in script_txt, \
+    "the projection does not add v*t on both axes"
+if not ROUND114: assert "if allow_bearing and FOURTH.AIR_DROP_INHERIT == true then" in script_txt, \
+    "the ONE momentum flag is not wired to the second v*t"
+if not ROUND114: assert "function FOURTH.ad_project(unit, t)" in script_txt, \
+    "the projected-position helper is missing"
+if not ROUND114: assert "FOURTH.ad_lead(unit, t, false)" in script_txt, \
+    "ad_project does not project an enemy through ad_lead"
+if not ROUND114: assert script_txt.count("does NOT inherit the caster's velocity") == 1, \
+    "the no-momentum assumption is not documented once, in the rule comment"
+if not ROUND114: assert "ONE FLAG" in script_txt and "impact = caster + v*d*2" in script_txt, \
+    "the single-flag escape hatch is not documented"
+if not ROUND114: assert "TUNABLE CONSTANT" in script_txt, \
+    "the 1.5 s delay is not documented as a tunable constant (not a game value)"
+_pk0 = script_txt.find("function FOURTH.ad_pick(unit, routing)")
+_pk1 = script_txt.find("\nfunction FOURTH.evaluate_air_drop_on_infantry", _pk0)
+_pk = script_txt[_pk0:_pk1]
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t, true)" in _pk and "FOURTH.ad_lead(enemy, ad_t, false)" in _pk, \
+    "the picker does not project BOTH bodies"
+# SUPERSEDED IN ROUND 113: the picker gates on the PERPENDICULAR distance from
+# the enemy's path segment to the caster's projected point, plus the frontage.
+if not ROUND114: assert "FOURTH.ad_sep(best_ipx, best_ipz, epx, epz)" in _pk and "perp <= eff" in _pk, \
+    "the picker does not gate on the PROJECTED separation against the bound"
+if not ROUND114: assert "FOURTH.AIR_DROP_DELAY_S" in _pk, "the picker does not read the fall delay"
+if not ROUND114: assert "caster position UNREADABLE" in _pk, "the caster-position fail-closed branch is missing"
+if not ROUND114: assert "FOURTH.ad_centre_gap(unit, enemy)" in _pk, "the instant cross-check left the picker"
+_rc0 = script_txt.find("if FOURTH.ad_enemy ~= nil then")
+_rc1 = script_txt.find("-- SELF-SUMMON RE-CHECK", _rc0)
+_rc = script_txt[_rc0:_rc1]
+# SUPERSEDED IN ROUND 113: the re-check takes ONE ad_lead call for the enemy (it
+# needs the CURRENT point as well as the projected one, to rebuild the segment).
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t_now, true)" in _rc \
+    and "FOURTH.ad_lead(enemy, ad_t_now, false)" in _rc and "FOURTH.ad_seg_dist" in _rc, \
+    "the pre-cast re-check does not RE-PROJECT both bodies"
+if not ROUND114: assert "local gap_now = perp_now" in _rc and \
+    "local in_bound_now = (perp_now ~= nil and perp_now <= eff_now)" in _rc, \
+    "the re-check's bound test does not run on the projected separation"
+if not ROUND114: assert '" (PROJECTED "' in script_txt, "the target line does not announce the projection"
+if not ROUND114: assert '" v=" .. FOURTH.ad_vec_text(best_uvx, best_uvz, best_uspd, best_usrc)' in script_txt, \
+    "the target line does not print the caster's velocity + source"
+if not ROUND114: assert '" v=" .. FOURTH.ad_vec_text(best_evx, best_evz, best_espd, best_esrc)' in script_txt, \
+    "the target line does not print the enemy's velocity + source"
+if not ROUND114: assert '" proj=" .. FOURTH.ad_pos(best_ipx, best_ipz)' in script_txt, \
+    "the target line does not print the caster's projected point"
+if not ROUND114: assert '" proj=" .. FOURTH.ad_pos(best_epx, best_epz)' in script_txt, \
+    "the target line does not print the enemy's projected point"
+if not ROUND114: assert '" centre=" .. string.format("%.1f", best_pgap)' in script_txt, \
+    "the target line does not print the projected separation"
+if not ROUND114: assert '" now="' in script_txt, "the target line does not print the instant separation"
+# SUPERSEDED IN ROUND 112 (a FORMAT gate, tightened not removed): the watch line
+# no longer bands below 15 m - the deciding number is printed exactly - so the gate
+# now demands the exact-metre branch AND the 15 m band boundary that keeps the log
+# short above it.
+if not ROUND114: assert '" [perp="' in script_txt and '" projected sep="' in script_txt and '" after delay="' in script_txt, \
+    "the watch line does not print the projected distance / delay"
+if not ROUND114: assert 'if near_gap < 15 then' in script_txt and 'string.format("%.2f", near_gap)' in script_txt \
+    and 'math.floor(near_gap / 5) * 5' in script_txt, \
+    "the watch line does not print EXACT metres below 15 m (and a band above it)"
+if not ROUND114: assert "momentum=" in script_txt, "the target line does not name the momentum mode"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+if not ROUND114: assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the 70% bypass lost its single wiring"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+
+# ============================================================================
+# ROUND 111 (2026-10-18): THE MOVING-CASTER DIALS - ONLY THE CASTER'S LEAD.
+#
+#   The user's fourth field report: "It seems to work okay when the caster is
+#   stationary, but it definitely drops the rocks too soon when in movement."
+#   A stationary caster is RIGHT, so the ENEMY projection and the 6 m bound are
+#   right; the error exists only while the caster moves and fires TOO SOON, so
+#   the caster's lead term is OVER-STATED. Two dials now qualify the CASTER only:
+#       caster_projected = caster + v_caster * AIR_DROP_CASTER_DELAY_S
+#                                          * AIR_DROP_CASTER_LEAD
+#       enemy_projected  = enemy  + v_enemy  * AIR_DROP_DELAY_S
+#   shipped as (AIR_DROP_CASTER_DELAY_S = 1.5, AIR_DROP_CASTER_LEAD = 0.5).
+#   0.0 is a caster treated as stationary (the field-correct case); 1.0 is the
+#   round-110 behaviour that over-leads. The enemy term, the 6 m bound, the
+#   INHERIT flag, air_only / no_melee, the self-centred cast, the fail-closed
+#   reads and the re-projecting pre-cast re-check are ALL unchanged - the
+#   re-check calls the same helper, so it reads the same two dials.
+#   Counts UNCHANGED: 689 entries / 742 keys, air_drop_on_infantry 12 / 19.
+# ============================================================================
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CASTER_DELAY_S = 1.5\n") == 1, \
+    "the caster's own lead time is not defined exactly once at 1.5 s"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CASTER_LEAD = 0.5\n") == 1, \
+    "the caster lead factor is not defined exactly once at 0.5"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_DELAY_S = 1.5\n") == 1, \
+    "the shared fall delay moved (the ENEMY term must stay exactly as it was)"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_INHERIT = false\n") == 1, \
+    "the momentum flag moved or no longer ships FALSE"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6\n") == 1, \
+    "the 6 m centre bound moved (it must stay exactly one definition)"
+if not ROUND114: assert "THE MOVING-CASTER DIALS" in script_txt, "the round-111 constant comment is missing"
+if not ROUND114: assert "LOWER the lead: 0.5 -> 0.3 -> 0.0" in script_txt, \
+    "the tuning guide does not state the 0.5 -> 0.3 -> 0.0 order for an early release"
+if not ROUND114: assert "fires EARLY while MOVING" in script_txt and "NEVER fires while MOVING" in script_txt \
+    and "still EARLY while STATIONARY" in script_txt, \
+    "the three-symptom tuning guide is not in the source"
+if not ROUND114: assert "Only ONE dial changes per test" in script_txt, \
+    "the source does not say to change one dial per test"
+_ld0 = script_txt.find("function FOURTH.ad_lead(unit, t, allow_bearing)")
+_ld1 = script_txt.find("\nend", _ld0)
+_ld = script_txt[_ld0:_ld1]
+if not ROUND114: assert _ld0 > 0 and _ld1 > _ld0, "the projection helper is missing"
+if not ROUND114: assert "local t_caster, lead_caster = t, 1" in _ld, \
+    "the caster's lead time/factor locals are missing"
+if not ROUND114: assert "px = x + vx * t_caster * lead_caster" in _ld, \
+    "the caster is not projected as position + v * caster_delay * lead (x axis)"
+if not ROUND114: assert "pz = z + vz * t_caster * lead_caster" in _ld, \
+    "the caster is not projected as position + v * caster_delay * lead (z axis)"
+if not ROUND114: assert "local px, pz = x + vx * t, z + vz * t" in _ld, \
+    "the ENEMY projection is no longer the shared v*t on both axes"
+if not ROUND114: assert "if allow_bearing == true then" in _ld, \
+    "the dials are not applied to the caster alone"
+if not ROUND114: assert 'if type(d_caster) == "number" and d_caster >= 0 then t_caster = d_caster end' in _ld, \
+    "an unreadable caster delay does not fall back to the shared delay"
+if not ROUND114: assert 'if type(l_caster) == "number" and l_caster >= 0 then lead_caster = l_caster end' in _ld, \
+    "an unreadable caster lead does not fall back to full lead (never to a guess)"
+if not ROUND114: assert "if allow_bearing and FOURTH.AIR_DROP_INHERIT == true then" in _ld and \
+    "px = px + vx * t_caster * lead_caster" in _ld, \
+    "the ONE momentum flag no longer adds the lead term a second time"
+if not ROUND114: assert script_txt.count("FOURTH.AIR_DROP_CASTER_DELAY_S") >= 3, \
+    "the caster delay is not read in the source"
+if not ROUND114: assert "function FOURTH.ad_dial_text(moving)" in script_txt, "the dial-text helper is missing"
+if not ROUND114: assert script_txt.count("FOURTH.ad_dial_text") == 5, \
+    "the dial-text helper must be defined once and called four times (target, watch, skip, re-check)"
+if not ROUND114: assert '.. " from " .. FOURTH.ad_dial_text(best_uspd > 0)' in script_txt, \
+    "the decision line does not print the two dials after the caster projection"
+if not ROUND114: assert '" moving caster: lead="' in script_txt, \
+    "the moving-caster log fragment is missing"
+if not ROUND114: assert script_txt.count("FOURTH.ad_dial_text(uc_spd2 ~= nil and uc_spd2 > 0)") == 2, \
+    "the pre-cast re-check does not print the dials on BOTH its lines"
+if not ROUND114: assert '.. " (" .. FOURTH.ad_dial_text(best_uspd > 0) .. "); enemy v="' in script_txt, \
+    "the why-not line does not print the dials beside the caster velocity"
+_pk0 = script_txt.find("function FOURTH.ad_pick(unit, routing)")
+_pk1 = script_txt.find("\nfunction FOURTH.evaluate_air_drop_on_infantry", _pk0)
+_pk = script_txt[_pk0:_pk1]
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t, true)" in _pk and "FOURTH.ad_lead(enemy, ad_t, false)" in _pk, \
+    "the picker no longer projects both bodies"
+# SUPERSEDED IN ROUND 113: the picker gates on the PERPENDICULAR distance from
+# the enemy's path segment to the caster's projected point, plus the frontage.
+if not ROUND114: assert "FOURTH.ad_sep(best_ipx, best_ipz, epx, epz)" in _pk and "perp <= eff" in _pk, \
+    "the picker no longer gates on the projected separation"
+if not ROUND114: assert "FOURTH.AIR_DROP_CASTER_DELAY_S" not in _pk, \
+    "the picker reaches for a dial directly instead of the one helper"
+_rc0 = script_txt.find("if FOURTH.ad_enemy ~= nil then")
+_rc1 = script_txt.find("-- SELF-SUMMON RE-CHECK", _rc0)
+_rc = script_txt[_rc0:_rc1]
+# SUPERSEDED IN ROUND 113: the re-check takes ONE ad_lead call for the enemy (it
+# needs the CURRENT point as well as the projected one, to rebuild the segment).
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t_now, true)" in _rc \
+    and "FOURTH.ad_lead(enemy, ad_t_now, false)" in _rc and "FOURTH.ad_seg_dist" in _rc, \
+    "the pre-cast re-check no longer re-projects both bodies"
+if not ROUND114: assert "FOURTH.AIR_DROP_CASTER_LEAD" not in _rc and "FOURTH.AIR_DROP_CASTER_DELAY_S" not in _rc, \
+    "the re-check re-derives the dials instead of using the shared helper"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+if not ROUND114: assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the 70% bypass lost its single wiring"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+
+# ============================================================================
+# ROUND 112 (2026-10-24): THE ENEMY-SIDE LEAD DIAL, THE EXACT WATCH DISTANCE AND
+# THE UI-ID TAG.
+#
+#   THE EVIDENCE (docs/WH3_skyjunk_diagnosis.md, pack 651f12e61284cae472bb06bf3a66b87d,
+#   session lines 947215-952480): four Sky-junk bombers (ui ids 1002-1005), all
+#   armed in one click, all airborne, all evaluated on every poll, infantry
+#   candidates present every poll - and three of them NEVER fired while the
+#   zombies walked underneath. The rule was satisfied only at a projected centre
+#   separation <= 6 m and the projected number bottomed in the 5-10 m band:
+#   the enemy's centre was carried v_enemy * 1.5 s = 3.45 m PAST the hoverer, so
+#   the projected gap was LARGEST exactly when the enemy was underneath (5 m at
+#   the pass, 10 m one second later).
+#
+#   (1) THE FOURTH DIAL - enemy_projected = enemy + v_enemy * AIR_DROP_DELAY_S
+#       * AIR_DROP_ENEMY_LEAD, with FOURTH.AIR_DROP_ENEMY_LEAD = 0.3 shipped.
+#       0.0 = the enemy's CURRENT position (impact straight down on where it is);
+#       1.0 = the round-110/111 full carry that produced the misses; 0.3 = 0.45 s
+#       of lead (~1.0 m at 2.3 m/s, not 3.45 m), because the release is not
+#       instantaneous but a full 1.5 s of enemy travel is far too much. It scales
+#       the ENEMY's velocity term ONLY.
+#   (2) THE WATCH LINE prints EXACT distances (%.2f) below 15 m; the 5 m band
+#       survives above 15 m, where the number is context only. Diagnosis D1.
+#   (3) EVERY air-drop line carries the unit's ui id - "[1003] sky_junk_bomb
+#       watch: ..." - via FOURTH.ad_tag, on the decision line, the watch line,
+#       the skip line and both pre-cast lines. Diagnosis D2.
+#   (4) The dial text is the FOUR-dial form on every one of those lines:
+#       delay=1.50s enemy_lead=0.30 delay_caster=1.50s caster_lead=0.50.
+#   UNCHANGED: AIR_DROP_DELAY_S = 1.5, AIR_DROP_CASTER_DELAY_S = 1.5,
+#       AIR_DROP_CASTER_LEAD = 0.5, AIR_DROP_CENTER_M = 6, AIR_DROP_INHERIT =
+#       false, air_only / no_melee, the self-centred cast, every fail-closed read
+#       and the pre-cast re-check (same helper => same four dials).
+#   Counts UNCHANGED: 689 entries / 742 keys, air_drop_on_infantry 12 / 19.
+# ============================================================================
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_ENEMY_LEAD = 0.3\n") == 1, \
+    "the enemy lead factor is not defined exactly once at 0.3"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_DELAY_S = 1.5\n") == 1, \
+    "the shared fall delay moved - the enemy's lead TIME must stay 1.5 s"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CASTER_DELAY_S = 1.5\n") == 1, \
+    "the caster's own lead time moved"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CASTER_LEAD = 0.5\n") == 1, \
+    "the caster lead factor moved"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6\n") == 1, \
+    "the 6 m centre bound moved (it must stay exactly one definition)"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_INHERIT = false\n") == 1, \
+    "the momentum flag moved or no longer ships FALSE"
+_ld0 = script_txt.find("function FOURTH.ad_lead(unit, t, allow_bearing)")
+_ld1 = script_txt.find("\nend", _ld0)
+_ld = script_txt[_ld0:_ld1]
+if not ROUND114: assert _ld0 > 0 and _ld1 > _ld0, "the projection helper is missing"
+if not ROUND114: assert "local lead_enemy = 1" in _ld and "if allow_bearing ~= true then" in _ld, \
+    "the enemy lead is not read on the enemy arm"
+if not ROUND114: assert "FOURTH.AIR_DROP_ENEMY_LEAD" in _ld, "the enemy dial is not used in the projection"
+if not ROUND114: assert "px = x + vx * t * lead_enemy" in _ld and "pz = z + vz * t * lead_enemy" in _ld, \
+    "the enemy is not projected as position + v * delay * enemy_lead"
+if not ROUND114: assert 'if type(l_enemy) == "number" and l_enemy >= 0 then lead_enemy = l_enemy end' in _ld, \
+    "an unreadable enemy lead does not fall back to the full carry (never to a guess)"
+if not ROUND114: assert "local t_caster, lead_caster = t, 1" in _ld, \
+    "the caster's lead locals are missing"
+if not ROUND114: assert "px = x + vx * t_caster * lead_caster" in _ld, \
+    "the caster is no longer projected by its own delay x lead (x axis)"
+if not ROUND114: assert "pz = z + vz * t_caster * lead_caster" in _ld, \
+    "the caster is no longer projected by its own delay x lead (z axis)"
+if not ROUND114: assert "if allow_bearing and FOURTH.AIR_DROP_INHERIT == true then" in _ld, \
+    "the ONE momentum flag no longer adds the caster's lead term a second time"
+if not ROUND114: assert "function FOURTH.ad_dial_text(moving)" in script_txt, "the dial-text helper is missing"
+if not ROUND114: assert '"enemy_lead="' in script_txt and '"delay="' in script_txt, \
+    "the dial text does not name the enemy lead and the shared delay"
+if not ROUND114: assert '"delay_caster="' in script_txt and '"caster_lead="' in script_txt, \
+    "the dial text does not name both caster dials"
+if not ROUND114: assert script_txt.count("FOURTH.ad_dial_text") == 5, \
+    "the dial-text helper must be defined once and called four times (target, watch, skip, re-check)"
+if not ROUND114: assert '.. " from " .. FOURTH.ad_dial_text(best_uspd > 0)' in script_txt, \
+    "the decision line does not print the four dials"
+if not ROUND114: assert '" moving caster: lead="' in script_txt, \
+    "the moving-caster log fragment is missing"
+if not ROUND114: assert '.. " (" .. FOURTH.ad_dial_text(best_uspd > 0) .. "); enemy v="' in script_txt, \
+    "the why-not line does not print the dials beside the caster velocity"
+if not ROUND114: assert "function FOURTH.ad_tag(unit)" in script_txt, "the ui-id tag helper is missing"
+if not ROUND114: assert script_txt.count("FOURTH.ad_tag(unit)") == 6, \
+    "the tag must be defined once and prepended to the four air-drop log lines"
+if not ROUND114: assert 'log("  " .. FOURTH.ad_tag(unit) .. marker .. " target: ' in script_txt, \
+    "the decision line does not carry the unit tag"
+if not ROUND114: assert 'log("  " .. FOURTH.ad_tag(unit) .. ad_marker_now .. " SKIPPED: ' in script_txt, \
+    "the skip line does not carry the unit tag"
+if not ROUND114: assert 'log("  " .. FOURTH.ad_tag(unit) .. ad_marker_now .. " pre-cast re-check: ' in script_txt, \
+    "the pre-cast re-check line does not carry the unit tag"
+_pk0 = script_txt.find("function FOURTH.ad_pick(unit, routing)")
+_pk1 = script_txt.find("\nfunction FOURTH.evaluate_air_drop_on_infantry", _pk0)
+_pk = script_txt[_pk0:_pk1]
+if not ROUND114: assert "if near_gap < 15 then" in _pk and 'string.format("%.2f", near_gap)' in _pk, \
+    "the watch line does not print the EXACT projected distance below 15 m"
+if not ROUND114: assert 'string.format("%.2f", near_now)' in _pk, \
+    "the watch line does not print the EXACT instant distance below 15 m"
+if not ROUND114: assert "math.floor(near_gap / 5) * 5" in _pk and "math.floor(near_now / 5) * 5" in _pk, \
+    "the 5 m band above 15 m is gone (the log must not grow per 0.1 m there)"
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t, true)" in _pk and "FOURTH.ad_lead(enemy, ad_t, false)" in _pk, \
+    "the picker no longer projects both bodies"
+if not ROUND114: assert "perp <= eff" in _pk, "the picker no longer gates on the PERPENDICULAR distance to the enemy path"
+if not ROUND114: assert "FOURTH.AIR_DROP_ENEMY_LEAD" not in _pk, \
+    "the picker reads the enemy dial directly instead of the one helper"
+_rc0 = script_txt.find("if FOURTH.ad_enemy ~= nil then")
+_rc1 = script_txt.find("-- SELF-SUMMON RE-CHECK", _rc0)
+_rc = script_txt[_rc0:_rc1]
+# SUPERSEDED IN ROUND 113: the re-check takes ONE ad_lead call for the enemy (it
+# needs the CURRENT point as well as the projected one, to rebuild the segment).
+if not ROUND114: assert "FOURTH.ad_lead(unit, ad_t_now, true)" in _rc \
+    and "FOURTH.ad_lead(enemy, ad_t_now, false)" in _rc and "FOURTH.ad_seg_dist" in _rc, \
+    "the pre-cast re-check no longer re-projects both bodies"
+if not ROUND114: assert "FOURTH.AIR_DROP_ENEMY_LEAD" not in _rc and "FOURTH.AIR_DROP_CASTER_LEAD" not in _rc, \
+    "the re-check re-derives the dials instead of using the shared helper"
+if not ROUND114: assert "AIR_DROP_ENEMY_LEAD 0.3 -> 0.0" in script_txt, \
+    "the tuning guide does not state the enemy-lead fix for a walk-through"
+if not ROUND114: assert "THE FOUR DIALS" in script_txt and "THE DEFAULTS THAT SHIP" in script_txt, \
+    "the four-dial tuning table is not in the source"
+if not ROUND114: assert "Only ONE dial changes per test" in script_txt, \
+    "the source does not say to change one dial per test"
+if not ROUND114: assert "LOWER the lead: 0.5 -> 0.3 -> 0.0" in script_txt, \
+    "the caster-lead tuning order is gone"
+if not ROUND114: assert "fires EARLY while MOVING" in script_txt and "NEVER fires while MOVING" in script_txt \
+    and "still EARLY while STATIONARY" in script_txt, \
+    "the symptom tuning guide is not in the source"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+if not ROUND114: assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the 70% bypass lost its single wiring"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+
+# ============================================================================
+# ROUND 113 (2026-10-25): THE PATH TEST, THE DERIVED FRONTAGE AND THE
+# SINGLE-ENTITY EXCLUSION.
+#
+#   THE FIELD REPORT (the user, with a screenshot): a Sky-junk hovering BESIDE a
+#   20-model zombie block never fired while the block walked past - the enemy's
+#   CENTRE stayed 10+ m away even though its models swept under the caster; and
+#   separately one fired at a LORD.
+#   THE USER'S RULINGS, verbatim: "1. Why combine? The started with one model
+#   would cover the other case, woudn't it? Also, why comparison is 1 or less? It
+#   cannot be less, then the unit does not exist. So comparion should be equal to
+#   1. Am I forgetting something? If you agree, start implementing with point 2."
+#   and "2. Let's implement the the path test with a derived frontage that you
+#   suggest."
+#
+#   (1) THE PATH: segment = enemy_current -> enemy_projected; the deciding number
+#       is the shortest horizontal distance from that SEGMENT to the CASTER'S
+#       PROJECTED point. A 20-model block is 10 m wide in two ranks, so its
+#       centre can stay 10 m away while one of its models passes underneath.
+#   (2) THE FRONTAGE CREDIT: perp <= AIR_DROP_CENTER_M + ad_frontage(enemy).
+#       ad_frontage returns a HALF-width: ordered_width()/2 when sane, otherwise
+#       ceil(men/2) * radius (TWO RANKS - the wide end of the game's own
+#       formations), clamped to 1..12 m, failing closed to 0. A one-model unit
+#       gets 0: a point has no width.
+#   (3) THE RADIUS IS A DOCUMENTED CONSTANT (0.6 m) because battle Lua cannot read
+#       land_units.man_entity -> battle_entities.radius; the value is the MODAL
+#       infantry radius in the extracted tables (168 of 942 rows), conservative
+#       against the 0.7 m median.
+#   (4) THE SINGLE-ENTITY EXCLUSION: initial_number_of_men() == 1 is skipped, once
+#       per episode, as "single entity (1 model)". EXACT equality, INITIAL not
+#       current, and the commander key set is NOT consulted here - every
+#       infantry-class lord/hero in the data is one model.
+#   (5) The pre-cast re-check RE-RUNS the segment test on fresh reads.
+#   KEPT: the four dials, the 6 m bound, AIR_DROP_INHERIT, air_only / no_melee,
+#       the self-centred cast, every fail-closed read.
+#   Counts UNCHANGED: 689 entries / 742 keys, air_drop_on_infantry 12 / 19.
+# ============================================================================
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_MODEL_RADIUS_M = 0.6\n") == 1, \
+    "the per-model radius constant is not defined exactly once at 0.6"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_RANKS = 2\n") == 1, \
+    "the two-rank assumption is not defined exactly once"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_FRONTAGE_MIN_M = 1\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_FRONTAGE_MAX_M = 12\n") == 1, \
+    "the frontage clamp is not 1 .. 12 m, defined exactly once each"
+if not ROUND114: assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_DELAY_S = 1.5\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_ENEMY_LEAD = 0.3\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_CASTER_DELAY_S = 1.5\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_CASTER_LEAD = 0.5\n") == 1 \
+    and script_txt.count("\nFOURTH.AIR_DROP_INHERIT = false\n") == 1, \
+    "one of the SIX older pins moved or was redefined"
+_fr0 = script_txt.find("function FOURTH.ad_frontage(unit, men_now)")
+_fr1 = script_txt.find("\nfunction FOURTH.ad_frontage_text", _fr0)
+_fr = script_txt[_fr0:_fr1]
+if not ROUND114: assert _fr0 > 0 and _fr1 > _fr0, "the frontage helper is missing"
+if not ROUND114: assert "unit:ordered_width()" in _fr and "local half = w * 0.5" in _fr, \
+    "the frontage helper does not prefer ordered_width() (halved)"
+if not ROUND114: assert "math.ceil(men / FOURTH.AIR_DROP_RANKS)" in _fr and "FOURTH.AIR_DROP_MODEL_RADIUS_M" in _fr, \
+    "the frontage helper does not derive the width from the model count and the radius"
+if not ROUND114: assert "if men < 2 then" in _fr and 'return 0, "single"' in _fr, \
+    "a one-model unit is not given zero frontage"
+if not ROUND114: assert 'return 0, "unreadable"' in _fr, "the frontage helper is not fail-closed"
+if not ROUND114: assert _fr.count('return clamped, "clamped"') == 1, "the clamp branch is missing"
+_sg0 = script_txt.find("function FOURTH.ad_seg_dist(px, pz, ax, az, bx, bz)")
+_sg1 = script_txt.find("\nend", _sg0)
+_sg = script_txt[_sg0:_sg1]
+if not ROUND114: assert _sg0 > 0 and _sg1 > _sg0, "the point-to-segment helper is missing"
+if not ROUND114: assert "local t = ((px - ax) * dx + (pz - az) * dz) / len2" in _sg, \
+    "the segment helper does not project the point onto the segment"
+if not ROUND114: assert "if t < 0 then" in _sg and "elseif t > 1 then" in _sg, \
+    "the segment parameter is not clamped to 0..1 (an END-point miss would read as a hit)"
+_pk0 = script_txt.find("function FOURTH.ad_pick(unit, routing)")
+_pk1 = script_txt.find("\nfunction FOURTH.evaluate_air_drop_on_infantry", _pk0)
+_pk = script_txt[_pk0:_pk1]
+if not ROUND114: assert "local perp = FOURTH.ad_seg_dist(best_ipx, best_ipz, ex, ez, epx, epz)" in _pk, \
+    "the picker does not measure the perpendicular distance to the enemy's path"
+if not ROUND114: assert "local eff = bound + half" in _pk and "if perp <= eff and" in _pk, \
+    "the picker does not gate on perp vs bound + frontage"
+if not ROUND114: assert "FOURTH.ad_frontage(enemy, alive)" in _pk, \
+    "the picker does not credit the candidate's half-frontage"
+if not ROUND114: assert "enemy:initial_number_of_men()" in _pk and "elseif im == 1 then" in _pk, \
+    "the picker has no single-entity exclusion (exact equality on the INITIAL size)"
+assert "im <= 1" not in _pk, "the single-entity guard is a range test again"
+assert "FOURTH.enemy_is_commander" not in _pk, \
+    "the commander key set is consulted by this evaluator (the model count covers it)"
+_rc0 = script_txt.find("if FOURTH.ad_enemy ~= nil then")
+_rc1 = script_txt.find("-- SELF-SUMMON RE-CHECK", _rc0)
+_rc = script_txt[_rc0:_rc1]
+if not ROUND114: assert "FOURTH.ad_lead(enemy, ad_t_now, false)" in _rc and "FOURTH.ad_seg_dist(upx, upz, ex2, ez2, epx, epz)" in _rc, \
+    "the pre-cast re-check does not rebuild the segment from FRESH reads"
+if not ROUND114: assert "FOURTH.ad_frontage(enemy, (ok_ea and ea) or nil)" in _rc, \
+    "the pre-cast re-check does not re-derive the frontage"
+if not ROUND114: assert "local in_bound_now = (perp_now ~= nil and perp_now <= eff_now)" in _rc, \
+    "the pre-cast re-check still gates on the projected centre rather than the path"
+if not ROUND114: assert "TWO RANKS DEEP" in script_txt and "battle_entities.radius is 0.6 m (168 rows)" in script_txt, \
+    "the formation assumption / the radius evidence is not documented in the source"
+if not ROUND114: assert "1 .. 12 m HALF-width" in script_txt, "the clamp is not documented in the source"
+if not ROUND114: assert "THE COMMANDER KEY SET IS DELIBERATELY NOT USED HERE" in script_txt, \
+    "the source does not state that the commander key set is not consulted"
+if not ROUND114: assert 'SKIPPED: " .. why' in script_txt and 'single entity (1 model)' in script_txt, \
+    "the once-per-episode single-entity skip line is missing"
+if not ROUND114: assert "FOURTH.ad_se_logged" in script_txt, "the once-per-episode skip bookkeeping is missing"
+if not ROUND114: assert "AIR_DROP_FRONTAGE_MAX_M (12 -> 15 -> 20)" in script_txt, \
+    "the tuning guide does not say how to widen the frontage credit"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+if not ROUND114: assert script_txt.count("FOURTH.ad_dial_text") == 5, \
+    "the dial-text helper must be defined once and called four times"
+if not ROUND114: assert script_txt.count("FOURTH.ad_tag(unit)") == 6, \
+    "the tag must be defined once and prepended to the five air-drop log sites"
+if not ROUND114: assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the 70% bypass lost its single wiring"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+
+# the main mod must be byte-identical (untouched by this work)
+main_src = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua", "rb").read()
+main_raw = bytes(c.send({"GetPackedFileRawData": [key, "script/battle/mod/zz_test_deadly_onslaught.lua"]})["VecU8"])
+print(f"\n== 6d main mod untouched (byte-identical)     : {main_raw == main_src}")
+assert main_raw == main_src, "the main mod changed - it must not"
+
+
+# ============================================================================
+# ROUND 114 (2026-10-18): THE AIR-DROP RULE IS ONE COMPARISON + A FAST PASS.
+#
+#   candidate = alive and number_of_men_alive() > AIR_DROP_MIN_MEN (10)
+#   valid     = its unit_distance() is readable
+#   chosen    = the NEAREST valid candidate
+#   FIRE      = unit_distance(caster, chosen) < AIR_DROP_EDGE_M (0.10 m)
+#
+# RETIRED WITH THE OLD RULE: the infantry filter, the single-entity exclusion, the
+# four projection dials, AIR_DROP_CENTER_M, AIR_DROP_INHERIT, the derived frontage
+# (radius / ranks / min / max) and the segment test with every helper that served
+# them (ad_frontage, ad_frontage_text, ad_seg_dist, ad_velocity, ad_lead,
+# ad_project, ad_dial_text, ad_single_say, ad_single_clear, ad_centre_gap, ad_pos,
+# ad_sep, ad_vec_text). NOTHING else in the file used any of them.
+#
+# ADDED: FOURTH.ad_nearest (one candidate scan), FOURTH.ad_fast_pass (the same
+# evaluator, same gate+cast path via FOURTH.try_pair, every 0.2 s, for armed
+# air-drop units with a valid enemy inside 30 m), its own bm:repeat_callback.
+# The global poll keeps POLL_MS = 250 and every other ability's cadence.
+# ============================================================================
+for _k, _v in (("CENTER_M", "6.0"), ("MIN_MEN", "10"), ("NEAR_M", "30"), ("FAST_S", "0.2")):
+    _line = "\nFOURTH.AIR_DROP_" + _k + " = " + _v + "\n"
+    assert script_txt.count(_line) == 1, "the round-114 constant is not defined exactly once: " + _k
+assert script_txt.count("function FOURTH.ad_nearest(unit)") == 1, \
+    "the candidate scan (FOURTH.ad_nearest) is missing"
+assert script_txt.count("function FOURTH.ad_fast_pass()") == 1, \
+    "the air-drop fast pass is missing"
+assert script_txt.count("function FOURTH.try_pair(") == 1, \
+    "the shared gate+cast function is missing"
+assert script_txt.count("FOURTH.try_pair(") == 3, \
+    "the shared gate+cast function is not called by both timers"
+assert script_txt.count("bm:repeat_callback(") == 2, \
+    "the air-drop fast timer is not registered beside the global poll"
+assert script_txt.count("local POLL_MS = 250") == 1, \
+    "the global poll interval moved (it must stay 250 ms)"
+assert "math.floor(FOURTH.AIR_DROP_FAST_S * 1000)" in script_txt, \
+    "the fast timer is not keyed on AIR_DROP_FAST_S"
+assert 'zz_test_deadly_onslaught_air_drop_fast' in script_txt, \
+    "the fast timer has no name"
+assert 'if dist >= FOURTH.AIR_DROP_CENTER_M then' in script_txt, \
+    "the decision is not the single edge comparison"
+assert "alive > FOURTH.AIR_DROP_MIN_MEN" in script_txt, \
+    "the > 10 entity filter is missing"
+assert 'FOURTH.ad_say(unit, marker, "nearest valid:\'' in script_txt, \
+    "the decision line does not name the enemy / distance"
+assert "nearest valid:'" in script_txt and "centre=" in script_txt and "need < " in script_txt, \
+    "the decision line lost one of its fields"
+assert "-> SKIPPED at re-check" in script_txt, \
+    "the pre-cast re-check no longer names its skip"
+assert "fast poll: ON (nearest valid " in script_txt and 'fast poll: OFF' in script_txt, \
+    "the fast-poll transition lines are missing"
+assert script_txt.count("FOURTH.ad_fast_abilities") >= 3, \
+    "the fast pass is not driven by the air-drop entry list"
+for _dead in ("FOURTH.AIR_DROP_DELAY_S",
+              "FOURTH.AIR_DROP_ENEMY_LEAD", "FOURTH.AIR_DROP_CASTER_DELAY_S",
+              "FOURTH.AIR_DROP_CASTER_LEAD", "FOURTH.AIR_DROP_INHERIT",
+              "FOURTH.AIR_DROP_MODEL_RADIUS_M", "FOURTH.AIR_DROP_RANKS",
+              "FOURTH.AIR_DROP_FRONTAGE_MIN_M", "FOURTH.AIR_DROP_FRONTAGE_MAX_M",
+              "function FOURTH.ad_frontage", "function FOURTH.ad_seg_dist",
+              "function FOURTH.ad_lead", "function FOURTH.ad_project",
+              "function FOURTH.ad_dial_text"):
+    assert _dead not in script_txt, "a retired air-drop token is back: " + _dead
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+assert "air_drop_on_infantry = \"When armed, fires when the nearest enemy unit with more than 10 models comes within 6 m of this unit's centre" in script_txt, \
+    "the tooltip sentence does not state the measured wait"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+print("\\n== round 114 content gates                : OK ==")
+
+# ============================================================================
+# ============================================================================
+# ROUND 118 (2026-10-18): THE AIR-DROP DELAY IS GONE. THE CENTRE STAYS.
+#
+#   candidate = ALIVE, number_of_men_alive() > AIR_DROP_MIN_MEN (10)
+#   chosen    = the NEAREST valid candidate by ad_centre_gap
+#   FIRE      = ad_centre_gap(caster, chosen) < AIR_DROP_CENTER_M (6.0 m),
+#               on the evaluation that measured it (subject only to the armed
+#               state, air_only / no_melee, the gates and the pre-cast re-check)
+#
+# DELETED (nothing outside the air-drop evaluator, its pre-cast re-check and
+# the drop routine's purge hook ever named any of it):
+#   AIR_DROP_DWELL_MID_S, AIR_DROP_DWELL_SWING_S, AIR_DROP_MIN_CONTACT_S,
+#   FOURTH.ad_pair + ad_pair_key / ad_pair_stamp / ad_pair_need / ad_pair_drop
+#   / ad_under / ad_purge_unit / ad_contact_clear, the purge hook
+#   zz_ad_dwell_purge (its one call site lived in drop_unit_by_ui_id),
+#   ad_enemy_velocity + ad_vread / ad_vread_px / ad_vread_pz, ad_proj_text,
+#   ad_dynamic_delay, ad_event, the short-crossing fallback and every
+#   dwell / hold / delay / cosine log line, INCLUDING the raw movement and
+#   heading read-verification block (it existed only to check the cosine).
+# KEPT: the CENTRE detection and ad_centre_gap, the candidate filter (no
+#   infantry test), the 0.2 s fast pass with its 30 m near gate, POLL_MS = 250,
+#   air_only / no_melee, the self-centred cast, every fail-closed read, the
+#   gates in try_pair and the pre-cast re-check on FRESH handles.
+# ============================================================================
+assert script_txt.count("\nFOURTH.AIR_DROP_CENTER_M = 6.0\n") == 1, \
+    "the 6 m CENTRE constant is not defined exactly once"
+for _k, _v in (("MIN_MEN", "10"), ("NEAR_M", "30"), ("FAST_S", "0.2")):
+    assert script_txt.count("\nFOURTH.AIR_DROP_" + _k + " = " + _v + "\n") == 1, \
+        "a kept air-drop constant moved or vanished: " + _k
+for _dead in ("AIR_DROP_DWELL_MID_S", "AIR_DROP_DWELL_SWING_S", "AIR_DROP_MIN_CONTACT_S",
+              "FOURTH.ad_pair", "ad_pair_key", "ad_pair_stamp", "ad_pair_need",
+              "ad_pair_drop", "ad_under", "ad_purge_unit", "ad_contact_clear",
+              "zz_ad_dwell_purge", "ad_enemy_velocity", "ad_proj_text",
+              "ad_dynamic_delay", "ad_vread", "FOURTH.ad_event", "ad_fired",
+              "dwell", "short crossing", "proj="):
+    assert script_txt.count(_dead) == 0, \
+        "the deleted delay machinery is back in the script: " + _dead
+assert script_txt.count("function FOURTH.ad_centre_gap(caster, enemy)") == 1, \
+    "the centre-gap helper is missing"
+assert script_txt.count("FOURTH.ad_centre_gap(") == 4, \
+    "the centre-gap helper is not wired in (definition + doc + scan + re-check)"
+_centre_gap = script_txt.split("function FOURTH.ad_centre_gap(caster, enemy)", 1)[1].split("\nend", 1)[0]
+assert "caster:position()" in _centre_gap and "enemy:position()" in _centre_gap, \
+    "the centre gap does not read BOTH units' position()"
+assert "get_y" not in _centre_gap, "the centre gap reads the HEIGHT (get_y) - it must be x/z only"
+for _tok in ("a:get_x()", "a:get_z()", "b:get_x()", "b:get_z()", "a:distance_xz(b)",
+             "math.sqrt((dx * dx) + (dz * dz))"):
+    assert _tok in _centre_gap, "the centre gap lost a read: " + _tok
+assert _centre_gap.count("return nil") == 3, "the centre gap does not fail closed on every path"
+assert "FOURTH.ad_centre_gap(unit, enemy)" in script_txt, \
+    "the candidate scan does not measure the centre"
+_nearest = script_txt.split("function FOURTH.ad_nearest(unit)", 1)[1].split("\nfunction FOURTH.ad_pick", 1)[0]
+assert "eg_enemy_gap" not in _nearest and "unit_distance" not in _nearest, \
+    "the candidate scan still uses the edge gap"
+_pick = script_txt.split("function FOURTH.ad_pick(unit, routing)", 1)[1].split(
+    "\nfunction FOURTH.evaluate_air_drop_on_infantry", 1)[0]
+assert _pick.count("if dist >= FOURTH.AIR_DROP_CENTER_M then") == 1, \
+    "the evaluator is not ONE comparison against the 6 m line"
+assert "-> NOT YET" in _pick, "the NOT YET decision line is missing"
+assert "-> FIRING" in _pick and "FOURTH.ad_enemy = enemy" in _pick, \
+    "the UNDER branch does not go straight to the cast"
+for _read in ("is_moving", "slow_speed", "fast_speed", "ordered_position", "tick_count"):
+    assert _read not in _pick, "the evaluator still consults a movement/clock read: " + _read
+assert script_txt.count('" centre="') >= 3, "the decision family does not print centre="
+assert '" edge="' not in script_txt, "an air-drop line still prints edge="
+assert "local centre_now = FOURTH.ad_centre_gap(unit, enemy)" in script_txt, \
+    "the pre-cast re-check does not re-measure the centre"
+assert "centre_now < FOURTH.AIR_DROP_CENTER_M" in script_txt, \
+    "the pre-cast re-check does not compare the centre against the 6 m line"
+assert "and (not melee_now) and enemy_alive and men_ok and centre_ok) then" in script_txt, \
+    "the pre-cast re-check's gate list is not the centre test"
+assert "function FOURTH.eg_enemy_gap(unit, enemy)" in script_txt, \
+    "eg_enemy_gap was removed - the OTHER triggers still use it"
+assert 'bm:repeat_callback(poll, POLL_MS, POLL_NAME)' in script_txt, \
+    "the 250 ms poll is no longer registered"
+assert script_txt.count("bm:repeat_callback(") == 2, \
+    "the poll + the 0.2 s fast pass are no longer both registered"
+assert "zz_test_deadly_onslaught_air_drop_fast" in script_txt, \
+    "the fast pass registration is missing"
+assert "local POLL_MS = 250" in script_txt, "POLL_MS moved"
+assert "dist < FOURTH.AIR_DROP_NEAR_M" in script_txt, "the 30 m fast-pass gate is missing"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 707, "the abilities table is not 707 entries"
+assert script_txt.count("ability.range_m = FOURTH.AIR_DROP_CENTER_M") == 1, \
+    "the family's inventory bound does not follow the 6 m line"
+assert "comes within 6 m of this unit's centre" in script_txt, \
+    "the tooltip sentence does not state the 6 m centre rule"
+assert "casts immediately on that evaluation - no delay at all" in script_txt, \
+    "the tooltip does not say the cast is immediate"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "unit_in_range(" not in script_txt, "an engine unit_in_range call is back"
+print("\\n== round 118 content gates                : OK ==")
+
+step("7 save to disk", {"SavePackAs": [key, OUT_PACK]})
+step("8 close", {"ClosePack": key})
+try:
+    c.send("ClientDisconnecting")
+except Exception:
+    pass  # the server shuts down as soon as the last session leaves
+
+print("\n================ INSTALL ================")
+shutil.copy2(OUT_PACK, GAME_PACK)
+a = hashlib.md5(open(OUT_PACK, "rb").read()).hexdigest()
+b = hashlib.md5(open(GAME_PACK, "rb").read()).hexdigest()
+print(f"built pack   md5 {a}")
+print(f"installed    md5 {b}")
+print(f"IDENTICAL    {a == b}")
+print(f"installed to {GAME_PACK}")

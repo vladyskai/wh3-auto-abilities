@@ -1,0 +1,392 @@
+entries parsed: 579
+slice: 58 onslaught .. great_gutgouger
+missing from unit_spec_abil: []
+wrote _slice01_gamedata.json
+====================================================================================================
+[ 1] onslaught | Deadly Onslaught | trigger=charge
+  KEY wh_main_character_abilities_deadly_onslaught
+    loc_name='Deadly Onslaught' ub_type=wh_type_augment family=augment_charge_self target_cat=self trig_cat=charge owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=31.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_character_abilities_deadly_onslaught name='' | {'effect_type': 'positive', 'duration': '31.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[ 2] foe_seeker | Foe-Seeker | trigger=tired
+  KEY wh_main_character_abilities_foe_seeker
+    loc_name='Foe-Seeker' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=25.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_character_abilities_foe_seeker name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '-0.0100', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh_dlc03_character_abilities_foe_seeker
+    loc_name='Foe-Seeker' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=25.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_character_abilities_foe_seeker name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '-0.0100', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh_main_character_abilities_foe_seeker_summoned
+    loc_name='{{tr:unit_abilities_onscreen_name_wh_main_character_abilities_foe_seeker}}' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=25.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_character_abilities_foe_seeker name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '-0.0100', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[ 3] hammer_of_sigmar | Hammer of Sigmar | trigger=melee
+  KEY wh_main_spell_bound_hammer_of_sigmar
+    loc_name='Hammer of Sigmar' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=bound
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=25.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_main_spell_bound_hammer_of_sigmar name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh_dlc04_spell_bound_hammer_of_sigmar_upgraded
+    loc_name='Grand Hammer of Sigmar' ub_type=wh_type_augment family=augment_melee_area target_cat=self trig_cat=melee_self owner=bound
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=50.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_dlc04_spell_bound_hammer_of_sigmar_upgraded name='' | {'effect_type': 'positive', 'duration': '50.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Extended effect duration']
+====================================================================================================
+[ 4] stand_your_ground | Stand Your Ground | trigger=melee_low_morale
+  KEY wh_main_character_abilities_stand_your_ground
+    loc_name='Stand Your Ground!' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=18.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_main_character_abilities_stand_your_ground name='' | {'effect_type': 'positive', 'duration': '18.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh3_dlc24_character_abilities_tacticians_stand_your_ground
+    loc_name='Tacticians, Stand Your Ground!' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=friend-or-self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=true tgt_enemies=false tgt_ground=true affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=18.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_main_character_abilities_stand_your_ground name='' | {'effect_type': 'positive', 'duration': '18.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Extended cast range']
+====================================================================================================
+[ 5] blood_lust | Blood Lust | trigger=melee_unwavering
+  KEY wh_main_character_abilities_blood_lust
+    loc_name='Blood Lust' ub_type=wh_type_augment family=augment_melee target_cat=friend-unit trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=true tgt_friends=true tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=1 n_enemy=0 range=0.0000 active=33.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_main_character_abilities_blood_lust name='' | {'effect_type': 'positive', 'duration': '33.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh_dlc03_character_abilities_blood_lust
+    loc_name='Blood Lust' ub_type=wh_type_augment family=augment_melee target_cat=friend-unit trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=true tgt_friends=true tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=1 n_enemy=0 range=0.0000 active=33.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_main_character_abilities_blood_lust name='' | {'effect_type': 'positive', 'duration': '33.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[ 6] aether_sword | Aether Sword | trigger=melee_unwavering
+  KEY wh3_dlc20_weapon_abilities_aether_sword
+    loc_name='Aether Sword' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=27.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc20_weapon_abilities_aether_sword name='' | {'effect_type': 'positive', 'duration': '27.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'true', 'imbue_ignition': '0', 'imbue_contact': 'wh2_dlc12_unit_contact_sundered_armour', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[ 7] apocalyptic_vision | Apocalyptic Vision | trigger=melee_unwavering
+  KEY wh_dlc03_character_abilities_apocalyptic_vision
+    loc_name='Apocalyptic Vision' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=18.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_dlc03_character_abilities_apocalyptic_vision name='' | {'effect_type': 'positive', 'duration': '18.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[ 8] armour_of_gazrakh | Armour of Gazrakh | trigger=melee_unwavering
+  KEY wh3_dlc23_item_abilities_armour_of_gazrakh
+    loc_name='Armour of Gazrakh' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=true only_target=false n_friend=0 n_enemy=0 range=0.0000 active=48.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc23_item_abilities_armour_of_gazrakh name='' | {'effect_type': 'positive', 'duration': '48.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Effect intensity increases as the unit takes damage']
+====================================================================================================
+[ 9] aura_of_quetzl | Aura of Quetzl | trigger=melee_unwavering
+  KEY wh2_main_item_abilities_aura_of_quetzl
+    loc_name='Aura of Quetzl' ub_type=wh_type_augment family=augment_defense_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=25.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh2_main_item_abilities_aura_of_quetzl name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[10] axe_of_dargo | Axe of Dargo | trigger=melee_unwavering
+  KEY wh_main_weapon_abilities_axe_of_dargo
+    loc_name='Axe of Dargo' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_weapon_abilities_axe_of_dargo name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[11] axe_of_grom | Axe of Grom | trigger=melee_unwavering
+  KEY wh2_dlc15_weapon_abilities_axe_of_grom
+    loc_name='Axe of Grom' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc15_weapon_abilities_axe_of_grom name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'false', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_dlc06_unit_contact_sundered_armour', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[12] axes_of_kadrin | Axes of Kadrin | trigger=melee_unwavering
+  KEY wh3_dlc25_weapon_abilities_axes_of_kadrin
+    loc_name='Axes of Kadrin' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=21.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc25_weapon_abilities_axes_of_kadrin name='' | {'effect_type': 'positive', 'duration': '21.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[13] azhags_ard_armour | Azhag's 'Ard Armour | trigger=melee_unwavering
+  KEY wh2_dlc15_item_abilities_azhags_ard_armour
+    loc_name="Azhag's 'Ard Armour" ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=38.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh2_dlc15_item_abilities_azhags_ard_armour name='' | {'effect_type': 'positive', 'duration': '38.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[14] ballet_of_blows | Ballet of Blows | trigger=melee_unwavering
+  KEY wh3_main_lord_abilities_ballet_of_blows
+    loc_name='Ballet of Blows' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=45.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_ballet_of_blows_1 name='[[img:stage_one]][[/img]]Stage One' | {'effect_type': 'positive', 'duration': '15.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_ballet_of_blows_2 name='[[img:stage_two]][[/img]]Stage Two' | {'effect_type': 'positive', 'duration': '15.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_ballet_of_blows_3 name='[[img:stage_three]][[/img]]Stage Three' | {'effect_type': 'positive', 'duration': '15.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[15] bear_fang_talisman | Bear Fang Talisman | trigger=melee_unwavering
+  KEY wh3_dlc27_item_abilities_bear_fang_talisman
+    loc_name='Bear Fang Talisman' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=true only_target=false n_friend=0 n_enemy=0 range=0.0000 active=25.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc27_item_abilities_bear_fang_talisman name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[16] beastslaver | Beastslaver | trigger=melee_unwavering
+  KEY wh2_dlc14_lord_abilities_beastslaver
+    loc_name='Beastslaver' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=34.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc14_lord_abilities_beastslaver name='' | {'effect_type': 'positive', 'duration': '34.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[17] blade_of_bel_korhadris | Blade of Bel-Korhadris | trigger=melee_unwavering
+  KEY wh2_main_item_abilities_blade_of_bel_korhadris
+    loc_name='Blade of Bel-Korhadris' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=38.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_main_item_abilities_blade_of_bel_korhadris name='' | {'effect_type': 'positive', 'duration': '38.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[18] blades_of_shang_yang | Blades of Shang-Yang | trigger=melee_unwavering
+  KEY wh3_cp1_weapon_abilities_blades_of_shang_yang
+    loc_name='Blades of Shang-Yang' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=32.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_cp1_weapon_abilities_blades_of_shang_yang name='' | {'effect_type': 'positive', 'duration': '32.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_dlc06_unit_contact_flammable', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[19] bloodstorm_blades | Bloodstorm Blades | trigger=melee_unwavering
+  KEY wh3_dlc26_weapon_abilities_bloodstorm_blades
+    loc_name='Bloodstorm Blades' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=35.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc26_weapon_abilities_bloodstorm_blades name='' | {'effect_type': 'positive', 'duration': '35.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[20] brass_body | Brass Body | trigger=melee_unwavering
+  KEY wh2_dlc17_lord_abilities_brass_body
+    loc_name='Brass Body' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=true only_target=false n_friend=0 n_enemy=0 range=0.0000 active=41.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc17_lord_abilities_brass_body name='' | {'effect_type': 'positive', 'duration': '41.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[21] change_or_die | Change or Die! | trigger=melee_unwavering
+  KEY wh3_dlc24_character_abilities_change_or_die
+    loc_name='Change or Die!' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=22.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh3_dlc24_character_abilities_change_or_die name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[22] claws_of_mourkain | Claws of Mourkain | trigger=melee_unwavering
+  KEY wh2_dlc11_lord_abilities_claws_of_mourkain
+    loc_name='Claws of Mourkain' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=34.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc11_lord_abilities_claws_of_mourkain name='' | {'effect_type': 'positive', 'duration': '34.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'false', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[23] cloak_of_mists_and_shadows | Cloak of Mists & Shadows | trigger=melee_unwavering
+  KEY wh_main_item_abilities_cloak_of_mists_and_shadows
+    loc_name='Cloak of Mists & Shadows' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_item_abilities_cloak_of_mists_and_shadows name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'true', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[24] coat_in_blood | Coat in Blood | trigger=melee_unwavering
+  KEY wh3_dlc29_hero_abilities_coat_in_blood
+    loc_name='Coat in Blood' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=17.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc29_hero_abilities_coat_in_blood name='' | {'effect_type': 'positive', 'duration': '17.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '10', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[25] creature_killer | Creature-Killer | trigger=melee_unwavering
+  KEY wh2_dlc16_weapon_abilities_creature_killer
+    loc_name='Creature-Killer' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=38.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh2_dlc16_weapon_abilities_creature_killer name='' | {'effect_type': 'positive', 'duration': '38.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[26] da_great_un_iz_ere | Da Great 'Un Iz 'Ere! | trigger=melee_unwavering
+  KEY wh2_dlc15_lord_abilities_da_great_un_iz_ere
+    loc_name="Da Great 'Un Iz 'Ere!" ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=35.0000 active=21.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh2_dlc15_lord_abilities_da_great_un_iz_ere name='' | {'effect_type': 'positive', 'duration': '21.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[27] daemonblade | Daemonblade | trigger=melee_unwavering
+  KEY wh3_dlc20_weapon_abilities_daemonblade
+    loc_name='Daemonblade' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=32.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc20_weapon_abilities_daemonblade name='' | {'effect_type': 'positive', 'duration': '32.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_dlc06_unit_contact_discouraged', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[28] daemonshield | Daemonshield | trigger=melee_unwavering
+  KEY wh3_dlc20_item_abilities_daemonshield
+    loc_name='Daemonshield' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=13.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc20_item_abilities_daemonshield name='' | {'effect_type': 'positive', 'duration': '13.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Unit is invulnerable to damage (does not apply to summoned units)']
+====================================================================================================
+[29] dagger_of_malice | Dagger of Malice | trigger=melee_unwavering
+  KEY wh3_dlc23_weapon_abilities_dagger_of_malice
+    loc_name='Dagger of Malice' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=true only_target=false n_friend=0 n_enemy=0 range=0.0000 active=17.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc23_weapon_abilities_dagger_of_malice name='' | {'effect_type': 'positive', 'duration': '17.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_main_unit_contact_poison', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[30] dark_protection | Dark Protection | trigger=melee_unwavering
+  KEY wh2_dlc11_lord_abilities_dark_protection
+    loc_name='Dark Protection' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=30.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc11_lord_abilities_dark_protection name='' | {'effect_type': 'positive', 'duration': '30.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'false', 'affects_enemies': 'false', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[31] darkwalker | Darkwalker | trigger=melee_unwavering
+  KEY wh3_dlc25_lord_abilities_darkwalker
+    loc_name='Darkwalker' ub_type=wh_type_augment family=augment_defense_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=30.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc25_lord_abilities_darkwalker name='' | {'effect_type': 'positive', 'duration': '30.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[32] deathbringer | Deathbringer | trigger=melee_unwavering
+  KEY wh3_main_lord_abilities_deathbringer
+    loc_name='Deathbringer' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_deathbringer name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+  KEY wh3_main_lord_abilities_deathbringer_upgraded
+    loc_name='Deathbringer Upgraded' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_deathbringer_upgraded name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[33] strike_of_nehekhara | Desertstrike | trigger=melee_unwavering
+  KEY wh2_dlc09_character_abilities_strike_of_nehekhara
+    loc_name='Desertstrike' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=1 n_enemy=0 range=0.0000 active=23.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc09_character_abilities_strike_of_nehekhara name='' | {'effect_type': 'positive', 'duration': '23.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[34] dolorous_blade | Dolorous Blade | trigger=melee_unwavering
+  KEY wh_dlc07_hero_abilities_dolorous_blade
+    loc_name='Dolorous Blade' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=33.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_dlc07_hero_abilities_dolorous_blade name='' | {'effect_type': 'positive', 'duration': '33.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[35] dragon_spear | Dragon Spear | trigger=melee_unwavering
+  KEY wh2_dlc16_weapon_abilities_dragon_spear
+    loc_name='Dragon Spear' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=1 n_enemy=0 range=0.0000 active=25.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh2_dlc16_weapon_abilities_dragon_spear name='' | {'effect_type': 'positive', 'duration': '25.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[36] dreaded_duelist | Dreaded Duelist | trigger=melee_unwavering
+  KEY wh2_dlc11_lord_abilities_dreaded_duelist
+    loc_name='Dreaded Duellist' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc11_lord_abilities_dreaded_duelist name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[37] dwarf_gouger | Dwarf Gouger | trigger=melee_unwavering
+  KEY wh2_main_weapon_abilities_dwarf_gouger
+    loc_name='Dwarf Gouger' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=36.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_main_weapon_abilities_dwarf_gouger name='' | {'effect_type': 'positive', 'duration': '36.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[38] enrage | Enrage | trigger=melee_unwavering
+  KEY wh_pro04_unit_abilities_enrage
+    loc_name='Enrage' ub_type=wh_type_ward_save family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_pro04_unit_abilities_enrage name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[39] entice | Entice | trigger=melee_unwavering
+  KEY wh3_dlc29_unit_abilities_entice
+    loc_name='Entice' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=true only_target=false n_friend=0 n_enemy=0 range=0.0000 active=24.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc29_unit_abilities_entice name='' | {'effect_type': 'positive', 'duration': '24.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh3_dlc20_contact_effect_euphoria', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    invalid_usage: ['health_below_50%']
+====================================================================================================
+[40] everyone_has_their_price | Everyone Has Their Price | trigger=melee_unwavering
+  KEY wh3_main_lord_abilities_everyone_has_their_price
+    loc_name='Everyone Has Their Price' ub_type=wh_type_area_of_hexes family=hex_melee_area_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=false always_self=false only_target=false n_friend=0 n_enemy=-1 range=35.0000 active=15.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=false fr=false en=true id=wh3_main_lord_abilities_everyone_has_their_price name='' | {'effect_type': 'negative', 'duration': '15.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[41] evisceration | Evisceration | trigger=melee_unwavering
+  KEY wh2_dlc16_hero_abilities_evisceration
+    loc_name='Evisceration' ub_type=wh_type_vortex family=aoe_centred_on_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=4.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc16_hero_abilities_evisceration name='' | {'effect_type': 'negative', 'duration': '4.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': 'rebirth', 'cant_move': 'true', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Good against armour', 'Huge, stationary area of effect', 'Strong vs multiple units']
+    invalid_usage: ['climbing', 'manning_equipment', 'on_a_platform']
+====================================================================================================
+[42] eye_jabber | Eye Jabber | trigger=melee_unwavering
+  KEY wh3_dlc29_spell_bound_eye_jabber
+    loc_name='Eye for an Eye' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=24.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc29_spell_bound_eye_jabber name='' | {'effect_type': 'positive', 'duration': '24.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_dlc06_unit_contact_blinded', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[43] eye_gouger | Eye Gouger | trigger=melee_unwavering
+  KEY wh3_dlc29_spell_bound_eye_gouger
+    loc_name='{{tr:character_skills_localised_name_wh3_dlc29_skill_emp_boris_special_1}}' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=24.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc29_spell_bound_eye_gouger name='' | {'effect_type': 'positive', 'duration': '24.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh_dlc06_unit_contact_blinded', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[44] eye_of_the_storm | Eye of the Storm | trigger=melee_unwavering
+  KEY wh3_main_lord_abilities_eye_of_the_storm
+    loc_name='Eye of the Storm' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=29.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_eye_of_the_storm name='' | {'effect_type': 'positive', 'duration': '29.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    invalid_usage: ['ground_unit', 'unit_is_not_large']
+====================================================================================================
+[45] faiths_bastion | Faith's Bastion | trigger=melee_unwavering
+  KEY wh_main_hero_abilities_faiths_bastion
+    loc_name="Faith's Bastion" ub_type=wh_type_area_of_ward_save family=augment_defense_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_hero_abilities_faiths_bastion name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[46] fangsword_of_eltharion | Fangsword of Eltharion | trigger=melee_unwavering
+  KEY wh2_dlc15_weapon_abilities_fangsword_of_eltharion
+    loc_name='Fangsword of Eltharion' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=31.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc15_weapon_abilities_fangsword_of_eltharion name='' | {'effect_type': 'positive', 'duration': '31.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'true', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[47] feint_and_reposte | Feint and Reposte | trigger=melee_unwavering
+  KEY wh2_main_lord_abilities_feint_and_reposte
+    loc_name='Feint & Riposte' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=28.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_main_lord_abilities_feint_and_reposte name='' | {'effect_type': 'positive', 'duration': '28.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[48] filth_mace | Filth Mace | trigger=melee_unwavering
+  KEY wh_main_weapon_abilities_filth_mace
+    loc_name='Filth Mace' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=5 range=0.0000 active=30.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_weapon_abilities_filth_mace name='[[col:red]][[img:ui/skins/default/modifier_icon_armour_break.png]][[/img]]Corroded Armour[[/col]]' | {'effect_type': 'positive', 'duration': '30.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh3_dlc20_unit_contact_corrosion', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[49] fluid_injection | Fluid Injection | trigger=melee_unwavering
+  KEY wh2_dlc16_unit_abilities_fluid_injection
+    loc_name='Fluid Injection!' ub_type=wh_type_augment family=augment_melee target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=60.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_dlc16_unit_abilities_fluid_injection name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[50] gaze_of_khorne | Gaze of Khorne | trigger=melee_unwavering
+  KEY wh3_dlc26_lord_abilities_gaze_of_khorne
+    loc_name='Fury of the Blood God' ub_type=wh_type_explosion family=aoe_centred_on_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=-1 range=0.0000 active=2.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc26_lord_abilities_gaze_of_khorne name='' | {'effect_type': 'negative', 'duration': '2.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'true', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Causes moderate [[img:icon_dmg_magical]][[/img]]magical damage', 'Causes severe disruption to enemy formations', 'Strong vs multiple combatants']
+    invalid_usage: ['climbing', 'manning_equipment']
+====================================================================================================
+[51] fury_of_the_land | Fury of the Land | trigger=melee_unwavering
+  KEY wh3_dlc24_character_abilities_fury_of_the_land
+    loc_name='Fury of the Land' ub_type=wh_type_area_of_augments family=augment_melee_area target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=55.0000 active=35.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=false fr=true en=false id=wh3_dlc24_character_abilities_fury_of_the_land name='' | {'effect_type': 'positive', 'duration': '35.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'true', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[52] fury_of_ursun | Fury of Ursun | trigger=melee_unwavering
+  KEY wh3_main_lord_abilities_fury_of_ursun
+    loc_name='Fury of Ursun' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=18.0000 recharge=90.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_main_lord_abilities_fury_of_ursun name='' | {'effect_type': 'positive', 'duration': '18.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[53] ghal_maraz | Ghal Maraz | trigger=melee_unwavering
+  KEY wh_main_weapon_abilities_ghal_maraz
+    loc_name='Ghal Maraz' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=39.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_weapon_abilities_ghal_maraz name='' | {'effect_type': 'positive', 'duration': '39.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[54] giant_leap | Giant Leap | trigger=melee_unwavering
+  KEY wh3_dlc24_character_abilities_giant_leap
+    loc_name='Giant Leap' ub_type=wh_type_explosion family=aoe_centred_on_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=-1 range=0.0000 active=5.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc24_character_abilities_giant_leap name='' | {'effect_type': 'negative', 'duration': '5.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '-1', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': 'rebirth', 'cant_move': 'true', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Causes moderate [[img:icon_dmg_magical]][[/img]]magical damage', 'Causes severe disruption to enemy formations', 'Strong vs multiple combatants']
+====================================================================================================
+[55] gitsnik | Gitsnik | trigger=melee_unwavering
+  KEY wh_main_weapon_abilities_gitsnik
+    loc_name='Gitsnik' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=33.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh_main_weapon_abilities_gitsnik name='' | {'effect_type': 'positive', 'duration': '33.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[56] gotrek_doom | Gotrek's Doom | trigger=melee_unwavering
+  KEY wh2_pro08_character_abilities_gotrek_doom
+    loc_name="Gotrek's Doom" ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh2_pro08_character_abilities_gotrek_doom name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+[57] shield_of_faith_upgraded | Shield of Faith (Upgraded) | trigger=melee_unwavering
+  KEY wh_dlc04_spell_bound_shield_of_faith_upgraded
+    loc_name='Grand Shield of Faith' ub_type=wh_type_area_of_ward_save family=augment_melee_area target_cat=self trig_cat=melee_self owner=bound
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=-1 n_enemy=0 range=55.0000 active=50.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=true en=false id=wh_dlc04_spell_bound_shield_of_faith_upgraded name='' | {'effect_type': 'positive', 'duration': '50.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': '', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+    bullets: ['Extended effect duration']
+====================================================================================================
+[58] great_gutgouger | Great Gutgouger | trigger=melee_unwavering
+  KEY wh3_dlc26_weapon_abilities_great_gutgouger
+    loc_name='Great Gutgouger' ub_type=wh_type_augment family=augment_melee_self target_cat=self trig_cat=melee_self owner=active
+    spec: passive=false tgt_self=false tgt_friends=false tgt_enemies=false tgt_ground=false affect_self=true always_self=false only_target=false n_friend=0 n_enemy=0 range=0.0000 active=22.0000 recharge=120.0000 uses=-1 minr=0.0000
+    phase self=true fr=false en=false id=wh3_dlc26_weapon_abilities_great_gutgouger name='' | {'effect_type': 'positive', 'duration': '22.0000', 'heal_amount': '0.0000', 'barrier_heal_amount': '0.0000', 'damage_amount': '0', 'max_damaged_entities': '0', 'affects_allies': 'true', 'affects_enemies': 'true', 'resurrect': 'false', 'fatigue_change_ratio': '0.0000', 'imbue_magical': 'false', 'imbue_ignition': '0', 'imbue_contact': 'wh2_dlc11_unit_contact_monstrous_impact', 'requested_stance': '', 'cant_move': 'false', 'hp_change_frequency': '0.0000', 'execute_ratio': '0.0000', 'spreading': ''}
+====================================================================================================
+DONE

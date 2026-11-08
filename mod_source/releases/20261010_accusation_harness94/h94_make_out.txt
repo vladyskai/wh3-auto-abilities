@@ -1,0 +1,23 @@
+patch P1 env: applied
+patch P1b banner: applied
+patch M1 W fields: applied
+patch M2 zz_uid: applied
+patch M3 enemy reads: applied
+patch M4 dist_by_target: applied
+patch M5 bm enemy method: applied
+patch M6 enemy collection: applied
+patch pin cp 481->480: applied
+patch pin mu 481->480: applied
+repl label grew: 1 occurrences
+repl label is: 1 occurrences
+repl label 0m: 1 occurrences
+repl label 0n: 1 occurrences
+repl label 0o/0p: 2 occurrences
+repl label red92: 1 occurrences
+patch P4 h93 tip: applied
+patch P5 h93 red rebase: applied
+repl label round: 5 occurrences
+repl label snapshot: 5 occurrences
+repl label build: 1 occurrences
+patch P6 append section: applied
+wrote harness94.lua 725939 bytes

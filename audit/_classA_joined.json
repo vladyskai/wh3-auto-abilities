@@ -1,0 +1,1872 @@
+[
+ {
+  "num": 263,
+  "name": "Accusation",
+  "keys": [
+   "wh_main_hero_abilities_accusation"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "accusation"
+  ],
+  "mod_triggers": [
+   "enemy_engaged_or_shot"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 264,
+  "name": "Acquiescence",
+  "keys": [
+   "wh3_dlc27_spell_bound_acquiescence"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "acquiescence"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 271,
+  "name": "Amulet of Pha-Stah",
+  "keys": [
+   "wh2_dlc09_item_abilities_amulet_of_phastah"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 70,
+  "mod_markers": [
+   "amulet_of_phastah"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 276,
+  "name": "Assassin's Trophy",
+  "keys": [
+   "wh2_main_character_abilities_assassins_trophy"
+  ],
+  "range_real": 150.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "assassins_trophy"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 281,
+  "name": "Bastet",
+  "keys": [
+   "wh3_dlc29_lord_abilities_bastet"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "bastet"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 282,
+  "name": "Bitter Sting",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_bitter_sting"
+  ],
+  "range_real": 30.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 21,
+  "mod_markers": [
+   "bitter_sting"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 285,
+  "name": "Blade of Setep",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blade_of_setep"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "blade_of_setep"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 288,
+  "name": "Blight Swarm",
+  "keys": [
+   "wh3_main_lord_abilities_blight_swarm"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "blight_swarm"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 290,
+  "name": "Bloody Onslaught",
+  "keys": [
+   "wh3_dlc26_character_abilities_bloody_onslaught"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "bloody_onslaught"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 294,
+  "name": "Book of Secrets",
+  "keys": [
+   "wh3_dlc24_item_abilities_book_of_secrets"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "book_of_secrets"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 298,
+  "name": "Chalice of Dark Rain",
+  "keys": [
+   "wh_dlc03_item_abilities_chalice_of_dark_rain"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 140,
+  "mod_markers": [
+   "chalice_of_dark_rain"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 303,
+  "name": "Cube of Darkness",
+  "keys": [
+   "wh2_main_item_abilities_cube_of_darkness"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "cube_of_darkness"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 304,
+  "name": "Curse of Khsar",
+  "keys": [
+   "wh2_dlc09_character_abilities_curse_of_khsar"
+  ],
+  "range_real": 35.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 24,
+  "mod_markers": [
+   "curse_of_khsar"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 309,
+  "name": "Don't Even Try It",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dont_even_try_it"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "dont_even_try_it"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 310,
+  "name": "Doom & Darkness",
+  "keys": [
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+   "wh_dlc08_spell_bound_death_doom_and_darkness"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "doom_and_darkness_gunnery_school"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 313,
+  "name": "El Syf",
+  "keys": [
+   "wh_dlc05_weapon_abilities_el_syf"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "el_syf"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 318,
+  "name": "Entangle",
+  "keys": [
+   "wh2_dlc10_character_abilities_entangle"
+  ],
+  "range_real": 15.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 10,
+  "mod_markers": [
+   "entangle"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 320,
+  "name": "Eternal Gaze",
+  "keys": [
+   "wh3_dlc29_lord_abilities_gaze_of_usirian"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "gaze_of_usirian"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 324,
+  "name": "Fear of Aramar",
+  "keys": [
+   "wh2_dlc10_item_abilities_fear_of_aramar"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "fear_of_aramar"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 326,
+  "name": "Fecund Rebirth",
+  "keys": [
+   "wh3_dlc29_character_active_mark_of_the_monster"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "mark_of_the_monster"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 327,
+  "name": "Fermented Fungi",
+  "keys": [
+   "wh2_dlc15_lord_abilities_fermented_fungi"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "fermented_fungi"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 333,
+  "name": "Frenzied Challenge",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge"
+  ],
+  "range_real": 150.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "frenzied_challenge"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 334,
+  "name": "Frost Shard Glaive",
+  "keys": [
+   "wh3_main_weapon_abilities_frost_shard_glaive"
+  ],
+  "range_real": 50.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "frost_shard_glaive"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 336,
+  "name": "Gaze of Fate",
+  "keys": [
+   "wh3_main_lord_abilities_gaze_of_fate"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "gaze_of_fate"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 337,
+  "name": "Get 'Em!",
+  "keys": [
+   "wh3_dlc25_character_abilities_get_em"
+  ],
+  "range_real": 35.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 24,
+  "mod_markers": [
+   "get_em"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 339,
+  "name": "Gilellion's Soulnetter",
+  "keys": [
+   "wh3_main_weapon_abilities_soulnetter"
+  ],
+  "range_real": 50.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "soulnetter"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 341,
+  "name": "Glory Seeker",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "glory_seeker"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 342,
+  "name": "Glory Seeker Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker_upgraded"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "glory_seeker_upgraded"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 348,
+  "name": "Headhunt",
+  "keys": [
+   "wh3_dlc26_character_abilities_headhunt"
+  ],
+  "range_real": 150.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "headhunt"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 351,
+  "name": "Hidden Huntress",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "hidden_huntress"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 352,
+  "name": "Hidden Huntress Upgraded",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress_upgraded"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "hidden_huntress_upgraded"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 355,
+  "name": "Hornswaggle",
+  "keys": [
+   "wh2_dlc11_character_abilities_hornswaggle"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "hornswaggle"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 357,
+  "name": "Hunter of Champions",
+  "keys": [
+   "wh_dlc08_character_abilities_hunter_of_champions"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "hunter_of_champions"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 358,
+  "name": "Hunter's Snare",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_snare"
+  ],
+  "range_real": 35.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": false,
+  "bound": 24,
+  "mod_markers": [
+   "hunters_snare"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 359,
+  "name": "Hunter's Trap",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_trap"
+  ],
+  "range_real": 35.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": false,
+  "bound": 24,
+  "mod_markers": [
+   "hunters_trap"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 369,
+  "name": "Looming Dread",
+  "keys": [
+   "wh2_dlc14_lord_abilities_looming_dread"
+  ],
+  "range_real": 150.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "looming_dread"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 370,
+  "name": "Lord of Dragons",
+  "keys": [
+   "wh2_dlc15_lord_abilities_lord_of_dragons"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "lord_of_dragons"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 372,
+  "name": "Mark of the Plague Fleet",
+  "keys": [
+   "wh3_dlc29_item_active_mark_of_the_plague_fleet"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "mark_of_the_plague_fleet"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 373,
+  "name": "Mark of Yin",
+  "keys": [
+   "wh3_dlc24_unit_abilities_mark_of_yin"
+  ],
+  "range_real": 180.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 125,
+  "mod_markers": [
+   "mark_of_yin"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 374,
+  "name": "Marked by Ulthar",
+  "keys": [
+   "wh_dlc06_unit_abilities_marked_by_ulthar"
+  ],
+  "range_real": 150.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "marked_by_ulthar"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 375,
+  "name": "Marked for Eatin'",
+  "keys": [
+   "wh3_dlc26_unit_abilities_marked_for_eatin"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "marked_for_eatin"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 376,
+  "name": "Master of Beguilement",
+  "keys": [
+   "wh_dlc04_lord_abilities_beguile"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "beguile"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 381,
+  "name": "Master Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_slowness"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "master_rune_of_slowness"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 390,
+  "name": "Missile Mirror",
+  "keys": [
+   "wh3_dlc24_unit_bound_missile_mirror"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "unit_bound_missile_mirror"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 391,
+  "name": "Mither",
+  "keys": [
+   "wh2_dlc15_hero_abilities_mither"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "mither"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 394,
+  "name": "Muster of Malevolents",
+  "keys": [
+   "wh2_dlc16_character_abilities_muster_of_malevolents"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "muster_of_malevolents"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 396,
+  "name": "Net Dem Up!",
+  "keys": [
+   "wh3_dlc26_unit_abilities_net_dem_up"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "net_dem_up"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 397,
+  "name": "Net of Amyntok",
+  "keys": [
+   "wh_dlc04_spell_bound_net_of_amyntok"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "net_of_amyntok"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 399,
+  "name": "Oath of Vengeance",
+  "keys": [
+   "wh2_dlc10_lord_abilities_oath_of_vengeance"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "oath_of_vengeance"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 400,
+  "name": "Oil Flask",
+  "keys": [
+   "wh2_dlc13_lord_abilities_oil_flask"
+  ],
+  "range_real": 70.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 49,
+  "mod_markers": [
+   "oil_flask"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 401,
+  "name": "Otto's Scythe",
+  "keys": [
+   "wh3_dlc29_item_active_ottos_scythe"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "ottos_scythe"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 402,
+  "name": "Pack Trap",
+  "keys": [
+   "wh3_dlc24_unit_abilities_pack_trap"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "pack_trap"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 403,
+  "name": "Pageant of Shrikes",
+  "keys": [
+   "wh2_dlc16_character_abilities_pageant_of_shrikes"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "pageant_of_shrikes"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 405,
+  "name": "Pestilent Potions",
+  "keys": [
+   "wh3_dlc20_item_abilities_pestilent_potions"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "pestilent_potions"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 408,
+  "name": "Plague of Rust",
+  "keys": [
+   "wh3_main_spell_bound_plague_of_rust"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "plague_of_rust"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 414,
+  "name": "Power Siphon",
+  "keys": [
+   "wh2_dlc11_lord_abilities_power_siphon"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "power_siphon"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 417,
+  "name": "Prey of Anath Raema",
+  "keys": [
+   "wh_dlc05_character_abilities_prey_of_anath_raema"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "prey_of_anath_raema"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 418,
+  "name": "Prey of the Blood God",
+  "keys": [
+   "wh3_pro12_hero_abilities_prey_of_the_blood_god"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "prey_of_the_blood_god"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 421,
+  "name": "Ravaging Swarm",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack"
+  ],
+  "range_real": 30.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 21,
+  "mod_markers": [
+   "dispatch_the_swarm_attack"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 422,
+  "name": "Ravaging Swarm Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded"
+  ],
+  "range_real": 30.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 21,
+  "mod_markers": [
+   "dispatch_the_swarm_attack_upgraded"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 429,
+  "name": "Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_slowness"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "rune_of_slowness"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 431,
+  "name": "Sadistic Snare",
+  "keys": [
+   "wh3_dlc23_lord_abilities_sadistic_snare"
+  ],
+  "range_real": 20.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 14,
+  "mod_markers": [
+   "sadistic_snare"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 434,
+  "name": "Scroll of Leeching",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_leeching"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "scroll_of_leeching"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 440,
+  "name": "Silence the Prey",
+  "keys": [
+   "wh3_main_character_abilities_silence_the_prey"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "silence_the_prey"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 445,
+  "name": "Spearfisher's Net",
+  "keys": [
+   "wh2_dlc11_lord_abilities_spearfishers_net"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "spearfishers_net"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 447,
+  "name": "Spiderweb Attack",
+  "keys": [
+   "wh3_dlc26_character_abilities_spider_web_attack"
+  ],
+  "range_real": 50.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "spider_web_attack"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 455,
+  "name": "Sword of Filth",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_sword_of_filth"
+  ],
+  "range_real": 35.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 24,
+  "mod_markers": [
+   "sword_of_filth"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 457,
+  "name": "Taunt",
+  "keys": [
+   "wh2_dlc11_character_abilities_taunt"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "taunt"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 458,
+  "name": "Tendrils of the Sea",
+  "keys": [
+   "wh3_dlc29_hero_active_tendrils_of_the_sea"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "tendrils_of_the_sea"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 460,
+  "name": "The Averland Runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_averland_runefang"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "averland_runefang"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 462,
+  "name": "The Black Tongue",
+  "keys": [
+   "wh3_dlc27_character_abilities_the_black_tongue"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "the_black_tongue"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 464,
+  "name": "The Dark Master",
+  "keys": [
+   "wh3_main_lord_abilities_the_dark_master"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "the_dark_master"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 465,
+  "name": "The Enfeebling Foe",
+  "keys": [
+   "wh3_dlc23_spell_bound_enfeebling_foe",
+   "wh3_dlc27_spell_bound_enfeebling_foe",
+   "wh3_main_spell_bound_enfeebling_foe",
+   "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror"
+  ],
+  "range_real": 200.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "enfeebling_foe"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 468,
+  "name": "The Hammer of Karak Drazh",
+  "keys": [
+   "wh_main_weapon_abilities_the_hammer_of_karak_drazh"
+  ],
+  "range_real": 50.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "the_hammer_of_karak_drazh"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 474,
+  "name": "The Trickster's Pendant",
+  "keys": [
+   "wh2_main_item_abilities_the_tricksters_pendant"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 70,
+  "mod_markers": [
+   "the_tricksters_pendant"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 475,
+  "name": "The Vial of Hashut",
+  "keys": [
+   "wh3_dlc23_item_abilities_the_vial_of_hashut"
+  ],
+  "range_real": 50.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "the_vial_of_hashut"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 476,
+  "name": "The Vortex Shard",
+  "keys": [
+   "wh2_main_item_abilities_the_vortex_shard"
+  ],
+  "range_real": 100.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "the_vortex_shard"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 479,
+  "name": "The Withering",
+  "keys": [
+   "wh3_dlc23_spell_bound_the_withering",
+   "wh3_twa08_spell_bound_the_withering"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "the_withering"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 480,
+  "name": "They Needs Stabbin'",
+  "keys": [
+   "wh2_dlc15_character_abilities_they_needs_stabbin"
+  ],
+  "range_real": 75.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "they_needs_stabbin"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 484,
+  "name": "Titan Headsman",
+  "keys": [
+   "wh3_dlc25_hero_abilities_titan_headsman"
+  ],
+  "range_real": 75.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "titan_headsman"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 485,
+  "name": "Torment Blade",
+  "keys": [
+   "wh3_main_weapon_abilities_torment_blade"
+  ],
+  "range_real": 50.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 35,
+  "mod_markers": [
+   "torment_blade"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 486,
+  "name": "Trickster's Shard",
+  "keys": [
+   "wh_main_item_abilities_tricksters_shard"
+  ],
+  "range_real": 500.0,
+  "rsrc": "report",
+  "ground": true,
+  "area": true,
+  "bound": 350,
+  "mod_markers": [
+   "tricksters_shard"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 487,
+  "name": "Trophy Heads",
+  "keys": [
+   "wh2_main_lord_abilities_trophy_heads",
+   "wh3_main_daemon_wings_abilities_trophy_heads"
+  ],
+  "range_real": 150.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "trophy_heads"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 496,
+  "name": "Virulent Contagion",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "virulent_contagion"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 497,
+  "name": "Virulent Contagion Upgraded",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion_upgraded"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "virulent_contagion_upgraded"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 498,
+  "name": "Visions of Madness",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_visions_of_madness"
+  ],
+  "range_real": 30.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 21,
+  "mod_markers": [
+   "visions_of_madness"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 499,
+  "name": "Void Pendulum",
+  "keys": [
+   "wh3_main_item_abilities_void_pendulum"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "void_pendulum"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 500,
+  "name": "Vorozheja's Foresight",
+  "keys": [
+   "wh3_dlc24_hero_abilities_vorozhejas_foresight"
+  ],
+  "range_real": 150.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 105,
+  "mod_markers": [
+   "vorozhejas_foresight"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 503,
+  "name": "Warden's Cage",
+  "keys": [
+   "wh2_dlc15_character_abilities_wardens_cage"
+  ],
+  "range_real": 100.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "wardens_cage"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 504,
+  "name": "Warp Gaze",
+  "keys": [
+   "wh_pro04_unit_abilities_warp_gaze"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "warp_gaze"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 505,
+  "name": "Warpstiletto",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstiletto"
+  ],
+  "range_real": 100.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 70,
+  "mod_markers": [
+   "warpstiletto"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 509,
+  "name": "Whip of Agony",
+  "keys": [
+   "wh2_twa03_weapon_abilities_whip_of_agony"
+  ],
+  "range_real": 75.0,
+  "rsrc": "report",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "whip_of_agony"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 510,
+  "name": "Whip of Misery",
+  "keys": [
+   "wh2_main_spell_bound_whip_of_agony"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "whip_of_misery"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 512,
+  "name": "Whispering Mist",
+  "keys": [
+   "wh3_dlc29_hero_abilities_whispering_mist"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "whispering_mist"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 515,
+  "name": "Willing Prey",
+  "keys": [
+   "wh3_main_lord_abilities_willing_prey"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "willing_prey"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 517,
+  "name": "Word of Change",
+  "keys": [
+   "wh3_main_daemon_head_abilities_word_of_change"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "word_of_change"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 518,
+  "name": "Word of Pain",
+  "keys": [
+   "wh2_dlc10_spell_bound_word_of_pain",
+   "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use"
+  ],
+  "range_real": 200.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 140,
+  "mod_markers": [
+   "word_of_pain"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ },
+ {
+  "num": 523,
+  "name": "You're Next!",
+  "keys": [
+   "wh2_dlc15_lord_abilities_youre_next"
+  ],
+  "range_real": 75.0,
+  "rsrc": "tsv",
+  "ground": false,
+  "area": false,
+  "bound": 52,
+  "mod_markers": [
+   "youre_next"
+  ],
+  "mod_triggers": [
+   "melee_unwavering"
+  ],
+  "missing_keys": []
+ }
+]

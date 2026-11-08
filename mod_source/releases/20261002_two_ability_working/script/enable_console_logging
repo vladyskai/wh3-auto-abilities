@@ -1,0 +1,11 @@
+This empty file switches on the game's script logging.
+
+Its only job is to exist. It has no file extension on purpose - the game looks
+for a file at exactly this path:  script/enable_console_logging
+
+With it present, the game's out() function writes to script_log_DDMMYY_HHMM.txt
+in your Total War WARHAMMER III install folder. A new log file is created every
+time you enter a battle, a campaign, or the main menu.
+
+Delete this file before you publish the mod: end users do not want their game
+writing log files.

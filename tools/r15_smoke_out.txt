@@ -1,0 +1,256 @@
+
+== W0: static round-14 + round-15 tokens + the BAN on the name-lookup global
+  [PASS] W0: the BANNED name-lookup global is ABSENT
+  [PASS] W0: source carries R14 token 'ROUND 14'
+  [PASS] W0: source carries R14 token 'zz_probe_r14'
+  [PASS] W0: source carries R14 token 'zz_probe_r14_step'
+  [PASS] W0: source carries R14 token 'zz_probe_r14_auto'
+  [PASS] W0: source carries R14 token 'zz_probe_r14_status'
+  [PASS] W0: source carries R14 token 'zz_probe_r14_help'
+  [PASS] W0: source carries R14 token 'R14 TOTAL STEPS 8'
+  [PASS] W0: source carries R14 token 'SEED link '
+  [PASS] W0: source carries R14 token 'SEED resolved the FULL chain'
+  [PASS] W0: source carries R14 token 'DOWN path='
+  [PASS] W0: source carries R14 token 'PANEL row='
+  [PASS] W0: source carries R14 token 'ROWHEADER '
+  [PASS] W0: source carries R14 token 'R14 GCV n='
+  [PASS] W0: source carries R14 token 'R14 CALL '
+  [PASS] W0: source carries R14 token '*** WIN: non-selected unit stat field readable ***'
+  [PASS] W0: source carries R14 token 'info_panel_parent'
+  [PASS] W0: source carries R14 token 'info_panel_background'
+  [PASS] W0: source carries R14 token 'unit_information'
+  [PASS] W0: source carries R14 token 'info_parent'
+  [PASS] W0: source carries R14 token 'info_panel'
+  [PASS] W0: source carries R14 token 'row_header_stats'
+  [PASS] W0: source carries R14 token 'template_stat'
+  [PASS] W0: source carries R14 token 'value_holder'
+  [PASS] W0: source carries R14 token 'dy_value'
+  [PASS] W0: source carries R14 token 'stat_name'
+  [PASS] W0: source carries R14 token 'resolve_chain'
+  [PASS] W0: source carries R14 token 'walk_visits'
+  [PASS] W0: source carries R14 token 'walk_depth'
+  [PASS] W0: source carries R14 token 'total_steps'
+  [PASS] W0: source carries R14 token 'common.get_context_value'
+  [PASS] W0: source carries R14 token 'CcoBattleUnit'
+  [PASS] W0: source carries R14 token 'CcoUnitDetails'
+  [PASS] W0: source carries R14 token 'CcoUnitStat'
+  [PASS] W0: source carries R14 token 'BattleUnit_1001'
+  [PASS] W0: source carries R14 token 'BattleUnit_1002'
+  [PASS] W0: source carries R14 token 'StatList'
+  [PASS] W0: source carries R14 token 'StatList.Size'
+  [PASS] W0: source carries R14 token 'DisplayedValue'
+  [PASS] W0: the R14 walk budget is 300
+  [PASS] W0: the R14 walk depth is 6
+  [PASS] W0: the R14 total step count is 8
+  [PASS] W0: before-call logger present
+  [PASS] W0: no string.find() call
+  [PASS] W0: ZERO SetContextObject call site
+  [PASS] W0: source carries R15 token 'ROUND 15'
+  [PASS] W0: source carries R15 token 'zz_probe_r15'
+  [PASS] W0: source carries R15 token 'zz_probe_r15_step'
+  [PASS] W0: source carries R15 token 'zz_probe_r15_status'
+  [PASS] W0: source carries R15 token 'zz_probe_r15_help'
+  [PASS] W0: source carries R15 token 'zz_probe_r15_poll'
+  [PASS] W0: source carries R15 token 'R15 TOTAL STEPS 7'
+  [PASS] W0: source carries R15 token 'CMP row='
+  [PASS] W0: source carries R15 token 'CMPB'
+  [PASS] W0: source carries R15 token 'CMPG'
+  [PASS] W0: source carries R15 token 'CTXROW row='
+  [PASS] W0: source carries R15 token 'CTXID row='
+  [PASS] W0: source carries R15 token 'TRACK row='
+  [PASS] W0: source carries R15 token 'TARGET card='
+  [PASS] W0: source carries R15 token 'BASELINE rows='
+  [PASS] W0: source carries R15 token 'HOVER pass='
+  [PASS] W0: source carries R15 token 'PASS n='
+  [PASS] W0: source carries R15 token 'PAIRS sim_on='
+  [PASS] W0: source carries R15 token 'VERDICT pass1_changed='
+  [PASS] W0: source carries R15 token 'DELTA pass='
+  [PASS] W0: source carries R15 token '*** WIN: hover exposes non-selected stats INVISIBLY ***'
+  [PASS] W0: source carries R15 token 'no invisible exposure; control_changed='
+  [PASS] W0: source carries R15 token 'SIMHOVER SimulateMouseOn pass='
+  [PASS] W0: source carries R15 token 'SIMHOVER SimulateMouseOff pass='
+  [PASS] W0: source carries R15 token 'zz_probe_r15_poll'
+  [PASS] W0: source carries R15 token 'label_compare'
+  [PASS] W0: source carries R15 token 'comparison-named'
+  [PASS] W0: source carries R15 token 'rowctx'
+  [PASS] W0: source carries R15 token 'GetContextObjectId'
+  [PASS] W0: source carries R15 token 'GetStateText'
+  [PASS] W0: source carries R15 token 'SimulateMouseOn'
+  [PASS] W0: source carries R15 token 'SimulateMouseOff'
+  [PASS] W0: source carries R15 token 'tooltip draw delay'
+  [PASS] W0: source carries R15 token 'first_evidence'
+  [PASS] W0: source carries R15 token 'first_text'
+  [PASS] W0: source carries R15 token 'hovered_expected'
+  [PASS] W0: the R15 step hooks are functions
+  [PASS] W0: the R15 holds are 100/150/250/1500
+  [PASS] W0: the R15 total step count is 7
+  [PASS] W0: the R15 poll cadence is 25 ms
+  [PASS] W0: the R15 tooltip-delay constant is 250 ms
+  [PASS] W0: the R15 poll registration is present
+
+== W1: seeded path -> rows -> controls -> the two ladders (no false WIN)
+  [PASS] W1: zz_probe_r14() reports READY
+  [PASS] W1: the instruction states 8 total steps
+  [PASS] W1: the instruction says step 8 is the LAST step
+  [PASS] W1: step 1 header (1/8)
+  [PASS] W1: SEED link 1 resolves hud_battle via root:Find
+  [PASS] W1: SEED link 4 resolves unit_information by direct child
+  [PASS] W1: SEED link 7 resolves `list` on the full path
+  [PASS] W1: the chain fully resolved
+  [PASS] W1: the walk reached row_header_stats
+  [PASS] W1: step 1 done line
+  [PASS] W1: every SEED line is preceded by a CALL line
+  [PASS] W1: every DOWN line is preceded by a CALL line
+  [PASS] W1: step 2 header (2/8)
+  [PASS] W1: step 2 paired row 1 (Melee Defence 53)
+  [PASS] W1: step 2 paired row 3 (Movement 5.2, the stat_name-child row)
+  [PASS] W1: step 2 done line
+  [PASS] W1: step 3 header (3/8)
+  [PASS] W1: step 3 control A = CcoBattleUnit/1001/Name -> Karl Franz
+  [PASS] W1: step 4 tried the 5 A rungs and none returned a value
+  [PASS] W1: step 5 control B -> the loud WIN(control) line
+  [PASS] W1: no NEW-format WIN is raised by the control
+  [PASS] W1: step 6 tried the 5 BattleUnit_1002 rungs and none returned
+  [PASS] W1: step 7 tried the bare-id rungs and none returned
+  [PASS] W1: step 8 header (8/8)
+  [PASS] W1: the verdict reports 14 GCV calls
+  [PASS] W1: the verdict says NO new-format non-selected field was readable
+  [PASS] W1: NO central-question WIN was raised
+  [PASS] W1: EXACTLY 14 get_context_value calls
+  [PASS] W1: the step-8 return tells the user to STOP
+  [PASS] W1: run-done banner
+  [PASS] W1: the BANNED global was NEVER called
+  [PASS] W1: UIComponent(boolean) was NEVER called
+  [PASS] W1: ZERO writes (no context/selection/sim)
+  [PASS] W1: ZERO UI-state setters
+
+== W2: the ladder STOPS at the first success (a SELECTED rung answers)
+  [PASS] W2: LADDER A stopped at rung 3
+  [PASS] W2: exactly 4 GCV calls ran (control + 3 A rungs)
+  [PASS] W2: ZERO writes
+
+== W3: a NON-selected new-format rung answers -> step 6 WIN, step 7 skipped
+  [PASS] W3: LADDER B stopped at rung 3
+  [PASS] W3: the loud non-selected WIN was raised
+  [PASS] W3: step 7 was skipped because the ladder already stopped
+  [PASS] W3: step 6 made only 3 B calls (10 total)
+  [PASS] W3: the verdict ANSWERS the central question
+  [PASS] W3: ZERO writes
+
+== W4: only the BARE non-selected id answers -> step 7 WIN
+  [PASS] W4: every BattleUnit_1002 rung failed
+  [PASS] W4: LADDER B (bare) stopped at rung 6
+
+== W5: the 300-visit walk budget cuts a 506-node `list`
+  [PASS] W5: exactly 300 walk visits (got 300)
+  [PASS] W5: the walk reported the cap
+
+== W6: the chain breaks -> step 1 aborts, no rows, the ladder still runs
+  [PASS] W6: the chain named the missing link
+  [PASS] W6: the ladder still ran (14 calls)
+  [PASS] W6: ZERO writes
+
+== W7: the tick never auto-runs R14/R15; simhovers stay disarmed
+  [PASS] W7: R14 did NOT auto-run from the tick
+  [PASS] W7: R15 did NOT auto-run from the tick
+  [PASS] W7: no SimulateMouseOn (simhovers disarmed)
+  [PASS] W7: the BANNED global was NEVER called
+
+== W8: R15 main - baseline dump, the async hold ladder, change detection, WIN
+  [PASS] W8: zz_probe_r15() reports READY
+  [PASS] W8: the instruction states 7 total steps
+  [PASS] W8: the instruction says SEVEN times
+  [PASS] W8: the R15 poll registered at 25 ms
+  [PASS] W8: the poll is in the mock's registry
+  [PASS] W8: step 1 header (1/7)
+  [PASS] W8: step 1 done in the return
+  [PASS] W8: SEED link 7 resolves `list` on the full path
+  [PASS] W8: the chain fully resolved
+  [PASS] W8: step A logged the row block header
+  [PASS] W8: CMP row 1 (Range 42)
+  [PASS] W8: CMP row 3 (Movement 5.2, CcoUnitStat* id shape)
+  [PASS] W8: CMPB dumped row 1's label_compare with its text
+  [PASS] W8: CMPB dumped row 1's comparison_arrow
+  [PASS] W8: CMPG found the NESTED label_compare one level deeper
+  [PASS] W8: CTXROW logged the row's own context ids
+  [PASS] W8: CTXID logged a non-nil child context id
+  [PASS] W8: TRACK label_compare base
+  [PASS] W8: TRACK vis:label_compare base
+  [PASS] W8: TRACK rowctx base
+  [PASS] W8: TRACK the SECOND label_compare (row 2, nil text)
+  [PASS] W8: TRACK the NESTED label_compare (row 3)
+  [PASS] W8: the target is the NON-selected card 1002
+  [PASS] W8: the BASELINE summary (3 rows, 11 tracked fields, 34 ctx calls)
+  [PASS] W8: every CMPB line is preceded by a CALL line (hits=14)
+  [PASS] W8: every CMPG line is preceded by a CALL line (hits=4)
+  [PASS] W8: every SEED line is preceded by a CALL line
+  [PASS] W8: no SimulateMouseOn yet (the pass is armed, not started)
+  [PASS] W8: step 2 arms pass 1 (hold 100)
+  [PASS] W8: the step-2 return names the INVISIBLE kind
+  [PASS] W8: SimulateMouseOn issued on the first pass poll
+  [PASS] W8: the On is logged BEFORE the call
+  [PASS] W8: first-sample rowctx change (ctx id -> BattleUnit_1002)
+  [PASS] W8: first-sample label_compare change (+2 -> +7)
+  [PASS] W8: the DELTA line carries selected value + hovered_expected
+  [PASS] W8: a step while the pass is in flight is REFUSED
+  [PASS] W8: the refusal did not advance the counter
+  [PASS] W8: the refusal left the pass alone (no extra On)
+  [PASS] W8: SimulateMouseOff issued (4 polls = 100 ms hold)
+  [PASS] W8: the Off is logged BEFORE the call
+  [PASS] W8: the Off names its nominal time
+  [PASS] W8: pass 1 finished after 16 polls (4 hold + 12 settle)
+  [PASS] W8: the Off revert was caught (settle sample)
+  [PASS] W8: pass 1 logged exactly 4 change events
+  [PASS] W8: step 3 arms pass 2 (hold 150)
+  [PASS] W8: pass 2 finished after 18 polls
+  [PASS] W8: pass 2 Off at t=150 ms nominal
+  [PASS] W8: step 4 arms pass 3 (hold 250)
+  [PASS] W8: pass 3 finished after 22 polls
+  [PASS] W8: step 5 arms the CONTROL pass (hold 1500)
+  [PASS] W8: the CONTROL pass was announced for watching
+  [PASS] W8: control finished after 72 polls (60 hold + 12 settle)
+  [PASS] W8: the pair total is 4/4 paired
+  [PASS] W8: the On/Off calls alternate, 4 pairs
+  [PASS] W8: step 6 header (6/7)
+  [PASS] W8: the verdict line
+  [PASS] W8: the verdict detail
+  [PASS] W8: THE WIN LINE
+  [PASS] W8: the delta summary line
+  [PASS] W8: the verdict return says win=true
+  [PASS] W8: step 7 header (7/7)
+  [PASS] W8: the done line
+  [PASS] W8: the STOP instruction
+  [PASS] W8: the 7th return says DONE - STOP
+  [PASS] W8: the run-done banner
+  [PASS] W8: an 8th call is ignored
+  [PASS] W8: the counter stayed at 7
+  [PASS] W8: no read warnings ever fired
+  [PASS] W8: no REBASE drift lines in a clean scene
+  [PASS] W8: ZERO context/selection writes
+  [PASS] W8: ZERO UI-state setters
+  [PASS] W8: the BANNED global was NEVER called
+  [PASS] W8: UIComponent(boolean) was NEVER called
+
+== W9: R15 no-effect - nothing changes, the verdict must NOT claim a WIN
+  [PASS] W9: the BASELINE summary
+  [PASS] W9: pass 1 all zeros
+  [PASS] W9: pass 4 (control) all zeros
+  [PASS] W9: no HOVER line anywhere
+  [PASS] W9: no DELTA line anywhere
+  [PASS] W9: the pair total is 4/4 paired
+  [PASS] W9: no REBASE drift lines
+  [PASS] W9: the verdict line
+  [PASS] W9: the NO-exposure line
+  [PASS] W9: NO WIN was claimed
+  [PASS] W9: the done line
+  [PASS] W9: ZERO context/selection writes
+  [PASS] W9: the On/Off pairs still alternate, 4 pairs
+
+SMOKE TEST PASSED - round 15: the invisible-hover/control experiment.
+  Step A dumps every stat row's comparison components + context ids (read-only); the
+  four passes run on the 25 ms poll with SimulateMouseOn/Off paired (4/4), holds 100/
+  150/250/1500 ms (Off at exactly hold/25 polls); changes in label_compare text,
+  comparison-named text and the row's CcoUnitStat context id are logged with before/
+  after values; the delta arithmetic carries selected value + expected hovered; the
+  verdict raises the WIN on an invisible exposure and stays silent on a clean scene.
+  SEVEN steps total, ZERO context writes, name-lookup helper BANNED (never called).

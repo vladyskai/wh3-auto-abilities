@@ -1,0 +1,45 @@
+C:\Users\vlady\Desktop\rpfm_tools\verify_probe_step_installed.py:29: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  self.ws.recv(timeout=20)  # hello
+opened INSTALLED pack; type: Movie | version: PFH5
+
+=== 1 file(s) in the INSTALLED step-probe pack ===
+   - script/battle/mod/zz_probe_step.lua
+only the probe file present : True
+no main-mod path present    : True
+
+byte-for-byte vs source:
+   pack     29029  sha256 1f07188da14af1151663a5226021f96aae86636b254c5c54ac06cca264583d62
+   source   29029  sha256 1f07188da14af1151663a5226021f96aae86636b254c5c54ac06cca264583d62
+   MATCHES SOURCE: True
+   token zz_probe_step_status                                 present: True
+   token perform_special_ability                              present: True
+   token register_command_handler_callback                    present: True
+   token BEFORE cast=                                         present: True
+   token READ                                                 present: True
+   token  =>                                                  present: True
+   token NOT CALLED (write-shaped)                            present: True
+   token CMD tick=                                            present: True
+   token CAST-PLAN cast=                                      present: True
+   token TRY cast=                                            present: True
+   token ACCEPTED cast=                                       present: True
+   token POSTPOS cast=                                        present: True
+   token SAMPLING cast=                                       present: True
+   token SAMPLE cast=                                         present: True
+   token REFUSED cast=                                        present: True
+   token STEP RESULT cast=                                    present: True
+   token VERDICT cast=                                        present: True
+   token moved_total=                                         present: True
+   token order_after_attack=                                  present: True
+   token order_after_move=                                    present: True
+   token already_moving_before=                               present: True
+   token refused=                                             present: True
+   token orders_seen=                                         present: True
+   token unit_distance                                        present: True
+   token is_under_missile_attack                              present: True
+   token conflict=                                            present: True
+
+main mod pack md5 (now) : f1b7363e411bfc340423d4ecdc1ea91c
+main mod pack md5 (expected, before) : f1b7363e411bfc340423d4ecdc1ea91c
+   UNCHANGED : True
+
+INSTALLED-PACK VERIFY OK

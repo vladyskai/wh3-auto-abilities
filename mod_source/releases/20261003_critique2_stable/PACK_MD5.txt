@@ -1,0 +1,15 @@
+# Pack md5 is an IDENTIFIER for a specific built artifact, NOT a reproducibility target.
+# RPFM stamps the build's save time into the pack header, so rebuilding identical bytes
+# yields a different md5 every time. Build CONTENT is proven by the per-file sha256 gate
+# in build_and_install.py (packed script byte-identical to source), not by this hash.
+#
+# Identifier for the build archived in this folder (dist + installed pack, same bytes):
+19d7c4df0caec212914265675d8d1374 *zz_test_deadly_onslaught.pack
+#
+# Provenance for this build:
+#   source              : script/battle/mod/zz_test_deadly_onslaught.lua
+#   source md5          : 40e575e6c6e51232c449f27caed52b65
+#   annotated copy      : C:\Users\vlady\Desktop\WH3_auto_ability_annotated.lua
+#   annotated md5       : 72a19b78be359cbe3f7ccc48cb4521e8
+#   installed pack path : C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\zz_test_deadly_onslaught.pack
+#   installed pack md5  : 19d7c4df0caec212914265675d8d1374  (identical to this folder's copy)

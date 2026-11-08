@@ -1,0 +1,50 @@
+C:\Users\vlady\Desktop\wh3_auto_ability_test\releases\20261009_enchanted_metallurgy_harness89\build_and_install89.py:47: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+removed stale: C:/Users/vlady/Desktop/wh3_auto_ability_test/dist/zz_test_deadly_onslaught.pack
+removed stale: C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack
+source zz_test_deadly_onslaught.lua         298655 bytes  sha256 e500c2e7b2ce4cda00a2ca11277564a2
+source zz_auto_badge.twui.xml                 2864 bytes  sha256 d95f04610529c2dd90f6ad3ac0b96434
+source blank.png                                69 bytes  sha256 f164334dc3985e3b8d95b71e59462c9c
+source auto_badge.png                          252 bytes  sha256 31e69b91d59795f90c7920091729f23c
+source special_ability_tooltip.twui.xml     331289 bytes  sha256 ad8d7070623398cadae51200ff940c65
+  hello: {"id": 0, "data": {"SessionConnected": 1}}
+
+== 1 select game
+  <= {"CompressionFormatDependenciesInfo": ["None", null]}
+
+== 2 new pack
+  <= {"String": "new_pack.pack"}
+
+== 3 add the main script and the four ui files
+  <= {"VecContainerPathOptionString": [[{"File": "script/battle/mod/zz_test_deadly_onslaught.lua"}, {"File": "ui/templates/zz_auto_badge.twui.xml"}, {"File": "ui/zz_auto/blank.png"}, {"File": "ui/zz_auto/a
+
+== 4 type = Movie
+  <= "Success"
+
+== 5 list contents
+  <= {"ContainerInfoVecRFileInfo": [{"file_name": "new_pack.pack", "file_path": "new_pack.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "", "compress": "None", "timestamp": 0}, [{"path
+   container: Movie | files: ['script/battle/mod/zz_test_deadly_onslaught.lua', 'ui/common ui/special_ability_tooltip.twui.xml', 'ui/templates/zz_auto_badge.twui.xml', 'ui/zz_auto/auto_badge.png', 'ui/zz_auto/blank.png']
+   script/battle/mod/zz_test_deadly_onslaught.lua     298655 bytes  MATCHES SOURCE: True
+   ui/templates/zz_auto_badge.twui.xml                  2864 bytes  MATCHES SOURCE: True
+   ui/zz_auto/blank.png                                   69 bytes  MATCHES SOURCE: True
+   ui/zz_auto/auto_badge.png                             252 bytes  MATCHES SOURCE: True
+   ui/common ui/special_ability_tooltip.twui.xml      331289 bytes  MATCHES SOURCE: True
+
+== 6 what the pack must contain
+   tooltip hint line present                 : True
+   the double-click toggles are gone         : True and True
+   dead property-route code left behind      : 0 (want 0)
+
+== 6d main mod untouched (byte-identical)     : True
+
+== 7 save to disk
+  <= {"ContainerInfo": {"file_name": "zz_test_deadly_onslaught.pack", "file_path": "C:/Users/vlady/Desktop/wh3_auto_ability_test/dist/zz_test_deadly_onslaught.pack", "pfh_version": "PFH5", "pfh_file_type":
+
+== 8 close
+  <= "Success"
+
+================ INSTALL ================
+built pack   md5 b82ca4856919cb1866da239ad27a54c6
+installed    md5 b82ca4856919cb1866da239ad27a54c6
+IDENTICAL    True
+installed to C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack

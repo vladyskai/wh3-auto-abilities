@@ -1,0 +1,2152 @@
+--------------------------------------------------------------------------------
+-- Route 2 test case: automatically fire ONE ability, under a chosen condition.
+--
+-- Target ability : Deadly Onslaught
+--                  database key = wh_main_character_abilities_deadly_onslaught
+--                  (self-buff, 31 s duration, 90 s cooldown, unlimited uses,
+--                   no magic cost, no usage restrictions of any kind,
+--                   engine's own AI tag = augment_charge_self)
+--
+-- WHICH UNIT HAS IT
+--   In skirmish/custom battles an ability comes from the unit's innate list
+--   (db table: land_units_to_unit_abilites_junctions), not from a skill.
+--   The Empire Captain does NOT have Deadly Onslaught there - which is why it
+--   never showed up in skirmish. Boris Todbringer DOES, on all four of his
+--   unit variants:
+--       wh3_dlc29_emp_cha_boris_todbringer_toddy_0 ... _3
+--   So this test works with Boris in skirmish, and needs no change of key.
+--
+-- WHAT THIS RUN IS FOR - it answers four questions in one battle:
+--     1. Does a script in script/battle/mod/ run in this battle type?
+--     2. Can we detect, per unit, whether it owns a given ability?
+--     3. Can we make it fire that ability with no click from the player?
+--     4. What happens to our control of that unit while it fires?
+--
+-- WHERE THIS FILE GOES
+--   script/battle/mod/zz_test_deadly_onslaught.lua  inside the .pack file.
+--   That folder is auto-loaded by the game's own mod loader
+--   (script/_lib/lib_mod_loader.lua) in every battle. No vanilla file is edited.
+--
+-- WHERE THE OUTPUT GOES
+--   zz_test_deadly_onslaught_log.txt, in the game's install folder (next to
+--   Warhammer3.exe). Written directly by this script, so it does not depend on
+--   any logging setting. Search it for "zz_test_deadly_onslaught".
+--------------------------------------------------------------------------------
+
+
+-- ============================================================================
+-- 1. SETTINGS - the only things you normally touch
+-- ============================================================================
+
+-- THE ABILITIES - one entry per ability, and this table drives everything:
+-- the HUD scan (which dial buttons are ours), the firing loop (which trigger
+-- and which keys to try) and the badges (one per ability, id and offset).
+--   marker  - the string that identifies the ability's button on the battle
+--             dial: the button's InterfaceFunction("AbilityKeyForScript") must
+--             contain it (case-insensitive)
+--   name    - the ability's display name, for the badge log lines
+--   trigger - "charge" : the existing charge conditions (section 5), verbatim
+--             "running": fire whenever the engine says the unit is moving fast
+--   keys    - database keys tried against the engine's own readiness check
+--             (can_perform_special_ability); the first that answers true is
+--             the one fired
+--   badge   - the component id of the ability's own M/A badge (its click is
+--             the only control)
+--   ox, oy  - the badge's offset from the onslaught badge's own BADGE_X /
+--             BADGE_Y (section 8b): onslaught sits at BADGE_X+0/BADGE_Y+0,
+--             foe_seeker at BADGE_X+70/BADGE_Y+30 - the measured +70,+30 from
+--             the top dial slot to the 45-degree slot. Both offsets are
+--             COMPUTED from BADGE_X/BADGE_Y at placement time, so re-tuning
+--             the Deadly Onslaught badge (zz_badge_set) carries Foe-Seeker
+--             along with it.
+local ABILITIES = {
+	{ marker = "onslaught", name = "Deadly Onslaught", trigger = "charge",
+		badge = "zz_auto_badge",
+		keys = { "wh_main_character_abilities_deadly_onslaught" },
+		ox = 0, oy = 0 },
+	{ marker = "foe_seeker", name = "Foe-Seeker", trigger = "running",
+		badge = "zz_auto_badge_fs",
+		keys = { "wh_main_character_abilities_foe_seeker",
+			"wh_dlc03_character_abilities_foe_seeker" },
+		ox = 70, oy = 30 },
+}
+
+-- Every key from the table above, for the ownership scan and the log.
+local ALL_ABILITY_KEYS = {}
+for _, ability in ipairs(ABILITIES) do
+	for _, key in ipairs(ability.keys) do
+		ALL_ABILITY_KEYS[#ALL_ABILITY_KEYS + 1] = key
+	end
+end
+
+-- The ABILITIES entry behind a marker, and behind a badge id (the click
+-- router works in badge ids).
+local function ability_for(marker)
+	for _, ability in ipairs(ABILITIES) do
+		if ability.marker == marker then return ability end
+	end
+	return nil
+end
+
+local function ability_for_badge(badge_id)
+	for _, ability in ipairs(ABILITIES) do
+		if ability.badge == badge_id then return ability end
+	end
+	return nil
+end
+
+-- Which situations count as "fire now".
+-- Round 5 ran with BOTH on (deliberately, to get a positive result). You saw it
+-- fire while merely running and while already fighting, which is exactly what
+-- that configuration asked for. Now it is tightened to charging only.
+local FIRE_ON_CHARGE = true
+local FIRE_ON_MELEE  = false   -- switch on only for testing
+
+-- A charge is an ATTACK order on an enemy that is about to CONNECT - not simply
+-- "moving fast", and not the instant the attack order is given. The engine
+-- exposes no "is charging", so it is inferred from five signals:
+--
+--   1. is_moving_fast()      - the unit is running (necessary, not sufficient)
+--   2. not is_in_melee()     - it has not made contact yet
+--   3. current_target()      - it has an enemy unit as its target
+--   4. ordered_position()    - the documentation: "if the unit is attacking, as
+--                              opposed to moving, then this will return the
+--                              current position of the unit". So position() and
+--                              ordered_position() are near-equal while charging
+--                              a unit and far apart while walking to a spot.
+--                              This is what separates a charge from a run.
+--   5. distance to the target, and the estimated time until contact - so the
+--      ability is spent on the charge that is about to land, not on a charge
+--      ordered from the far side of the battlefield.
+--
+-- ROUND 7 CORRECTION - signal 4 DOES NOT WORK.
+-- The documentation claims that while the unit is ATTACKING, ordered_position()
+-- returns its current position. The round-7 log disproves it: during a charge
+-- the gap grew steadily from 17 m to 322 m, tracking how far the unit had
+-- travelled since the order was given. So it measures "how long ago you
+-- clicked", not "is this an attack". It blocked every genuine charge and passed
+-- only orders given at close range - which is exactly what you saw. It is now
+-- logged for diagnostics only and takes NO part in the decision. The real
+-- attack-versus-move signal is simply "does the unit have a target at all".
+local CHARGE_ORDER_TOLERANCE_M = 8      -- diagnostics only, NOT a gate
+local CHARGE_MIN_DISTANCE_M    = 12     -- a charge needs a run-up
+local CHARGE_MAX_DISTANCE_M    = 60     -- ...but not the length of the map
+local CHARGE_TIME_TO_CONTACT_S = 4      -- fire when impact is this close
+
+-- How often, in milliseconds, we look at the battlefield. 250 ms = 4x a second.
+local POLL_MS = 250
+
+-- THE SHORT GUARD - the short safety brake, in seconds, per (unit, ability):
+-- no pair may attempt twice inside this window. The readiness gate (the
+-- engine's own can_perform check, section 4) is the real brake now - there
+-- are NO 60/90 s timers anywhere any more.
+local GUARD_SECONDS = 2
+
+-- How often to re-check a unit we have not yet found the ability on, in polls.
+-- Cheap insurance: if abilities are not all attached at the moment we first
+-- look, we pick them up a few seconds later instead of failing silently.
+local REDETECT_EVERY_N_POLLS = 16    -- 16 x 250 ms = every 4 seconds
+
+-- How often to write one compact status line, in polls. 20 x 250 ms = every 5 s.
+-- This is what makes a silent run diagnosable: it proves the poll is alive and
+-- records the battle phase plus what every watched unit is doing.
+local HEARTBEAT_EVERY_N_POLLS = 20
+
+-- Explicitly take control of the unit before ordering it.
+-- OFF by default: the documentation says issuing an order takes control anyway,
+-- and an explicit takeover is a candidate cause of the player's current order
+-- being cancelled. Leave it off unless we find we need it.
+local TAKE_CONTROL_FIRST = false
+
+-- Hand the unit back to the player after the attempt.
+-- ON by default so the unit's card does not stay greyed out afterwards.
+local RELEASE_CONTROL_AFTER = true
+
+-- How many of each unit's ability keys to write to the log.
+local MAX_ABILITIES_TO_LOG = 14
+
+
+-- ============================================================================
+-- 2. BOOKKEEPING
+-- ============================================================================
+
+local tracked_units = nil                 -- units we watch
+local target_key_by_unit = {}             -- ui id -> the first of our keys found on the unit
+local auto_state = {}                     -- marker -> true/false (the M/A switch, one per ability)
+local last_attempt_at = {}                -- "ui_id|marker" -> tick of the last attempt
+local pending_verify = nil                -- a deferred "did it take effect?" check
+local tick_count = 0                      -- our battle clock
+local GUARD_TICKS = (GUARD_SECONDS * 1000) / POLL_MS
+
+-- The per-ability state, indexed by marker: the dial button the HUD scan found,
+-- its event-reporting chain, the M/A badge component and its placement and
+-- visibility bookkeeping. Nothing per-unit lives here.
+local ability_state = {}
+for _, ability in ipairs(ABILITIES) do
+	ability_state[ability.marker] = { watch_chain = {} }
+	auto_state[ability.marker] = false
+end
+
+-- THE DEFERRED BADGE WORK (this build). A claim in the scan walk only records
+-- the button and raises pending_badge[marker]; the ui tick builds the badge
+-- from that flag, step by step and instrumented (section 8b). badge_attempts
+-- counts the tick-creation attempts since the last claim, and badge_gave_up
+-- latches once the budget is spent - until the dial rebuilds (a fresh claim
+-- resets both).
+local pending_badge = {}                  -- marker -> true while a claim waits for its badge
+local badge_attempts = {}                 -- marker -> creation attempts since the last claim
+local badge_gave_up = {}                  -- marker -> true once the attempt budget is spent
+
+-- One compact "which switches are on" string, for the tick and heartbeat logs.
+local function auto_states_string()
+	local bits = {}
+	for _, ability in ipairs(ABILITIES) do
+		bits[#bits + 1] = ability.marker .. "=" .. (auto_state[ability.marker] and "ON" or "OFF")
+	end
+	return table.concat(bits, ",")
+end
+
+
+-- ============================================================================
+-- 3. LOGGING
+--    a) our own file (primary - always works)
+--    b) ModLog(), the mod loader's log, if it exists
+--    c) out(), the game's own script log, if logging happens to be enabled
+-- ============================================================================
+
+local LOG_TAG  = "[zz_test_deadly_onslaught] "
+local LOG_FILE = "zz_test_deadly_onslaught_log.txt"
+
+local log_handle = nil
+local file_logging_off = false
+
+local function write_to_file(line)
+	if file_logging_off then return end
+
+	if log_handle == nil then
+		local ok, handle = pcall(io.open, LOG_FILE, "a")
+		if not ok or handle == nil then
+			file_logging_off = true
+			return
+		end
+		log_handle = handle
+		log_handle:write("\n======== new battle session ========\n")
+	end
+
+	pcall(function()
+		log_handle:write(line .. "\n")
+		log_handle:flush()
+	end)
+end
+
+local function log(message)
+	local line = LOG_TAG .. tostring(message)
+
+	write_to_file(line)
+
+	if ModLog ~= nil then
+		pcall(ModLog, line)
+	end
+
+	out(line)
+end
+
+
+-- ============================================================================
+-- 4. FIND THE ABILITY ON A UNIT
+--    Returns:
+--      matching_key : the ability key this unit owns, or nil
+--      all_keys     : every ability key the unit owns (for the log)
+-- ============================================================================
+
+local function scan_unit_abilities(unit)
+	local owned = unit:owned_special_abilities()
+	local matching_key = nil
+	local all_keys = {}
+
+	if owned == nil then
+		return nil, all_keys
+	end
+
+	for _, owned_key in pairs(owned) do
+		all_keys[#all_keys + 1] = owned_key
+
+		for _, wanted_key in ipairs(ALL_ABILITY_KEYS) do
+			if owned_key == wanted_key then
+				matching_key = owned_key
+			end
+		end
+	end
+
+	return matching_key, all_keys
+end
+
+-- Which key of this ability (if any) did the unit list among its own? Used by
+-- the watch-list log. owned_keys is the all_keys list scan_unit_abilities gave.
+local function owned_key_in(ability, owned_keys)
+	for _, wanted_key in ipairs(ability.keys) do
+		for _, owned_key in ipairs(owned_keys) do
+			if owned_key == wanted_key then return wanted_key end
+		end
+	end
+	return nil
+end
+
+-- THE READINESS GATE (the engine's own "can I use this?" check), tried against
+-- every key this ability answers to. The first key that returns true is the one
+-- to fire, so nothing has to guess which duplicate database definition a unit
+-- is carrying. Returns the key or nil, plus a text summary of every answer
+-- (logged on each evaluation, like the earlier two-ability build).
+local function check_readiness(unit, ability)
+	local ready_key = nil
+	local parts = {}
+
+	for _, wanted_key in ipairs(ability.keys) do
+		local ok_c, can = pcall(function()
+			return unit:can_perform_special_ability(wanted_key)
+		end)
+		parts[#parts + 1] = wanted_key .. "=" .. tostring(ok_c and tostring(can) or "ERROR")
+		if ok_c and can == true and ready_key == nil then
+			ready_key = wanted_key
+		end
+	end
+
+	return ready_key, table.concat(parts, ", ")
+end
+
+
+-- ============================================================================
+-- 5. IS IT ACTUALLY CHARGING?
+--    A charge is an ATTACK order on an enemy that is about to connect.
+--    Returns a table of measurements, which the log prints, so every decision
+--    can be audited from real numbers.
+--
+--    charging = fast AND not melee AND has a target AND the order is an attack
+--               (not a move) AND the target is close enough that impact is
+--               within CHARGE_TIME_TO_CONTACT_S seconds.
+-- ============================================================================
+
+local function measure_charge(unit)
+	local m = {
+		fast = unit:is_moving_fast(),
+		melee = unit:is_in_melee(),
+		has_target = false,
+		order_gap = -1,      -- position() vs ordered_position(); -1 = unmeasurable
+		target_dist = -1,    -- metres to the target unit; -1 = unknown
+		ttc = -1,            -- estimated seconds until contact; -1 = unknown
+		charging = false,
+	}
+
+	local ok_target, target = pcall(function() return unit:current_target() end)
+	if ok_target and target ~= nil then
+		m.has_target = true
+	end
+
+	local ok_gap, gap = pcall(function()
+		return unit:position():distance(unit:ordered_position())
+	end)
+	if ok_gap and gap ~= nil then
+		m.order_gap = gap
+	end
+
+	if m.has_target then
+		local ok_dist, dist = pcall(function() return unit:unit_distance(target) end)
+		if ok_dist and dist ~= nil then
+			m.target_dist = dist
+		end
+
+		if m.target_dist >= 0 then
+			local ok_speed, speed = pcall(function() return unit:fast_speed() end)
+			if ok_speed and speed ~= nil and speed > 0 then
+
+				m.ttc = m.target_dist / speed
+			end
+		end
+	end
+
+	if m.fast and not m.melee and m.has_target then
+		-- Having a target at all is the attack-versus-move signal: a move
+		-- order sets none. (ordered_position() is NOT used here - round 7
+		-- proved it tracks time-since-order, not attack-versus-move.)
+
+		-- A real charge has a run-up: far enough that the unit actually
+		-- builds speed, close enough that the impact is imminent.
+		local enough_run_up = true
+		if m.target_dist >= 0 then
+			enough_run_up = (m.target_dist >= CHARGE_MIN_DISTANCE_M)
+		end
+
+		local close_enough = true
+		if m.target_dist >= 0 then
+			close_enough = (m.target_dist <= CHARGE_MAX_DISTANCE_M)
+		end
+
+		local soon_enough = true
+		if m.ttc >= 0 then
+			soon_enough = (m.ttc <= CHARGE_TIME_TO_CONTACT_S)
+		end
+
+		m.charging = enough_run_up and close_enough and soon_enough
+	end
+
+	return m
+end
+
+
+-- ============================================================================
+-- 6. BUILD THE WATCH LIST (and say out loud what we found)
+--    bm:get_scriptunits_for_local_players_army() gives us "script units": each
+--    wraps the unit itself (.unit) plus a controller that can give it orders
+--    (.uc). The ability dump is what makes a failed run diagnosable: it shows
+--    exactly which abilities each unit has, so we can retarget without guessing.
+-- ============================================================================
+
+local function rebuild_unit_list()
+	tracked_units = {}
+
+	local sunits = bm:get_scriptunits_for_local_players_army()
+	if sunits == nil then
+		log("no units returned yet (army not on the field?)")
+		return
+	end
+
+	local total = sunits:count()
+	log("watching " .. tostring(total) .. " unit(s) in the local player's army")
+
+	local carriers = 0
+
+	for i = 1, total do
+		local script_unit = sunits:item(i)
+		tracked_units[#tracked_units + 1] = script_unit
+
+		local unit = script_unit.unit
+		local ui_id = unit:unique_ui_id()
+		local matching_key, all_keys = scan_unit_abilities(unit)
+
+		target_key_by_unit[ui_id] = matching_key
+		if matching_key ~= nil then
+			carriers = carriers + 1
+		end
+
+		local own_parts = {}
+		for _, ability in ipairs(ABILITIES) do
+			local owned_key = owned_key_in(ability, all_keys)
+			own_parts[#own_parts + 1] = "owns " .. ability.name .. " = "
+				.. tostring(owned_key ~= nil)
+				.. (owned_key and (" as '" .. owned_key .. "'") or "")
+		end
+
+		log("  unit '" .. tostring(unit:type()) .. "'"
+			.. " ui id " .. tostring(ui_id)
+			.. " | " .. tostring(#all_keys) .. " abilities"
+			.. " | " .. table.concat(own_parts, " | ")
+			.. " | usable right now = "
+			.. tostring(unit:can_perform_special_ability(ALL_ABILITY_KEYS[1])))
+
+		for j = 1, #all_keys do
+			if j <= MAX_ABILITIES_TO_LOG then
+				log("      ability: " .. tostring(all_keys[j]))
+			end
+		end
+	end
+
+	-- Make the success case impossible to miss when reading the log.
+	log("ability carriers found: " .. tostring(carriers))
+end
+
+
+-- ============================================================================
+-- 5b. THE ON/OFF SWITCH AND ITS BUTTON
+--     One boolean, flipped by a small button docked in the battle order bar.
+--
+--     WHERE THIS CODE MAY RUN - learned the hard way over rounds 9-15:
+--       * creating the component from a model timer or from a phase callback has
+--         twice killed the battle's model timer (and with it the poll that
+--         watches for charges) - rounds 9, 10 and 13;
+--       * painting it from a timer silently does nothing, so the button keeps the
+--         template's placeholder icon - rounds 11 and 14;
+--       * painting from a phase callback, or from a click handler, works - the
+--         icon was correct in rounds 9 and 13, and clicks repainted it correctly.
+--     So: create and paint in the phase callbacks and the click handler. The poll is
+--     registered once at load and never touched again (see the note at rearm's old
+--     place in section 9): removing and re-adding a model timer is what broke the
+--     trigger in round 17.
+-- ============================================================================
+
+-- (Each ability's switch is auto_state[marker], section 2: all false at battle
+--  start (the badges show M) until the player clicks a badge. Each badge click
+--  flips ONLY its own ability - there is no global switch any more. The badge
+--  click is the ONLY control - the keyboard, right-click and double-click
+--  routes have all been removed (rounds 15-25 measured that nothing else
+--  reaches script in battle).)
+
+-- The switch itself. Everything that used to make a button for it - the template clone,
+-- the docking, the two icon files, the bar-width fiddling and the click listener - has been
+-- removed: the control is a left-click on the M/A badge (section 8b).
+
+-- The poll's name, used once, where it is registered.
+local POLL_NAME = "zz_test_deadly_onslaught_poll"
+
+
+-- ============================================================================
+-- 6. HEARTBEAT
+--    One compact line every few seconds: the battle phase, and for each watched
+--    unit whether it is alive, running/charging, in melee, and able to use the
+--    ability. If a run fires nothing, this is what explains why.
+-- ============================================================================
+
+local function log_heartbeat()
+	-- The phase name is the one call here I have not yet seen run inside the
+	-- real game, so it is guarded: a failure must not break the poll loop.
+	local phase_name = "?"
+	local ok, value = pcall(function() return bm:get_current_phase_name() end)
+	if ok then
+		phase_name = value
+	end
+
+	local parts = {
+		"hb t=" .. tostring(tick_count),
+		"phase=" .. tostring(phase_name),
+		"conflict=" .. tostring(bm:is_conflict_phase()),
+		"auto=" .. auto_states_string(),
+	}
+
+	if tracked_units ~= nil then
+		for i = 1, #tracked_units do
+			local script_unit = tracked_units[i]
+			local unit = script_unit and script_unit.unit
+
+			if unit ~= nil then
+				local ui_id = unit:unique_ui_id()
+				local m = measure_charge(unit)
+
+				parts[#parts + 1] = string.format(
+					"%s#%s alive=%s fast=%s melee=%s tgt=%s gap=%.1fm dist=%.1fm eta=%.1fs",
+					tostring(unit:type()),
+					tostring(ui_id),
+					tostring(unit:number_of_men_alive()),
+					tostring(m.fast),
+					tostring(m.melee),
+					tostring(m.has_target),
+					m.order_gap,
+					m.target_dist,
+					m.ttc)
+			end
+		end
+	end
+
+	log(table.concat(parts, " | "))
+end
+
+
+-- ============================================================================
+-- 7. ACTIVATION
+--    Resolved from the game's OWN script files, not from documentation:
+--
+--      script/battle/quest_battles/tamurkhan/kayzk/battle_script.lua
+--        if sunit.unit:can_perform_special_ability("<key>") then
+--            sunit.uc:perform_special_ability("<key>", sunit.unit)
+--        end
+--
+--      script/benchmarks/battle_benchmark/battle_benchmark.lua
+--        --- Khorne Lord Buffing Himself ---
+--        sunit_kho_01.uc:perform_special_ability("<key>", sunit_kho_01.unit)
+--
+--    So: ability key FIRST, target unit SECOND, and the target is REQUIRED.
+--    For a self-buff the target is the unit itself. Every one of the 26 vanilla
+--    call sites passes a target; none omits it.
+--
+--    That explains the round 3 failure (we omitted the target) and the round 4
+--    failures (we had the arguments the other way round, which the engine
+--    reports as "bad self ... expecting special ability name (string)").
+--
+--    Round 3's ground-targeted variant is GONE - it is what left the unit
+--    holding a targeting cursor with a crossed-out ability icon.
+--
+--    Success is still judged objectively: a real activation starts the cooldown,
+--    so can_perform_special_ability must flip to false.
+-- ============================================================================
+
+-- (The old fixed brakes - 90 s per unit after an accepted activation, and the
+--  20 s floor between attempts - are gone. The readiness gate (section 4) and
+--  the short guard (GUARD_SECONDS, section 1) are the whole brake now.)
+
+
+-- ============================================================================
+-- 7c. ACTIVATION
+--     Resolved from the game's OWN script files, not from documentation:
+--
+--       script/battle/quest_battles/tamurkhan/kayzk/battle_script.lua
+--         if sunit.unit:can_perform_special_ability("<key>") then
+--             sunit.uc:perform_special_ability("<key>", sunit.unit)
+--         end
+--
+--       script/benchmarks/battle_benchmark/battle_benchmark.lua
+--         --- Khorne Lord Buffing Himself ---
+--         sunit_kho_01.uc:perform_special_ability("<key>", sunit_kho_01.unit)
+--
+--     Ability key FIRST, target unit SECOND, target REQUIRED. All 26 vanilla
+--     call sites pass a target; none omits it. For a self-buff the target is the
+--     unit itself. This is the call that worked in round 5.
+--
+--     A NOTE ON DETECTING SUCCESS
+--     can_perform_special_ability() does NOT report the cooldown. Round 5 proved
+--     that: the call was accepted and the ability fired, yet this check still
+--     returned true. What the engine does say, once the ability is active, is:
+--
+--        error: unit '1' does not support this special ability
+--
+--     So that error is treated here as evidence that the ability is currently
+--     active - i.e. that an earlier activation worked.
+-- ============================================================================
+
+local function attempt_activation(script_unit, unit, ability_key, reason, ui_id, marker)
+	log("ATTEMPT " .. tostring(marker) .. " '" .. ability_key .. "' on '" .. tostring(unit:type())
+		.. "' ui id " .. tostring(ui_id) .. " | reason: " .. reason)
+
+	local uc = script_unit.uc
+
+	if uc == nil then
+		log("  STOP: script_unit.uc is nil - there is no controller to order")
+		return
+	end
+
+	if TAKE_CONTROL_FIRST then
+		local ok_take, err_take = pcall(function() uc:take_control() end)
+		log("  take_control            : ok=" .. tostring(ok_take)
+			.. (ok_take and "" or ("  ERROR: " .. tostring(err_take))))
+	end
+
+	local _, can_before = pcall(function()
+		return unit:can_perform_special_ability(ability_key)
+	end)
+	log("  can_perform before      : " .. tostring(can_before))
+
+	-- The call the game itself uses.
+	local ok_call, err_call = pcall(function()
+		uc:perform_special_ability(ability_key, unit)
+	end)
+
+	if ok_call then
+		log("  perform_special_ability(key, unit) : ACCEPTED")
+		log("  the readiness gate decides the next attempt (plus the "
+			.. tostring(GUARD_SECONDS) .. " s guard)")
+	else
+		local err_text = tostring(err_call)
+		log("  perform_special_ability(key, unit) : REJECTED - " .. err_text)
+
+		if string.find(err_text, "does not support this special ability") ~= nil then
+			log("  -> engine says the unit cannot use it right now, which is what it")
+			log("     says while the ability is active/on cooldown. The readiness gate")
+			log("     will hold the next attempt back until the engine says yes again.")
+		end
+	end
+
+	if RELEASE_CONTROL_AFTER then
+		local ok_release, err_release = pcall(function() uc:release_control() end)
+		log("  release_control         : ok=" .. tostring(ok_release)
+			.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+	end
+end
+
+
+-- ============================================================================
+-- 8. THE POLL - runs every POLL_MS milliseconds for the whole battle
+-- ============================================================================
+
+local function poll_body()
+	tick_count = tick_count + 1
+
+	-- Proof of life: if this line is in the log, the repeating timer works.
+	if tick_count == 1 then
+		log("poll is running (first tick)")
+	end
+
+	-- The switch is flipped by right-clicking the ability icon in battle - see the
+	-- listener at the bottom of the file. No UI component is created anywhere in
+	-- this mod: doing so from a timer or a phase callback is what broke the model
+	-- timer in rounds 9-14.
+
+	-- Say something every 10 s whatever the phase, so a silent run is provable
+	-- and so we can see whether the timer is still being called at all.
+	if (tick_count % 40) == 0 then
+		log("tick " .. tostring(tick_count)
+			.. " | phase=" .. tostring(bm:get_current_phase_name())
+			.. " | conflict=" .. tostring(bm:is_conflict_phase())
+			.. " | auto=" .. auto_states_string()
+			.. " | tracked=" .. (tracked_units ~= nil and tostring(#tracked_units) or "nil"))
+	end
+
+	if (tick_count % HEARTBEAT_EVERY_N_POLLS) == 0 then
+		log_heartbeat()
+	end
+
+	-- Deferred "did it take effect?" check, for the case where a call was
+	-- accepted but the ability did not go on cooldown immediately.
+	if pending_verify ~= nil and tick_count >= pending_verify.at_tick then
+		local pv = pending_verify
+		pending_verify = nil
+
+		if tracked_units ~= nil then
+			for i = 1, #tracked_units do
+				local u = tracked_units[i].unit
+				if u ~= nil and u:unique_ui_id() == pv.ui_id then
+					local _, still = pcall(function()
+						return u:can_perform_special_ability(pv.key)
+					end)
+					log("  verify 1 s later        : can_perform = " .. tostring(still))
+				end
+			end
+		end
+	end
+
+	-- Nothing to do during deployment or after the battle is decided.
+	if not bm:is_conflict_phase() then return end
+
+	-- First poll after contact: build the list.
+	if tracked_units == nil then
+		rebuild_unit_list()
+		return
+	end
+
+	local do_redetect = (tick_count % REDETECT_EVERY_N_POLLS) == 0
+
+	for i = 1, #tracked_units do
+		local script_unit = tracked_units[i]
+		local unit = script_unit and script_unit.unit
+
+		-- Only look at units still alive on the field.
+		if unit ~= nil and unit:number_of_men_alive() > 0 then
+			local ui_id = unit:unique_ui_id()
+			local ability_key = target_key_by_unit[ui_id]
+
+			-- Not found on this unit yet: keep looking every few seconds in
+			-- case the ability is granted slightly later than deployment.
+			if ability_key == nil and do_redetect then
+				local found = scan_unit_abilities(unit)
+				if found ~= nil then
+					target_key_by_unit[ui_id] = found
+					ability_key = found
+					log("late find: '" .. tostring(unit:type()) .. "' ui id "
+						.. tostring(ui_id) .. " owns " .. tostring(found))
+				end
+			end
+
+			-- One pass per ability (section 1): its own switch, its own
+			-- trigger, then the readiness gate and the short guard.
+			for _, ability in ipairs(ABILITIES) do
+
+				if auto_state[ability.marker] == true then
+					local reason = nil
+
+					if ability.trigger == "charge" then
+						-- The existing charge conditions, verbatim (section 5).
+						local m = measure_charge(unit)
+
+						if FIRE_ON_CHARGE and m.charging then
+							reason = string.format(
+								"charging (gap=%.1fm dist=%.1fm eta=%.1fs)",
+								m.order_gap, m.target_dist, m.ttc)
+						elseif FIRE_ON_MELEE and m.melee then
+							reason = "in melee"
+						end
+					elseif ability.trigger == "running" then
+						-- The engine's own run-versus-walk test.
+						if unit:is_moving_fast() then
+							reason = "running"
+						end
+					end
+
+					if reason ~= nil then
+						-- The readiness gate: the engine's own check, tried
+						-- against every key this ability answers to, with
+						-- every answer logged on this evaluation.
+						local ready_key, readiness = check_readiness(unit, ability)
+						log("  readiness " .. ability.marker .. " on ui id " .. tostring(ui_id)
+							.. ": " .. readiness)
+
+						if ready_key ~= nil then
+							-- The SHORT SAFETY BRAKE, alongside the readiness
+							-- gate: one attempt per (unit, ability) per
+							-- GUARD_SECONDS. No 60/90 s timers anywhere.
+							local guard_key = tostring(ui_id) .. "|" .. ability.marker
+							local last_attempt = last_attempt_at[guard_key] or -999999
+
+							if (tick_count - last_attempt) >= GUARD_TICKS then
+								last_attempt_at[guard_key] = tick_count
+								attempt_activation(script_unit, unit, ready_key, reason, ui_id,
+									ability.marker)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+
+-- An error escaping a timer callback does not merely skip that tick: the battle
+-- model's timer driver aborts before re-arming itself, which kills EVERY
+-- repeating callback in the battle for the rest of the fight
+-- (lib_timer_manager.lua, "timer_manager_battle_callback"). So the body is
+-- wrapped, and the first few errors are logged rather than swallowing the battle.
+local poll_errors = 0
+
+local function poll()
+	local ok, err = pcall(poll_body)
+	if not ok then
+		poll_errors = poll_errors + 1
+		if poll_errors <= 3 or (poll_errors % 40) == 0 then
+			log("POLL ERROR #" .. tostring(poll_errors) .. " (poll continues): "
+				.. tostring(err))
+		end
+	end
+end
+
+
+-- ============================================================================
+-- ============================================================================
+-- 8b. THE ABILITY ICON ITSELF: THE RIGHT-CLICK TOGGLE, AND THE FEEDBACK
+--
+-- The control the player uses is a RIGHT-CLICK ON THE ABILITY'S OWN ICON, and it
+-- needs two halves, because the engine only routes a mouse button to a component
+-- whose layout declares it (no vanilla layout declares rclick - 0 of the 907 in
+-- ui3.pack, which is why right-clicking an ability icon has never done anything):
+--
+--   * the layout half - shipped in this pack as ui/battle ui/hud_battle.twui.xml
+--     and ui/common ui/land_unit_card.twui.xml - adds CA's own
+--     ContextEventBroadcaster callback, whose documented trigger list includes
+--     rclick, to every component that draws a unit ability icon;
+--   * this half listens for whatever comes back and flips the switch.
+--
+-- The engine's own script says where those icons are: lib_battle_ui.lua's
+-- highlight_unit_abilities() walks battle_orders -> orders_parent ->
+-- behaviour_parent, takes child 0 of each slot, and calls
+-- InterfaceFunction("AbilityKeyForScript") to learn which ability a button shows.
+-- ============================================================================
+
+local logged_no_parent = false
+
+-- (The single button reference, watch chain and feedback flag that used to sit
+--  here are per ability now - ability_state[marker].button / .watch_chain /
+--  .feedback_on, section 2.)
+
+-- THE FEEDBACK: a plain image swap on the ability icon. Static - no pulse, no blink.
+-- The icon slot is the one the vanilla layout marks with icon_index = 8 (round 21's layout read).
+-- Both paths are read off / given by the game, so nothing has to resolve a guessed skin path.
+local ICON_INDEX = 8
+local original_icon = nil          -- whatever the button was showing before we touched it
+
+local function read_icon(button)
+	if button == nil then return nil end
+	local ok, path = pcall(function() return button:GetImagePath(ICON_INDEX) end)
+	if ok then return tostring(path) end
+	return nil
+end
+
+local original_state = nil
+
+-- THE BADGES - one per ability (option B, done right). Rounds 32-33 measured two things: an
+-- engine-owned ability button does not draw children, and writing to it rebuilds it. So each
+-- badge is created on the button's own ancestor (a plain container, the kind that demonstrably
+-- draws components we create). Reading the button is safe; only writing to it is fatal.
+--
+-- Each ability has ONE badge component (the id from the table in section 1: zz_auto_badge for
+-- Deadly Onslaught, zz_auto_badge_fs for Foe-Seeker), created HIDDEN and SHOWN only while ITS
+-- ability is positively confirmed on the dial (the ui_tick test at the bottom of the file).
+-- Its letter shows its own switch - "A" = auto, "M" = manual - and a click on it is the only
+-- control. The components and flags live in ability_state[marker] (section 2).
+local badge_parent = nil
+local track = false          -- no computed tracking: the frames of reference do not match
+                             -- (round 42). Position is the hand-tuned offset above.
+local BADGE_X, BADGE_Y = -865, -209   -- the spot tuned by hand in-game (round 41), used as-is.
+                                     -- MINUS is left/up, PLUS is right/down, from the bottom-centre
+                                     -- dock of the badge's parent. Each ability's badge adds its
+                                     -- own ox/oy from the table in section 1 (foe_seeker:
+                                     -- +70,+30 - the measured top-slot-to-45-degree step), so a
+                                     -- re-tune of these two numbers carries Foe-Seeker along.
+
+-- THE DEFERRED, STEPPED BADGE CREATION. The scan walk only records the button
+-- and raises pending_badge[marker]; the badge is built HERE, on the ui tick,
+-- one engine call group at a time, and every step is pcall'd and bracketed by
+-- its own log lines ("step N <name>", then "step N ok" / "step N err: ..."),
+-- so the last line of a crashed log names the step that died. A failed step
+-- leaves the badge ABSENT (state.badge = nil) and the next tick tries again,
+-- up to MAX_BADGE_ATTEMPTS per claim; after that the marker gives up until
+-- the dial rebuilds (a fresh claim resets the budget).
+--
+-- The calls themselves are the stable single-badge path's, unchanged: the
+-- same parent walk to hud_battle, the same template layout, the same
+-- docking/resize/art-blank/SetText/place calls - only split into steps.
+local MAX_BADGE_ATTEMPTS = 3
+
+-- One instrumented step: opening breadcrumb, the step's engine calls inside a
+-- pcall, then ok/err. Returns true when the step completed.
+local function badge_step(marker, step_no, step_name, fn)
+	log("badge " .. marker .. ": step " .. tostring(step_no) .. " " .. step_name)
+	local ok, err = pcall(fn)
+	if ok then
+		log("badge " .. marker .. ": step " .. tostring(step_no) .. " ok")
+	else
+		log("badge " .. marker .. ": step " .. tostring(step_no) .. " err: " .. tostring(err))
+	end
+	return ok
+end
+
+local function create_badge(marker)
+	local state = ability_state[marker]
+	local ability = ability_for(marker)
+	if state == nil or ability == nil or state.button == nil or state.badge ~= nil then return false end
+
+	-- STEP 1 - create: walk up to hud_battle (the proven parent) and create
+	-- the component there. Same walk, same template as the stable path.
+	if not badge_step(marker, 1, "create", function()
+		local node = state.button
+		for _ = 1, 8 do
+			local ok_id, id = pcall(function() return node:Id() end)
+			if ok_id and tostring(id) == "hud_battle" then break end
+			local ok_p, parent = pcall(function() return node:Parent() end)
+			if not ok_p or parent == nil then break end
+			local ok_w, wrapped = pcall(function() return UIComponent(parent) end)
+			if not ok_w or wrapped == nil then break end
+			node = wrapped
+		end
+		badge_parent = node
+		state.badge = UIComponent(badge_parent:CreateComponent(ability.badge,
+			"ui/templates/zz_auto_badge"))
+		if state.badge == nil then error("CreateComponent returned nothing", 0) end
+	end) then
+		state.badge = nil
+		return false
+	end
+	local ok_cid, pid = pcall(function() return badge_parent:Id() end)
+	log("badge [" .. marker .. "]: created on '" .. tostring(ok_cid and pid or "?")
+		.. "' (not on the ability button)")
+
+	-- STEP 2 - dock the fresh component to the top-left of its parent.
+	if not badge_step(marker, 2, "dock", function()
+		state.badge:SetDockingPoint(0)
+	end) then
+		state.badge = nil
+		return false
+	end
+
+	-- STEP 3 - resize: room for the letter.
+	if not badge_step(marker, 3, "resize", function()
+		state.badge:Resize(24, 24)
+	end) then
+		state.badge = nil
+		return false
+	end
+
+	-- STEP 4 - blank art: the letter carries the look, so the template's own
+	-- title-bar art is blanked on every slot (0-4). A failed art WRITE fails
+	-- the step; a failed read is logged as '?' and does not (stable's rule).
+	if not badge_step(marker, 4, "blank art", function()
+		for i = 0, 4 do
+			state.badge:SetImagePath("ui/zz_auto/blank.png", i)
+			local ok_r, rep = pcall(function() return state.badge:GetImagePath(i) end)
+			log("   badge [" .. marker .. "] art slot " .. i .. " -> '"
+				.. tostring(ok_r and rep or "?") .. "'")
+		end
+	end) then
+		state.badge = nil
+		return false
+	end
+
+	-- STEP 5 - SetText: the letter is supplied here (our copy of a vanilla
+	-- text layout; SetText exists, SetTextColour does not).
+	if not badge_step(marker, 5, "SetText", function()
+		state.badge:SetText("A")
+		local ok_g, got = pcall(function() return state.badge:GetText() end)
+		log("   badge [" .. marker .. "] set text ok=true engine reports='"
+			.. tostring(ok_g and got or "?") .. "'")
+	end) then
+		state.badge = nil
+		return false
+	end
+
+	-- STEP 6 - place: HIDDEN AT BIRTH first (so a discarded badge can never
+	-- linger on screen), then the stable's proven placement - dock point 8
+	-- (bottom-centre) and one hand-tuned offset (BADGE_X/BADGE_Y + this
+	-- ability's own ox/oy from section 1).
+	if not badge_step(marker, 6, "place", function()
+		state.badge_shown = false
+		state.badge:SetVisible(false)
+		state.badge:SetDockingPoint(8)                 -- 8 = bottom-centre
+		state.badge:SetDockOffset(BADGE_X + ability.ox, BADGE_Y + ability.oy)
+		badge_parent:Layout()
+		state.placed = true
+		local ok_pid, pid2 = pcall(function() return badge_parent:Id() end)
+		log("badge [" .. marker .. "]: placed bottom-centre of '" .. tostring(ok_pid and pid2 or "?")
+			.. "' (offset " .. tostring(BADGE_X + ability.ox) .. ","
+			.. tostring(BADGE_Y + ability.oy) .. ") ok=true")
+	end) then
+		state.badge = nil
+		return false
+	end
+	return true
+end
+
+local function button_xy(button)
+	if button == nil then return nil, nil end
+	local ok, a, b = pcall(function() return button:Position() end)
+	if ok and type(a) == "number" and type(b) == "number" then return a, b end
+	return nil, nil
+end
+
+local function place_badge(marker)
+	local state = ability_state[marker]
+	local ability = ability_for(marker)
+	if state == nil or state.badge == nil or ability == nil then return end
+
+	-- The badge's own offset: BADGE_X/BADGE_Y plus this ability's ox/oy from
+	-- section 1 (onslaught: +0,+0; foe_seeker: +70,+30), COMPUTED here so a
+	-- re-tune of BADGE_X/BADGE_Y carries every badge along.
+	local ox, oy = BADGE_X + ability.ox, BADGE_Y + ability.oy
+
+	-- TRACK MODE (round 40): the two numbers above stop being "where on the bar" and become the
+	-- constant delta from the ability button's OWN position, recomputed every tick. Tune the delta
+	-- once with the console while tracking, and the badge follows that icon - and, per ability, its
+	-- own icon, since each badge is created for its own button.
+	if track then
+		local bx, by = button_xy(state.button)
+		if bx ~= nil then
+			pcall(function() state.badge:SetDockOffset(bx + ox, by + oy) end)
+		end
+		return
+	end
+
+	if state.placed then return end
+	-- AI General's proven configuration, and nothing cleverer than it: dock the created component to
+	-- the BOTTOM-CENTRE of the bar and give it one offset. Round 38 proved the engine both reinterprets
+	-- offsets and misreports the component's position, so there is nothing to steer by - one shot, and
+	-- the numbers above are the only knobs left.
+	pcall(function() state.badge:SetDockingPoint(8) end)                 -- 8 = bottom-centre
+	local ok_o = pcall(function() state.badge:SetDockOffset(ox, oy) end)
+	pcall(function() badge_parent:Layout() end)
+	state.placed = true
+	log("badge [" .. marker .. "]: placed bottom-centre of '" .. tostring(badge_parent:Id())
+		.. "' (offset " .. tostring(ox) .. "," .. tostring(oy) .. ") ok=" .. tostring(ok_o))
+end
+
+-- Re-place every ability's badge from the current BADGE_X/BADGE_Y (the console
+-- hooks call this, so a re-tune of the Deadly Onslaught badge carries Foe-Seeker).
+local function replace_all_badges()
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if state ~= nil then
+			state.placed = false
+			pcall(place_badge, ability.marker)
+		end
+	end
+end
+local function badge_visible(marker, on)
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return end
+	state.badge_visible_state = on    -- keep the tick's idea of the state in step with the switch
+	-- The badge never hides for the switch any more: it stays on screen and shows the LETTER for
+	-- the state - "A" = auto, "M" = manual. SetText is the one call that has never failed us,
+	-- unlike colour (no API) and opacity (renders as nothing). The badge still hides only when
+	-- the dial stops showing our ability.
+	local ok_v = pcall(function() state.badge:SetVisible(true) end)
+	local ok_t = pcall(function() state.badge:SetText(on and "A" or "M") end)
+	log("   badge [" .. marker .. "] letter='" .. (on and "A" or "M") .. "' (auto "
+		.. (on and "ON" or "OFF") .. ") visible=" .. tostring(ok_v) .. " text=" .. tostring(ok_t))
+end
+
+-- ============================================================================
+-- 11. THE TUNING HOOK - for the Lua console (Modding Development Tools, shift+F3)
+--     Global functions so they can be typed in-game. They close over the badge's
+--     position, which matters: nothing in script can read where a created component
+--     really is (round 38: Position() reported a place the badge was not), so the
+--     human eye is the measuring instrument. That is how the community's own
+--     positioning tutorial does it - "test coordinates until the new UIC looks like
+--     it's in the right place".
+-- ============================================================================
+function zz_badge_set(x, y)
+	BADGE_X = tonumber(x) or BADGE_X
+	BADGE_Y = tonumber(y) or BADGE_Y
+	-- re-place EVERY ability's badge: each one's offset is BADGE_X/BADGE_Y plus
+	-- its own ox/oy, computed in place_badge, so a re-tune of the Deadly
+	-- Onslaught badge carries Foe-Seeker along.
+	replace_all_badges()
+	local msg = "BADGE offset = " .. tostring(BADGE_X) .. "," .. tostring(BADGE_Y)
+		.. " track=" .. tostring(track)
+	log(msg)
+	return msg
+end
+
+
+function zz_badge_track(on)
+	local want = (on == true) or (tostring(on) == "true") or (tonumber(on) == 1)
+	if want == track then
+		local m = "BADGE already tracking=" .. tostring(track) .. " delta=" .. tostring(BADGE_X)
+			.. "," .. tostring(BADGE_Y)
+		log(m)
+		return m
+	end
+	-- switching modes CONVERTS the numbers, so the badge stays exactly where it is:
+	-- absolute -> delta = subtract the button position; delta -> absolute = add it back.
+	local master = ability_state[ABILITIES[1].marker]
+	local bx, by = button_xy(master ~= nil and master.button or nil)
+	if bx == nil then
+		local m = "BADGE mode switch failed: no button position"
+		log(m)
+		return m
+	end
+	if want then
+		BADGE_X, BADGE_Y = BADGE_X - bx, BADGE_Y - by
+	else
+		BADGE_X, BADGE_Y = BADGE_X + bx, BADGE_Y + by
+	end
+	track = want
+	replace_all_badges()
+	local m = "BADGE track=" .. tostring(track) .. " now " .. tostring(BADGE_X) .. "," .. tostring(BADGE_Y)
+		.. " (button at " .. tostring(bx) .. "," .. tostring(by) .. ")"
+	log(m)
+	return m
+end
+
+function zz_badge_calibrate()
+	return zz_badge_track(true)
+end
+
+function zz_badge_nudge(dx, dy)
+	return zz_badge_set(BADGE_X + (tonumber(dx) or 0), BADGE_Y + (tonumber(dy) or 0))
+end
+
+function zz_badge_show(marker)
+	marker = marker or "onslaught"
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return "badge not created yet" end
+	pcall(function() state.badge:SetVisible(true) end)
+	local ability = ability_for(marker)
+	return "badge shown at " .. tostring(BADGE_X + ability.ox) .. "," .. tostring(BADGE_Y + ability.oy)
+end
+
+function zz_badge_hide(marker)
+	marker = marker or "onslaught"
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return "badge not created yet" end
+	pcall(function() state.badge:SetVisible(false) end)
+	return "badge hidden"
+end
+
+function zz_badge_parent(marker)
+	marker = marker or "onslaught"
+	if badge_parent == nil then return "no parent yet" end
+	local ability = ability_for(marker)
+	if ability == nil then return "no ability with marker '" .. tostring(marker) .. "'" end
+	local state = ability_state[marker]
+	local ok, id = pcall(function() return badge_parent:Id() end)
+	local ok2, w = pcall(function() return badge_parent:Width() end)
+	local ok3, h = pcall(function() return badge_parent:Height() end)
+	local bx, by = button_xy(state ~= nil and state.button or nil)
+	local msg = "BADGE parent=" .. tostring(ok and id or "?") .. " size=" .. tostring(w)
+		.. "x" .. tostring(h) .. " offset=" .. tostring(BADGE_X + ability.ox) .. ","
+		.. tostring(BADGE_Y + ability.oy)
+		.. " track=" .. tostring(track) .. " button=" .. tostring(bx) .. "," .. tostring(by)
+		.. " marker=" .. tostring(marker)
+	log(msg)
+	return msg
+end
+
+local function set_armed_look(marker, on)
+	-- Availability is NEVER touched: the ability can always be used by hand.
+	-- The state is shown by the badge instead.
+	badge_visible(marker, on)
+end
+local function apply_ability_feedback(marker)
+	local state = ability_state[marker]
+	if state == nil or state.button == nil then return end
+	if state.feedback_on == auto_state[marker] then return end   -- nothing to change
+
+	set_armed_look(marker, auto_state[marker])
+	state.feedback_on = auto_state[marker]
+end
+
+-- The one place a switch is flipped, whichever control did it. Each ability
+-- has its own switch and its own badge: a click flips ONLY that ability.
+local function set_auto(value, why, marker)
+	auto_state[marker] = value
+	apply_ability_feedback(marker)   -- the letter on the badge - the only feedback now
+	log("TOGGLE [" .. marker .. "] (" .. why .. ") - automatic activation is now "
+		.. (value and "ON" or "OFF"))
+end
+
+-- Find the ability icon. Round 18 showed the engine's own highlight path
+-- (battle_orders/orders_parent/behaviour_parent) is the fire-at-will/skirmish row: for Boris
+-- all three slots report an EMPTY ability key, so Deadly Onslaught is not there. So scan the
+-- HUD instead, bounded, and ask every component the one question the engine documents for
+-- identifying an ability button - InterfaceFunction("AbilityKeyForScript") - logging each hit
+-- with its Address(). A scan that finds nothing still reports how far it got.
+local walk_visits = 0
+local walk_skipped = 0        -- components this scan skipped after an error
+
+-- A FRESH PLAIN-LUA COPY OF WHATEVER THE ENGINE RETURNED. The value a read
+-- like InterfaceFunction("AbilityKeyForScript") answers with has passed
+-- `type(key) == "string"` and still killed the game the moment it reached a C
+-- string function (the crashed session's last line was the walk's own header
+-- for our key - `.. key ..` printed fine just before the crash; the
+-- `^ that one is ours` line and the claim line have never appeared, in any
+-- session, and between them the only work is string.lower / string.find in
+-- key_is_ours below). So nothing in the claim path ever hands the engine's
+-- value to a string function again: the copy is made by Lua's own
+-- concatenation - the one operation the engine's value provably survives -
+-- with tostring as the fallback, pcall'd like everything else here. nil when
+-- even that fails.
+local function as_plain_string(v)
+	if v == nil then return nil end
+	local ok_copy, copied = pcall(function() return v .. "" end)
+	if ok_copy and type(copied) == "string" then return copied end
+	local ok_text, text = pcall(tostring, v)
+	if ok_text and type(text) == "string" then return text end
+	return nil
+end
+
+-- A LENGTH READ MUST NEVER KILL THE SCAN. The engine can hand back a STRING
+-- from a length read on these long ability keys (the in-battle failure this
+-- guards: `string.len(key) > 3` raised "attempt to compare string with number"
+-- and killed the whole walk before the button was ever claimed). The value is
+-- copied FIRST (as_plain_string) - the length read and the # fallback below
+-- only ever act on the copy, never on the engine value. The read is pcall'd,
+-- the # operator is the language-level fallback, and nil means "unreadable".
+local function safe_len(s)
+	local plain = as_plain_string(s)
+	if plain == nil then return nil end
+	local ok, n = pcall(string.len, plain)
+	if ok and type(n) == "number" then return n end
+	local ok2, n2 = pcall(function() return #plain end)
+	if ok2 and type(n2) == "number" then return n2 end
+	return nil
+end
+
+-- IS THIS BUTTON SHOWING THIS ABILITY? The claim test is the KEY ALONE - no
+-- Id(): on a real ability button the engine answers Id() with a function (the
+-- quirk the battle log printed as 'function: 0000000154EC9390') or fails
+-- outright, so anything Id-gated rejects every ability button before its key
+-- is ever considered. The match is a marker substring, hardened like safe_len
+-- AND COPY-FIRST: string.lower and string.find only ever see a fresh plain
+-- copy of the key (as_plain_string), because handing the engine's own value
+-- to those C string functions is what killed the game between the walk's
+-- header and the claim. Each form stays pcall'd, and when the plain find
+-- answers nothing, the raw pattern form the archived stable release used in
+-- game gets its turn - a misbehaving string helper must not lose a button.
+local function key_is_ours(ability, key)
+	if ability == nil then return false end
+	local plain = as_plain_string(key)
+	if plain == nil then return false end
+	local ok1, found1 = pcall(string.find, string.lower(plain), ability.marker, 1, true)
+	if ok1 and found1 ~= nil then return true end
+	local ok2, found2 = pcall(string.find, plain, ability.marker)
+	return ok2 and found2 ~= nil
+end
+
+-- THE SCAN PROBE: every component that reported a key but was NOT claimed is
+-- recorded here (up to scan_probe_cap), and find_ability_buttons writes the
+-- block - rate-limited - so a seen-but-unclaimed button can never be silent
+-- again. ours= says whether our own matcher would have claimed it.
+local scan_probe_queue = {}
+local scan_probe_cap = 3
+local scan_probe_diag_cap = 2         -- keytype/copyok/lenok line: at most this many per write
+local scan_count = 0                  -- how many scans this battle
+local last_probe_claim_count = -1     -- claim count of the last probe block written
+
+-- True when every ability has its dial button: the scan stops there.
+local function all_buttons_found()
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if state == nil or state.button == nil then return false end
+	end
+	return true
+end
+
+-- ONE COMPONENT'S WORTH OF SCAN WORK. The walk below runs this inside its own
+-- pcall, so no single component - however hostile its reads - can kill the
+-- walk (the known in-game failure) or abort the scan silently.
+local function scan_component_body(uic)
+	local ok_key, key = pcall(function() return uic:InterfaceFunction("AbilityKeyForScript") end)
+	if not ok_key then
+		walk_skipped = walk_skipped + 1
+		if walk_skipped <= 5 then
+			log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+				.. tostring(key))
+		end
+	end
+	-- The gate is the COPY's length (as_plain_string inside safe_len), not a
+	-- type() test on the engine value: a value the engine dressed as anything
+	-- other than a plain string still gets its chance, and nothing raw is
+	-- string-op'd anywhere in this body.
+	if ok_key and (safe_len(key) or 0) > 3 then
+		-- The id is LOGGED for diagnostics but never judged: on a real ability
+		-- button the engine can answer Id() with a function, or fail outright,
+		-- and an un-pcall'd read here killed the whole body BEFORE the key was
+		-- considered. Nothing in this block may reject the component - the
+		-- claim below is the key alone.
+		local ok_addr, addr = pcall(function() return uic:Address() end)
+		local ok_id, id = pcall(function() return uic:Id() end)
+		log("   ability button: key='" .. key .. "' id='" .. tostring(ok_id and id or "?")
+			.. "' address=" .. tostring(addr))
+
+		-- One claim per ability: the judgement is the KEY ALONE - it passed
+		-- safe_len() > 3 in the gate above and must contain the ability's
+		-- marker as a substring (key_is_ours), so any database variant of the
+		-- same ability attaches. No Id check, no Id-based liveness gate in
+		-- this path.
+		local claimed = nil
+		for _, ability in ipairs(ABILITIES) do
+			local state = ability_state[ability.marker]
+			if state.button == nil and key_is_ours(ability, key) then
+				-- RECORD ONLY - nothing is created, painted or written to the
+				-- engine from inside this walk. The reference and the flag are
+				-- all a claim leaves behind; the ui tick builds the badge from
+				-- the flag, step by step, instrumented (section 8b).
+				state.button = uic
+				pending_badge[ability.marker] = true
+				badge_attempts[ability.marker] = 0
+				badge_gave_up[ability.marker] = nil
+				claimed = ability
+				log("   ^ that one is ours (" .. ability.marker .. ")")
+				log("claim: " .. ability.marker
+					.. " button found - badge creation deferred to the tick")
+			end
+		end
+
+		-- The probe, collected here and written by find_ability_buttons: this
+		-- component reported a key but did not become a button. ours=yes is
+		-- the alarming case - our own matcher would have taken it.
+		if claimed == nil and #scan_probe_queue < scan_probe_cap then
+			local ours = false
+			for _, ability in ipairs(ABILITIES) do
+				if key_is_ours(ability, key) then
+					ours = true
+				end
+			end
+			local ok_id2, probe_id = pcall(function() return uic:Id() end)
+			-- The key's own properties, so the next battle's log names exactly
+			-- which of them is hostile: keytype is what type() says, copyok
+			-- whether as_plain_string could make the fresh plain copy, lenok
+			-- whether the copy measured (safe_len acts on the copy).
+			scan_probe_queue[#scan_probe_queue + 1] = {
+				id = tostring(ok_id2 and probe_id or "?"),
+				key = key,
+				keytype = type(key),
+				copyok = (as_plain_string(key) ~= nil),
+				lenok = (safe_len(key) ~= nil),
+				ours = ours,
+			}
+		end
+
+		if claimed ~= nil then
+			-- NOTHING RUNS HERE ANY MORE. The claim used to continue with the
+			-- event-reporter chain (7 x AddScriptEventReporter on the button and
+			-- its ancestors), the container-chain walk, the icon/state reads and
+			-- the feedback call - a dozen engine touches on a freshly claimed,
+			-- engine-owned button, inside a walk, while the HUD may be mid-rebuild.
+			-- The crashed session's log ends at the claim with no line after it,
+			-- so a successful claim now leaves only the reference and the flag
+			-- (above); every engine touch on the badge path happens on the ui
+			-- tick, instrumented step by step (section 8b). The event reporters
+			-- existed to hear right-clicks on the button - a control this mod no
+			-- longer has (the M/A badge click is the only control).
+			do end
+		end
+	end
+end
+
+local function scan_component(uic, depth)
+	if uic == nil or depth > 6 or walk_visits > 4000 or all_buttons_found() then return end
+	walk_visits = walk_visits + 1
+
+	local ok_one, err_one = pcall(scan_component_body, uic)
+	if not ok_one then
+		walk_skipped = walk_skipped + 1
+		if walk_skipped <= 5 then
+			log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+				.. tostring(err_one))
+		end
+	end
+
+	local ok_n, n = pcall(function() return uic:ChildCount() end)
+	if ok_n and type(n) == "number" then
+		for i = 0, n - 1 do
+			local ok_c, child = pcall(function() return uic:Find(i) end)
+			if ok_c and child ~= nil then
+				local ok_r, err_r = pcall(function()
+					scan_component(UIComponent(child), depth + 1)
+				end)
+				if not ok_r then
+					walk_skipped = walk_skipped + 1
+					if walk_skipped <= 5 then
+						log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+							.. tostring(err_r))
+					end
+				end
+			end
+		end
+	end
+end
+
+local function find_ability_buttons()
+	if all_buttons_found() then return end
+	walk_visits = 0
+	walk_skipped = 0
+	scan_probe_queue = {}
+	scan_count = scan_count + 1
+
+	local ok, err = pcall(function()
+		local hud = UIComponent(core:get_ui_root():Find("hud_battle"))
+		if hud == nil then
+			if not logged_no_parent then
+				logged_no_parent = true
+				log("ability icons: hud_battle is not on screen yet (will keep trying)")
+			end
+			return
+		end
+
+		log("ability icons: scanning the HUD for ability buttons")
+		scan_component(hud, 0)
+
+		local found = {}
+		local claim_bits = {}
+		local claimed_count = 0
+		for _, ability in ipairs(ABILITIES) do
+			local is_claimed = ability_state[ability.marker].button ~= nil
+			if is_claimed then
+				found[#found + 1] = ability.marker
+				claimed_count = claimed_count + 1
+			end
+			claim_bits[#claim_bits + 1] = ability.marker .. "=" .. tostring(is_claimed)
+		end
+		log("   scan done: " .. tostring(walk_visits) .. " component(s) visited - "
+			.. (#found > 0 and ("found: " .. table.concat(found, ", ")) or "none of ours found")
+			.. " | scan: claimed " .. table.concat(claim_bits, " "))
+
+		-- HANDLE HEALTH: a scan that cannot walk the HUD is never silent again.
+		-- A HUD that has children yet yields a one-component walk is the known
+		-- dead-handle signature (the engine rebuilt hud_battle), so it is
+		-- called out too and the next scan re-fetches.
+		local children_str = "invalid"
+		local ok_hc, hc = pcall(function() return hud:ChildCount() end)
+		if ok_hc and type(hc) == "number" then children_str = tostring(hc) end
+		log("   scan: hud_battle children=" .. children_str .. " visits=" .. tostring(walk_visits)
+			.. " skipped=" .. tostring(walk_skipped))
+		if children_str == "invalid"
+			or (ok_hc and type(hc) == "number" and hc >= 1 and walk_visits <= 1) then
+			log("   scan: hud_battle handle unusable this scan - refetching next time")
+		end
+
+		-- THE PROBE: write the collected unclaimed keys, rate-limited to a
+		-- claim-count change or every 10th scan, so a mismatch is never
+		-- silent and the log stays readable.
+		if #scan_probe_queue > 0
+			and (claimed_count ~= last_probe_claim_count or (scan_count % 10) == 0) then
+			for i = 1, #scan_probe_queue do
+				local entry = scan_probe_queue[i]
+				-- Up to scan_probe_diag_cap entries also get the key's property
+				-- line, immediately before the ours verdict.
+				if i <= scan_probe_diag_cap then
+					log("scan probe: keytype=" .. tostring(entry.keytype)
+						.. " copyok=" .. tostring(entry.copyok)
+						.. " lenok=" .. tostring(entry.lenok))
+				end
+				log("scan probe: id='" .. entry.id .. "' key='" .. entry.key .. "' ours="
+					.. (entry.ours and "yes" or "no"))
+			end
+			last_probe_claim_count = claimed_count
+		end
+	end)
+
+	if not ok then log("ability icon scan failed: " .. tostring(err)) end
+end
+
+
+-- (4) the engine's own report that an ability was *used* - the documented command channel
+--     (battle.lua: "Special Ability - a command to use a special ability has been issued",
+--     get_string1() = the ability name). Log only, but it is the control case for the whole
+--     question: if a click on the icon reaches the game at all, this fires.
+bm:register_command_handler_callback("Special Ability", function(context)
+	local ability = "?"
+	pcall(function() ability = context:get_string1() end)
+	log("command: 'Special Ability' issued for '" .. tostring(ability) .. "'")
+end, "zz_deadly_onslaught_ability_used")
+
+
+
+-- Does this event belong to our chain? Returns the id of the matching component, or nil.
+-- Compared by address first (what vanilla does) and by id second.
+local function in_chain(context)
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		for i = 1, #state.watch_chain do
+			local e = state.watch_chain[i]
+			if e.addr ~= nil and context.component ~= nil and context.component == e.addr then
+				return e.id or "?"
+			end
+		end
+	end
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		for i = 1, #state.watch_chain do
+			local e = state.watch_chain[i]
+			if e.id ~= nil and context.string == e.id then return e.id end
+		end
+	end
+	return nil
+end
+
+-- (1) THE EVENT THAT MATTERS: a right-click on the ability icon, now that the component
+-- reports its events. script/events.lua declares ComponentRClickUp; this is the first time we are
+-- actually asking for it. Matched by component id and by address, so whichever the context fills in
+-- one of them will agree.
+local rclick_other = 0
+core:add_listener(
+	"zz_deadly_onslaught_rclick",
+	"ComponentRClickUp",
+	function(context) return true end,          -- unfiltered ON PURPOSE: the log labels it
+	function(context)
+		local who = in_chain(context)
+		if who ~= nil then
+			log("RCLICK: right-click came in on '" .. tostring(context.string) .. "' - in our chain ("
+				.. who .. ")")
+			-- (the right-click toggle is gone: the badge click is the only control)
+		else
+			if rclick_other < 15 then
+				rclick_other = rclick_other + 1
+				log("RCLICK: right-click on '" .. tostring(context.string) .. "' - not ours")
+			end
+		end
+	end,
+	true
+)
+
+-- (2) THE KEYBOARD: gone. The shortcut listeners and their on_shortcut helper were deleted,
+-- so pressing '8' (usegroup8) no longer reaches the mod at all. The badge click is the only control.
+
+-- (3) THE CONTROL: a left-click on the same icon, which happens whenever the ability is used -
+-- so this one is seen without the player doing anything special. If this reports and the
+-- right-click does not, the reporter works and the engine simply never raises the right-click.
+local lclick_other = 0
+core:add_listener(
+	"zz_deadly_onslaught_lclick_control",
+	"ComponentLClickUp",
+	function(context) return true end,          -- unfiltered ON PURPOSE: the log labels it
+	function(context)
+		local clicked_id = tostring(context.string)
+
+		-- THE BADGE CLICK: a left-click on our OWN badge flips the switch. Round 43+
+		-- measured that these clicks DO reach script - six clicks each arrived as a
+		-- "left-click on 'zz_auto_badge'" and were simply logged as "not ours". The badge is the
+		-- component created on hud_battle with the id 'zz_auto_badge'; any future 'zz_auto_*'
+		-- component is routed the same way, so an added or renamed badge keeps working. Each
+		-- badge id resolves to its own ability (section 1), so a click flips ONLY that ability;
+		-- the flip goes through set_auto() - the one place a switch changes.
+		if string.sub(clicked_id, 1, 8) == "zz_auto_" then
+			local ability = ability_for_badge(clicked_id)
+			if ability == nil then
+				log("badge click on '" .. clicked_id
+					.. "' - no ability has that badge id, ignored")
+				return
+			end
+			set_auto(not (auto_state[ability.marker] == true),
+				"badge click on '" .. clicked_id .. "'", ability.marker)
+			log("badge [" .. ability.marker .. "] clicked - auto now "
+				.. (auto_state[ability.marker] and "ON (letter 'A')" or "OFF (letter 'M')"))
+			return
+		end
+
+		local who = in_chain(context)
+		if who ~= nil then
+			log("CONTROL: left-click came in on '" .. tostring(context.string) .. "' - in our chain ("
+				.. who .. ") - component click events DO reach script in battle")
+		else
+			if lclick_other < 15 then
+				lclick_other = lclick_other + 1
+				log("CONTROL: left-click on '" .. tostring(context.string) .. "' - not ours")
+			end
+		end
+	end,
+	true
+)
+
+-- ============================================================================
+-- 8c. THE DIAL DUMP - a once-per-second, READ-ONLY census of the ability dial
+--     What the script sees vs what the screen shows: every child of our button's
+--     parent container (the 'button_parent' next to our button), each with its
+--     id, its AbilityKeyForScript and its Position(), plus the parent's and the
+--     'SA_dial' ancestor's own positions and our badge's position/offset/letter.
+--     The caller gates it to one block per ~1 s of battle time (4 x 250 ms), and
+--     every engine read is pcall'd and type-checked, so it can never error out of
+--     the tick. NOTHING here writes to any button.
+-- ============================================================================
+
+local DIAL_DUMP_EVERY_N_POLL_TICKS = 4      -- 4 x 250 ms = ~1 s of battle time
+local last_dial_dump_tick = -1000           -- so the first confirmed tick dumps at once
+
+local function fmt_xy(x, y)
+	if type(x) == "number" and type(y) == "number" then
+		return "(" .. tostring(x) .. "," .. tostring(y) .. ")"
+	end
+	return "(?,?)"
+end
+
+local function read_xy(uic)
+	local ok, x, y = pcall(function() return uic:Position() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+local function log_dial_dump()
+	local master = ability_state[ABILITIES[1].marker]
+	if master == nil or master.button == nil then return end
+
+	local ok_p, parent = pcall(function() return master.button:Parent() end)
+	if not ok_p or parent == nil then return end
+	local ok_w, container = pcall(function() return UIComponent(parent) end)
+	if not ok_w or container == nil then return end
+
+	-- The dial itself: the first 'SA_dial' on the way up from our button.
+	local dial_str = "?"
+	local node = master.button
+	for _ = 1, 8 do
+		local ok_up, up = pcall(function() return node:Parent() end)
+		if not ok_up or up == nil then break end
+		local ok_w2, wrapped = pcall(function() return UIComponent(up) end)
+		if not ok_w2 or wrapped == nil then break end
+		node = wrapped
+		local ok_id, id = pcall(function() return node:Id() end)
+		if ok_id and type(id) == "string" and id == "SA_dial" then
+			local dx, dy = read_xy(node)
+			dial_str = fmt_xy(dx, dy)
+			break
+		end
+	end
+
+	local slot_count = nil
+	local ok_n, n = pcall(function() return container:ChildCount() end)
+	if ok_n and type(n) == "number" then slot_count = n end
+
+	local px, py = read_xy(container)
+	log("DIAL t=" .. string.format("%.1f", tick_count * POLL_MS / 1000) .. "s slots="
+		.. (slot_count ~= nil and tostring(slot_count) or "?")
+		.. " parent=" .. fmt_xy(px, py) .. " dial=" .. dial_str)
+
+	if slot_count ~= nil then
+		for i = 0, slot_count - 1 do
+			local ok_c, child = pcall(function() return container:Find(i) end)
+			if ok_c and child ~= nil then
+				local ok_c2, cc = pcall(function() return UIComponent(child) end)
+				if ok_c2 and cc ~= nil then
+					local cid = "?"
+					local ok_i, id = pcall(function() return cc:Id() end)
+					if ok_i and type(id) == "string" then cid = id end
+
+					local ckey = "-"
+					local ok_k, key = pcall(function() return cc:InterfaceFunction("AbilityKeyForScript") end)
+					if ok_k and type(key) == "string" and (safe_len(key) or 0) > 3 then
+						ckey = key
+					end
+
+					local cx, cy = read_xy(cc)
+					log("  slot " .. tostring(i + 1) .. ": id='" .. cid
+						.. "' key='" .. ckey .. "' pos=" .. fmt_xy(cx, cy))
+				end
+			end
+		end
+	end
+
+	-- ONE FOOTER LINE PER ABILITY: the badge's visibility, position and letter,
+	-- plus the offset it was placed at (BADGE_X/BADGE_Y + its own ox/oy). The
+	-- onslaught footer keeps its original wording; added abilities get a tag.
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		local bvis, bpos, bletter = false, "(?,?)", "-"
+		if state.badge ~= nil then
+			bvis = state.badge_shown == true
+			local bx, by = read_xy(state.badge)
+			bpos = fmt_xy(bx, by)
+			local ok_g, got = pcall(function() return state.badge:GetText() end)
+			if ok_g and type(got) == "string" then
+				bletter = got
+			else
+				bletter = auto_state[ability.marker] and "A" or "M"
+			end
+		end
+		local prefix = "OUR BADGE"
+		if ability.marker ~= "onslaught" then
+			prefix = prefix .. " [" .. ability.marker .. "]"
+		end
+		log(prefix .. ": visible=" .. (bvis and "true" or "false") .. " pos=" .. bpos
+			.. " offset=(" .. tostring(BADGE_X + ability.ox) .. "," .. tostring(BADGE_Y + ability.oy)
+			.. ") letter='" .. bletter .. "'")
+	end
+end
+
+-- ============================================================================
+-- 8d. THE INVENTORY SWEEP - a once-per-second, READ-ONLY census of every
+--     candidate ability component, in TWO coordinate spaces at once.
+--     The player sees a CIRCLE, but the DIAL dump above reports the button bar
+--     as a straight line (same y, x stepping by 59 px). So either the circle is
+--     a component outside button_parent, or Position() and the drawn position
+--     live in different spaces - RelativePosition() and GetDockOffset() have
+--     never been read. This sweep reads them, pcall'd, for every candidate id
+--     and logs ONE line per candidate; a read that fails prints '?' and NEVER
+--     skips its line. It runs whenever our ability button OR any candidate can
+--     be found - NOT only while the dial is confirmed - once per ~1 s.
+-- ============================================================================
+
+local INVENTORY_EVERY_N_POLL_TICKS = 4      -- 4 x 250 ms = ~1 s of battle time
+local last_inventory_tick = -1000           -- so the first tick with a find dumps at once
+
+-- The fixed candidate ids, read and logged in this order. Every one is looked
+-- up by id from the UI root: root:Find(id) is the engine's own recursive search.
+local INVENTORY_FIXED = {
+	"SA_dial", "dial_frame", "button_parent",
+	"button_ability",
+	"button_ability1", "button_ability2", "button_ability3",
+	"button_ability4", "button_ability5", "button_ability6",
+	"button_slot1", "button_slot2", "button_slot3",
+	"button_slot4", "button_slot5", "button_slot6",
+	"behaviour_parent", "orders_parent", "army_ability_parent", "ability_parent",
+	"zz_auto_badge", "zz_auto_badge_fs",
+}
+
+local function inv_id_of(uic)
+	local ok, id = pcall(function() return uic:Id() end)
+	if ok and type(id) == "string" and string.len(id) > 0 then return id end
+	return nil
+end
+
+-- Find one candidate: the engine's recursive Find from the ui root first, and
+-- a bounded walk of the tree as a fallback. Returns the component, or nil.
+local function inv_find(wanted)
+	local ok, got = pcall(function()
+		local root = core:get_ui_root()
+		if root == nil then return nil end
+		local raw = root:Find(wanted, false)      -- false = do not assert when missing
+		if raw == nil then return nil end
+		local ok_w, wrapped = pcall(UIComponent, raw)
+		if ok_w and wrapped ~= nil then return wrapped end
+		return raw
+	end)
+	if ok and got ~= nil then
+		local id = inv_id_of(got)
+		if id == nil or id == wanted then return got end
+	end
+	return nil
+end
+
+-- ONE bounded walk from the ui root, collecting every still-missing id at once.
+-- Read-only; depth- and visit-bounded; every read pcall'd.
+local function inv_walk(missing, found)
+	local ok_r, root = pcall(function() return core:get_ui_root() end)
+	if not ok_r or root == nil then return end
+
+	local visits, max_visits = 0, 900
+	local stack = { { node = root, depth = 0 } }
+	while #stack > 0 and visits < max_visits do
+		local item = table.remove(stack)
+		local node, depth = item.node, item.depth
+		visits = visits + 1
+
+		local id = inv_id_of(node)
+		if id ~= nil and missing[id] ~= nil and found[id] == nil then
+			found[id] = node
+		end
+
+		if depth < 8 then
+			local ok_n, n = pcall(function() return node:ChildCount() end)
+			if ok_n and type(n) == "number" and n > 0 then
+				for i = n - 1, 0, -1 do
+					local ok_c, child = pcall(function() return node:Find(i) end)
+					if ok_c and child ~= nil then
+						local ok_w, wrapped = pcall(UIComponent, child)
+						if ok_w and wrapped ~= nil then
+							stack[#stack + 1] = { node = wrapped, depth = depth + 1 }
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+-- Resolve every wanted id, fresh each sweep: the engine's own Find per id,
+-- then one shared walk for whatever is still missing.
+local function inv_resolve(ids)
+	local found = {}
+
+	for i = 1, #ids do
+		local got = inv_find(ids[i])
+		if got ~= nil then found[ids[i]] = got end
+	end
+
+	local missing = {}
+	local anything_missing = false
+	for i = 1, #ids do
+		if found[ids[i]] == nil then
+			missing[ids[i]] = true
+			anything_missing = true
+		end
+	end
+	if anything_missing then inv_walk(missing, found) end
+
+	-- Our own badges are special: if the engine's search cannot see a component
+	-- WE created, the handle we already hold is the truth about it.
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if found[ability.badge] == nil and state.badge ~= nil
+			and inv_id_of(state.badge) == ability.badge then
+			found[ability.badge] = state.badge
+		end
+	end
+
+	return found
+end
+
+local function inv_rel_xy(uic)
+	local ok, x, y = pcall(function() return uic:RelativePosition() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+local function inv_dock_xy(uic)
+	local ok, x, y = pcall(function() return uic:GetDockOffset() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+-- One INVENTORY line. Every read is pcall'd and type-checked; a failed read
+-- prints '?' and NEVER shortens the line. comp == nil means the candidate does
+-- not exist right now - still a line, all fields '?', marked [not found].
+local function inv_line(wanted, comp)
+	if comp == nil then
+		return "INVENTORY " .. wanted
+			.. ": visible=? pos=(?,?) relpos=(?,?) dock=(?,?) state='?' key='?' [not found]"
+	end
+
+	local vis = "?"
+	local ok_v, v = pcall(function() return comp:Visible(true) end)
+	if ok_v and type(v) == "boolean" then
+		vis = v and "true" or "false"
+	end
+
+	local px, py = read_xy(comp)
+	local rx, ry = inv_rel_xy(comp)
+	local dx, dy = inv_dock_xy(comp)
+
+	local state = "?"
+	local ok_s, s = pcall(function() return comp:CurrentState() end)
+	if ok_s and type(s) == "string" then state = s end
+
+	local key = "?"
+	local ok_k, k = pcall(function() return comp:InterfaceFunction("AbilityKeyForScript") end)
+	if ok_k then
+		if type(k) == "string" and (safe_len(k) or 0) > 3 then
+			key = k
+		else
+			key = "-"
+		end
+	end
+
+	return "INVENTORY " .. wanted
+		.. ": visible=" .. vis
+		.. " pos=" .. fmt_xy(px, py)
+		.. " relpos=" .. fmt_xy(rx, ry)
+		.. " dock=" .. fmt_xy(dx, dy)
+		.. " state='" .. state .. "'"
+		.. " key='" .. key .. "'"
+end
+
+local function log_inventory_sweep()
+	local found = inv_resolve(INVENTORY_FIXED)
+
+	-- Children of button_parent whose id starts with 'button_order' (dynamic:
+	-- the engine names them button_order1, button_order12, ... per unit).
+	local order_children = {}
+	local bp = found["button_parent"]
+	if bp ~= nil then
+		local ok_n, n = pcall(function() return bp:ChildCount() end)
+		if ok_n and type(n) == "number" and n > 0 then
+			for i = 0, n - 1 do
+				local ok_c, child = pcall(function() return bp:Find(i) end)
+				if ok_c and child ~= nil then
+					local ok_w, cc = pcall(UIComponent, child)
+					if ok_w and cc ~= nil then
+						local cid = inv_id_of(cc)
+						if cid ~= nil and string.sub(cid, 1, 12) == "button_order" then
+							order_children[#order_children + 1] = { id = cid, comp = cc }
+						elseif cid == nil then
+							-- a child whose id cannot be read: still a line, never skipped
+							order_children[#order_children + 1] =
+								{ id = "button_order?[" .. tostring(i + 1) .. "]", comp = cc }
+						end
+					end
+				end
+			end
+		end
+	end
+
+	local found_count = #order_children
+	for i = 1, #INVENTORY_FIXED do
+		if found[INVENTORY_FIXED[i]] ~= nil then found_count = found_count + 1 end
+	end
+	local total = #INVENTORY_FIXED + #order_children
+
+	-- Run whenever one of our ability buttons OR any candidate exists; stay
+	-- silent only when there is nothing at all to report on.
+	local any_button = false
+	for _, ability in ipairs(ABILITIES) do
+		if ability_state[ability.marker].button ~= nil then any_button = true end
+	end
+	if not any_button and found_count == 0 then return end
+
+	log("INVENTORY sweep t=" .. string.format("%.1f", tick_count * POLL_MS / 1000) .. "s"
+		.. " found=" .. tostring(found_count) .. "/" .. tostring(total))
+
+	log(inv_line("SA_dial", found["SA_dial"]))
+	log(inv_line("dial_frame", found["dial_frame"]))
+	log(inv_line("button_parent", found["button_parent"]))
+	for i = 1, #order_children do
+		log(inv_line(order_children[i].id, order_children[i].comp))
+	end
+	log(inv_line("button_ability", found["button_ability"]))
+	for i = 1, 6 do
+		log(inv_line("button_ability" .. tostring(i), found["button_ability" .. tostring(i)]))
+	end
+	for i = 1, 6 do
+		log(inv_line("button_slot" .. tostring(i), found["button_slot" .. tostring(i)]))
+	end
+	log(inv_line("behaviour_parent", found["behaviour_parent"]))
+	log(inv_line("orders_parent", found["orders_parent"]))
+	log(inv_line("army_ability_parent", found["army_ability_parent"]))
+	log(inv_line("ability_parent", found["ability_parent"]))
+	log(inv_line("zz_auto_badge", found["zz_auto_badge"]))
+	log(inv_line("zz_auto_badge_fs", found["zz_auto_badge_fs"]))
+end
+
+-- ============================================================================
+-- 9. START IT UP
+--    The poll, the on/off button, and the watchdog that keeps the poll alive.
+-- ============================================================================
+
+-- The watchdog's bookkeeping. Round 16 declared these where round 19's deletion removed them,
+-- which silently left them as globals - harmless until the stall branch ran, where the arithmetic
+-- on a nil would throw and take the UI timer with it. Caught by the mock, not by a battle.
+local last_seen_tick = -1
+local stalled_checks = 0
+
+local function phase_ui_refresh()
+	find_ability_buttons()          -- the abilities' own icons (section 8b)
+	for _, ability in ipairs(ABILITIES) do
+		apply_ability_feedback(ability.marker)  -- keep each badge's letter in step with its switch
+	end
+	last_seen_tick = tick_count     -- so the watchdog does not read this as a stall
+end
+
+bm:register_phase_change_callback("Deployment", function()
+	local ok, err = pcall(phase_ui_refresh)
+	if not ok then log("phase_ui_refresh (Deployment) FAILED: " .. tostring(err)) end
+end)
+bm:register_phase_change_callback("Deployed", function()
+	local ok, err = pcall(phase_ui_refresh)
+	if not ok then log("phase_ui_refresh (Deployed) FAILED: " .. tostring(err)) end
+end)
+bm:register_phase_change_callback("Deployed", function()
+	local ok, err = pcall(function()
+		log("combat phase started - building watch list")
+		rebuild_unit_list()
+	end)
+	if not ok then log("deployed callback failed: " .. tostring(err)) end
+end)
+
+-- Diagnostic: the phase dispatcher triggers this event unconditionally, so its
+-- presence (or absence) tells us whether phase changes reach scripts at all.
+core:add_listener(
+	"zz_deadly_onslaught_phase_watch",
+	"ScriptEventBattlePhaseChanged",
+	function(context) return true end,
+	function(context)
+		-- Log only. Painting here is what broke round 12: the phase dispatcher
+		-- runs this via core:trigger_event, and UI work inside it stopped the
+		-- whole phase system after Startup.
+		log("phase change seen: " .. tostring(context.string))
+	end,
+	true
+)
+
+bm:repeat_callback(poll, POLL_MS, POLL_NAME)
+
+-- POLL WATCHDOG (real / UI timer, 500 ms)
+-- The poll is the only thing watching for charges, and UI work in a phase
+-- callback can kill the model timer that drives it (rounds 9, 10, 13). This runs
+-- in the UI timer - the one context that has never died - and only checks whether
+-- the poll's tick counter is still moving; if it is not, the poll is put back.
+-- Nothing is created or painted from here.
+-- ---------------------------------------------------------------------------
+local ui_ticks = 0
+
+local function ui_tick()
+	ui_ticks = ui_ticks + 1
+	if ui_ticks == 1 then
+		log("ui timer is running (real callback, 500 ms) - watching the poll")
+	end
+
+	-- Watch the poll's tick counter and REPORT only: touching the timer registry from a UI
+	-- context is what broke the trigger in round 17. While the ability icons are still
+	-- unknown, keep trying to find them - the orders bar does not exist in the early
+	-- phases, so the first attempts are expected to fail.
+	-- THE DEFERRED CREATION (this build): a claim in the walk only records the
+	-- button and raises pending_badge[marker] (scan_component_body); the badge
+	-- itself is built HERE, on the tick, one instrumented pcall'd step at a
+	-- time - never from inside the walk. A step that fails is logged with its
+	-- own err line, the badge stays absent and the next tick retries, up to
+	-- MAX_BADGE_ATTEMPTS per claim; after that the marker waits for the dial to
+	-- rebuild (a fresh claim resets the budget).
+	for _, ability in ipairs(ABILITIES) do
+		local marker = ability.marker
+		local state = ability_state[marker]
+		if state.badge == nil and state.button ~= nil and pending_badge[marker] ~= nil
+			and badge_gave_up[marker] == nil then
+			if (badge_attempts[marker] or 0) >= MAX_BADGE_ATTEMPTS then
+				badge_gave_up[marker] = true
+				log("badge " .. marker .. ": giving up until the dial rebuilds ("
+					.. tostring(MAX_BADGE_ATTEMPTS) .. " failed attempts)")
+			else
+				badge_attempts[marker] = (badge_attempts[marker] or 0) + 1
+				local ok, err = pcall(create_badge, marker)
+				if not ok then
+					state.badge = nil
+					log("badge " .. marker .. ": create attempt raised: " .. tostring(err))
+				end
+			end
+		end
+		if state.badge ~= nil then pending_badge[marker] = nil end
+	end
+
+	-- HIDDEN BY DEFAULT: the badge is SHOWN only while the ability is POSITIVELY
+	-- CONFIRMED on the dial this tick, and the proof is the KEY ALONE - a pcall'd
+	-- InterfaceFunction("AbilityKeyForScript") read that still passes
+	-- safe_len() > 3 and key_is_ours. Id() is NOT consulted: on a real ability
+	-- button it answers with a function (the battle-log quirk 'function: ...'),
+	-- and the old string-id liveness gate read exactly that as "dead handle" and
+	-- dropped the reference every tick. A read that raises, an empty key or a
+	-- foreign key still means gone: drop the reference, hide the badge and say
+	-- why. The letter is left untouched while hidden, so the badge reappears with
+	-- the right letter when the dial comes back.
+	-- Per ability: confirm ITS button and show/hide/letter ITS own badge.
+	local onslaught_confirmed = false
+
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		local confirmed = false
+		local hide_why = "badge [" .. ability.marker .. "] hidden - no ability button found yet"
+
+		if state.button ~= nil then
+			-- KEY-BASED liveness (no Id()): the button counts as alive and ours
+			-- when the pcall'd key read passes safe_len() > 3 and key_is_ours;
+			-- anything else counts as gone.
+			local ok_k, key = pcall(function() return state.button:InterfaceFunction("AbilityKeyForScript") end)
+			if ok_k and (safe_len(key) or 0) > 3
+				and key_is_ours(ability, key) then
+				confirmed = true
+			else
+				state.button = nil
+				pending_badge[ability.marker] = nil   -- a stale claim dies with the button
+				hide_why = "badge [" .. ability.marker .. "] hidden - the dial is not showing "
+					.. ability.name
+			end
+		end
+
+		if ability.marker == "onslaught" then onslaught_confirmed = confirmed end
+
+		if state.badge ~= nil then
+			if confirmed then
+				if not state.badge_shown then
+					state.badge_shown = true
+					pcall(function() state.badge:SetVisible(true) end)
+					log("badge [" .. ability.marker .. "] shown - the dial is showing " .. ability.name)
+				end
+				-- while the dial shows this ability, the letter follows its own switch
+				-- (A = auto, M = manual)
+				if state.badge_visible_state ~= auto_state[ability.marker] then
+					state.badge_visible_state = auto_state[ability.marker]
+					pcall(function() state.badge:SetText(auto_state[ability.marker] and "A" or "M") end)
+					log("   badge [" .. ability.marker .. "] letter='"
+						.. (auto_state[ability.marker] and "A" or "M") .. "' (auto "
+						.. (auto_state[ability.marker] and "ON" or "OFF") .. ")")
+				end
+			elseif state.badge_shown then
+				state.badge_shown = false
+				pcall(function() state.badge:SetVisible(false) end)
+				log(hide_why)
+			end
+		end
+		if state.badge ~= nil then pcall(place_badge, ability.marker) end
+	end
+
+	-- THE DIAL DUMP (section 8c): while the dial positively shows our ability, one
+	-- read-only census block per ~1 s of battle time. pcall'd so a surprise can
+	-- never take the UI tick down with it.
+	if onslaught_confirmed and (tick_count - last_dial_dump_tick) >= DIAL_DUMP_EVERY_N_POLL_TICKS then
+		last_dial_dump_tick = tick_count
+		pcall(log_dial_dump)
+	end
+
+	-- THE INVENTORY SWEEP (section 8d): one read-only block per ~1 s of battle
+	-- time, whenever our ability button OR any candidate component can be found
+	-- - not only while the dial is confirmed. pcall'd like the dump above so a
+	-- surprise can never take the UI tick down with it.
+	if (tick_count - last_inventory_tick) >= INVENTORY_EVERY_N_POLL_TICKS then
+		last_inventory_tick = tick_count
+		pcall(log_inventory_sweep)
+	end
+
+	if tick_count == last_seen_tick then
+		stalled_checks = stalled_checks + 1
+		-- 12 strikes = 6 seconds of real time with no model time passing. Long enough that the
+		-- pause menu (which freezes model time) does not read as a dead timer - round 20's log
+		-- flagged a "stall" that was almost certainly the player being paused.
+		if stalled_checks == 12 then
+			log("WATCHDOG: model time has not advanced for 6 s (tick " .. tostring(tick_count)
+				.. ") - paused, or the poll is dead. NOT repairing it (the timer registry must not be touched from a UI context)")
+		end
+	else
+		stalled_checks = 0
+	end
+	last_seen_tick = tick_count
+
+	if not all_buttons_found() and (ui_ticks % 2) == 0 then
+		find_ability_buttons()
+	end
+
+end
+
+bm:repeat_real_callback(ui_tick, 50, "zz_deadly_onslaught_ui")
+
+-- ---------------------------------------------------------------------------
+-- THE BUTTON ITSELF
+-- A click handler is a UI context, and painting works from here (rounds 9-14:
+-- both the state and the icon followed the clicks).
+-- ---------------------------------------------------------------------------
+
+log("loaded. polling every " .. tostring(POLL_MS) .. " ms"
+	.. " | fire on charge = " .. tostring(FIRE_ON_CHARGE)
+	.. " | fire on melee = " .. tostring(FIRE_ON_MELEE)
+	.. " | automatic activation starts " .. auto_states_string()
+	.. " | click an ability's own M/A badge to flip it")
+for _, ability in ipairs(ABILITIES) do
+	for _, wanted_key in ipairs(ability.keys) do
+		log("  accepting ability (" .. ability.marker .. "): " .. wanted_key)
+	end
+end
+
+-- The tooltip override is a localisation file (text/db/zz_deadly_onslaught__.loc) that
+-- re-writes the vanilla description of this ability with the right-click instruction
+-- appended. This line proves whether it actually loaded: vanilla flavour text with no
+-- "Right-click" line means the override lost, and only the tooltip is affected.
+local TOOLTIP_KEY = "unit_abilities_tooltip_text_wh_main_character_abilities_deadly_onslaught"
+local loc_ok, loc_text = pcall(function() return common.get_localised_string(TOOLTIP_KEY) end)
+log("tooltip text in use (" .. (loc_ok and "ok" or "FAILED") .. "): " .. tostring(loc_text))

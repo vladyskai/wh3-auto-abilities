@@ -1,0 +1,57 @@
+count-pin lines rebased: 55
+  L3931   a = (it == 1374)
+  L3932   check(TAG .. "A4a: with no information the badge paths walked the FULL 687-entry table ("
+  L3934   b = ((it / 2) == 687)
+  L3935   check(TAG .. "A4b: 687 abilities per pass, no shortened set (per pass = " .. (it / 2) .. ")", b)
+  L4114   a = (POLL_ITERS == 687)
+  L4116   .. ", want 687 - the FULL 687-entry table after round h105)", a)
+  L4470   (ABIL and #ABIL or -1) .. " entries)", ABIL ~= nil and #ABIL == 687)
+  L4473   check(TAG .. "H68: the static key->marker map has all 738 keys (marker_by_key, " .. n_mk .. ")",
+  L4474   MK ~= nil and n_mk == 738)
+  L4477   AKEYS == nil or #AKEYS == 738)
+  L9212   .. ", table of 687 after round h105)", ABIL ~= nil and wired_n == 687 and total == 687)
+  L9241   return exists == 6 and m_n == 6 and a_n == 2 and m2_n == 4 and wired_n == 687 and two and four
+  L10368  mu == 360)
+  L11135  cp(s, 'trigger = "melee_unwavering"') == 360)
+  L11473  check(TAG .. "S1c: the abilities table has 687 entries (" .. n_e .. ")", n_e == 687)
+  L11474  check(TAG .. "S1d: the static key->marker map has 742 keys (" .. n_k .. ")", n_k == 738)
+  L11477  return armed_n == #samples and all_fired and (n_e == 687) and (n_k == 738)
+  L11602  cp(s, 'trigger = "melee_unwavering"') == 360 and cp(s, 'trigger = "charge_or_melee"') == 25)
+  L11811  check(TAG .. "M6c: the abilities table has 687 entries (" .. n_e .. ")", n_e == 687)
+  L11812  check(TAG .. "M6d: the static key->marker map has 742 keys (" .. n_k .. ")", n_k == 738)
+  L11815  return armed_n == #ALL4 and all_fired and (n_e == 687) and (n_k == 738)
+  L11945  cp(s, 'trigger = "melee_unwavering"') == 360 and cp(s, 'trigger = "charge_or_melee"') == 25
+  L12284  check(TAG .. "N13d: the abilities table has 687 entries (" .. n_e .. ")", n_e == 687)
+  L12285  check(TAG .. "N13e: the static key->marker map has 742 keys (" .. n_k .. ")", n_k == 738)
+  L12287  return a and lg(TAG, b) and lg(TAG, c) and (n_e == 687) and (n_k == 738)
+  L12468  cp(s, "\t{ marker = ") == 687 and cp(s, 'badge = "') == 687)
+  L12474  cp(s, 'trigger = "melee_unwavering"') == 360 and cp(s, 'trigger = "ushoran_health"') == 20
+  L12767  cp(s, "\t{ marker = ") == 687 and cp(s, 'badge = "') == 687)
+  L12772  cp(s, 'trigger = "melee_unwavering"') == 360 and cp(s, 'trigger = "blood_sacrifice"') == 1
+  L13196  check("D1a: the WHOLE ABILITIES table was captured (" .. total .. " entries, want 687)",
+  L13197  total == 687)
+  L13199  nonempty == total and total == 687)
+  L13201  .. matched .. "/" .. total .. ")", matched == total and total == 687)
+  L13225  .. "removed from the shipped twui.xml, which now carries only the short badge hint.", matched == total and total == 687)
+  L13229  .. "trigger wording: " .. matched .. "/" .. total .. " entries match (want 687), total " .. total
+  L13230  .. " (want 687)",
+  L13231  matched == 687 and total == 687)
+  L13328  cp(s, 'trigger = "melee_unwavering"') == 360 and cp(s, 'trigger = "enemy_engaged_or_shot"') == 85
+  L13331  cp(s, "\t{ marker = ") == 687 and cp(s, 'badge = "') == 687)
+  L13685  cp95(s, "\t{ marker = ") == 687)
+  L13958  cp96(s, "\t{ marker = ") == 687
+  L14244  cp97(s, 'trigger = "melee_unwavering"') == 360
+  L14249  cp97(s, "\t{ marker = ") == 687 and cp97(s, 'badge = "') == 687)
+  L14549  cp98(s, 'trigger = "melee_unwavering"') == 360
+  L14561  cp98(s, "\t{ marker = ") == 687 and cp98(s, 'badge = "') == 687)
+  L14858  cp99(s, 'trigger = "melee_unwavering"') == 360
+  L14880  cp99(s, "\t{ marker = ") == 687 and cp99(s, 'badge = "') == 687
+  L15099  EXP = { entries = 687, keys = 738, mu = 360, ush = 20, present = false }
+  L15348  EXP = { entries = 687, keys = 738, mu = 360, es = 85, gate = true, boss = false }
+  L15712  EXP = { entries = 687, keys = 738, sum = true }
+  L16642  cp104(s, "\t{ marker = ") == 687 and cp104(s, 'badge = "') == 687)
+  L18762  check("0 " .. nm .. ": the family counts are unchanged (12 air-drop entries of 687)",
+  L18763  cp(s2, 'trigger = "air_drop_on_infantry"') == 12 and cp(s2, "\t{ marker = ") == 687)
+  L19072  check("1 " .. nm .. ": the family counts are unchanged (12 air-drop entries of 687)",
+  L19073  cp(s2, 'trigger = "air_drop_on_infantry"') == 12 and cp(s2, "\t{ marker = ") == 687)
+wrote C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261027_melee_buffs_harness121\harness121.lua 1077973 bytes

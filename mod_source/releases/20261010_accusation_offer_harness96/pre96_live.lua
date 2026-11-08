@@ -1,0 +1,8619 @@
+--------------------------------------------------------------------------------
+-- Route 2 test case: automatically fire ONE ability, under a chosen condition.
+--
+-- Target ability : Deadly Onslaught
+--                  database key = wh_main_character_abilities_deadly_onslaught
+--                  (self-buff, 31 s duration, 90 s cooldown, unlimited uses,
+--                   no magic cost, no usage restrictions of any kind,
+--                   engine's own AI tag = augment_charge_self)
+--
+-- WHICH UNIT HAS IT
+--   In skirmish/custom battles an ability comes from the unit's innate list
+--   (db table: land_units_to_unit_abilites_junctions), not from a skill.
+--   The Empire Captain does NOT have Deadly Onslaught there - which is why it
+--   never showed up in skirmish. Boris Todbringer DOES, on all four of his
+--   unit variants:
+--       wh3_dlc29_emp_cha_boris_todbringer_toddy_0 ... _3
+--   So this test works with Boris in skirmish, and needs no change of key.
+--
+-- WHAT THIS RUN IS FOR - it answers four questions in one battle:
+--     1. Does a script in script/battle/mod/ run in this battle type?
+--     2. Can we detect, per unit, whether it owns a given ability?
+--     3. Can we make it fire that ability with no click from the player?
+--     4. What happens to our control of that unit while it fires?
+--
+-- WHERE THIS FILE GOES
+--   script/battle/mod/zz_test_deadly_onslaught.lua  inside the .pack file.
+--   That folder is auto-loaded by the game's own mod loader
+--   (script/_lib/lib_mod_loader.lua) in every battle. No vanilla file is edited.
+--
+-- WHERE THE OUTPUT GOES
+--   zz_test_deadly_onslaught_log.txt, in the game's install folder (next to
+--   Warhammer3.exe). Written directly by this script, so it does not depend on
+--   any logging setting. Search it for "zz_test_deadly_onslaught".
+--------------------------------------------------------------------------------
+
+
+-- ============================================================================
+-- 1. SETTINGS - the only things you normally touch
+-- ============================================================================
+
+-- ============================================================================
+-- 1a. THE CLAIM-TEST BISECT - the crash hunt, one engine operation per battle
+-- ============================================================================
+-- The claim test runs a fixed sequence of operations on the engine's own
+-- ability-key value. The sequence is a LADDER: every step can be enabled on
+-- its own, and a step that runs announces itself - `bisect: step <n> <name>
+-- entering` immediately before its operation, `bisect: step <n> <name> ok`
+-- immediately after it. THE STEP THAT KILLS THE GAME IS THE ONE WHOSE
+-- `entering` LINE IS THE LOG'S LAST LINE, WITH NO `ok` AFTER IT.
+--
+-- WHAT THE LADDER FOUND: steps 1-6 all passed in battle (type, tostring,
+-- concat copy, string.len, #, string.lower), and the log's last line was
+-- `bisect: step 7 string.find plain entering` with no `ok` after it - the
+-- FOUR-ARGUMENT PLAIN-MODE find is what killed the engine.
+--
+-- SO THE FIND IS GONE. Both find forms (plain and pattern) have been removed
+-- from every claim/match path, and the match is now EXACT KEY EQUALITY: the
+-- lowered copy of the key is compared against the ability's listed keys
+-- (ABILITIES, section 1 - already lowercase). Steps 7-8 stay in the ladder
+-- as REMOVED slots: they log `SKIPPED (equality match - find removed)` and
+-- run nothing, so the record stays honest. Step 9 is the equality compare
+-- and remains the verdict gate.
+--
+-- The nine steps, in the order they run:
+--   1 type(v)                    - the value's Lua type
+--   2 tostring(v)                - pcall'd text read (the copy's fallback)
+--   3 v .. "" (concat copy)      - the fresh plain copy the claim works on
+--   4 string.len on the copy     - the length read, pcall'd
+--   5 # on the copy              - the language-level length fallback
+--   6 string.lower on the copy   - the lowercased copy, pcall'd
+--   7 string.find plain          - REMOVED (the killer the bisect named)
+--   8 string.find pattern-form   - REMOVED (no find remains at all)
+--   9 the equality compare       - lowered copy == each listed key (the gate)
+--
+-- HOW TO RAISE IT - ONE STEP PER BATTLE:
+--   * This build ships CLAIM_BISECT = 9: the whole ladder on - steps 1-6 and
+--     9 run, steps 7-8 log their removal. Expect the claim lines and the
+--     deferred badges in the next battle log.
+--   * Lower levels still gate: with step 9 off the verdict falls back to
+--     'not ours' (no claim), so the switch keeps working.
+--   * A disabled step logs `bisect: step <n> <name> SKIPPED (disabled)` and
+--     its result does not contribute; steps 7-8 always log their removal.
+--   * 0 = the whole claim test off; 9 = everything that still exists on.
+local CLAIM_BISECT = 9
+
+-- THE ABILITIES - one entry per ability, and this table drives everything:
+-- the HUD scan (which dial buttons are ours), the firing loop (which trigger
+-- and which keys to try) and the badges (one per ability, id and offset).
+--   marker  - the ability's short name, for the log lines and the internal
+--             lookups (NO LONGER a substring search: the engine's key is
+--             matched by EXACT EQUALITY against the keys listed below)
+--   name    - the ability's display name, for the badge log lines
+--   trigger - "charge" : the existing charge conditions (section 5), verbatim
+--             PLUS (this round, user-approved) the plain in-melee condition -
+--             Deadly Onslaught has a component that is useful in melee, so
+--             it fires on the charge window OR once the unit is already
+--             fighting. The two arms exclude each other (a charging unit
+--             has not made contact yet); both switches below are ON.
+--             "tired" : fire when the unit's FATIGUE state is Tired or
+--             worse - tired / very_tired / exhausted; winded and above hold
+--             it back. Read through battle_unit:fatigue_state() (section
+--             7f); an unreadable read FAILS CLOSED and says so once.
+--             "melee"  : fire whenever the engine says the unit is in melee
+--             "melee_low_morale": fire when the engine says the unit is in
+--                        melee AND its morale is at or below the wavering
+--                        threshold (battle_unit:is_wavering - the only morale
+--                        THRESHOLD the API exposes; there is NO percentage
+--                        read). FAIL-OPEN: a morale read that cannot be taken
+--                        falls back to the plain melee trigger, so an
+--                        unreadable morale can never silently disable it.
+--             "melee_unwavering": fire when the engine says the unit is in
+--                        melee AND the unit is neither routing nor wavering
+--                        (the same battle_unit:is_wavering threshold, now as
+--                        a guard). FAIL-OPEN like the routing guard: only a
+--                        READABLE wavering (exact true) holds it back, and an
+--                        unreadable morale rides the plain in-melee condition.
+--                        THE 28 APPROVED IN-MELEE-SELF ENTRIES (the
+--                        questionnaire block-1 batch, this round) share
+--                        this trigger name - their approved rule is
+--                        EXACTLY blood_lust's - so they share its
+--                        evaluator as well (section 7g). The trigger
+--                        string is now ONLY the wiring key for that
+--                        evaluator: the poll calls
+--                        ability.evaluate(unit, routing) and never
+--                        compares this string again (item 8).
+--   evaluate- the per-entry dispatch (critique-2 item 8): the poll calls
+--             ability.evaluate(unit, routing) directly. Section 7g wires
+--             this field at load from the trigger name above, so the
+--             dispatch is one call and no string comparison runs.
+--   keys    - the database keys (lowercase) this ability answers to. A dial
+--             button is CLAIMED when its key, lowercased, EQUALS one of
+--             these, and the unit scan uses them as its search set (which
+--             of them a unit actually carries - section 2). At fire time
+--             the readiness check (can_perform_special_ability) asks about
+--             the ONE key the scan found on the unit; this list is walked
+--             only as the fallback when no usable key is cached yet. Add
+--             new engine variants here: the scan probe prints every
+--             key-bearing button we did not claim (ours=no), so an unknown
+--             variant shows up in the log immediately.
+--   badge   - the component id of the ability's own M/A badge (its click is
+--             the only control)
+--   ox, oy  - the badge's FALLBACK offset from the onslaught badge's own
+--             BADGE_X / BADGE_Y (section 8b), used only when the claimed
+--             button's bar position could not be determined at claim time:
+--             onslaught BADGE_X+0/BADGE_Y+0, foe_seeker BADGE_X+70/BADGE_Y+30
+--             (the measured +70,+30 from the top wheel slot to the 45-degree
+--             slot), hammer_of_sigmar BADGE_X+98/BADGE_Y+102 (the measured
+--             top-slot-to-right-slot step), stand_your_ground
+--             BADGE_X+66/BADGE_Y+172 (the measured top-slot-to--45-degree
+--             step = wheel slot 4), blood_lust BADGE_X-68/BADGE_Y+32 (the
+--             measured top-slot-to-135-degree step = wheel slot 5). When the
+--             bar position IS known,
+--             the badge's offset is
+--             that wheel slot's delta from the measured top slot (WHEEL_SLOT /
+--             WHEEL_TOP_X/WHEEL_TOP_Y, section 8b) applied to BADGE_X/BADGE_Y,
+--             so re-tuning the Deadly Onslaught badge (zz_badge_set) still
+--             carries Foe-Seeker along.
+local ABILITIES = {
+	{ marker = "onslaught", name = "Deadly Onslaught", trigger = "charge",
+		badge = "zz_auto_badge",
+		keys = { "wh_main_character_abilities_deadly_onslaught" },
+		ox = 0, oy = 0 },
+	{ marker = "foe_seeker", name = "Foe-Seeker", trigger = "tired",
+		badge = "zz_auto_badge_fs",
+		keys = { "wh_main_character_abilities_foe_seeker",
+			"wh_dlc03_character_abilities_foe_seeker",
+			-- BLOCK 2 (this round): the SUMMONED Foe-Seeker - Krell's
+			-- summoned form carries this third key. It is NOT a new
+			-- entry: its key sits HERE, so the summoned caster shares
+			-- this ability's marker, badge, arming state and back-off
+			-- with every other Foe-Seeker owner.
+			"wh_main_character_abilities_foe_seeker_summoned" },
+		ox = 70, oy = 30 },
+	{ marker = "hammer_of_sigmar", name = "Hammer of Sigmar", trigger = "melee",
+		badge = "zz_auto_badge_hos",
+		keys = { "wh_main_spell_bound_hammer_of_sigmar",
+			"wh_dlc04_spell_bound_hammer_of_sigmar_upgraded" },
+		ox = 98, oy = 102 },
+	{ marker = "stand_your_ground", name = "Stand Your Ground", trigger = "melee_low_morale",
+		badge = "zz_auto_badge_syg",
+		keys = { "wh_main_character_abilities_stand_your_ground",
+			"wh3_dlc24_character_abilities_tacticians_stand_your_ground" },
+		ox = 66, oy = 172 },
+	{ marker = "blood_lust", name = "Blood Lust", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bl",
+		keys = { "wh_main_character_abilities_blood_lust",
+			"wh_dlc03_character_abilities_blood_lust" },
+		ox = -68, oy = 32 },
+	-- THE APPROVED IN-MELEE-SELF BATCH (the questionnaire's block 1,
+	-- this round): 28 approved entries - 29 database keys; the two
+	-- Deathbringer keys sit in ONE entry (base + upgraded). Their
+	-- approved rule is EXACTLY blood_lust's - "when in melee (and not
+	-- fleeing): cast on self" = the unit is alive, in melee, and
+	-- neither routing nor wavering (fail-open morale), self-cast - so
+	-- they share its trigger name and its evaluator (section 7g).
+	-- Each entry carries its own marker, display name, badge id and
+	-- key list. No separate fallback offset was measured for these
+	-- badges: the wheel-slot path positions them (section 8b), and
+	-- ox/oy stay at the top slot (0, 0) for the logged fallback case.
+	{ marker = "aether_sword", name = "Aether Sword", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_aether_sword",
+		keys = { "wh3_dlc20_weapon_abilities_aether_sword" },
+		ox = 0, oy = 0 },
+	{ marker = "apocalyptic_vision", name = "Apocalyptic Vision", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_apocalyptic_vision",
+		keys = { "wh_dlc03_character_abilities_apocalyptic_vision" },
+		ox = 0, oy = 0 },
+	{ marker = "armour_of_gazrakh", name = "Armour of Gazrakh", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_armour_of_gazrakh",
+		keys = { "wh3_dlc23_item_abilities_armour_of_gazrakh" },
+		ox = 0, oy = 0 },
+	{ marker = "aura_of_quetzl", name = "Aura of Quetzl", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_aura_of_quetzl",
+		keys = { "wh2_main_item_abilities_aura_of_quetzl" },
+		ox = 0, oy = 0 },
+	{ marker = "axe_of_dargo", name = "Axe of Dargo", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_axe_of_dargo",
+		keys = { "wh_main_weapon_abilities_axe_of_dargo" },
+		ox = 0, oy = 0 },
+	{ marker = "axe_of_grom", name = "Axe of Grom", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_axe_of_grom",
+		keys = { "wh2_dlc15_weapon_abilities_axe_of_grom" },
+		ox = 0, oy = 0 },
+	{ marker = "axes_of_kadrin", name = "Axes of Kadrin", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_axes_of_kadrin",
+		keys = { "wh3_dlc25_weapon_abilities_axes_of_kadrin" },
+		ox = 0, oy = 0 },
+	{ marker = "azhags_ard_armour", name = "Azhag's 'Ard Armour", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_azhags_ard_armour",
+		keys = { "wh2_dlc15_item_abilities_azhags_ard_armour" },
+		ox = 0, oy = 0 },
+	{ marker = "ballet_of_blows", name = "Ballet of Blows", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ballet_of_blows",
+		keys = { "wh3_main_lord_abilities_ballet_of_blows" },
+		ox = 0, oy = 0 },
+	{ marker = "bear_fang_talisman", name = "Bear Fang Talisman", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bear_fang_talisman",
+		keys = { "wh3_dlc27_item_abilities_bear_fang_talisman" },
+		ox = 0, oy = 0 },
+	{ marker = "beastslaver", name = "Beastslaver", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_beastslaver",
+		keys = { "wh2_dlc14_lord_abilities_beastslaver" },
+		ox = 0, oy = 0 },
+	{ marker = "blade_of_bel_korhadris", name = "Blade of Bel-Korhadris", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blade_of_bel_korhadris",
+		keys = { "wh2_main_item_abilities_blade_of_bel_korhadris" },
+		ox = 0, oy = 0 },
+	{ marker = "blades_of_shang_yang", name = "Blades of Shang-Yang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blades_of_shang_yang",
+		keys = { "wh3_cp1_weapon_abilities_blades_of_shang_yang" },
+		ox = 0, oy = 0 },
+	{ marker = "bloodstorm_blades", name = "Bloodstorm Blades", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bloodstorm_blades",
+		keys = { "wh3_dlc26_weapon_abilities_bloodstorm_blades" },
+		ox = 0, oy = 0 },
+	{ marker = "brass_body", name = "Brass Body", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_brass_body",
+		keys = { "wh2_dlc17_lord_abilities_brass_body" },
+		ox = 0, oy = 0 },
+	{ marker = "change_or_die", name = "Change or Die!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_change_or_die",
+		keys = { "wh3_dlc24_character_abilities_change_or_die" },
+		ox = 0, oy = 0 },
+	{ marker = "claws_of_mourkain", name = "Claws of Mourkain", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_claws_of_mourkain",
+		keys = { "wh2_dlc11_lord_abilities_claws_of_mourkain" },
+		ox = 0, oy = 0 },
+	{ marker = "cloak_of_mists_and_shadows", name = "Cloak of Mists & Shadows", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_cloak_of_mists_and_shadows",
+		keys = { "wh_main_item_abilities_cloak_of_mists_and_shadows" },
+		ox = 0, oy = 0 },
+	{ marker = "coat_in_blood", name = "Coat in Blood", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_coat_in_blood",
+		keys = { "wh3_dlc29_hero_abilities_coat_in_blood" },
+		ox = 0, oy = 0 },
+	{ marker = "creature_killer", name = "Creature-Killer", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_creature_killer",
+		keys = { "wh2_dlc16_weapon_abilities_creature_killer" },
+		ox = 0, oy = 0 },
+	{ marker = "da_great_un_iz_ere", name = "Da Great 'Un Iz 'Ere!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_da_great_un_iz_ere",
+		keys = { "wh2_dlc15_lord_abilities_da_great_un_iz_ere" },
+		ox = 0, oy = 0 },
+	{ marker = "daemonblade", name = "Daemonblade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_daemonblade",
+		keys = { "wh3_dlc20_weapon_abilities_daemonblade" },
+		ox = 0, oy = 0 },
+	{ marker = "daemonshield", name = "Daemonshield", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_daemonshield",
+		keys = { "wh3_dlc20_item_abilities_daemonshield" },
+		ox = 0, oy = 0 },
+	{ marker = "dagger_of_malice", name = "Dagger of Malice", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dagger_of_malice",
+		keys = { "wh3_dlc23_weapon_abilities_dagger_of_malice" },
+		ox = 0, oy = 0 },
+	{ marker = "dark_protection", name = "Dark Protection", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dark_protection",
+		keys = { "wh2_dlc11_lord_abilities_dark_protection" },
+		ox = 0, oy = 0 },
+	{ marker = "darkwalker", name = "Darkwalker", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_darkwalker",
+		keys = { "wh3_dlc25_lord_abilities_darkwalker" },
+		ox = 0, oy = 0 },
+	{ marker = "deathbringer", name = "Deathbringer", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_deathbringer",
+		keys = { "wh3_main_lord_abilities_deathbringer",
+			"wh3_main_lord_abilities_deathbringer_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "strike_of_nehekhara", name = "Desertstrike", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_strike_of_nehekhara",
+		keys = { "wh2_dlc09_character_abilities_strike_of_nehekhara" },
+		ox = 0, oy = 0 },
+	-- BLOCK 2 - THE SECOND IN-MELEE-SELF BATCH (this round): 27 more
+	-- approved entries. Their approved rule is the SAME as the block-1
+	-- batch's - "when in melee (and not fleeing): cast on self" = alive,
+	-- in melee, neither routing nor wavering (fail-open morale),
+	-- self-cast - so every one carries trigger "melee_unwavering" and
+	-- dispatches to the ONE shared FOURTH.evaluate_in_melee_self (section
+	-- 7g), exactly like blood_lust and the block-1 batch. Each carries
+	-- its own marker, display name, badge id and key list; the badges
+	-- are positioned by the claimed button's wheel slot (section 8b),
+	-- with the top slot as the fallback offset (ox 0, oy 0).
+	{ marker = "dolorous_blade", name = "Dolorous Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dolorous_blade",
+		keys = { "wh_dlc07_hero_abilities_dolorous_blade" },
+		ox = 0, oy = 0 },
+	{ marker = "dragon_spear", name = "Dragon Spear", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dragon_spear",
+		keys = { "wh2_dlc16_weapon_abilities_dragon_spear" },
+		ox = 0, oy = 0 },
+	{ marker = "dreaded_duelist", name = "Dreaded Duelist", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dreaded_duelist",
+		keys = { "wh2_dlc11_lord_abilities_dreaded_duelist" },
+		ox = 0, oy = 0 },
+	{ marker = "dwarf_gouger", name = "Dwarf Gouger", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dwarf_gouger",
+		keys = { "wh2_main_weapon_abilities_dwarf_gouger" },
+		ox = 0, oy = 0 },
+	{ marker = "enrage", name = "Enrage", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_enrage",
+		keys = { "wh_pro04_unit_abilities_enrage" },
+		ox = 0, oy = 0 },
+	{ marker = "entice", name = "Entice", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_entice",
+		keys = { "wh3_dlc29_unit_abilities_entice" },
+		ox = 0, oy = 0 },
+	{ marker = "everyone_has_their_price", name = "Everyone Has Their Price", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_everyone_has_their_price",
+		keys = { "wh3_main_lord_abilities_everyone_has_their_price" },
+		ox = 0, oy = 0 },
+	{ marker = "evisceration", name = "Evisceration", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_evisceration",
+		keys = { "wh2_dlc16_hero_abilities_evisceration" },
+		ox = 0, oy = 0 },
+	{ marker = "eye_jabber", name = "Eye Jabber", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_eye_jabber",
+		keys = { "wh3_dlc29_spell_bound_eye_jabber" },
+		ox = 0, oy = 0 },
+	{ marker = "eye_gouger", name = "Eye Gouger", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_eye_gouger",
+		keys = { "wh3_dlc29_spell_bound_eye_gouger" },
+		ox = 0, oy = 0 },
+	{ marker = "eye_of_the_storm", name = "Eye of the Storm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_eye_of_the_storm",
+		keys = { "wh3_main_lord_abilities_eye_of_the_storm" },
+		ox = 0, oy = 0 },
+	{ marker = "faiths_bastion", name = "Faith's Bastion", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_faiths_bastion",
+		keys = { "wh_main_hero_abilities_faiths_bastion" },
+		ox = 0, oy = 0 },
+	{ marker = "fangsword_of_eltharion", name = "Fangsword of Eltharion", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fangsword_of_eltharion",
+		keys = { "wh2_dlc15_weapon_abilities_fangsword_of_eltharion" },
+		ox = 0, oy = 0 },
+	{ marker = "feint_and_reposte", name = "Feint and Reposte", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_feint_and_reposte",
+		keys = { "wh2_main_lord_abilities_feint_and_reposte" },
+		ox = 0, oy = 0 },
+	{ marker = "filth_mace", name = "Filth Mace", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_filth_mace",
+		keys = { "wh_main_weapon_abilities_filth_mace" },
+		ox = 0, oy = 0 },
+	{ marker = "fluid_injection", name = "Fluid Injection", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fluid_injection",
+		keys = { "wh2_dlc16_unit_abilities_fluid_injection" },
+		ox = 0, oy = 0 },
+	{ marker = "gaze_of_khorne", name = "Gaze of Khorne", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gaze_of_khorne",
+		keys = { "wh3_dlc26_lord_abilities_gaze_of_khorne" },
+		ox = 0, oy = 0 },
+	{ marker = "fury_of_the_land", name = "Fury of the Land", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fury_of_the_land",
+		keys = { "wh3_dlc24_character_abilities_fury_of_the_land" },
+		ox = 0, oy = 0 },
+	{ marker = "fury_of_ursun", name = "Fury of Ursun", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fury_of_ursun",
+		keys = { "wh3_main_lord_abilities_fury_of_ursun" },
+		ox = 0, oy = 0 },
+	{ marker = "ghal_maraz", name = "Ghal Maraz", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ghal_maraz",
+		keys = { "wh_main_weapon_abilities_ghal_maraz" },
+		ox = 0, oy = 0 },
+	{ marker = "giant_leap", name = "Giant Leap", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_giant_leap",
+		keys = { "wh3_dlc24_character_abilities_giant_leap" },
+		ox = 0, oy = 0 },
+	{ marker = "gitsnik", name = "Gitsnik", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gitsnik",
+		keys = { "wh_main_weapon_abilities_gitsnik" },
+		ox = 0, oy = 0 },
+	{ marker = "gotrek_doom", name = "Gotrek's Doom", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gotrek_doom",
+		keys = { "wh2_pro08_character_abilities_gotrek_doom" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_faith_upgraded", name = "Shield of Faith (Upgraded)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shield_of_faith_upgraded",
+		keys = { "wh_dlc04_spell_bound_shield_of_faith_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "great_gutgouger", name = "Great Gutgouger", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_great_gutgouger",
+		keys = { "wh3_dlc26_weapon_abilities_great_gutgouger" },
+		ox = 0, oy = 0 },
+	{ marker = "halo_of_maidenly_wrath", name = "Halo of Maidenly Wrath", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_halo_of_maidenly_wrath",
+		keys = { "wh2_dlc14_lord_abilities_halo_of_maidenly_wrath" },
+		ox = 0, oy = 0 },
+	{ marker = "hammer_axe_of_skoll", name = "Hammer-Axe of Skoll", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hammer_axe_of_skoll",
+		keys = { "wh3_dlc29_weapon_active_hammer_axe_of_skoll" },
+		ox = 0, oy = 0 },
+	-- BLOCK 2 - THE FOUR NEW-TRIGGER ENTRIES (this round). Each rides its
+	-- OWN evaluator (section 7g) with its OWN distinct reason text, so the
+	-- field log tells them apart. (The fifth new trigger - the SUMMONED
+	-- Foe-Seeker - is NOT an entry here: its key sits on the existing
+	-- foe_seeker entry above, so it shares that ability's marker, badge,
+	-- arming state and back-off.)
+	{ marker = "eagle_feather_torc", name = "Eagle-Feather Torc", trigger = "barrier_broken",
+		badge = "zz_auto_badge_eagle_feather_torc",
+		keys = { "wh3_dlc27_item_abilities_eagle_feather_torc" },
+		ox = 0, oy = 0 },
+	{ marker = "fangspike", name = "Fangspike", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_fangspike",
+		keys = { "wh3_dlc26_weapon_abilities_fangspike" },
+		ox = 0, oy = 0 },
+	{ marker = "ghoul_king_of_ushoran", name = "Ghoul King of Ushoran", trigger = "ushoran_health",
+		badge = "zz_auto_badge_ghoul_king_of_ushoran",
+		keys = { "wh2_dlc11_lord_abilities_ghoul_king_of_ushoran" },
+		ox = 0, oy = 0 },
+	{ marker = "glorious_death", name = "Glorious Death", trigger = "glorious_death",
+		badge = "zz_auto_badge_glorious_death",
+		keys = { "wh3_dlc25_lord_abilities_glorious_death" },
+		ox = 0, oy = 0 },
+	-- BLOCK 3 (this round) - THE 38 APPROVED ENTRIES. The 35 in-melee-self
+	-- abilities ride the EXISTING shared melee_unwavering evaluator (no new
+	-- evaluator); the 3 charge-or-melee abilities ride the EXISTING
+	-- charge_or_melee evaluator (the one Fangspike uses). Each carries its
+	-- own marker and badge id, so the field log tells them apart; the
+	-- trigger emits the SAME distinct reason text the evaluator already
+	-- writes. Nothing else in the table changes.
+	{ marker = "legbiter", name = "Legbiter", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_legbiter",
+		keys = { "wh3_dlc29_weapon_abilities_legbiter" },
+		ox = 0, oy = 0 },
+	{ marker = "hellfire_sword", name = "Hellfire Sword", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hellfire_sword",
+		keys = { "wh_main_weapon_abilities_hellfire_sword" },
+		ox = 0, oy = 0 },
+	{ marker = "helm_of_discord", name = "Helm of Discord", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_helm_of_discord",
+		keys = { "wh_main_weapon_abilities_helm_of_discord" },
+		ox = 0, oy = 0 },
+	{ marker = "helm_of_many_eyes", name = "Helm of Many Eyes", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_helm_of_many_eyes",
+		keys = { "wh_dlc01_item_passive_helm_of_many_eyes" },
+		ox = 0, oy = 0 },
+	{ marker = "heroic_killing_blow_2", name = "Heroic Killing Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_heroic_killing_blow_2",
+		keys = { "wh3_main_pro_character_abilities_heroic_killing_blow_2" },
+		ox = 0, oy = 0 },
+	{ marker = "heroic_killing_blow_dlc07", name = "Heroic Killing Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_heroic_killing_blow_dlc07",
+		keys = { "wh_dlc07_character_abilities_heroic_killing_blow" },
+		ox = 0, oy = 0 },
+	{ marker = "heroic_killing_blow_main", name = "Heroic Killing Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_heroic_killing_blow_main",
+		keys = { "wh_main_character_abilities_heroic_killing_blow" },
+		ox = 0, oy = 0 },
+	{ marker = "hydra_blade", name = "Hydra Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hydra_blade",
+		keys = { "wh2_main_weapon_abilities_hydra_blade" },
+		ox = 0, oy = 0 },
+	{ marker = "inevitable_horror", name = "Inevitable Horror", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inevitable_horror",
+		keys = { "wh3_dlc26_character_abilities_inevitable_horror" },
+		ox = 0, oy = 0 },
+	{ marker = "karaghul", name = "Karaghul", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_karaghul",
+		keys = { "wh2_pro08_weapon_abilities_karaghul" },
+		ox = 0, oy = 0 },
+	{ marker = "killing_blow_1", name = "Killing Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_killing_blow_1",
+		keys = { "wh3_main_pro_character_abilities_heroic_killing_blow_1" },
+		ox = 0, oy = 0 },
+	{ marker = "killing_blow", name = "Killing Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_killing_blow",
+		keys = { "wh_main_unit_abilities_killing_blow" },
+		ox = 0, oy = 0 },
+	{ marker = "liarsbane", name = "Liarsbane", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_liarsbane",
+		keys = { "wh3_dlc25_weapon_abilities_liarsbane" },
+		ox = 0, oy = 0 },
+	{ marker = "lightning_reflexes", name = "Lightning Reflexes", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_lightning_reflexes",
+		keys = { "wh2_dlc11_lord_abilities_lightning_reflexes" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_beguilement", name = "Locus of Beguilement", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_beguilement",
+		keys = { "wh3_main_character_abilities_locus_of_beguilement" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_grace", name = "Locus of Grace", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_grace",
+		keys = { "wh3_main_character_abilities_locus_of_grace" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_wrath", name = "Locus of Wrath", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_wrath",
+		keys = { "wh3_main_character_abilities_locus_of_wrath" },
+		ox = 0, oy = 0 },
+	{ marker = "lucky_banner", name = "Lucky Banner", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_lucky_banner",
+		keys = { "wh2_dlc15_item_abilities_lucky_banner" },
+		ox = 0, oy = 0 },
+	{ marker = "mace_of_ulumak", name = "Mace of Ulumak", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mace_of_ulumak",
+		keys = { "wh2_dlc13_weapon_abilities_mace_of_ulumak" },
+		ox = 0, oy = 0 },
+	{ marker = "mananns_luck", name = "Manann's Luck", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mananns_luck",
+		keys = { "wh2_dlc11_lord_abilities_mananns_luck" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_the_skies", name = "Master of the Skies", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_of_the_skies",
+		keys = { "wh2_dlc12_lord_abilities_master_of_the_skies" },
+		ox = 0, oy = 0 },
+	{ marker = "mimic_waaagh", name = "Mirror (Waaagh!)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mimic_waaagh",
+		keys = { "wh2_dlc15_unit_abilities_mimic_waaagh" },
+		ox = 0, oy = 0 },
+	{ marker = "mimic_grom_waaagh", name = "Mirror (Grom's Big Waaagh!)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mimic_grom_waaagh",
+		keys = { "wh2_dlc15_unit_abilities_mimic_grom_waaagh" },
+		ox = 0, oy = 0 },
+	{ marker = "monstrous_strength", name = "Monstrous Strength", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_monstrous_strength",
+		keys = { "wh2_dlc13_lord_abilities_monstrous_strength" },
+		ox = 0, oy = 0 },
+	{ marker = "mortal_blow", name = "Mortal Blow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mortal_blow",
+		keys = { "wh3_main_daemon_arms_abilities_mortal_blow" },
+		ox = 0, oy = 0 },
+	{ marker = "mortal_blow_upgraded", name = "Mortal Blow (Upgraded)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mortal_blow_upgraded",
+		keys = { "wh3_main_daemon_arms_abilities_mortal_blow_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "mumbo_jumbo_chant", name = "Mumbo-Jumbo Chant", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mumbo_jumbo_chant",
+		keys = { "wh3_dlc26_character_abilities_mumbo_jumbo_chant" },
+		ox = 0, oy = 0 },
+	{ marker = "strike_of_nagash", name = "Necrostrike", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_strike_of_nagash",
+		keys = { "wh2_dlc09_character_abilities_strike_of_nagash" },
+		ox = 0, oy = 0 },
+	{ marker = "nurgles_favoured_son", name = "Nurgle's Favoured Son", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_nurgles_favoured_son",
+		keys = { "wh3_dlc25_lord_abilities_nurgles_favoured_son" },
+		ox = 0, oy = 0 },
+	{ marker = "opal_amulet", name = "Opal Amulet", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_opal_amulet",
+		keys = { "wh_main_item_abilities_opal_amulet" },
+		ox = 0, oy = 0 },
+	{ marker = "oracle_of_eternity", name = "Oracle of Eternity", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_oracle_of_eternity",
+		keys = { "wh3_main_lord_abilities_oracle_of_eternity" },
+		ox = 0, oy = 0 },
+	{ marker = "pendant_of_slaanesh", name = "Pendant of Slaanesh", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pendant_of_slaanesh",
+		keys = { "wh_main_item_abilities_pendant_of_slaanesh" },
+		ox = 0, oy = 0 },
+	{ marker = "plaguefathers_oration", name = "Plaguefather's Oration", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_plaguefathers_oration",
+		keys = { "wh3_main_lord_abilities_plaguefathers_oration" },
+		ox = 0, oy = 0 },
+	{ marker = "primal_roar", name = "Primal Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_primal_roar",
+		keys = { "wh2_dlc13_lord_abilities_primal_roar" },
+		ox = 0, oy = 0 },
+	{ marker = "puncture", name = "Puncture", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_puncture",
+		keys = { "wh3_dlc26_character_abilities_puncture" },
+		ox = 0, oy = 0 },
+	{ marker = "heart_piercing", name = "Heart Piercing", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_heart_piercing",
+		keys = { "wh2_dlc11_lord_abilities_heart_piercing" },
+		ox = 0, oy = 0 },
+	{ marker = "horn_of_the_first_beast", name = "Horn of the First Beast", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_horn_of_the_first_beast",
+		keys = { "wh_dlc03_item_abilities_horn_of_the_first_beast" },
+		ox = 0, oy = 0 },
+	{ marker = "morglor_the_mangler", name = "Morglor the Mangler", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_morglor_the_mangler",
+		keys = { "wh3_dlc26_weapon_abilities_morglor_the_mangler" },
+		ox = 0, oy = 0 },
+	{ marker = "banespear", name = "The Bane Spear", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_banespear",
+		keys = { "wh3_main_weapon_abilities_banespear" },
+		ox = 0, oy = 0 },
+	{ marker = "black_axe_of_krell", name = "The Black Axe of Krell", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_black_axe_of_krell",
+		keys = { "wh3_dlc29_item_abilities_black_axe_of_krell" },
+		ox = 0, oy = 0 },
+	{ marker = "black_lotus", name = "Black Lotus", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_black_lotus",
+		keys = { "wh2_main_character_abilities_black_lotus" },
+		ox = 0, oy = 0 },
+	{ marker = "blessed_blade_of_ptra", name = "The Blessed Blade of Ptra", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blessed_blade_of_ptra",
+		keys = { "wh2_dlc09_weapon_abilities_blessed_blade_of_ptra" },
+		ox = 0, oy = 0 },
+	{ marker = "daemonic_strength", name = "Daemonic Strength", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_daemonic_strength",
+		keys = { "wh_main_item_abilities_daemonic_strength" },
+		ox = 0, oy = 0 },
+	{ marker = "dark_venom", name = "Dark Venom", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dark_venom",
+		keys = { "wh2_main_character_abilities_dark_venom" },
+		ox = 0, oy = 0 },
+	{ marker = "doom_glaive", name = "Doom Glaive", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_doom_glaive",
+		keys = { "wh3_dlc29_item_abilities_doom_glaive" },
+		ox = 0, oy = 0 },
+	{ marker = "dragons_fang", name = "The Dragon's Fang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dragons_fang",
+		keys = { "wh3_dlc24_weapon_abilities_dragons_fang" },
+		ox = 0, oy = 0 },
+	{ marker = "drakwald_runefang", name = "The Drakwald Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_drakwald_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_drakwald_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "elixir_of_damnation", name = "Elixir of Damnation", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_elixir_of_damnation",
+		keys = { "wh3_dlc27_item_abilities_elixir_of_damnation" },
+		ox = 0, oy = 0 },
+	{ marker = "hochland_runefang", name = "The Hochland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hochland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_hochland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "nordland_runefang", name = "The Nordland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_nordland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_nordland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "ostermark_runefang", name = "The Ostermark Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ostermark_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_ostermark_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "ostland_runefang", name = "The Ostland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ostland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_ostland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_strength", name = "Potion of Strength", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_potion_of_strength",
+		keys = { "wh_main_item_abilities_potion_of_strength" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_toughness", name = "Potion of Toughness", trigger = "melee_health75",
+		badge = "zz_auto_badge_potion_of_toughness",
+		keys = { "wh_main_item_abilities_potion_of_toughness" },
+		ox = 0, oy = 0 },
+	{ marker = "quickblood", name = "Quickblood", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_quickblood",
+		keys = { "wh3_dlc29_lord_abilities_lightning_reflexes" },
+		ox = 0, oy = 0 },
+	{ marker = "quicksilver_strike", name = "Quicksilver Strike", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_quicksilver_strike",
+		keys = { "wh3_dlc27_lord_abilities_quicksilver_strike" },
+		ox = 0, oy = 0 },
+	{ marker = "rage_embodied", name = "Rage Embodied", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rage_embodied",
+		keys = { "wh3_main_lord_abilities_rage_embodied" },
+		ox = 0, oy = 0 },
+	{ marker = "rage_incarnate", name = "Rage Incarnate", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rage_incarnate",
+		keys = { "wh3_main_lord_abilities_rage_incarnate" },
+		ox = 0, oy = 0 },
+	{ marker = "rapier_of_ecstasy", name = "Rapier of Ecstasy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rapier_of_ecstasy",
+		keys = { "wh3_dlc20_weapon_abilities_rapier_of_ecstasy" },
+		ox = 0, oy = 0 },
+	{ marker = "red_ruin", name = "Red Ruin", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_red_ruin",
+		keys = { "wh2_dlc10_lord_abilities_red_ruin" },
+		ox = 0, oy = 0 },
+	{ marker = "refuse_to_die", name = "Refuse to Die", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_refuse_to_die",
+		keys = { "wh2_dlc12_unit_abilities_refuse_to_die" },
+		ox = 0, oy = 0 },
+	{ marker = "revenge_incarnate", name = "Revenge Incarnate", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_revenge_incarnate",
+		keys = { "wh_dlc06_lord_abilities_revenge_incarnate" },
+		ox = 0, oy = 0 },
+	{ marker = "rock_of_itza", name = "Rok of Itza", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rock_of_itza",
+		keys = { "wh2_dlc13_lord_abilities_rock_of_itza" },
+		ox = 0, oy = 0 },
+	{ marker = "rot_or_die", name = "Rot or Die!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rot_or_die",
+		keys = { "wh3_dlc25_lord_abilities_rot_or_die" },
+		ox = 0, oy = 0 },
+	{ marker = "rot_pocked_axe", name = "Rot-pocked Axe", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rot_pocked_axe",
+		keys = { "wh3_dlc29_item_active_rot_pocked_axe" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_axe_of_gotrek", name = "Rune Axe of Gotrek", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_axe_of_gotrek",
+		keys = { "wh2_pro08_weapon_abilities_rune_axe_of_gotrek" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_axe_of_grombrindal", name = "Rune Axe of Grombrindal", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_axe_of_grombrindal",
+		keys = { "wh_pro01_weapon_abilities_rune_axe_of_grombrindal" },
+		ox = 0, oy = 0 },
+	{ marker = "runefang", name = "Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_runefang",
+		keys = { "wh_main_weapon_abilities_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "sacred_spawning_of_xhotl", name = "Sacred Spawning of Xhotl", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sacred_spawning_of_xhotl",
+		keys = { "wh2_main_lord_abilities_sacred_spawning_of_xhotl" },
+		ox = 0, oy = 0 },
+	{ marker = "sands_of_sickness", name = "Sands of Sickness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sands_of_sickness",
+		keys = { "wh3_dlc25_character_abilities_sands_of_sickness" },
+		ox = 0, oy = 0 },
+	{ marker = "scales_of_the_celestial_court", name = "Scales of the Celestial Court", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scales_of_the_celestial_court",
+		keys = { "wh3_main_item_abilities_scales_of_the_celestial_court" },
+		ox = 0, oy = 0 },
+	{ marker = "sceptre_of_titans", name = "Sceptre of Titans", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sceptre_of_titans",
+		keys = { "wh3_main_weapon_abilities_sceptre_of_titans" },
+		ox = 0, oy = 0 },
+	{ marker = "scourge", name = "Scourge", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scourge",
+		keys = { "wh_dlc03_weapon_abilities_scourge" },
+		ox = 0, oy = 0 },
+	{ marker = "scrying_stone", name = "Scrying Stone", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scrying_stone",
+		keys = { "wh2_main_item_abilities_scrying_stone" },
+		ox = 0, oy = 0 },
+	{ marker = "seduction_of_the_serpent", name = "Seduction of the Serpent", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_seduction_of_the_serpent",
+		keys = { "wh_dlc08_lord_abilities_seduction_of_the_serpent" },
+		ox = 0, oy = 0 },
+	{ marker = "shadow_shroud", name = "Shadow Shroud", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shadow_shroud",
+		keys = { "wh3_main_lord_abilities_shadow_shroud" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_aeons", name = "Shield of Aeons", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shield_of_aeons",
+		keys = { "wh2_dlc13_item_abilities_shield_of_aeons" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_faith", name = "Shield of Faith", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shield_of_faith",
+		keys = { "wh_main_spell_bound_shield_of_faith" },
+		ox = 0, oy = 0 },
+	{ marker = "silver_dagger", name = "Silver Dagger", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_silver_dagger",
+		keys = { "wh3_dlc23_weapon_abilities_silver_dagger" },
+		ox = 0, oy = 0 },
+	{ marker = "skull_wand_of_kaloth", name = "Skull Wand of Kaloth", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_skull_wand_of_kaloth",
+		keys = { "wh_main_item_abilities_skull_wand_of_kaloth" },
+		ox = 0, oy = 0 },
+	{ marker = "slippery", name = "Slippery", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_slippery",
+		keys = { "wh_main_hero_abilities_slippery" },
+		ox = 0, oy = 0 },
+	{ marker = "sliverslash", name = "Sliverslash", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sliverslash",
+		keys = { "wh3_dlc20_weapon_abilities_sliverslash" },
+		ox = 0, oy = 0 },
+	{ marker = "smash_em_faster", name = "Smash 'Em Faster", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_smash_em_faster",
+		keys = { "wh2_dlc15_lord_abilities_smash_em_faster" },
+		ox = 0, oy = 0 },
+	{ marker = "stand_or_die", name = "Stand or Die!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_stand_or_die",
+		keys = { "wh_main_character_abilities_stand_or_die" },
+		ox = 0, oy = 0 },
+	{ marker = "star_lance", name = "Star Lance", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_star_lance",
+		keys = { "wh2_dlc15_weapon_abilities_star_lance" },
+		ox = 0, oy = 0 },
+	{ marker = "starcrusher", name = "Starcrusher", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_starcrusher",
+		keys = { "wh_dlc01_weapon_abilities_starcrusher" },
+		ox = 0, oy = 0 },
+	{ marker = "steppe_hunters_horn", name = "Steppe Hunter's Horn", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_steppe_hunters_horn",
+		keys = { "wh3_main_item_abilities_steppe_hunters_horn" },
+		ox = 0, oy = 0 },
+	{ marker = "stinky_giant_club", name = "Stinky Giant Club", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_stinky_giant_club",
+		keys = { "wh_dlc08_weapon_abilities_stinky_giant_club" },
+		ox = 0, oy = 0 },
+	{ marker = "storm_rage", name = "Storm Rage", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_storm_rage",
+		keys = { "wh3_dlc20_unit_abilities_storm_rage" },
+		ox = 0, oy = 0 },
+	{ marker = "stormlance", name = "Stormlance", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_stormlance",
+		keys = { "wh3_dlc25_item_abilities_stormlance" },
+		ox = 0, oy = 0 },
+	{ marker = "strike_of_tombs", name = "Tombstrike", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_strike_of_tombs",
+		keys = { "wh2_dlc09_character_abilities_strike_of_tombs" },
+		ox = 0, oy = 0 },
+	{ marker = "sword_dance", name = "The Dancing Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sword_dance",
+		keys = { "wh3_dlc23_character_abilities_sword_dance" },
+		ox = 0, oy = 0 },
+	{ marker = "sword_of_anti_heroes", name = "Sword of Anti-Heroes", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sword_of_anti_heroes",
+		keys = { "wh_main_weapon_abilities_sword_of_anti_heroes" },
+		ox = 0, oy = 0 },
+	{ marker = "sword_of_lyonesse", name = "The Sword of Lyonesse", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sword_of_lyonesse",
+		keys = { "wh2_dlc14_weapon_abilities_sword_of_lyonesse" },
+		ox = 0, oy = 0 },
+	{ marker = "sword_of_torgald", name = "Sword of Torgald", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sword_of_torgald",
+		keys = { "wh_dlc08_weapon_abilities_sword_of_torgald" },
+		ox = 0, oy = 0 },
+	{ marker = "talabecland_runefang", name = "The Talabecland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_talabecland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_talabecland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "tempest_rage", name = "Tempest Rage", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_tempest_rage",
+		keys = { "wh3_dlc20_lord_abilities_tempest_rage" },
+		ox = 0, oy = 0 },
+	{ marker = "tenebrous_forge_hammer", name = "Tenebrous Forge-Hammer", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tenebrous_forge_hammer",
+		keys = { "wh3_dlc27_weapon_abilities_tenebrous_forge_hammer" },
+		ox = 0, oy = 0 },
+	{ marker = "the_armour_of_morkar", name = "The Armour of Morkar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_armour_of_morkar",
+		keys = { "wh3_dlc20_item_abilities_the_armour_of_morkar" },
+		ox = 0, oy = 0 },
+	{ marker = "the_black_cleaver", name = "The Black Cleaver", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_black_cleaver",
+		keys = { "wh3_dlc25_weapon_abilities_the_black_cleaver" },
+		ox = 0, oy = 0 },
+	{ marker = "the_blood_price", name = "The Blood Price", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_blood_price",
+		keys = { "wh2_dlc14_lord_abilities_the_blood_price" },
+		ox = 0, oy = 0 },
+	{ marker = "the_carstein_ring", name = "The Carstein Ring", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_carstein_ring",
+		keys = { "wh_dlc04_item_abilities_the_carstein_ring" },
+		ox = 0, oy = 0 },
+	{ marker = "the_daemons_curse", name = "The Daemon's Curse", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_daemons_curse",
+		keys = { "wh2_dlc14_lord_abilities_the_daemons_curse" },
+		ox = 0, oy = 0 },
+	{ marker = "the_eternal_blade", name = "The Eternal Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_eternal_blade",
+		keys = { "wh3_main_weapon_abilities_the_eternal_blade" },
+		ox = 0, oy = 0 },
+	{ marker = "the_father_of_blades", name = "The Father of Blades", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_father_of_blades",
+		keys = { "wh3_dlc25_weapon_abilities_the_father_of_blades" },
+		ox = 0, oy = 0 },
+	{ marker = "the_horn_of_kygor", name = "The Horn of Kygor", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_the_horn_of_kygor",
+		keys = { "wh2_main_item_abilities_the_horn_of_kygor" },
+		ox = 0, oy = 0 },
+	{ marker = "the_mace_of_helsturm", name = "The Mace of Helsturm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_mace_of_helsturm",
+		keys = { "wh_main_weapon_abilities_the_mace_of_helsturm" },
+		ox = 0, oy = 0 },
+	{ marker = "the_phoenix_blade", name = "The Phoenix Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_phoenix_blade",
+		keys = { "wh3_dlc27_weapon_abilities_the_phoenix_blade" },
+		ox = 0, oy = 0 },
+	{ marker = "the_reikland_runefang", name = "The Reikland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_reikland_runefang",
+		keys = { "wh_main_weapon_abilities_the_reikland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "the_rock_of_inevitability", name = "The Rock of Inevitability", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_rock_of_inevitability",
+		keys = { "wh3_main_item_abilities_the_rock_of_inevitability" },
+		ox = 0, oy = 0 },
+	{ marker = "the_rotaxes", name = "The Rotaxes", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_rotaxes",
+		keys = { "wh3_dlc29_item_active_the_rotaxes" },
+		ox = 0, oy = 0 },
+	{ marker = "the_slayer_of_kings", name = "The Slayer of Kings", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_slayer_of_kings",
+		keys = { "wh_dlc01_weapon_abilities_the_slayer_of_kings" },
+		ox = 0, oy = 0 },
+	{ marker = "the_slayer_sword", name = "The Slayer Sword", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_slayer_sword",
+		keys = { "wh3_dlc26_weapon_abilities_the_slayer_sword" },
+		ox = 0, oy = 0 },
+	{ marker = "the_sword_of_couronne", name = "The Sword of Couronne", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_sword_of_couronne",
+		keys = { "wh_main_weapon_abilities_the_sword_of_couronne" },
+		ox = 0, oy = 0 },
+	{ marker = "the_tenderiser", name = "The Tenderiser", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_tenderiser",
+		keys = { "wh3_main_weapon_abilities_the_tenderiser" },
+		ox = 0, oy = 0 },
+	{ marker = "toad_rage", name = "Toad Rage", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_toad_rage",
+		keys = { "wh2_dlc12_unit_abilities_toad_rage" },
+		ox = 0, oy = 0 },
+	{ marker = "tormentor_sword", name = "Tormentor Sword", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tormentor_sword",
+		keys = { "wh_main_weapon_abilities_tormentor_sword" },
+		ox = 0, oy = 0 },
+	{ marker = "tors_battle_hymn", name = "Tor's Battle Hymn", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tors_battle_hymn",
+		keys = { "wh3_main_character_abilities_tors_battle_hymn" },
+		ox = 0, oy = 0 },
+	{ marker = "transfix", name = "Transfix", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_transfix",
+		keys = { "wh2_dlc11_lord_abilities_transfix" },
+		ox = 0, oy = 0 },
+	{ marker = "unyielding_defender", name = "Unyielding Defence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_unyielding_defender",
+		keys = { "wh3_main_character_abilities_unyielding_defender" },
+		ox = 0, oy = 0 },
+	{ marker = "ursuns_claw", name = "Ursun's Claw", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ursuns_claw",
+		keys = { "wh3_dlc24_weapon_abilities_ursuns_claw" },
+		ox = 0, oy = 0 },
+	{ marker = "warp_frenzy", name = "Warp Frenzy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warp_frenzy",
+		keys = { "wh2_dlc16_hero_abilities_warp_frenzy" },
+		ox = 0, oy = 0 },
+	{ marker = "warriors_crest", name = "Warrior's Crest", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warriors_crest",
+		keys = { "wh2_dlc12_lord_abilities_warriors_crest" },
+		ox = 0, oy = 0 },
+	{ marker = "will_of_the_verminking", name = "Will of the Verminking", trigger = "verminking_wavering",
+		badge = "zz_auto_badge_will_of_the_verminking",
+		keys = { "wh3_dlc29_lord_abilities_will_of_the_verminking" },
+		ox = 0, oy = 0 },
+	{ marker = "witstealer_sword", name = "Witstealer Sword", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_witstealer_sword",
+		keys = { "wh3_main_weapon_abilities_witstealer_sword" },
+		ox = 0, oy = 0 },
+	{ marker = "enchanted_metallurgy", name = "Enchanted Metallurgy", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_enchanted_metallurgy",
+		keys = { "wh3_main_character_abilities_enchanted_metallurgy" },
+		ox = 0, oy = 0 },
+	{ marker = "enchanted_metallurgy_flaming", name = "Enchanted Metallurgy: Flaming", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_enchanted_metallurgy_flaming",
+		keys = { "wh3_main_character_abilities_enchanted_metallurgy_flaming" },
+		ox = 0, oy = 0 },
+	{ marker = "enchanted_metallurgy_piercing", name = "Enchanted Metallurgy: Piercing", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_enchanted_metallurgy_piercing",
+		keys = { "wh3_main_character_abilities_enchanted_metallurgy_piercing" },
+		ox = 0, oy = 0 },
+	{ marker = "enchanted_metallurgy_poison", name = "Enchanted Metallurgy: Poison", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_enchanted_metallurgy_poison",
+		keys = { "wh3_main_character_abilities_enchanted_metallurgy_poison" },
+		ox = 0, oy = 0 },
+	{ marker = "bastions_defenders", name = "Bastion's Defenders", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bastions_defenders",
+		keys = { "wh3_dlc24_character_abilities_bastions_defenders" },
+		ox = 0, oy = 0 },
+	{ marker = "battle_of_wills", name = "Battle of Wills", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_battle_of_wills",
+		keys = { "wh3_dlc29_unit_abilities_battle_of_wills" },
+		ox = 0, oy = 0 },
+	{ marker = "bironas_timewarp", name = "Birona's Timewarp", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_bironas_timewarp",
+		keys = { "wh_main_spell_bound_bironas_timewarp" },
+		ox = 0, oy = 0 },
+	{ marker = "breath_of_hatred", name = "Breath of Hatred", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_breath_of_hatred",
+		keys = { "wh3_dlc23_bound_abilities_breath_of_hatred", "wh3_dlc23_character_abilities_breath_of_hatred" },
+		ox = 0, oy = 0 },
+	{ marker = "butcher", name = "Meat Feast", trigger = "ushoran_health",
+		badge = "zz_auto_badge_butcher",
+		keys = { "wh3_main_prisoners_butcher" },
+		ox = 0, oy = 0 },
+	{ marker = "captain_of_the_phoenix_guard", name = "Captain of the Phoenix Guard", trigger = "melee_health75",
+		badge = "zz_auto_badge_captain_of_the_phoenix_guard",
+		keys = { "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard" },
+		ox = 0, oy = 0 },
+	{ marker = "cash_cascade", name = "Cash Cascade", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_cash_cascade",
+		keys = { "wh3_dlc26_character_abilities_cash_cascade" },
+		ox = 0, oy = 0 },
+	{ marker = "chanson_of_caging", name = "Chanson of Caging", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_chanson_of_caging",
+		keys = { "wh3_dlc27_lord_abilities_chanson_of_caging" },
+		ox = 0, oy = 0 },
+	{ marker = "commanding_presence", name = "Commanding Presence", trigger = "wavering_self_or_ally",
+		badge = "zz_auto_badge_commanding_presence",
+		keys = { "wh3_dlc29_lord_active_commanding_presence" },
+		ox = 0, oy = 0 },
+	{ marker = "curse_of_years", name = "Curse of Years", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_curse_of_years",
+		keys = { "wh3_dlc29_spell_bound_curse_of_years" },
+		ox = 0, oy = 0 },
+	{ marker = "da_boss_as_a_plan", name = "Da Boss 'as a Plan!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_da_boss_as_a_plan",
+		keys = { "wh3_dlc26_character_abilities_da_boss_as_a_plan" },
+		ox = 0, oy = 0 },
+	{ marker = "dazs_song_of_winter_sunlight", name = "Dazh's Song of Winter Sunlight", trigger = "tired",
+		badge = "zz_auto_badge_dazs_song_of_winter_sunlight",
+		keys = { "wh3_main_character_abilities_dazs_song_of_winter_sunlight", "wh3_twa06_unit_abilities_dazs_song_of_winter_sunlight" },
+		ox = 0, oy = 0 },
+	{ marker = "death_frenzy", name = "Death Frenzy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_death_frenzy",
+		keys = { "wh2_dlc16_spell_bound_death_frenzy" },
+		ox = 0, oy = 0 },
+	{ marker = "dragonhorn", name = "Dragonhorn", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dragonhorn",
+		keys = { "wh2_dlc15_lord_abilities_dragonhorn" },
+		ox = 0, oy = 0 },
+	{ marker = "empowering_shrooms", name = "Empowering Shrooms", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_empowering_shrooms",
+		keys = { "wh3_dlc26_character_abilities_empowering_shrooms" },
+		ox = 0, oy = 0 },
+	{ marker = "favour_of_the_fay", name = "Favour of the Fay", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_favour_of_the_fay",
+		keys = { "wh_dlc07_lord_abilities_favour_of_the_fay" },
+		ox = 0, oy = 0 },
+	{ marker = "ferocious_battle_howl", name = "Ferocious Battle Howl", trigger = "charge_only",
+		badge = "zz_auto_badge_ferocious_battle_howl",
+		keys = { "wh3_dlc29_spell_bound_prayer_ferocious_battle_howl" },
+		ox = 0, oy = 0 },
+	{ marker = "ferocious_fury_of_ulric", name = "Ferocious Fury of Ulric", trigger = "wavering_self",
+		badge = "zz_auto_badge_ferocious_fury_of_ulric",
+		keys = { "wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric" },
+		ox = 0, oy = 0 },
+	{ marker = "ferocious_winters_chill", name = "Ferocious Winter’s Chill", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ferocious_winters_chill",
+		keys = { "wh3_dlc29_spell_bound_prayer_ferocious_winters_chill" },
+		ox = 0, oy = 0 },
+	{ marker = "flame_incarnate", name = "Flame Incarnate", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_flame_incarnate",
+		keys = { "wh3_main_character_abilities_flame_incarnate" },
+		ox = 0, oy = 0 },
+	{ marker = "fury_of_khaine", name = "Fury of Khaine", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_fury_of_khaine",
+		keys = { "wh2_main_unit_abilities_fury_of_khaine" },
+		ox = 0, oy = 0 },
+	{ marker = "fury_of_ulric", name = "Fury of Ulric", trigger = "wavering_self_or_ally",
+		badge = "zz_auto_badge_fury_of_ulric",
+		keys = { "wh3_dlc29_spell_bound_prayer_fury_of_ulric" },
+		ox = 0, oy = 0 },
+	{ marker = "gaze_of_khaine", name = "Gaze of Khaine", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gaze_of_khaine",
+		keys = { "wh2_dlc10_lord_abilities_gaze_of_khaine" },
+		ox = 0, oy = 0 },
+	{ marker = "grand_faiths_bastion", name = "Greater Faith Bastion", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_grand_faiths_bastion",
+		keys = { "wh_dlc06_quest_abilities_grand_faiths_bastion" },
+		ox = 0, oy = 0 },
+	{ marker = "gulyas", name = "Gulyas", trigger = "ushoran_health",
+		badge = "zz_auto_badge_gulyas",
+		keys = { "wh3_dlc24_lord_abilities_gulyas" },
+		ox = 0, oy = 0 },
+	{ marker = "helm_of_yvresse", name = "Helm of Yvresse", trigger = "wavering_self",
+		badge = "zz_auto_badge_helm_of_yvresse",
+		keys = { "wh2_dlc15_item_abilities_helm_of_yvresse" },
+		ox = 0, oy = 0 },
+	{ marker = "helping_hand", name = "Helping Hand", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_helping_hand",
+		keys = { "wh2_pro08_character_abilities_helping_hand" },
+		ox = 0, oy = 0 },
+	{ marker = "immovable_bulwark", name = "Immovable Bulwark", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_immovable_bulwark",
+		keys = { "wh3_dlc26_unit_abilities_immovable_bulwark" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_assault_i", name = "Inspired Assault I", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_inspired_assault_i",
+		keys = { "wh3_main_lord_abilities_inspired_assault_i" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_assault_ii", name = "Inspired Assault II", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_inspired_assault_ii",
+		keys = { "wh3_main_lord_abilities_inspired_assault_ii" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_assault_iii", name = "Inspired Assault III", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_inspired_assault_iii",
+		keys = { "wh3_main_lord_abilities_inspired_assault_iii" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_defence_i", name = "Inspired Defence I", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_defence_i",
+		keys = { "wh3_main_lord_abilities_inspired_defence_i" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_defence_ii", name = "Inspired Defence II", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_defence_ii",
+		keys = { "wh3_main_lord_abilities_inspired_defence_ii" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_defence_iii", name = "Inspired Defence III", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_defence_iii",
+		keys = { "wh3_main_lord_abilities_inspired_defence_iii" },
+		ox = 0, oy = 0 },
+	{ marker = "lord_of_grand_cathay", name = "Lord of Grand Cathay", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_lord_of_grand_cathay",
+		keys = { "wh3_dlc24_lord_abilities_lord_of_grand_cathay" },
+		ox = 0, oy = 0 },
+	{ marker = "massacre", name = "Massacre", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_massacre",
+		keys = { "wh3_main_prisoners_massacre" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_alchemy", name = "Master of Alchemy", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_master_of_alchemy",
+		keys = { "wh3_main_lord_abilities_master_of_alchemy" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_alchemy_flaming", name = "Master of Alchemy: Flaming", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_master_of_alchemy_flaming",
+		keys = { "wh3_main_lord_abilities_master_of_alchemy_flaming" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_alchemy_piercing", name = "Master of Alchemy: Piercing", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_master_of_alchemy_piercing",
+		keys = { "wh3_main_lord_abilities_master_of_alchemy_piercing" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_alchemy_poison", name = "Master of Alchemy: Poison", trigger = "metallurgy_melee",
+		badge = "zz_auto_badge_master_of_alchemy_poison",
+		keys = { "wh3_main_lord_abilities_master_of_alchemy_poison" },
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_oath_and_steel", name = "Master Rune of Oath & Steel", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_rune_of_oath_and_steel",
+		keys = { "wh_dlc06_rune_abilities_master_rune_of_oath_and_steel" },
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_speed", name = "Master Rune of Speed", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_rune_of_speed",
+		keys = { "wh2_dlc17_rune_abilities_master_rune_of_speed" },
+		ox = 0, oy = 0 },
+	{ marker = "offense_prayer", name = "Mantra of Righteousness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_offense_prayer",
+		keys = { "wh3_cp1_character_abilities_offense_prayer" },
+		ox = 0, oy = 0 },
+	{ marker = "okkams_mindrazor", name = "Okkam's Mindrazor", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_okkams_mindrazor",
+		keys = { "wh3_dlc29_spell_bound_okkams_mindrazor" },
+		ox = 0, oy = 0 },
+	{ marker = "orcs_are_da_best", name = "Orcs are da Best!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_orcs_are_da_best",
+		keys = { "wh3_dlc26_character_abilities_orcs_are_da_best" },
+		ox = 0, oy = 0 },
+	{ marker = "overseer_of_the_unseen", name = "Overseer of the Unseen", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_overseer_of_the_unseen",
+		keys = { "wh3_dlc29_hero_active_overseer_of_the_unseen" },
+		ox = 0, oy = 0 },
+	{ marker = "primeval_roar", name = "Primeval Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_primeval_roar",
+		keys = { "wh2_dlc17_unit_abilities_primeval_roar" },
+		ox = 0, oy = 0 },
+	{ marker = "protection_prayer", name = "Mantra of Invigoration", trigger = "ushoran_health",
+		badge = "zz_auto_badge_protection_prayer",
+		keys = { "wh3_cp1_character_abilities_protection_prayer" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_doom", name = "Rune of Doom", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_doom",
+		keys = { "wh2_dlc17_lord_abilities_rune_of_doom" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_oath_and_steel", name = "Rune of Oath & Steel", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_oath_and_steel",
+		keys = { "wh_main_rune_abilities_rune_of_oath_and_steel" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_speed", name = "Rune of Speed", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_speed",
+		keys = { "wh2_dlc17_rune_abilities_rune_of_speed" },
+		ox = 0, oy = 0 },
+	{ marker = "sausage_busta", name = "Bangers & Smash", trigger = "charge_or_wavering",
+		badge = "zz_auto_badge_sausage_busta",
+		keys = { "wh2_dlc15_character_abilities_sausage_busta" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_the_old_ones", name = "Shield of the Old Ones", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shield_of_the_old_ones",
+		keys = { "wh2_main_character_abilities_shield_of_the_old_ones" },
+		ox = 0, oy = 0 },
+	{ marker = "slayer_for_chaos", name = "Slayer for Chaos", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_slayer_for_chaos",
+		keys = { "wh3_dlc23_item_abilities_slayer_for_chaos" },
+		ox = 0, oy = 0 },
+	{ marker = "spite_of_da_bad_moon", name = "Spite of Da Bad Moon", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_spite_of_da_bad_moon",
+		keys = { "wh_dlc06_lord_abilities_spite_of_da_bad_moon" },
+		ox = 0, oy = 0 },
+	{ marker = "star_of_avelorn", name = "Star of Avelorn", trigger = "ushoran_health",
+		badge = "zz_auto_badge_star_of_avelorn",
+		keys = { "wh2_dlc10_item_abilities_star_of_avelorn" },
+		ox = 0, oy = 0 },
+	{ marker = "stay_here_ill_get_help", name = "\"Stay Here, I'll Get Help!\"", trigger = "wavering_ally_range",
+		badge = "zz_auto_badge_stay_here_ill_get_help",
+		keys = { "wh2_dlc09_character_abilities_stay_here_ill_get_help" },
+		ox = 0, oy = 0 },
+	{ marker = "supreme_shield_of_the_old_ones", name = "Supreme Shield of the Old Ones", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_supreme_shield_of_the_old_ones",
+		keys = { "wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones" },
+		ox = 0, oy = 0 },
+	{ marker = "talisman_of_loec", name = "Talisman of Loec", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_talisman_of_loec",
+		keys = { "wh2_main_item_abilities_talisman_of_loec" },
+		ox = 0, oy = 0 },
+	{ marker = "the_liber_mortis", name = "The Liber Mortis", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_liber_mortis",
+		keys = { "wh2_dlc09_lord_abilities_the_liber_mortis" },
+		ox = 0, oy = 0 },
+	{ marker = "the_shadows_coil", name = "The Shadow's Coil", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_shadows_coil",
+		keys = { "wh_dlc05_unit_abilities_the_shadows_coil" },
+		ox = 0, oy = 0 },
+	{ marker = "unstoppable_choppas", name = "Unstoppable Choppas", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_unstoppable_choppas",
+		keys = { "wh3_dlc26_unit_abilities_unstoppable_choppas" },
+		ox = 0, oy = 0 },
+	{ marker = "vial_of_troll_blood", name = "Vial of Troll Blood", trigger = "wavering_self",
+		badge = "zz_auto_badge_vial_of_troll_blood",
+		keys = { "wh_dlc08_item_abilities_vial_of_troll_blood" },
+		ox = 0, oy = 0 },
+	{ marker = "warpstone_addiction", name = "Warpstone Addiction", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warpstone_addiction",
+		keys = { "wh3_dlc29_lord_abilities_warpstone_addiction" },
+		ox = 0, oy = 0 },
+	{ marker = "warrior_familiar", name = "Warrior Familiar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warrior_familiar",
+		keys = { "wh3_dlc27_item_abilities_warrior_familiar" },
+		ox = 0, oy = 0 },
+	{ marker = "winters_chill", name = "Winter’s Chill", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_winters_chill",
+		keys = { "wh3_dlc29_ability_bound_prayer_winters_chill", "wh3_dlc29_spell_bound_prayer_winters_chill" },
+		ox = 0, oy = 0 },
+	{ marker = "witchbrew", name = "Witchbrew", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_witchbrew",
+		keys = { "wh2_main_character_abilities_witchbrew", "wh3_dlc24_unit_abilities_witchbrew" },
+		ox = 0, oy = 0 },
+	{ marker = "worlds_edge_armour", name = "World's Edge Armour", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_worlds_edge_armour",
+		keys = { "wh2_main_item_abilities_worlds_edge_armour" },
+		ox = 0, oy = 0 },
+	{ marker = "znarkharjas_ward", name = "Znarkharja's Ward", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_znarkharjas_ward",
+		keys = { "wh3_dlc24_hero_abilities_znarkharjas_ward" },
+		ox = 0, oy = 0 },
+	-- ============================================================================
+	-- THE 327 AUTO-ACCEPTED ABILITIES (this round) - the 2026-10-09 standing
+	-- auto-rules R1-R4 sweep (provenance: _classify_wh3.py). 311 entries /
+	-- 327 database keys, riding THREE EXISTING evaluators - no new trigger types
+	-- this round, so this is a DATA APPEND, not a logic change:
+	--   melee_unwavering  261 entries / 274 keys  (in-melee self)
+	--   ushoran_health     36 entries /  37 keys  (health <= 75%, no melee gate)
+	--   charge_or_melee    14 entries /  16 keys  (charge window OR in melee)
+	-- Base + DLC/summoned twin keys ride ONE entry (the Foe-Seeker convention);
+	-- every entry self-casts and its ox/oy stay at the top slot (0, 0) for the
+	-- wheel-slot fallback. Derived from WH3_ability_tracker.md section 3a.
+	-- ============================================================================
+	-- in-melee self (the approved R1/R2 combat-buff + hex batch) (261 entries)
+	{ marker = "accusation", name = "Accusation", trigger = "enemy_engaged_or_shot",
+		badge = "zz_auto_badge_accusation",
+		keys = { "wh_main_hero_abilities_accusation" },
+		ox = 0, oy = 0 },
+	{ marker = "acquiescence", name = "Acquiescence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_acquiescence",
+		keys = { "wh3_dlc27_spell_bound_acquiescence" },
+		ox = 0, oy = 0 },
+	{ marker = "aken_seth_the_staff_of_pain", name = "Aken-seth, the Staff of Pain", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_aken_seth_the_staff_of_pain",
+		keys = { "wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain" },
+		ox = 0, oy = 0 },
+	{ marker = "alchemists_elixir_of_iron_skin", name = "Alchemist's Elixir of Iron Skin", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_alchemists_elixir_of_iron_skin",
+		keys = { "wh3_main_item_abilities_alchemists_elixir_of_iron_skin" },
+		ox = 0, oy = 0 },
+	{ marker = "alchemists_elixir_of_puissance", name = "Alchemist's Elixir of Puissance", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_alchemists_elixir_of_puissance",
+		keys = { "wh3_main_item_abilities_alchemists_elixir_of_puissance" },
+		ox = 0, oy = 0 },
+	{ marker = "alchemists_elixir_of_venom", name = "Alchemist's Elixir of Venom", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_alchemists_elixir_of_venom",
+		keys = { "wh3_main_item_abilities_alchemists_elixir_of_venom" },
+		ox = 0, oy = 0 },
+	{ marker = "all_hands_hoay", name = "All Hands Hoay!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_all_hands_hoay",
+		keys = { "wh2_dlc11_character_abilities_all_hands_hoay" },
+		ox = 0, oy = 0 },
+	{ marker = "amulet_of_itzl", name = "Amulet of Itzl", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_amulet_of_itzl",
+		keys = { "wh2_main_item_abilities_amulet_of_itzl" },
+		ox = 0, oy = 0 },
+	{ marker = "amulet_of_phastah", name = "Amulet of Pha-Stah", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_amulet_of_phastah",
+		keys = { "wh2_dlc09_item_abilities_amulet_of_phastah" },
+		ox = 0, oy = 0 },
+	{ marker = "apocalyptic_charge", name = "Apocalyptic Charge", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_apocalyptic_charge",
+		keys = { "wh_pro04_unit_abilities_apocalyptic_charge" },
+		ox = 0, oy = 0 },
+	{ marker = "magic_prayer", name = "Arcane Hymn", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_magic_prayer",
+		keys = { "wh3_cp1_character_abilities_magic_prayer" },
+		ox = 0, oy = 0 },
+	{ marker = "armour_of_caledor", name = "Armour of Caledor", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_armour_of_caledor",
+		keys = { "wh2_dlc15_item_abilities_armour_of_caledor" },
+		ox = 0, oy = 0 },
+	{ marker = "armour_of_the_burrows", name = "Armour of the Barrows", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_armour_of_the_burrows",
+		keys = { "wh3_dlc29_item_abilities_armour_of_the_burrows" },
+		ox = 0, oy = 0 },
+	{ marker = "assassins_trophy", name = "Assassin's Trophy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_assassins_trophy",
+		keys = { "wh2_main_character_abilities_assassins_trophy" },
+		ox = 0, oy = 0 },
+	{ marker = "aura_of_inertia", name = "Aura of Inertia", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_aura_of_inertia",
+		keys = { "wh2_dlc13_lord_abilities_aura_of_inertia" },
+		ox = 0, oy = 0 },
+	{ marker = "avast_ye", name = "Avast Ye!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_avast_ye",
+		keys = { "wh2_dlc11_character_abilities_avast_ye" },
+		ox = 0, oy = 0 },
+	{ marker = "axe_of_men", name = "Axe of Men", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_axe_of_men",
+		keys = { "wh_dlc03_weapon_abilities_axe_of_men" },
+		ox = 0, oy = 0 },
+	{ marker = "barbed_knuckle_boxing", name = "Barbed-Knuckle Boxing", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_barbed_knuckle_boxing",
+		keys = { "wh2_dlc17_lord_abilities_barbed_knuckle_boxing" },
+		ox = 0, oy = 0 },
+	{ marker = "bastet", name = "Bastet", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bastet",
+		keys = { "wh3_dlc29_lord_abilities_bastet" },
+		ox = 0, oy = 0 },
+	{ marker = "bitter_sting", name = "Bitter Sting", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bitter_sting",
+		keys = { "wh3_dlc27_qb_unit_abilities_bitter_sting" },
+		ox = 0, oy = 0 },
+	{ marker = "black_periapt", name = "Black Periapt", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_black_periapt",
+		keys = { "wh_main_item_abilities_black_periapt" },
+		ox = 0, oy = 0 },
+	{ marker = "black_staff", name = "Black Staff", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_black_staff",
+		keys = { "wh2_main_spell_bound_black_staff" },
+		ox = 0, oy = 0 },
+	{ marker = "blade_of_setep", name = "Blade of Setep", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blade_of_setep",
+		keys = { "wh2_dlc09_weapon_abilities_blade_of_setep" },
+		ox = 0, oy = 0 },
+	{ marker = "blessed_helm_of_the_oblast", name = "Blessed Helm of the Oblast", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blessed_helm_of_the_oblast",
+		keys = { "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast" },
+		ox = 0, oy = 0 },
+	{ marker = "blight_of_terrors", name = "Blight of Terrors", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blight_of_terrors",
+		keys = { "wh2_dlc16_character_abilities_blight_of_terrors" },
+		ox = 0, oy = 0 },
+	{ marker = "blight_swarm", name = "Blight Swarm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blight_swarm",
+		keys = { "wh3_main_lord_abilities_blight_swarm" },
+		ox = 0, oy = 0 },
+	{ marker = "blood_omens", name = "Blood Omens", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blood_omens",
+		keys = { "wh3_dlc29_unit_abilities_blood_omens" },
+		ox = 0, oy = 0 },
+	{ marker = "bloody_onslaught", name = "Bloody Onslaught", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_bloody_onslaught",
+		keys = { "wh3_dlc26_character_abilities_bloody_onslaught" },
+		ox = 0, oy = 0 },
+	{ marker = "blooood", name = "Blooood!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_blooood",
+		keys = { "wh_main_unit_abilities_blooood" },
+		ox = 0, oy = 0 },
+	{ marker = "book_of_arkhan", name = "Book of Arkhan", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_book_of_arkhan",
+		keys = { "wh_main_spell_bound_book_of_arkhan" },
+		ox = 0, oy = 0 },
+	{ marker = "book_of_hoeth", name = "Book of Hoeth", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_book_of_hoeth",
+		keys = { "wh2_main_item_abilities_book_of_hoeth" },
+		ox = 0, oy = 0 },
+	{ marker = "book_of_secrets", name = "Book of Secrets", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_book_of_secrets",
+		keys = { "wh3_dlc24_item_abilities_book_of_secrets" },
+		ox = 0, oy = 0 },
+	{ marker = "boom", name = "Boom!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_boom",
+		keys = { "wh_main_unit_abilities_boom" },
+		ox = 0, oy = 0 },
+	{ marker = "call_of_violence", name = "Call of Violence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_call_of_violence",
+		keys = { "wh_dlc03_character_abilities_call_of_violence" },
+		ox = 0, oy = 0 },
+	{ marker = "cascading_fire_cloak", name = "Cascading Fire Cloak", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_cascading_fire_cloak",
+		keys = { "wh3_main_spell_bound_cascading_fire_cloak" },
+		ox = 0, oy = 0 },
+	{ marker = "chalice_of_dark_rain", name = "Chalice of Dark Rain", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_chalice_of_dark_rain",
+		keys = { "wh_dlc03_item_abilities_chalice_of_dark_rain" },
+		ox = 0, oy = 0 },
+	{ marker = "channelling_staff", name = "Channelling Staff", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_channelling_staff",
+		keys = { "wh_main_item_abilities_channelling_staff" },
+		ox = 0, oy = 0 },
+	{ marker = "charmed_shield", name = "Charmed Shield", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_charmed_shield",
+		keys = { "wh_main_weapon_abilities_charmed_shield" },
+		ox = 0, oy = 0 },
+	{ marker = "cold_blooded", name = "Cold-Blooded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_cold_blooded",
+		keys = { "wh2_main_character_abilities_cold_blooded" },
+		ox = 0, oy = 0 },
+	{ marker = "crown_of_command", name = "Crown of Command", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_crown_of_command",
+		keys = { "wh_main_item_abilities_crown_of_command" },
+		ox = 0, oy = 0 },
+	{ marker = "cube_of_darkness", name = "Cube of Darkness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_cube_of_darkness",
+		keys = { "wh2_main_item_abilities_cube_of_darkness" },
+		ox = 0, oy = 0 },
+	{ marker = "curse_of_khsar", name = "Curse of Khsar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_curse_of_khsar",
+		keys = { "wh2_dlc09_character_abilities_curse_of_khsar" },
+		ox = 0, oy = 0 },
+	{ marker = "slezuzus_voice", name = "Daemonic Whispers", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_slezuzus_voice",
+		keys = { "wh3_dlc27_character_abilities_slezuzus_voice" },
+		ox = 0, oy = 0 },
+	{ marker = "dark_fortune", name = "Dark Fortune", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dark_fortune",
+		keys = { "wh_main_item_abilities_dark_fortune" },
+		ox = 0, oy = 0 },
+	{ marker = "deranged_munitions", name = "Deranged Munitions", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_deranged_munitions",
+		keys = { "wh3_dlc25_lord_abilities_deranged_munitions" },
+		ox = 0, oy = 0 },
+	{ marker = "deranged_munitions_upgraded", name = "Deranged Munitions Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_deranged_munitions_upgraded",
+		keys = { "wh3_dlc25_lord_abilities_deranged_munitions_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "dont_even_try_it", name = "Don't Even Try It", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dont_even_try_it",
+		keys = { "wh2_dlc15_lord_abilities_dont_even_try_it" },
+		ox = 0, oy = 0 },
+	{ marker = "doom_and_darkness_gunnery_school", name = "Doom & Darkness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_doom_and_darkness_gunnery_school",
+		keys = { "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+			"wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+			"wh_dlc08_spell_bound_death_doom_and_darkness" },
+		ox = 0, oy = 0 },
+	{ marker = "doom_lord", name = "Doom Lord", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_doom_lord",
+		keys = { "wh3_dlc29_lord_abilities_doom_lord" },
+		ox = 0, oy = 0 },
+	{ marker = "earthing_rod", name = "Earthing Rod", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_earthing_rod",
+		keys = { "wh_main_item_abilities_earthing_rod" },
+		ox = 0, oy = 0 },
+	{ marker = "el_syf", name = "El Syf", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_el_syf",
+		keys = { "wh_dlc05_weapon_abilities_el_syf" },
+		ox = 0, oy = 0 },
+	{ marker = "elixir_of_might", name = "Elixir of Might", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_elixir_of_might",
+		keys = { "wh2_dlc09_item_abilities_elixir_of_might" },
+		ox = 0, oy = 0 },
+	{ marker = "embers_of_the_phoenix", name = "Embers of the Phoenix", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_embers_of_the_phoenix",
+		keys = { "wh2_main_spell_bound_embers_of_the_phoenix" },
+		ox = 0, oy = 0 },
+	{ marker = "ballistic_enchantment", name = "Enchanted Ballistics", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ballistic_enchantment",
+		keys = { "wh2_dlc11_character_abilities_ballistic_enchantment" },
+		ox = 0, oy = 0 },
+	{ marker = "enhanced_skavenbrew", name = "Enhanced Skavenbrew", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_enhanced_skavenbrew",
+		keys = { "wh3_dlc29_item_abilities_enhanced_skavenbrew" },
+		ox = 0, oy = 0 },
+	{ marker = "entangle", name = "Entangle", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_entangle",
+		keys = { "wh2_dlc10_character_abilities_entangle" },
+		ox = 0, oy = 0 },
+	{ marker = "entrenchment", name = "Entrenchment", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_entrenchment",
+		keys = { "wh_main_unit_abilities_entrenchment" },
+		ox = 0, oy = 0 },
+	{ marker = "gaze_of_usirian", name = "Eternal Gaze", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gaze_of_usirian",
+		keys = { "wh3_dlc29_lord_abilities_gaze_of_usirian" },
+		ox = 0, oy = 0 },
+	{ marker = "eternal_vigour", name = "Eternal Vigour", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_eternal_vigour",
+		keys = { "wh3_dlc29_character_abilities_eternal_vigour" },
+		ox = 0, oy = 0 },
+	{ marker = "extra_ingredients", name = "Extra Ingredients", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_extra_ingredients",
+		keys = { "wh3_main_character_abilities_extra_ingredients" },
+		ox = 0, oy = 0 },
+	{ marker = "favoured_by_the_matriarch", name = "Favoured by the Matriarch", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_favoured_by_the_matriarch",
+		keys = { "wh3_dlc27_hero_abilities_favoured_by_the_matriarch" },
+		ox = 0, oy = 0 },
+	{ marker = "fear_of_aramar", name = "Fear of Aramar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fear_of_aramar",
+		keys = { "wh2_dlc10_item_abilities_fear_of_aramar" },
+		ox = 0, oy = 0 },
+	{ marker = "fearsome_roar", name = "Fearsome Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fearsome_roar",
+		keys = { "wh3_dlc24_unit_abilities_fearsome_roar" },
+		ox = 0, oy = 0 },
+	{ marker = "mark_of_the_monster", name = "Fecund Rebirth", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mark_of_the_monster",
+		keys = { "wh3_dlc29_character_active_mark_of_the_monster" },
+		ox = 0, oy = 0 },
+	{ marker = "fermented_fungi", name = "Fermented Fungi", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fermented_fungi",
+		keys = { "wh2_dlc15_lord_abilities_fermented_fungi" },
+		ox = 0, oy = 0 },
+	{ marker = "fight_or_die", name = "Fight or Die!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fight_or_die",
+		keys = { "wh_dlc08_lord_abilities_fight_or_die" },
+		ox = 0, oy = 0 },
+	{ marker = "fistful_of_laurels", name = "Fistful of Laurels", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_fistful_of_laurels",
+		keys = { "wh3_main_item_abilities_fistful_of_laurels" },
+		ox = 0, oy = 0 },
+	{ marker = "flesh_to_stone", name = "Flesh to Stone", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_flesh_to_stone",
+		keys = { "wh2_dlc16_spell_bound_flesh_to_stone" },
+		ox = 0, oy = 0 },
+	{ marker = "focus_instincts", name = "Focus Instincts", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_focus_instincts",
+		keys = { "wh2_dlc12_lord_abilities_focus_instincts" },
+		ox = 0, oy = 0 },
+	{ marker = "forbidden_rod", name = "Forbidden Rod", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_forbidden_rod",
+		keys = { "wh_main_item_abilities_forbidden_rod" },
+		ox = 0, oy = 0 },
+	{ marker = "frenzied_challenge", name = "Frenzied Challenge", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_frenzied_challenge",
+		keys = { "wh3_dlc27_qb_unit_abilities_frenzied_challenge" },
+		ox = 0, oy = 0 },
+	{ marker = "frost_shard_glaive", name = "Frost Shard Glaive", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_frost_shard_glaive",
+		keys = { "wh3_main_weapon_abilities_frost_shard_glaive" },
+		ox = 0, oy = 0 },
+	{ marker = "funnel_of_flame", name = "Funnel of Flame", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_funnel_of_flame",
+		keys = { "wh2_dlc13_lord_abilities_funnel_of_flame" },
+		ox = 0, oy = 0 },
+	{ marker = "gaze_of_fate", name = "Gaze of Fate", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gaze_of_fate",
+		keys = { "wh3_main_lord_abilities_gaze_of_fate" },
+		ox = 0, oy = 0 },
+	{ marker = "get_em", name = "Get 'Em!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_get_em",
+		keys = { "wh3_dlc25_character_abilities_get_em" },
+		ox = 0, oy = 0 },
+	{ marker = "get_back_ere", name = "Get Back 'Ere!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_get_back_ere",
+		keys = { "wh_main_character_abilities_get_back_ere" },
+		ox = 0, oy = 0 },
+	{ marker = "soulnetter", name = "Gilellion's Soulnetter", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_soulnetter",
+		keys = { "wh3_main_weapon_abilities_soulnetter" },
+		ox = 0, oy = 0 },
+	{ marker = "glacial_defence", name = "Glacial Defence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_glacial_defence",
+		keys = { "wh3_twa08_unit_abilities_glacial_defence" },
+		ox = 0, oy = 0 },
+	{ marker = "glory_seeker", name = "Glory Seeker", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_glory_seeker",
+		keys = { "wh3_dlc29_hero_active_glory_seeker" },
+		ox = 0, oy = 0 },
+	{ marker = "glory_seeker_upgraded", name = "Glory Seeker Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_glory_seeker_upgraded",
+		keys = { "wh3_dlc29_hero_active_glory_seeker_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "gruts_sickle", name = "Grut's Sickle", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_gruts_sickle",
+		keys = { "wh3_main_item_abilities_gruts_sickle" },
+		ox = 0, oy = 0 },
+	{ marker = "guttural_roar", name = "Guttural Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_guttural_roar",
+		keys = { "wh3_dlc27_qb_unit_abilities_guttural_roar" },
+		ox = 0, oy = 0 },
+	{ marker = "hagtree_fetish", name = "Hagtree Fetish", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hagtree_fetish",
+		keys = { "wh_dlc03_item_abilities_hagtree_fetish" },
+		ox = 0, oy = 0 },
+	{ marker = "hail_of_fire", name = "Hail of Fire", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hail_of_fire",
+		keys = { "wh2_dlc13_lord_abilities_hail_of_fire" },
+		ox = 0, oy = 0 },
+	{ marker = "harmonic_convergence", name = "Harmonic Convergence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_harmonic_convergence",
+		keys = { "wh3_main_spell_bound_harmonic_convergence" },
+		ox = 0, oy = 0 },
+	{ marker = "headhunt", name = "Headhunt", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_headhunt",
+		keys = { "wh3_dlc26_character_abilities_headhunt" },
+		ox = 0, oy = 0 },
+	{ marker = "hellish_vigour", name = "Hellish Vigour", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hellish_vigour",
+		keys = { "wh3_dlc29_lord_abilities_hellish_vigour" },
+		ox = 0, oy = 0 },
+	{ marker = "hellish_vigour_upgraded", name = "Hellish Vigour Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hellish_vigour_upgraded",
+		keys = { "wh3_dlc29_lord_abilities_hellish_vigour_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "hidden_huntress", name = "Hidden Huntress", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hidden_huntress",
+		keys = { "wh3_cp1_lord_abilities_hidden_huntress" },
+		ox = 0, oy = 0 },
+	{ marker = "hidden_huntress_upgraded", name = "Hidden Huntress Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hidden_huntress_upgraded",
+		keys = { "wh3_cp1_lord_abilities_hidden_huntress_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "horn_of_the_wild_hunt", name = "Horn of the Wild Hunt", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_horn_of_the_wild_hunt",
+		keys = { "wh_dlc05_item_abilities_horn_of_the_wild_hunt" },
+		ox = 0, oy = 0 },
+	{ marker = "horn_of_vaul", name = "Horn of Vaul", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_horn_of_vaul",
+		keys = { "wh2_main_item_abilities_dragonhorn" },
+		ox = 0, oy = 0 },
+	{ marker = "hornswaggle", name = "Hornswaggle", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hornswaggle",
+		keys = { "wh2_dlc11_character_abilities_hornswaggle" },
+		ox = 0, oy = 0 },
+	{ marker = "howl_of_the_great_beast", name = "Howl of the Great Beast", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_howl_of_the_great_beast",
+		keys = { "wh3_dlc24_unit_abilities_howl_of_the_great_beast" },
+		ox = 0, oy = 0 },
+	{ marker = "hunter_of_champions", name = "Hunter of Champions", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hunter_of_champions",
+		keys = { "wh_dlc08_character_abilities_hunter_of_champions" },
+		ox = 0, oy = 0 },
+	{ marker = "hunters_snare", name = "Hunter's Snare", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hunters_snare",
+		keys = { "wh2_dlc13_lord_abilities_hunters_snare" },
+		ox = 0, oy = 0 },
+	{ marker = "hunters_trap", name = "Hunter's Trap", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_hunters_trap",
+		keys = { "wh2_dlc13_lord_abilities_hunters_trap" },
+		ox = 0, oy = 0 },
+	{ marker = "spell_slaanesh_hysterical_frenzy_bound", name = "Hysterical Frenzy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_spell_slaanesh_hysterical_frenzy_bound",
+		keys = { "wh3_main_spell_slaanesh_hysterical_frenzy_bound" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_marksmanship_i", name = "Inspired Marksmanship I", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_marksmanship_i",
+		keys = { "wh3_main_lord_abilities_inspired_marksmanship_i" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_marksmanship_ii", name = "Inspired Marksmanship II", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_marksmanship_ii",
+		keys = { "wh3_main_lord_abilities_inspired_marksmanship_ii" },
+		ox = 0, oy = 0 },
+	{ marker = "inspired_marksmanship_iii", name = "Inspired Marksmanship III", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_inspired_marksmanship_iii",
+		keys = { "wh3_main_lord_abilities_inspired_marksmanship_iii" },
+		ox = 0, oy = 0 },
+	{ marker = "iron_hand_captain", name = "Iron-Handed Captain", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_iron_hand_captain",
+		keys = { "wh3_dlc27_character_abilities_iron_hand_captain" },
+		ox = 0, oy = 0 },
+	{ marker = "jagged_dagger", name = "Jagged Dagger", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_jagged_dagger",
+		keys = { "wh_dlc03_item_abilities_jagged_dagger" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_abjuration", name = "Locus of Abjuration", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_abjuration",
+		keys = { "wh3_main_character_abilities_locus_of_abjuration" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_change", name = "Locus of Change", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_change",
+		keys = { "wh3_main_character_abilities_locus_of_change" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_conjuration", name = "Locus of Conjuration", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_conjuration",
+		keys = { "wh3_main_character_abilities_locus_of_conjuration" },
+		ox = 0, oy = 0 },
+	{ marker = "looming_dread", name = "Looming Dread", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_looming_dread",
+		keys = { "wh2_dlc14_lord_abilities_looming_dread" },
+		ox = 0, oy = 0 },
+	{ marker = "lord_of_dragons", name = "Lord of Dragons", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_lord_of_dragons",
+		keys = { "wh2_dlc15_lord_abilities_lord_of_dragons" },
+		ox = 0, oy = 0 },
+	{ marker = "magical_animus", name = "Magical Animus", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_magical_animus",
+		keys = { "wh_main_character_abilities_magical_animus" },
+		ox = 0, oy = 0 },
+	{ marker = "mark_of_the_plague_fleet", name = "Mark of the Plague Fleet", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mark_of_the_plague_fleet",
+		keys = { "wh3_dlc29_item_active_mark_of_the_plague_fleet" },
+		ox = 0, oy = 0 },
+	{ marker = "mark_of_yin", name = "Mark of Yin", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mark_of_yin",
+		keys = { "wh3_dlc24_unit_abilities_mark_of_yin" },
+		ox = 0, oy = 0 },
+	{ marker = "marked_by_ulthar", name = "Marked by Ulthar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_marked_by_ulthar",
+		keys = { "wh_dlc06_unit_abilities_marked_by_ulthar" },
+		ox = 0, oy = 0 },
+	{ marker = "marked_for_eatin", name = "Marked for Eatin'", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_marked_for_eatin",
+		keys = { "wh3_dlc26_unit_abilities_marked_for_eatin" },
+		ox = 0, oy = 0 },
+	{ marker = "beguile", name = "Master of Beguilement", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_beguile",
+		keys = { "wh_dlc04_lord_abilities_beguile" },
+		ox = 0, oy = 0 },
+	{ marker = "master_of_the_black_arts", name = "Master of the Black Arts", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_of_the_black_arts",
+		keys = { "wh_main_lord_abilities_master_of_the_black_arts" },
+		ox = 0, oy = 0 },
+	{ marker = "master_predator", name = "Master Predator", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_predator",
+		keys = { "wh2_dlc17_lord_abilities_master_predator" },
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_breaking", name = "Master Rune of Breaking", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_rune_of_breaking",
+		keys = { "wh2_dlc17_rune_abilities_master_rune_of_breaking" },
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_negation", name = "Master Rune of Negation", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_rune_of_negation",
+		keys = { "wh_dlc06_rune_abilities_master_rune_of_negation" },
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_slowness", name = "Master Rune of Slowness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_master_rune_of_slowness",
+		keys = { "wh2_dlc17_rune_abilities_master_rune_of_slowness" },
+		ox = 0, oy = 0 },
+	{ marker = "maw_shard", name = "Maw Shard", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_maw_shard",
+		keys = { "wh3_main_item_abilities_maw_shard" },
+		ox = 0, oy = 0 },
+	{ marker = "merciws_monstrous_regiment", name = "Merciw's Monstrous Regiment", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_merciws_monstrous_regiment",
+		keys = { "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
+			"wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment" },
+		ox = 0, oy = 0 },
+	{ marker = "miasma_of_despair", name = "Miasma of Despair", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_miasma_of_despair",
+		keys = { "wh2_dlc13_lord_abilities_miasma_of_despair" },
+		ox = 0, oy = 0 },
+	{ marker = "mighty_oath_stone", name = "Mighty Oath Stone", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mighty_oath_stone",
+		keys = { "wh_dlc06_lord_abilities_mighty_oath_stone" },
+		ox = 0, oy = 0 },
+	{ marker = "mighty_roar", name = "Mighty Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mighty_roar",
+		keys = { "wh2_dlc15_unit_abilities_mighty_roar" },
+		ox = 0, oy = 0 },
+	{ marker = "mimic_cold_blooded", name = "Mirror (Cold-Blooded)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mimic_cold_blooded",
+		keys = { "wh2_dlc15_unit_abilities_mimic_cold_blooded" },
+		ox = 0, oy = 0 },
+	{ marker = "mimic_feint_and_riposte", name = "Mirror (Feint & Riposte)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mimic_feint_and_riposte",
+		keys = { "wh2_dlc15_unit_abilities_mimic_feint_and_riposte" },
+		ox = 0, oy = 0 },
+	{ marker = "mimic_grand_hammer_of_faith", name = "Mirror (Grand Hammer of Faith)", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mimic_grand_hammer_of_faith",
+		keys = { "wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith" },
+		ox = 0, oy = 0 },
+	{ marker = "unit_bound_missile_mirror", name = "Missile Mirror", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_unit_bound_missile_mirror",
+		keys = { "wh3_dlc24_unit_bound_missile_mirror" },
+		ox = 0, oy = 0 },
+	{ marker = "mither", name = "Mither", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_mither",
+		keys = { "wh2_dlc15_hero_abilities_mither" },
+		ox = 0, oy = 0 },
+	{ marker = "moonshine", name = "Moonshine", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_moonshine",
+		keys = { "wh2_dlc11_item_abilities_moonshine" },
+		ox = 0, oy = 0 },
+	{ marker = "morgrims_eye", name = "Morgrim's Eye", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_morgrims_eye",
+		keys = { "wh3_dlc23_item_abilities_morgrims_eye" },
+		ox = 0, oy = 0 },
+	{ marker = "muster_of_malevolents", name = "Muster of Malevolents", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_muster_of_malevolents",
+		keys = { "wh2_dlc16_character_abilities_muster_of_malevolents" },
+		ox = 0, oy = 0 },
+	{ marker = "neferras_scrolls_of_mighty_incantations", name = "Neferra's Scrolls of Mighty Incantations", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_neferras_scrolls_of_mighty_incantations",
+		keys = { "wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations" },
+		ox = 0, oy = 0 },
+	{ marker = "net_dem_up", name = "Net Dem Up!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_net_dem_up",
+		keys = { "wh3_dlc26_unit_abilities_net_dem_up" },
+		ox = 0, oy = 0 },
+	{ marker = "net_of_amyntok", name = "Net of Amyntok", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_net_of_amyntok",
+		keys = { "wh_dlc04_spell_bound_net_of_amyntok" },
+		ox = 0, oy = 0 },
+	{ marker = "null_stone", name = "Null Stone", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_null_stone",
+		keys = { "wh3_dlc27_item_abilities_null_stone" },
+		ox = 0, oy = 0 },
+	{ marker = "oath_of_vengeance", name = "Oath of Vengeance", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_oath_of_vengeance",
+		keys = { "wh2_dlc10_lord_abilities_oath_of_vengeance" },
+		ox = 0, oy = 0 },
+	{ marker = "oil_flask", name = "Oil Flask", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_oil_flask",
+		keys = { "wh2_dlc13_lord_abilities_oil_flask" },
+		ox = 0, oy = 0 },
+	{ marker = "ottos_scythe", name = "Otto's Scythe", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ottos_scythe",
+		keys = { "wh3_dlc29_item_active_ottos_scythe" },
+		ox = 0, oy = 0 },
+	{ marker = "pack_trap", name = "Pack Trap", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pack_trap",
+		keys = { "wh3_dlc24_unit_abilities_pack_trap" },
+		ox = 0, oy = 0 },
+	{ marker = "pageant_of_shrikes", name = "Pageant of Shrikes", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pageant_of_shrikes",
+		keys = { "wh2_dlc16_character_abilities_pageant_of_shrikes" },
+		ox = 0, oy = 0 },
+	{ marker = "pearl_of_infinite_bleakness", name = "Pearl of Infinite Bleakness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pearl_of_infinite_bleakness",
+		keys = { "wh2_main_item_abilities_pearl_of_infinite_bleakness" },
+		ox = 0, oy = 0 },
+	{ marker = "pestilent_potions", name = "Pestilent Potions", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pestilent_potions",
+		keys = { "wh3_dlc20_item_abilities_pestilent_potions" },
+		ox = 0, oy = 0 },
+	{ marker = "phas_protection", name = "Pha's Protection", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_phas_protection",
+		keys = { "wh3_main_spell_bound_phas_protection" },
+		ox = 0, oy = 0 },
+	{ marker = "pilgrimage_of_skulls", name = "Pilgrimage of Skulls", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_pilgrimage_of_skulls",
+		keys = { "wh3_dlc26_lord_abilities_pilgrimage_of_skulls" },
+		ox = 0, oy = 0 },
+	{ marker = "plague_of_rust", name = "Plague of Rust", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_plague_of_rust",
+		keys = { "wh3_main_spell_bound_plague_of_rust" },
+		ox = 0, oy = 0 },
+	{ marker = "plaque_of_dominion", name = "Plaque of Dominion", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_plaque_of_dominion",
+		keys = { "wh2_main_item_abilities_plaque_of_dominion" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_farsight", name = "Potion of Farsight", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_potion_of_farsight",
+		keys = { "wh3_main_item_abilities_potion_of_farsight" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_foolhardiness", name = "Potion of Foolhardiness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_potion_of_foolhardiness",
+		keys = { "wh_main_item_abilities_potion_of_foolhardiness" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_speed", name = "Potion of Speed", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_potion_of_speed",
+		keys = { "wh_main_item_abilities_potion_of_speed" },
+		ox = 0, oy = 0 },
+	{ marker = "power_familiar", name = "Power Familiar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_power_familiar",
+		keys = { "wh3_dlc27_item_abilities_power_familiar" },
+		ox = 0, oy = 0 },
+	{ marker = "power_siphon", name = "Power Siphon", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_power_siphon",
+		keys = { "wh2_dlc11_lord_abilities_power_siphon" },
+		ox = 0, oy = 0 },
+	{ marker = "power_stone", name = "Power Stone", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_power_stone",
+		keys = { "wh_main_item_abilities_power_stone" },
+		ox = 0, oy = 0 },
+	{ marker = "predatory_instincts", name = "Predatory Instincts", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_predatory_instincts",
+		keys = { "wh3_cp1_lord_abilities_predatory_instincts" },
+		ox = 0, oy = 0 },
+	{ marker = "prey_of_anath_raema", name = "Prey of Anath Raema", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_prey_of_anath_raema",
+		keys = { "wh_dlc05_character_abilities_prey_of_anath_raema" },
+		ox = 0, oy = 0 },
+	{ marker = "prey_of_the_blood_god", name = "Prey of the Blood God", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_prey_of_the_blood_god",
+		keys = { "wh3_pro12_hero_abilities_prey_of_the_blood_god" },
+		ox = 0, oy = 0 },
+	{ marker = "prismatic_amplifier", name = "Prismatic Amplifier", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_prismatic_amplifier",
+		keys = { "wh3_main_item_abilities_prismatic_amplifier" },
+		ox = 0, oy = 0 },
+	{ marker = "rally", name = "Rally!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rally",
+		keys = { "wh_main_character_abilities_rally" },
+		ox = 0, oy = 0 },
+	{ marker = "dispatch_the_swarm_attack", name = "Ravaging Swarm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dispatch_the_swarm_attack",
+		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_attack" },
+		ox = 0, oy = 0 },
+	{ marker = "dispatch_the_swarm_attack_upgraded", name = "Ravaging Swarm Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dispatch_the_swarm_attack_upgraded",
+		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "tomb_king_rally", name = "Reanimate", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tomb_king_rally",
+		keys = { "wh2_dlc09_character_abilities_tomb_king_rally" },
+		ox = 0, oy = 0 },
+	{ marker = "tomb_king_rally_upgraded", name = "Reanimate Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tomb_king_rally_upgraded",
+		keys = { "wh2_dlc09_character_abilities_tomb_king_rally_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "red_fury", name = "Red Fury", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_red_fury",
+		keys = { "wh_main_character_abilities_red_fury" },
+		ox = 0, oy = 0 },
+	{ marker = "item_passive_rock_eye", name = "Rock Eye", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_item_passive_rock_eye",
+		keys = { "wh3_main_item_passive_rock_eye" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_breaking", name = "Rune of Breaking", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_breaking",
+		keys = { "wh2_dlc17_rune_abilities_rune_of_breaking" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_negation", name = "Rune of Negation", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_negation",
+		keys = { "wh_main_rune_abilities_rune_of_negation" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_slowness", name = "Rune of Slowness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_slowness",
+		keys = { "wh2_dlc17_rune_abilities_rune_of_slowness" },
+		ox = 0, oy = 0 },
+	{ marker = "rune_of_thungni", name = "Rune of Thungni", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_rune_of_thungni",
+		keys = { "wh3_dlc23_item_abilities_rune_of_thungni" },
+		ox = 0, oy = 0 },
+	{ marker = "sadistic_snare", name = "Sadistic Snare", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sadistic_snare",
+		keys = { "wh3_dlc23_lord_abilities_sadistic_snare" },
+		ox = 0, oy = 0 },
+	{ marker = "sceptre_of_stability", name = "Sceptre of Stability", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sceptre_of_stability",
+		keys = { "wh_main_item_abilities_sceptre_of_stability" },
+		ox = 0, oy = 0 },
+	{ marker = "scroll_of_destiny", name = "Scroll of Destiny", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scroll_of_destiny",
+		keys = { "wh3_main_item_abilities_scroll_of_destiny" },
+		ox = 0, oy = 0 },
+	{ marker = "scroll_of_leeching", name = "Scroll of Leeching", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scroll_of_leeching",
+		keys = { "wh_main_item_abilities_scroll_of_leeching" },
+		ox = 0, oy = 0 },
+	{ marker = "scroll_of_shielding", name = "Scroll of Shielding", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_scroll_of_shielding",
+		keys = { "wh_main_item_abilities_scroll_of_shielding" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_chaqua", name = "Shield of Chaqua", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shield_of_chaqua",
+		keys = { "wh2_dlc12_unit_abilities_shield_of_chaqua" },
+		ox = 0, oy = 0 },
+	{ marker = "dispatch_the_swarm_protect", name = "Shielding Swarm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dispatch_the_swarm_protect",
+		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect" },
+		ox = 0, oy = 0 },
+	{ marker = "dispatch_the_swarm_protect_upgraded", name = "Shielding Swarm Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_dispatch_the_swarm_protect_upgraded",
+		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "shock_collar", name = "Shock Collar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_shock_collar",
+		keys = { "wh2_dlc16_hero_abilities_shock_collar" },
+		ox = 0, oy = 0 },
+	{ marker = "silence_the_prey", name = "Silence the Prey", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_silence_the_prey",
+		keys = { "wh3_main_character_abilities_silence_the_prey" },
+		ox = 0, oy = 0 },
+	{ marker = "skavenbrew", name = "Skavenbrew", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_skavenbrew",
+		keys = { "wh2_main_item_abilities_skavenbrew" },
+		ox = 0, oy = 0 },
+	{ marker = "skjalandirs_fall", name = "Skjalandir's Fall", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_skjalandirs_fall",
+		keys = { "wh3_dlc23_character_abilities_skjalandirs_fall" },
+		ox = 0, oy = 0 },
+	{ marker = "skull_of_rarkos", name = "Skull of Rarkos", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_skull_of_rarkos",
+		keys = { "wh_dlc03_item_abilities_skull_of_rarkos" },
+		ox = 0, oy = 0 },
+	{ marker = "snowflake_pendant", name = "Snowflake Pendant", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_snowflake_pendant",
+		keys = { "wh3_main_item_abilities_snowflake_pendant" },
+		ox = 0, oy = 0 },
+	{ marker = "spearfishers_net", name = "Spearfisher's Net", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_spearfishers_net",
+		keys = { "wh2_dlc11_lord_abilities_spearfishers_net" },
+		ox = 0, oy = 0 },
+	{ marker = "spell_wrought_sceptre", name = "Spell-Wrought Sceptre", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_spell_wrought_sceptre",
+		keys = { "wh3_dlc23_weapon_abilities_spell_wrought_sceptre" },
+		ox = 0, oy = 0 },
+	{ marker = "spider_web_attack", name = "Spiderweb Attack", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_spider_web_attack",
+		keys = { "wh3_dlc26_character_abilities_spider_web_attack" },
+		ox = 0, oy = 0 },
+	{ marker = "staff_of_damnation", name = "Staff of Damnation", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_staff_of_damnation",
+		keys = { "wh_main_spell_bound_staff_of_damnation" },
+		ox = 0, oy = 0 },
+	{ marker = "staff_of_nagash", name = "Staff of Nagash", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_staff_of_nagash",
+		keys = { "wh2_dlc09_item_abilities_staff_of_nagash" },
+		ox = 0, oy = 0 },
+	{ marker = "staff_of_tomorrow", name = "Staff of Tomorrow", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_staff_of_tomorrow",
+		keys = { "wh3_main_weapon_abilities_staff_of_tomorrow" },
+		ox = 0, oy = 0 },
+	{ marker = "staff_of_volans", name = "Staff of Volans", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_staff_of_volans",
+		keys = { "wh_main_item_abilities_staff_of_volans" },
+		ox = 0, oy = 0 },
+	{ marker = "staff_of_wu_xing", name = "Staff of Wu Xing", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_staff_of_wu_xing",
+		keys = { "wh3_main_item_abilities_staff_of_wu_xing" },
+		ox = 0, oy = 0 },
+	{ marker = "starwood_staff", name = "Starwood Staff", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_starwood_staff",
+		keys = { "wh2_main_item_abilities_starwood_staff" },
+		ox = 0, oy = 0 },
+	{ marker = "stave_of_avelorn", name = "Stave of Avelorn", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_stave_of_avelorn",
+		keys = { "wh2_dlc10_item_abilities_stave_of_avelorn" },
+		ox = 0, oy = 0 },
+	{ marker = "sword_of_filth", name = "Sword of Filth", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_sword_of_filth",
+		keys = { "wh3_dlc25_weapon_abilities_sword_of_filth" },
+		ox = 0, oy = 0 },
+	{ marker = "tacticians_rally", name = "Tacticians, Rally!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tacticians_rally",
+		keys = { "wh3_dlc24_character_abilities_tacticians_rally" },
+		ox = 0, oy = 0 },
+	{ marker = "taunt", name = "Taunt", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_taunt",
+		keys = { "wh2_dlc11_character_abilities_taunt" },
+		ox = 0, oy = 0 },
+	{ marker = "tendrils_of_the_sea", name = "Tendrils of the Sea", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tendrils_of_the_sea",
+		keys = { "wh3_dlc29_hero_active_tendrils_of_the_sea" },
+		ox = 0, oy = 0 },
+	{ marker = "terrorgheist_skull", name = "Terrorgheist Skull", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_terrorgheist_skull",
+		keys = { "wh_dlc08_item_abilities_terrorgheist_skull" },
+		ox = 0, oy = 0 },
+	{ marker = "averland_runefang", name = "The Averland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_averland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_averland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "the_bane_shield", name = "The Bane Shield", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_bane_shield",
+		keys = { "wh2_main_item_abilities_the_bane_shield" },
+		ox = 0, oy = 0 },
+	{ marker = "the_black_tongue", name = "The Black Tongue", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_black_tongue",
+		keys = { "wh3_dlc27_character_abilities_the_black_tongue" },
+		ox = 0, oy = 0 },
+	{ marker = "the_chromatic_tome", name = "The Chromatic Tome", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_chromatic_tome",
+		keys = { "wh3_main_item_abilities_the_chromatic_tome" },
+		ox = 0, oy = 0 },
+	{ marker = "the_dark_master", name = "The Dark Master", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_dark_master",
+		keys = { "wh3_main_lord_abilities_the_dark_master" },
+		ox = 0, oy = 0 },
+	{ marker = "enfeebling_foe", name = "The Enfeebling Foe", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_enfeebling_foe",
+		keys = { "wh3_dlc23_spell_bound_enfeebling_foe",
+			"wh3_dlc27_spell_bound_enfeebling_foe",
+			"wh3_main_spell_bound_enfeebling_foe",
+			"wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror" },
+		ox = 0, oy = 0 },
+	{ marker = "the_golden_eye_of_tzeentch", name = "The Golden Eye of Tzeentch", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_golden_eye_of_tzeentch",
+		keys = { "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch" },
+		ox = 0, oy = 0 },
+	{ marker = "the_guiding_eye", name = "The Guiding Eye", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_guiding_eye",
+		keys = { "wh2_main_item_abilities_the_guiding_eye" },
+		ox = 0, oy = 0 },
+	{ marker = "the_hammer_of_karak_drazh", name = "The Hammer of Karak Drazh", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_hammer_of_karak_drazh",
+		keys = { "wh_main_weapon_abilities_the_hammer_of_karak_drazh" },
+		ox = 0, oy = 0 },
+	{ marker = "undeath_sulekhim_hand_of_dust", name = "The Hand of Dust", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_undeath_sulekhim_hand_of_dust",
+		keys = { "wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust" },
+		ox = 0, oy = 0 },
+	{ marker = "the_liber_noctus", name = "The Liber Noctus", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_liber_noctus",
+		keys = { "wh_dlc04_item_abilities_the_liber_noctus" },
+		ox = 0, oy = 0 },
+	{ marker = "lions_shield", name = "The Lion's Shield", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_lions_shield",
+		keys = { "wh_dlc07_lord_abilities_lions_shield" },
+		ox = 0, oy = 0 },
+	{ marker = "the_praise_of_slaanesh", name = "The Praise of Slaanesh", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_praise_of_slaanesh",
+		keys = { "wh3_dlc27_lord_abilities_the_praise_of_slaanesh" },
+		ox = 0, oy = 0 },
+	{ marker = "the_seerstaff_of_saphery", name = "The Seerstaff of Saphery", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_seerstaff_of_saphery",
+		keys = { "wh2_main_spell_bound_the_seerstaff_of_saphery" },
+		ox = 0, oy = 0 },
+	{ marker = "the_tricksters_pendant", name = "The Trickster's Pendant", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_tricksters_pendant",
+		keys = { "wh2_main_item_abilities_the_tricksters_pendant" },
+		ox = 0, oy = 0 },
+	{ marker = "the_vial_of_hashut", name = "The Vial of Hashut", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_vial_of_hashut",
+		keys = { "wh3_dlc23_item_abilities_the_vial_of_hashut" },
+		ox = 0, oy = 0 },
+	{ marker = "the_vortex_shard", name = "The Vortex Shard", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_vortex_shard",
+		keys = { "wh2_main_item_abilities_the_vortex_shard" },
+		ox = 0, oy = 0 },
+	{ marker = "the_wintertooth_crown", name = "The Wintertooth Crown", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_wintertooth_crown",
+		keys = { "wh_dlc08_item_abilities_the_wintertooth_crown" },
+		ox = 0, oy = 0 },
+	{ marker = "wissenland_runefang", name = "The Wissenland Runefang", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wissenland_runefang",
+		keys = { "wh2_dlc13_weapon_abilities_wissenland_runefang" },
+		ox = 0, oy = 0 },
+	{ marker = "the_withering", name = "The Withering", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_withering",
+		keys = { "wh3_dlc23_spell_bound_the_withering",
+			"wh3_twa08_spell_bound_the_withering" },
+		ox = 0, oy = 0 },
+	{ marker = "they_needs_stabbin", name = "They Needs Stabbin’", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_they_needs_stabbin",
+		keys = { "wh2_dlc15_character_abilities_they_needs_stabbin" },
+		ox = 0, oy = 0 },
+	{ marker = "thorns_aura", name = "Thorn's Aura", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_thorns_aura",
+		keys = { "wh3_dlc24_hero_abilities_thorns_aura" },
+		ox = 0, oy = 0 },
+	{ marker = "thunderburner", name = "Thunderburner", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_thunderburner",
+		keys = { "wh3_dlc25_unit_abilities_thunderburner" },
+		ox = 0, oy = 0 },
+	{ marker = "thunderburner_upgraded", name = "Thunderburner Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_thunderburner_upgraded",
+		keys = { "wh3_dlc25_unit_abilities_thunderburner_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "titan_headsman", name = "Titan Headsman", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_titan_headsman",
+		keys = { "wh3_dlc25_hero_abilities_titan_headsman" },
+		ox = 0, oy = 0 },
+	{ marker = "torment_blade", name = "Torment Blade", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_torment_blade",
+		keys = { "wh3_main_weapon_abilities_torment_blade" },
+		ox = 0, oy = 0 },
+	{ marker = "tricksters_shard", name = "Trickster's Shard", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_tricksters_shard",
+		keys = { "wh_main_item_abilities_tricksters_shard" },
+		ox = 0, oy = 0 },
+	{ marker = "trophy_heads", name = "Trophy Heads", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_trophy_heads",
+		keys = { "wh2_main_lord_abilities_trophy_heads",
+			"wh3_main_daemon_wings_abilities_trophy_heads" },
+		ox = 0, oy = 0 },
+	{ marker = "twilight_horn_i", name = "Twilight Horn I", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_twilight_horn_i",
+		keys = { "wh2_dlc16_item_abilities_twilight_horn_i" },
+		ox = 0, oy = 0 },
+	{ marker = "undeath_resurgent", name = "Undeath Resurgent", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_undeath_resurgent",
+		keys = { "wh_main_character_abilities_undeath_resurgent" },
+		ox = 0, oy = 0 },
+	{ marker = "unholy_clamour", name = "Unholy Clamour", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_unholy_clamour",
+		keys = { "wh2_main_mount_abilities_unholy_clamour" },
+		ox = 0, oy = 0 },
+	{ marker = "unlimited_power", name = "Unlimited Power!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_unlimited_power",
+		keys = { "wh2_dlc12_lord_abilities_unlimited_power" },
+		ox = 0, oy = 0 },
+	{ marker = "ursuns_roar_2", name = "Ursun's Mighty Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ursuns_roar_2",
+		keys = { "wh3_main_pro_character_abilities_ursuns_roar_2" },
+		ox = 0, oy = 0 },
+	{ marker = "ursuns_roar", name = "Ursun's Roar", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ursuns_roar",
+		keys = { "wh3_main_character_abilities_ursuns_roar",
+			"wh3_main_pro_character_abilities_ursuns_roar",
+			"wh3_main_pro_character_abilities_ursuns_roar_1",
+			"wh3_main_pro_character_abilities_ursuns_roar_3" },
+		ox = 0, oy = 0 },
+	{ marker = "van_horstmanns_speculum", name = "Van Horstmann's Speculum", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_van_horstmanns_speculum",
+		keys = { "wh_main_item_abilities_van_horstmanns_speculum" },
+		ox = 0, oy = 0 },
+	{ marker = "verminous_fury", name = "Verminous Fury", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_verminous_fury",
+		keys = { "wh3_dlc29_lord_abilities_verminous_fury" },
+		ox = 0, oy = 0 },
+	{ marker = "virulent_contagion", name = "Virulent Contagion", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_virulent_contagion",
+		keys = { "wh3_main_lord_abilities_virulent_contagion" },
+		ox = 0, oy = 0 },
+	{ marker = "virulent_contagion_upgraded", name = "Virulent Contagion Upgraded", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_virulent_contagion_upgraded",
+		keys = { "wh3_main_lord_abilities_virulent_contagion_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "visions_of_madness", name = "Visions of Madness", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_visions_of_madness",
+		keys = { "wh3_dlc27_qb_unit_abilities_visions_of_madness" },
+		ox = 0, oy = 0 },
+	{ marker = "void_pendulum", name = "Void Pendulum", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_void_pendulum",
+		keys = { "wh3_main_item_abilities_void_pendulum" },
+		ox = 0, oy = 0 },
+	{ marker = "vorozhejas_foresight", name = "Vorozheja's Foresight", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_vorozhejas_foresight",
+		keys = { "wh3_dlc24_hero_abilities_vorozhejas_foresight" },
+		ox = 0, oy = 0 },
+	{ marker = "waaagh_in_combat", name = "Waaagh!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_waaagh_in_combat",
+		keys = { "wh3_dlc26_unit_abilities_waaagh_in_combat",
+			"wh_main_character_abilities_waaagh" },
+		ox = 0, oy = 0 },
+	{ marker = "wand_of_jet", name = "Wand of Jet", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wand_of_jet",
+		keys = { "wh_main_item_abilities_wand_of_jet" },
+		ox = 0, oy = 0 },
+	{ marker = "wardens_cage", name = "Warden's Cage", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wardens_cage",
+		keys = { "wh2_dlc15_character_abilities_wardens_cage" },
+		ox = 0, oy = 0 },
+	{ marker = "warp_gaze", name = "Warp Gaze", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warp_gaze",
+		keys = { "wh_pro04_unit_abilities_warp_gaze" },
+		ox = 0, oy = 0 },
+	{ marker = "warpstiletto", name = "Warpstiletto", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warpstiletto",
+		keys = { "wh3_dlc29_item_abilities_warpstiletto" },
+		ox = 0, oy = 0 },
+	{ marker = "warpstone_tokens", name = "Warpstone Tokens", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_warpstone_tokens",
+		keys = { "wh3_dlc29_item_abilities_warpstone_tokens" },
+		ox = 0, oy = 0 },
+	{ marker = "watched_by_the_watcher", name = "Watched by the Watcher", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_watched_by_the_watcher",
+		keys = { "wh3_dlc24_character_abilities_watched_by_the_watcher" },
+		ox = 0, oy = 0 },
+	{ marker = "were_you_goin", name = "Where You Goin!?", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_were_you_goin",
+		keys = { "wh3_dlc26_character_abilities_were_you_goin" },
+		ox = 0, oy = 0 },
+	{ marker = "whip_of_agony", name = "Whip of Agony", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_whip_of_agony",
+		keys = { "wh2_twa03_weapon_abilities_whip_of_agony" },
+		ox = 0, oy = 0 },
+	{ marker = "whip_of_misery", name = "Whip of Misery", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_whip_of_misery",
+		keys = { "wh2_main_spell_bound_whip_of_agony" },
+		ox = 0, oy = 0 },
+	{ marker = "whiplash", name = "Whiplash!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_whiplash",
+		keys = { "wh2_dlc14_lord_abilities_whiplash" },
+		ox = 0, oy = 0 },
+	{ marker = "whispering_mist", name = "Whispering Mist", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_whispering_mist",
+		keys = { "wh3_dlc29_hero_abilities_whispering_mist" },
+		ox = 0, oy = 0 },
+	{ marker = "whispering_skull", name = "Whispering Skull", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_whispering_skull",
+		keys = { "wh3_dlc29_item_abilities_whispering_skull" },
+		ox = 0, oy = 0 },
+	{ marker = "wild_abandon", name = "Wild Abandon", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wild_abandon",
+		keys = { "wh3_dlc26_lord_abilities_wild_abandon" },
+		ox = 0, oy = 0 },
+	{ marker = "willing_prey", name = "Willing Prey", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_willing_prey",
+		keys = { "wh3_main_lord_abilities_willing_prey" },
+		ox = 0, oy = 0 },
+	{ marker = "winds_of_change", name = "Winds of Change", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_winds_of_change",
+		keys = { "wh3_main_daemon_body_abilities_winds_of_change" },
+		ox = 0, oy = 0 },
+	{ marker = "word_of_change", name = "Word of Change", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_word_of_change",
+		keys = { "wh3_main_daemon_head_abilities_word_of_change" },
+		ox = 0, oy = 0 },
+	{ marker = "word_of_pain", name = "Word of Pain", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_word_of_pain",
+		keys = { "wh2_dlc10_spell_bound_word_of_pain",
+			"wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use" },
+		ox = 0, oy = 0 },
+	{ marker = "woven_mist", name = "Woven Mist", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_woven_mist",
+		keys = { "wh_dlc05_unit_abilities_woven_mist" },
+		ox = 0, oy = 0 },
+	{ marker = "wrath_of_the_storm", name = "Wrath of the Storm", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wrath_of_the_storm",
+		keys = { "wh3_main_lord_abilities_wrath_of_the_storm" },
+		ox = 0, oy = 0 },
+	{ marker = "wrathful_reaper", name = "Wrathful Reaper", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wrathful_reaper",
+		keys = { "wh3_main_lord_abilities_wrathful_reaper" },
+		ox = 0, oy = 0 },
+	{ marker = "wristbands_of_black_gold", name = "Wristbands of Black Gold", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_wristbands_of_black_gold",
+		keys = { "wh3_dlc29_item_abilities_wristbands_of_black_gold" },
+		ox = 0, oy = 0 },
+	{ marker = "youre_next", name = "You're Next!", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_youre_next",
+		keys = { "wh2_dlc15_lord_abilities_youre_next" },
+		ox = 0, oy = 0 },
+	-- health<=75, no melee gate (the R1 heal / replenish batch) (36 entries)
+	{ marker = "berry_wine", name = "Berry Wine", trigger = "ushoran_health",
+		badge = "zz_auto_badge_berry_wine",
+		keys = { "wh2_dlc16_item_abilities_berry_wine" },
+		ox = 0, oy = 0 },
+	{ marker = "blood_chalice", name = "Blood Chalice", trigger = "ushoran_health",
+		badge = "zz_auto_badge_blood_chalice",
+		keys = { "wh3_dlc29_hero_abilities_blood_chalice" },
+		ox = 0, oy = 0 },
+	{ marker = "blood_chalice_of_bathori", name = "Blood Chalice of Bathori", trigger = "ushoran_health",
+		badge = "zz_auto_badge_blood_chalice_of_bathori",
+		keys = { "wh_pro02_item_abilities_blood_chalice_of_bathori" },
+		ox = 0, oy = 0 },
+	{ marker = "undeath_morkharn_breath_of_darkness", name = "Breath of Darkness", trigger = "ushoran_health",
+		badge = "zz_auto_badge_undeath_morkharn_breath_of_darkness",
+		keys = { "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness" },
+		ox = 0, oy = 0 },
+	{ marker = "undeath_morkharn_breath_of_darkness_upgraded", name = "Breath of Darkness Upgraded", trigger = "ushoran_health",
+		badge = "zz_auto_badge_undeath_morkharn_breath_of_darkness_upgraded",
+		keys = { "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded" },
+		ox = 0, oy = 0 },
+	{ marker = "bugmans_xxxxxx", name = "Bugman's XXXXXX", trigger = "ushoran_health",
+		badge = "zz_auto_badge_bugmans_xxxxxx",
+		keys = { "wh3_dlc26_item_abilities_bugmans_xxxxxx" },
+		ox = 0, oy = 0 },
+	{ marker = "dreaming_ring_i", name = "Dreaming Ring I", trigger = "ushoran_health",
+		badge = "zz_auto_badge_dreaming_ring_i",
+		keys = { "wh2_dlc16_item_abilities_dreaming_ring_i" },
+		ox = 0, oy = 0 },
+	{ marker = "dreaming_ring_ii", name = "Dreaming Ring II", trigger = "ushoran_health",
+		badge = "zz_auto_badge_dreaming_ring_ii",
+		keys = { "wh2_dlc16_item_abilities_dreaming_ring_ii" },
+		ox = 0, oy = 0 },
+	{ marker = "dreaming_ring_iii", name = "Dreaming Ring III", trigger = "ushoran_health",
+		badge = "zz_auto_badge_dreaming_ring_iii",
+		keys = { "wh2_dlc16_item_abilities_dreaming_ring_iii" },
+		ox = 0, oy = 0 },
+	{ marker = "earth_blood", name = "Earth Blood", trigger = "ushoran_health",
+		badge = "zz_auto_badge_earth_blood",
+		keys = { "wh2_dlc16_spell_bound_earth_blood",
+			"wh3_main_spell_bound_earth_blood" },
+		ox = 0, oy = 0 },
+	{ marker = "elfish_healing_herbs", name = "Elvish Healing Herbs", trigger = "ushoran_health",
+		badge = "zz_auto_badge_elfish_healing_herbs",
+		keys = { "wh3_dlc27_unit_abilities_elfish_healing_herbs" },
+		ox = 0, oy = 0 },
+	{ marker = "fleshy_abundance", name = "Fleshy Abundance", trigger = "ushoran_health",
+		badge = "zz_auto_badge_fleshy_abundance",
+		keys = { "wh3_dlc20_spell_bound_fleshy_abundance" },
+		ox = 0, oy = 0 },
+	{ marker = "hieratic_jar", name = "Hieratic Jar", trigger = "ushoran_health",
+		badge = "zz_auto_badge_hieratic_jar",
+		keys = { "wh2_dlc09_item_abilities_hieratic_jar" },
+		ox = 0, oy = 0 },
+	{ marker = "immortal_will", name = "Immortal Will", trigger = "ushoran_health",
+		badge = "zz_auto_badge_immortal_will",
+		keys = { "wh_main_hero_abilities_immortal_will" },
+		ox = 0, oy = 0 },
+	{ marker = "invocation_of_nehek", name = "Invocation of Nehek", trigger = "ushoran_health",
+		badge = "zz_auto_badge_invocation_of_nehek",
+		keys = { "wh3_dlc29_spell_bound_invocation_of_nehek" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_fecundity", name = "Locus of Fecundity", trigger = "ushoran_health",
+		badge = "zz_auto_badge_locus_of_fecundity",
+		keys = { "wh3_main_character_abilities_locus_of_fecundity" },
+		ox = 0, oy = 0 },
+	{ marker = "makaissons_persuader", name = "Makaisson's Persuader", trigger = "ushoran_health",
+		badge = "zz_auto_badge_makaissons_persuader",
+		keys = { "wh3_dlc25_weapon_abilities_makaissons_persuader" },
+		ox = 0, oy = 0 },
+	{ marker = "neuroparasites", name = "Necroparasites", trigger = "ushoran_health",
+		badge = "zz_auto_badge_neuroparasites",
+		keys = { "wh2_dlc16_unit_abilities_neuroparasites" },
+		ox = 0, oy = 0 },
+	{ marker = "necrotic_phylactry", name = "Necrotic Phylactery", trigger = "ushoran_health",
+		badge = "zz_auto_badge_necrotic_phylactry",
+		keys = { "wh3_dlc25_item_abilities_necrotic_phylactry" },
+		ox = 0, oy = 0 },
+	{ marker = "patch_up", name = "Patch Up", trigger = "ushoran_health",
+		badge = "zz_auto_badge_patch_up",
+		keys = { "wh2_dlc13_character_abilities_patch_up" },
+		ox = 0, oy = 0 },
+	{ marker = "pestilent_regeneration", name = "Pestilent Regeneration", trigger = "ushoran_health",
+		badge = "zz_auto_badge_pestilent_regeneration",
+		keys = { "wh3_main_daemon_head_abilities_pestilent_regeneration" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_charoi", name = "Potion of Charoi", trigger = "ushoran_health",
+		badge = "zz_auto_badge_potion_of_charoi",
+		keys = { "wh2_main_lord_abilities_potion_of_charoi" },
+		ox = 0, oy = 0 },
+	{ marker = "potion_of_healing", name = "Potion of Healing", trigger = "ushoran_health",
+		badge = "zz_auto_badge_potion_of_healing",
+		keys = { "wh_main_item_abilities_potion_of_healing" },
+		ox = 0, oy = 0 },
+	{ marker = "radiant_gem_of_hoeth", name = "Radiant Gem of Hoeth", trigger = "ushoran_health",
+		badge = "zz_auto_badge_radiant_gem_of_hoeth",
+		keys = { "wh2_main_spell_bound_radiant_gem_of_hoeth" },
+		ox = 0, oy = 0 },
+	{ marker = "reforge", name = "Reforge", trigger = "ushoran_health",
+		badge = "zz_auto_badge_reforge",
+		keys = { "wh3_dlc23_character_abilities_reforge" },
+		ox = 0, oy = 0 },
+	{ marker = "regenerating_flesh", name = "Regenerating Flesh", trigger = "ushoran_health",
+		badge = "zz_auto_badge_regenerating_flesh",
+		keys = { "wh_main_item_abilities_regenerating_flesh" },
+		ox = 0, oy = 0 },
+	{ marker = "regrowth", name = "Regrowth", trigger = "ushoran_health",
+		badge = "zz_auto_badge_regrowth",
+		keys = { "wh2_dlc16_spell_bound_regrowth" },
+		ox = 0, oy = 0 },
+	{ marker = "remouldered", name = "Remouldered", trigger = "ushoran_health",
+		badge = "zz_auto_badge_remouldered",
+		keys = { "wh2_dlc16_lord_abilities_remouldered" },
+		ox = 0, oy = 0 },
+	{ marker = "restore", name = "Restore", trigger = "ushoran_health",
+		badge = "zz_auto_badge_restore",
+		keys = { "wh2_dlc09_character_abilities_restore" },
+		ox = 0, oy = 0 },
+	{ marker = "revivification_crystal", name = "Revivification Crystal", trigger = "ushoran_health",
+		badge = "zz_auto_badge_revivification_crystal",
+		keys = { "wh2_main_unit_abilities_revivification_crystal" },
+		ox = 0, oy = 0 },
+	{ marker = "saint_annushkas_finger_bone", name = "Saint Annushka's Finger Bone", trigger = "ushoran_health",
+		badge = "zz_auto_badge_saint_annushkas_finger_bone",
+		keys = { "wh3_main_item_abilities_saint_annushkas_finger_bone" },
+		ox = 0, oy = 0 },
+	{ marker = "salyaks_lullaby", name = "Salyak's Lullaby", trigger = "ushoran_health",
+		badge = "zz_auto_badge_salyaks_lullaby",
+		keys = { "wh3_main_character_abilities_salyaks_lullaby" },
+		ox = 0, oy = 0 },
+	{ marker = "scroll_of_power", name = "Scroll of Power", trigger = "ushoran_health",
+		badge = "zz_auto_badge_scroll_of_power",
+		keys = { "wh_main_item_abilities_scroll_of_power" },
+		ox = 0, oy = 0 },
+	{ marker = "skalm", name = "Skalm", trigger = "ushoran_health",
+		badge = "zz_auto_badge_skalm",
+		keys = { "wh2_main_item_abilities_skalm" },
+		ox = 0, oy = 0 },
+	{ marker = "skars_kraken_killer", name = "Skar's Kraken-Killer", trigger = "ushoran_health",
+		badge = "zz_auto_badge_skars_kraken_killer",
+		keys = { "wh3_main_weapon_abilities_skars_kraken_killer" },
+		ox = 0, oy = 0 },
+	{ marker = "trollguts", name = "Trollguts", trigger = "ushoran_health",
+		badge = "zz_auto_badge_trollguts",
+		keys = { "wh3_dlc26_spell_bound_trollguts" },
+		ox = 0, oy = 0 },
+	-- charge and in-melee (the R1 charge-bonus batch) (14 entries)
+	{ marker = "bloodthirst", name = "Bloodthirst", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_bloodthirst",
+		keys = { "wh3_main_lord_abilities_bloodthirst" },
+		ox = 0, oy = 0 },
+	{ marker = "colossal_strike", name = "Colossal Strike", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_colossal_strike",
+		keys = { "wh3_dlc24_character_abilities_colossal_strike",
+			"wh3_dlc24_character_abilities_colossal_strike_summoned" },
+		ox = 0, oy = 0 },
+	{ marker = "crimson_juggernaut", name = "Crimson Juggernaut", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_crimson_juggernaut",
+		keys = { "wh3_dlc26_character_abilities_crimson_juggernaut" },
+		ox = 0, oy = 0 },
+	{ marker = "daemonic_onslaught", name = "Daemonic Onslaught", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_daemonic_onslaught",
+		keys = { "wh3_main_daemon_legs_abilities_daemonic_onslaught" },
+		ox = 0, oy = 0 },
+	{ marker = "deadly_onslaught", name = "Deadly Onslaught", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_deadly_onslaught",
+		keys = { "wh_dlc03_character_abilities_deadly_onslaught" },
+		ox = 0, oy = 0 },
+	{ marker = "full_power", name = "Full Power!", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_full_power",
+		keys = { "wh3_dlc25_unit_abilities_full_power" },
+		ox = 0, oy = 0 },
+	{ marker = "guiding_strike", name = "Guiding Strike", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_guiding_strike",
+		keys = { "wh3_cp1_lord_abilities_guiding_strike" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_fury", name = "Locus of Fury", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_locus_of_fury",
+		keys = { "wh3_main_character_abilities_locus_of_fury" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_swiftness", name = "Locus of Swiftness", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_locus_of_swiftness",
+		keys = { "wh3_main_character_abilities_locus_of_swiftness" },
+		ox = 0, oy = 0 },
+	{ marker = "mastered_strike", name = "Masterful Strike", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_mastered_strike",
+		keys = { "wh3_cp1_lord_abilities_mastered_strike" },
+		ox = 0, oy = 0 },
+	{ marker = "more_power", name = "More Power!", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_more_power",
+		keys = { "wh3_dlc23_unit_abilities_more_power" },
+		ox = 0, oy = 0 },
+	{ marker = "purge_the_weak", name = "Purge the Weak!", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_purge_the_weak",
+		keys = { "wh3_main_daemon_wings_abilities_purge_the_weak" },
+		ox = 0, oy = 0 },
+	{ marker = "shield_of_thorns", name = "Shield of Thorns", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_shield_of_thorns",
+		keys = { "wh2_dlc17_spell_bound_shield_of_thorns",
+			"wh_dlc05_spell_bound_shield_of_thorns" },
+		ox = 0, oy = 0 },
+	{ marker = "storm_hammer", name = "Storm Hammer", trigger = "charge_or_melee",
+		badge = "zz_auto_badge_storm_hammer",
+		keys = { "wh3_dlc29_spell_bound_storm_hammer" },
+		ox = 0, oy = 0 },
+
+	-- ============================================================================
+	-- THE FINAL ROSTER ROUND (this round) - the SIX built individual
+	-- abilities from the remaining-abilities triage (WH3_remaining_triage.md
+	-- section 3 INDIVIDUAL table). Blood Sacrifice and Eat da Runts! ride
+	-- the TWO NEW ally-heal triggers (blood_sacrifice / eat_da_runts, each
+	-- its own evaluator, section 7g); the four melee ones ride the EXISTING
+	-- shared melee_unwavering evaluator (in-melee self). Base + DLC twins
+	-- ride one entry where a name repeats (none here - one key each).
+	-- ============================================================================
+	{ marker = "blood_sacrifice", name = "Blood Sacrifice", trigger = "blood_sacrifice",
+		badge = "zz_auto_badge_blood_sacrifice",
+		keys = { "wh3_dlc26_lord_abilities_blood_sacrifice" },
+		ox = 0, oy = 0 },
+	{ marker = "eat_da_runts", name = "Eat da Runts!", trigger = "eat_da_runts",
+		badge = "zz_auto_badge_eat_da_runts",
+		keys = { "wh3_dlc26_unit_abilities_eat_da_runts" },
+		ox = 0, oy = 0 },
+	{ marker = "locus_of_virulence", name = "Locus of Virulence", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_locus_of_virulence",
+		keys = { "wh3_main_character_abilities_locus_of_virulence" },
+		ox = 0, oy = 0 },
+	{ marker = "the_dance_of_dreaming", name = "The Dance of Dreaming", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_dance_of_dreaming",
+		keys = { "wh3_dlc27_lord_abilities_the_dance_of_dreaming" },
+		ox = 0, oy = 0 },
+	{ marker = "the_waltz_of_lethargy", name = "The Waltz of Lethargy", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_the_waltz_of_lethargy",
+		keys = { "wh3_dlc27_lord_abilities_the_waltz_of_lethargy" },
+		ox = 0, oy = 0 },
+	{ marker = "ultimate_verdict", name = "Ultimate Verdict", trigger = "melee_unwavering",
+		badge = "zz_auto_badge_ultimate_verdict",
+		keys = { "wh3_cp1_character_abilities_terrifying_presence" },
+		ox = 0, oy = 0 },
+}
+
+-- Every key from the table above, for the ownership scan and the log.
+local ALL_ABILITY_KEYS = {}
+for _, ability in ipairs(ABILITIES) do
+	for _, key in ipairs(ability.keys) do
+		ALL_ABILITY_KEYS[#ALL_ABILITY_KEYS + 1] = key
+	end
+end
+
+-- THE STATIC KEY -> MARKER MAP (item 1.3): every database key listed in the
+-- table above, mapped to its ability's short marker, built once at load. It is
+-- what turns a unit's cached owned keys (owned_keys_by_unit, section 2) into
+-- the short list of abilities that unit can actually carry - the poll's
+-- per-unit ability loop (section 8) iterates that list instead of the whole
+-- table. Built from the SAME keys the scan matches on, so it can never drift.
+local marker_by_key = {}
+for _, ability in ipairs(ABILITIES) do
+	for _, key in ipairs(ability.keys) do
+		marker_by_key[key] = ability.marker
+	end
+end
+
+-- THE STATIC MARKER -> ENTRY MAP (item 3.1): the ABILITIES entry behind each
+-- marker, built once at load. It replaces ability_for's per-call walk of the
+-- WHOLE table with ONE table read, so every badge / letter / active-set
+-- lookup is O(1) instead of O(entries). INVARIANT: it is built AFTER the
+-- ABILITIES table is fully populated (it is - the table above never changes),
+-- and ability_by_marker[entry.marker] == entry for EVERY entry; the harness
+-- asserts exactly that, because a mismatch would silently drop a badge.
+local ability_by_marker = {}
+for _, ability in ipairs(ABILITIES) do
+	ability_by_marker[ability.marker] = ability
+end
+
+-- THE STATIC BADGE-ID -> ENTRY MAP (item 3.1, audit): the same idea for the
+-- click router's badge lookup - a badge id is unique per entry, built at load
+-- (after ABILITIES, same invariant), so ability_for_badge is one read too.
+local ability_by_badge = {}
+for _, ability in ipairs(ABILITIES) do
+	ability_by_badge[ability.badge] = ability
+end
+
+-- THE STATIC KEY MEMBERSHIP SET (item 3.1): the SAME keys as ALL_ABILITY_KEYS
+-- (above), but as a set, so "is this engine key one of ours?" is ONE table
+-- read instead of a walk of the array. The ARRAY is kept for the ordered
+-- iterations that need it (the log and the ordered fallback). INVARIANT:
+-- built AFTER ABILITIES is fully populated; EVERY key of EVERY entry is in
+-- this set - the harness asserts it, because a missing key would silently
+-- miss an owned ability.
+local ALL_ABILITY_KEYS_SET = {}
+for _, ability in ipairs(ABILITIES) do
+	for _, key in ipairs(ability.keys) do
+		ALL_ABILITY_KEYS_SET[key] = true
+	end
+end
+
+-- The ABILITIES entry behind a marker, and behind a badge id (the click
+-- router works in badge ids).
+local function ability_for(marker)
+	-- item 3.1: O(1) - the load-time map, never a walk of the table.
+	return ability_by_marker[marker]
+end
+
+local function ability_for_badge(badge_id)
+	-- item 3.1 (audit): O(1) - the load-time badge-id map.
+	return ability_by_badge[badge_id]
+end
+
+-- Which situations count as "fire now".
+-- Round 5 ran with BOTH on (deliberately, to get a positive result). You saw it
+-- fire while merely running and while already fighting, which is exactly what
+-- that configuration asked for. It was then tightened to charging only.
+-- THIS ROUND (user-approved): BOTH are ON again - Deadly Onslaught has a
+-- component that is useful in melee, so it fires on the proven charge window
+-- OR once the unit is already fighting. The two arms can never both hold on
+-- one evaluation (a charging unit is not yet in melee - see measure_charge),
+-- so one situation never fires twice; the engine cooldown and the existing
+-- cooldown-hold back-off govern the repeats.
+local FIRE_ON_CHARGE = true
+local FIRE_ON_MELEE  = true    -- the user-approved in-melee arm (this round)
+
+-- A charge is an ATTACK order on an enemy that is about to CONNECT - not simply
+-- "moving fast", and not the instant the attack order is given. The engine
+-- exposes no "is charging", so it is inferred from five signals:
+--
+--   1. is_moving_fast()      - the unit is running (necessary, not sufficient)
+--   2. not is_in_melee()     - it has not made contact yet
+--   3. current_target()      - it has an enemy unit as its target
+--   4. ordered_position()    - the documentation: "if the unit is attacking, as
+--                              opposed to moving, then this will return the
+--                              current position of the unit". So position() and
+--                              ordered_position() are near-equal while charging
+--                              a unit and far apart while walking to a spot.
+--                              This is what separates a charge from a run.
+--   5. distance to the target, and the estimated time until contact - so the
+--      ability is spent on the charge that is about to land, not on a charge
+--      ordered from the far side of the battlefield.
+--
+-- ROUND 7 CORRECTION - signal 4 DOES NOT WORK.
+-- The documentation claims that while the unit is ATTACKING, ordered_position()
+-- returns its current position. The round-7 log disproves it: during a charge
+-- the gap grew steadily from 17 m to 322 m, tracking how far the unit had
+-- travelled since the order was given. So it measures "how long ago you
+-- clicked", not "is this an attack". It blocked every genuine charge and passed
+-- only orders given at close range - which is exactly what you saw. It is now
+-- logged for diagnostics only and takes NO part in the decision. The real
+-- attack-versus-move signal is simply "does the unit have a target at all".
+local CHARGE_MIN_DISTANCE_M    = 12     -- a charge needs a run-up
+local CHARGE_MAX_DISTANCE_M    = 60     -- ...but not the length of the map
+local CHARGE_TIME_TO_CONTACT_S = 4      -- fire when impact is this close
+
+-- GLORIOUS DEATH'S TRIGGER RANGE (this round) - THE STANDING 70% RULE.
+-- REAL range 55.0000 m = effect_range (unit_spec_abil.tsv,
+-- wh3_dlc25_lord_abilities_glorious_death) - the ability's own aura.
+-- 55 * 0.70 = 38.5 -> 38 m (FLOORED, FOURTH.RANGE_FRACTION). The gate below
+-- offers, and re-checks just before the cast, an in-melee Slayer ally only
+-- when the owner is within GLORIOUS_DEATH_RANGE_M metres of it. ONE place to
+-- tune the gate. (HISTORY: harness 87 shipped a FIELD-TUNED 25 m here because
+-- the 55 m aura fired too early; the user then ruled the 70% rule ABSOLUTE -
+-- "...No exceptions." - so 25 m was REPLACED by 38 m at his direction.)
+local GLORIOUS_DEATH_RANGE_M = 38
+
+-- How often, in milliseconds, we look at the battlefield. 250 ms = 4x a second.
+local POLL_MS = 250
+
+-- THE SHORT GUARD - the short safety brake, in seconds, per (unit, ability):
+-- no pair may attempt twice inside this window. The readiness gate (the
+-- engine's own can_perform check, section 4) is the real brake now - there
+-- are NO 60/90 s timers anywhere any more.
+local GUARD_SECONDS = 2
+
+-- THE COOLDOWN-HOLD BACK-OFF (this round). RESEARCH, FIRST: there is NO
+-- per-unit engine read of a special ability's cooldown / readiness / active
+-- state. The API dump (battle_unit.lua) offers exactly ONE read -
+-- can_perform_special_ability - and the live log proves it answers TRUE while
+-- the engine is refusing the fire with "does not support this special
+-- ability"; the only other cooldown entry in the whole API is
+-- battle_unitcontroller:reset_ability_cooldown, a WRITE. The dial-button
+-- state (INVENTORY dumps) reports 'active' for our buttons even during the
+-- refusal, and it belongs to the SELECTED unit only, so it cannot cover an
+-- attempt for a non-selected firing unit. So the mod cannot KNOW a pair is on
+-- cooldown before it tries - it can only LEARN it from the engine's own
+-- refusal.
+--
+-- WHAT THIS DOES: the first cooldown refusal of an episode still speaks (one
+-- coalesced line, not the old four). A REPEATED refusal backs that pair off
+-- HOLD_SECONDS instead of the 2 s guard, and every repeat after the first is
+-- logged NOTHING (no ATTEMPT, no can_perform, no REJECTED): an ability on a
+-- long cooldown costs a handful of silent probes instead of a REJECTED line
+-- every 2 s. A refusal clears the episode only by an ACCEPTED fire - and a
+-- probe that DOES fire is always reported in full (a fire is never
+-- suppressed).
+local HOLD_SECONDS = 8
+
+-- THE HARD BOUND (this round). A hold is a SKIP: nothing may sit out forever
+-- because of a stuck flag, a stale read or a mis-set timer. However long a
+-- pair has been held, an attempt is forced once the hold has lasted
+-- MAX_HOLD_SECONDS - so a permanently "cooling" pair still probes (and, if
+-- the engine then allows it, still fires).
+local MAX_HOLD_SECONDS = 20
+
+-- How often, in polls, the cheap IDENTITY re-check runs for a unit we have
+-- not yet found the ability on: 16 x 250 ms = every 4 seconds. The check
+-- reads ONE cheap engine value (the identity watch below); the FULL scan it
+-- used to run here now happens only when that value changes, plus the slow
+-- fallback beneath this constant.
+local REDETECT_EVERY_N_POLLS = 16    -- 16 x 250 ms = every 4 seconds
+
+-- THE IDENTITY WATCH (this build, item 3.4). The 4 s re-check above no longer
+-- re-runs the full scan: for a unit with nothing of ours, the poll reads ONE
+-- cheap engine value - its identity, battle_unit:type() (battle_unit.lua:
+-- "Returns the unit type of the unit, from the land_units table") - and
+-- re-scans ONLY when that value CHANGES. That is what catches a
+-- transformation or a mount: the unit's type key moves, so a loadout that
+-- gained abilities mid-battle is picked up and its new abilities arm and
+-- fire. The read costs almost nothing (a string the unit already carries),
+-- so the per-4-s engine work of scanning every ability-less unit is gone.
+--
+-- THE SLOW SAFETY FALLBACK: every FALLBACK_RESCAN_EVERY_N_POLLS polls a full
+-- scan still runs for a unit with nothing of ours, whatever its identity
+-- says - so an unreadable or unchanging identity degrades to the old
+-- behaviour, just far rarer (60 s instead of 4 s).
+local FALLBACK_RESCAN_EVERY_N_POLLS = 240   -- 240 x 250 ms = every 60 seconds
+
+-- How often to write one compact status line, in polls. 20 x 250 ms = every 5 s.
+-- This is what makes a silent run diagnosable: it proves the poll is alive and
+-- records the battle phase plus what every watched unit is doing.
+local HEARTBEAT_EVERY_N_POLLS = 20
+
+-- How often to re-list the player's units, in polls: a battle can GROW its
+-- army after the first list was built - a summon, a Tzeentch split, a
+-- transformation puts NEW units on the field mid-battle - and the watch list
+-- must adopt them like any starting unit (tracked, scanned, selection
+-- callback registered) without disturbing the units already on it. 40 x
+-- 250 ms = every 10 seconds: low-frequency enough that the handful of engine
+-- reads never shows, frequent enough that a fresh arrival is armed and
+-- firing within seconds of appearing. The refresh speaks ONE line per
+-- actual change, and is completely silent otherwise.
+local RELIST_EVERY_N_POLLS = 40      -- 40 x 250 ms = every 10 seconds
+
+-- Explicitly take control of the unit before ordering it.
+-- OFF by default: the documentation says issuing an order takes control anyway,
+-- and an explicit takeover is a candidate cause of the player's current order
+-- being cancelled. Leave it off unless we find we need it.
+local TAKE_CONTROL_FIRST = false
+
+-- Hand the unit back to the player after the attempt - but ONLY a control we
+-- actually took (took_control below). A release is never sent on its own:
+-- the engine answers ok to releasing control we never had, and a needless
+-- release may flush the unit's order queue. With TAKE_CONTROL_FIRST off
+-- (today), this never runs at all.
+local RELEASE_CONTROL_AFTER = true
+
+-- How many of each unit's ability keys to write to the log.
+local MAX_ABILITIES_TO_LOG = 14
+
+
+-- ============================================================================
+-- 2. BOOKKEEPING
+-- ============================================================================
+
+local tracked_units = nil                 -- units we watch
+local units_by_ui_id = {}                 -- unique_ui_id (as string) -> unit (the unit-card click lookup)
+local target_key_by_unit = {}             -- ui id -> the first of our keys found on the unit
+local owned_keys_by_unit = {}             -- ui id (as text) -> EVERY one of our keys the scan
+                                          -- found on that unit (ALL_ABILITY_KEYS filtered); the
+                                          -- badge click's ownership test (section 10) and the
+                                          -- per-unit primitive later items build on
+local owned_abilities_by_unit = {}        -- ui id (as text) -> the ABILITIES entries that unit
+                                          -- OWNS, in ABILITIES order, variants deduped (item 1.3).
+                                          -- Computed once, when the scan fills the owned-key cache
+                                          -- above; the poll's per-unit ability loop iterates THIS
+                                          -- instead of the whole table. ABSENT (nil) = the unit's
+                                          -- owned keys are UNKNOWN -> the loop falls back to the
+                                          -- full ABILITIES table, exactly like today.
+local identity_by_unit = {}               -- ui id (as text) -> the last-seen identity read of
+                                          -- that unit (unit_identity -> battle_unit:type(), the
+                                          -- land_units key). THE IDENTITY WATCH (item 3.4): the
+                                          -- poll re-scans a unit with no key of ours only when
+                                          -- this value CHANGES - which is what catches a
+                                          -- transformation or a mount mid-battle
+local identity_checked = {}               -- ui id (as text) -> true once that unit has been
+                                          -- IDENTITY CHECKED at least once (item 5). This is
+                                          -- distinct from identity_by_unit: a unit whose very
+                                          -- first identity read FAILED (nil) has no cache entry
+                                          -- but HAS been checked, so its first later GOOD read
+                                          -- must re-scan instead of looking like a first read. A
+                                          -- nil read is never cached, so a transient failure can
+                                          -- never erase the last good value.
+local selected_unit_id = nil              -- the single-choice tracker (string of unique_ui_id):
+                                          -- a card click sets it, the card sweep (section 8e)
+                                          -- keeps it on the engine's own 'selected' card; with
+                                          -- several units selected it stays one of them while
+                                          -- the badge click acts on selected_ui_ids below
+local selected_ui_ids = {}                -- EVERY id the engine reports as SELECTED - the whole
+                                          -- group, not just the tracker above. Maintained from
+                                          -- the engine's own selection callback (section 3b)
+                                          -- once it has delivered an event; until then (and
+                                          -- whenever the callback has never fired) the shared
+                                          -- card read (section 8e) keeps it, as it always did.
+                                          -- Read by the badge click and the collective letter.
+
+-- THE ENGINE SELECTION CALLBACK (this build). The battle manager's own
+-- selection API - battle_manager:register_unit_selection_callback - takes one
+-- registration per unit; the library registers the battle's single selection
+-- handler once and dispatches every select/deselect event to each registered
+-- unit's callback as (unit, selected:boolean). The card states do NOT carry a
+-- group/box selection: measured in battle, box-selecting ten captains left
+-- EVERY card reading 'active' - which is exactly why a badge click used to
+-- toggle only one unit. The callback is the engine's own answer, so the
+-- selected set is maintained from it; the card sweep stays as the fallback
+-- and reconciliation whenever the API is unavailable or has never fired
+-- (read_tracked_card_states, section 8e).
+local selection_callbacks_by_ui_id = {}   -- ui id -> true: an accepted callback for that unit
+local selection_callback_alive = false    -- true once the engine has DELIVERED an event
+local selection_set_dirty = false         -- the set changed since the last convergence (section 8e)
+local selection_set_sig = ""              -- the set at the last convergence ("1001,1002"; "" = empty)
+local selection_callback_error_logged = false   -- one line for the first swallowed callback error
+local reconciled_card_ids = {}            -- id -> true while the id sits in the set only because
+                                          -- the cards still report it 'selected' (callback mode):
+                                          -- the card read drops such an id again (section 8e)
+-- THE REASONED WALK (this build). The old gate re-walked the whole HUD every
+-- second UI tick for as long as ANY of our abilities was unclaimed - and a
+-- selected unit that owns NONE of them (a Cathayan lord, a Tzeentch lord) has
+-- no claim of ours to find, so the walk ran ~10x/s for the whole battle,
+-- found nothing and filled the log. These two flags carry the whole reason
+-- model: a selection CHANGE (the dial belongs to whoever is selected) and a
+-- NEWLY TRACKED unit (a re-list arrival) each request exactly ONE walk - the
+-- flag is a boolean, so however many events set it between two UI ticks, at
+-- most one walk runs.
+local walk_on_selection_change = false    -- set by the selection paths; consumed by the UI tick
+local walk_on_new_unit = false            -- set by the re-list; consumed by the UI tick
+-- THE BRISK WINDOW (round 7). The fast retries above are BOUNDED now: a
+-- selection change / newly tracked unit opens a window of 48 ui ticks,
+-- inside which the fast cadences still run (every 2nd tick while
+-- the selected unit's info is unknown, every 4th while an owned marker's
+-- claim is missing); outside any fresh window the walk falls back to the 5 s
+-- safety net (every 100th tick) until the next event. The field log showed
+-- the "missing owned ability claim" retry re-walking the whole HUD (630
+-- components) for minutes when the dial never yielded the button. A battle
+-- no event has ever touched keeps the old bootstrap cadence.
+local brisk_walk_until = -1               -- ui tick until which the fast cadence is allowed; -1 = no event yet
+local armed = {}                          -- ui_id -> (marker -> true/false); ABSENT means off
+local last_attempt_at = {}                -- ui_id -> (marker -> tick of the last attempt)
+-- THE COOLDOWN-HOLD TABLE (this round): ui_id -> (marker -> record) for a
+-- pair the engine has refused ON COOLDOWN. The record carries the episode's
+-- start tick (since - the hard bound is measured from it), the next tick the
+-- pair may be probed (until), the running count of consecutive refusals
+-- (streak) and whether the episode has already spoken (logged). Nested and
+-- miss-safe, exactly like armed / last_attempt_at: a read never builds an
+-- inner table, and the record is created only when a refusal actually arms
+-- the hold.
+local cooldown_hold = {}
+-- THE KNOWN-GONE SET (this build): ui id (as text) -> true for a unit the
+-- PRE-FIRE VALIDITY read or an engine rejection proved is no longer there.
+-- It makes the drop FINAL: rebuild_unit_list consults it (section 6), so a
+-- unit the engine has not yet taken off its army list cannot be re-adopted
+-- and re-attempted by the next 10 s refresh - the removal notice is honoured
+-- once, not every re-list.
+local gone_units = {}
+local pending_verify = nil                -- a deferred "did it take effect?" check
+local tick_count = 0                      -- our battle clock
+local GUARD_TICKS = (GUARD_SECONDS * 1000) / POLL_MS
+local HOLD_TICKS = (HOLD_SECONDS * 1000) / POLL_MS
+local MAX_HOLD_TICKS = (MAX_HOLD_SECONDS * 1000) / POLL_MS
+
+-- The per-ability state, indexed by marker: the dial button the HUD scan found,
+-- its event-reporting chain, the M/A badge component and its placement and
+-- visibility bookkeeping. Nothing per-unit lives here.
+local ability_state = {}
+for _, ability in ipairs(ABILITIES) do
+	ability_state[ability.marker] = { watch_chain = {} }
+end
+
+-- THE DEFERRED BADGE WORK (this build). A claim in the scan walk only records
+-- the button and raises pending_badge[marker]; the ui tick builds the badge
+-- from that flag, step by step and instrumented (section 8b). badge_attempts
+-- counts the tick-creation attempts since the last claim, and badge_gave_up
+-- latches once the budget is spent - until the dial rebuilds (a fresh claim
+-- resets both).
+local pending_badge = {}                  -- marker -> true while a claim waits for its badge
+local badge_attempts = {}                 -- marker -> creation attempts since the last claim
+local badge_gave_up = {}                  -- marker -> true once the attempt budget is spent
+
+-- THE CLAIMED BUTTON'S BAR POSITION (this build): marker -> k, the 1-based
+-- position of that ability's button among the KEY-BEARING children of its
+-- parent bar ('button_parent' - the hidden bar the claimed buttons live in),
+-- written by the claim walk (section 8b) and refreshed on every claim. Two
+-- measured battles proved that position IS the wheel slot: k maps through
+-- the static WHEEL_SLOT table (section 8b) to the measured wheel position,
+-- and the badge's offset is BADGE_X/BADGE_Y (the hand-tuned top-slot pair)
+-- shifted by that slot's delta from WHEEL_TOP_X/WHEEL_TOP_Y. nil / absent =
+-- no usable position (never claimed, the bar unreadable, or more than six
+-- key-bearing children): the badge then uses its fallback offset, logged at
+-- placement. (The old live Position() read of the claimed button is GONE:
+-- the claimed button lives in the hidden bar, so its Position() is a bar
+-- coordinate like (1130,1052), NOT a wheel slot - that read is what put the
+-- badges off-screen.)
+local slot_index = {}
+
+-- THE PER-UNIT SWITCH (this build): armed[ui_id][marker], ABSENT = off.
+-- One entry per (unit, ability) pair, so two units carrying the same ability
+-- arm and fire INDEPENDENTLY. A pair is flipped by: click the unit's card to
+-- select it, then click the ability's M/A badge. This one helper is read by
+-- BOTH the firing loop (does THIS unit fire THIS ability?) and the badge
+-- display (which letter does the SELECTED unit's badge show?).
+-- The arming tables are keyed by the unit's own ui id AS A NUMBER: the engine
+-- reports it as a number (unit:unique_ui_id()), while the click paths carry
+-- it as text (the card id IS that number). This maps the text form back to the
+-- number so both paths always land on the SAME slot; a value that is already
+-- the number (or a non-numeric id) passes through unchanged. tonumber never
+-- allocates and no string is built, so the mapping is allocation-free.
+local function unit_slot(ui_id)
+	local n = tonumber(ui_id)
+	if n ~= nil then return n end
+	return ui_id
+end
+
+-- A READ NEVER CREATES: an unarmed (unit, marker) is a plain pass through
+-- armed[ui_id] that MISSES (nil) - no inner table is ever built on a miss, so
+-- reading a never-armed pair costs ONE table lookup and no allocation at all.
+local function is_armed(unit, marker)
+	if unit == nil then return false end
+	local ok_id, raw_id = pcall(function() return unit:unique_ui_id() end)
+	if not ok_id or raw_id == nil then return false end
+	local ui_id = unit_slot(raw_id)
+	local per = armed[ui_id]
+	return per ~= nil and per[marker] == true
+end
+
+-- The unit behind the current selection, or nil while nothing is selected.
+-- selected_unit_id follows the engine's own card state ('selected') through
+-- the once-a-second card sweep (section 8e); a unit-card click is the
+-- immediate fast-path when it lands first. A card's component id IS its
+-- unit's unique_ui_id (the proven bridge - vanilla matches uic_card:Id() ==
+-- unit:unique_ui_id() the same way), so selection is a plain table lookup:
+-- no find of any kind.
+local function selected_unit()
+	if selected_unit_id == nil then return nil end
+	return units_by_ui_id[tostring(selected_unit_id)]
+end
+
+-- One compact "how the per-unit switches stand" string, for the tick and
+-- heartbeat logs: the selected unit and its own armed state per ability.
+-- There is no global switch any more - each unit carries its own.
+local function armed_states_string()
+	local bits = { "selected=" .. tostring(selected_unit_id or "none") }
+	local unit = selected_unit()
+	for _, ability in ipairs(ABILITIES) do
+		bits[#bits + 1] = ability.marker .. "=" .. (is_armed(unit, ability.marker) and "ON" or "OFF")
+	end
+	return table.concat(bits, ",")
+end
+
+
+-- ============================================================================
+-- 3. LOGGING
+--    a) our own file (primary - always works)
+--    b) ModLog(), the mod loader's log, if it exists
+--    c) out(), the game's own script log, if logging happens to be enabled
+-- ============================================================================
+
+local LOG_TAG  = "[zz_test_deadly_onslaught] "
+local LOG_FILE = "zz_test_deadly_onslaught_log.txt"
+
+local log_handle = nil
+local file_logging_off = false
+
+local function write_to_file(line)
+	if file_logging_off then return end
+
+	if log_handle == nil then
+		local ok, handle = pcall(io.open, LOG_FILE, "a")
+		if not ok or handle == nil then
+			file_logging_off = true
+			return
+		end
+		log_handle = handle
+		log_handle:write("\n======== new battle session ========\n")
+	end
+
+	pcall(function()
+		log_handle:write(line .. "\n")
+		log_handle:flush()
+	end)
+end
+
+local function log(message)
+	local line = LOG_TAG .. tostring(message)
+
+	write_to_file(line)
+
+	if ModLog ~= nil then
+		pcall(ModLog, line)
+	end
+
+	out(line)
+end
+
+
+-- ============================================================================
+-- 2b. THE ACTIVE ABILITY SET (item 1.4)
+-- ============================================================================
+-- The ui tick's badge build/show/hide work was the only place the WHOLE
+-- ABILITIES table was walked every 50 ms. At three entries that is free; at
+-- dozens it is per-tick waste. The set below is the subset that can matter in
+-- THIS battle:
+--
+--   (a) every tracked unit's OWNED markers - our keys filtered out of the
+--       per-unit cache (owned_keys_by_unit, section 2) the scan already
+--       fills, so no engine read and no searching beyond the units we
+--       already watch;
+--   (b) every marker CURRENTLY CLAIMED on the dial - ability_state
+--       [marker].button ~= nil. This is the SUPERSET SAFETY: the dial
+--       belongs to whoever is selected, and a claim can name an ability no
+--       tracked unit owns, so a badge that is on the dial is never lost;
+--   (c) nothing else.
+--
+-- It is recomputed ONLY when an input changes - the re-list, a scan, a
+-- claim, a drop - never per tick, so the ui tick reads a ready list. Until
+-- ANY information exists (the bootstrap: no tracked unit has owned-keys data
+-- yet) the set is nil and every reader falls back to the FULL ABILITIES
+-- table, which keeps the bootstrap behaviour identical to today. One line is
+-- logged, and ONLY when the membership actually changes.
+--
+-- This is item 1.4's set; critique-2 item 1 then makes all_buttons_found()
+-- test it instead of the full table (with the full-table fallback while it is
+-- unknown), so the ui walk stops entirely when it is empty. The POLL's
+-- per-unit ability loop (item 1.3) is deliberately untouched.
+
+local active_abilities = nil          -- list of ABILITIES entries; nil = unknown -> use ABILITIES
+local active_abilities_note = nil     -- the last logged membership line (silence unless it moves)
+
+-- The list the ui tick's badge paths iterate: the active set, or the whole
+-- table while nothing is known yet.
+local function active_abilities_list()
+	return active_abilities or ABILITIES
+end
+
+-- Rebuild the set from the owned-key cache and the live claims, and log ONE
+-- line only when the membership changed. Cheap by construction: it walks the
+-- tracked units and their cached owned keys, never the engine.
+local function refresh_active_abilities()
+	local set = {}
+	local known = false
+
+	-- (a) every tracked unit's owned markers, read out of the owned-key cache.
+	if tracked_units ~= nil then
+		for i = 1, #tracked_units do
+			local su = tracked_units[i]
+			local unit = su and su.unit
+			if unit ~= nil then
+				local ok_id, ui_id = pcall(function() return unit:unique_ui_id() end)
+				if ok_id and ui_id ~= nil then
+					local owned = owned_keys_by_unit[tostring(ui_id)]
+					if owned ~= nil then
+						known = true
+						for oi = 1, #owned do
+							-- item 3.1: one read of the static key->marker map
+							-- instead of walking ABILITIES and each entry's keys.
+							local marker = marker_by_key[owned[oi]]
+							if marker ~= nil then
+								set[marker] = true
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- (b) every currently claimed marker - the superset safety.
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if state ~= nil and state.button ~= nil then
+			set[ability.marker] = true
+		end
+	end
+
+	-- (c) bootstrap: no information at all -> the full table (identical to
+	-- today; nothing is logged).
+	if not known then
+		active_abilities = nil
+		return
+	end
+
+	local list = {}
+	local names = {}
+	for _, ability in ipairs(ABILITIES) do
+		if set[ability.marker] then
+			list[#list + 1] = ability
+			names[#names + 1] = ability.marker
+		end
+	end
+	active_abilities = list
+
+	local note = table.concat(names, ", ")
+	if note ~= active_abilities_note then
+		active_abilities_note = note
+		log("active abilities this battle: " .. (note ~= "" and note or "(none)"))
+	end
+end
+
+-- ITEM 1.3 - THE PER-UNIT OWNED-ABILITY LIST. Turn a unit's cached owned DB
+-- keys into the ABILITIES entries it can actually carry: each key maps through
+-- the static marker_by_key table (built once, section 1), the markers are
+-- DEDUPED (a unit carrying BOTH engine variants of one marker - e.g. the main
+-- and DLC Foe-Seeker keys - yields that marker ONCE), and the list is emitted
+-- in ABILITIES order so the firing order - and therefore every log line and
+-- every firing decision - is exactly what the full-table walk produced. A unit
+-- carrying none of ours yields an EMPTY list, and the poll then evaluates
+-- nothing for it instead of the whole table.
+local function owned_abilities_of(owned_keys)
+	local mark_owned = {}
+	for oi = 1, #owned_keys do
+		local marker = marker_by_key[owned_keys[oi]]
+		if marker ~= nil then
+			mark_owned[marker] = true
+		end
+	end
+	local list = {}
+	for _, ability in ipairs(ABILITIES) do
+		if mark_owned[ability.marker] then
+			list[#list + 1] = ability
+		end
+	end
+	return list
+end
+
+
+-- ============================================================================
+-- 3b. THE ENGINE SELECTION CALLBACK (this build)
+--     The battle manager's own selection API: one registration per unit
+--     (battle_manager:register_unit_selection_callback(unit, callback)), and
+--     the engine then delivers every selection change of that unit to the
+--     callback as (unit, selected:boolean) - truthy on a selection, the
+--     boolean false on a deselection. This is the ONLY mechanism that sees a
+--     group / box selection: the unit cards do not report one. The callback
+--     runs in the engine's event context, so it does NOTHING but maintain the
+--     selected set and raise a flag - no UI writes, no log lines (the set
+--     change is logged ONCE per change by the tick convergence, section 8e,
+--     so a ten-unit box selection cannot spam ten lines). Everything in the
+--     body runs inside the pcall wall of the registered wrapper below: a
+--     callback that raises kills every callback registered for the battle,
+--     and this one is never allowed to be that.
+-- ============================================================================
+
+local function engine_selection_has(id)
+	for i = 1, #selected_ui_ids do
+		if selected_ui_ids[i] == id then return true end
+	end
+	return false
+end
+
+-- The callback body. Only private state: add the id on a selection, remove it
+-- on a deselection, and raise selection_set_dirty when the set really moved
+-- (the tracker and the badge letters follow at the next convergence, section
+-- 8e). A unit we do not track is ignored (its events are not ours to act on).
+local function engine_selection_body(unit, selected)
+	if unit == nil then return end
+	local ok_id, ui_id = pcall(function() return unit:unique_ui_id() end)
+	if not ok_id or ui_id == nil then return end
+	local id = tostring(ui_id)
+	if units_by_ui_id[id] == nil then return end
+
+	selection_callback_alive = true
+
+	if selected then
+		if not engine_selection_has(id) then
+			selected_ui_ids[#selected_ui_ids + 1] = id
+			selection_set_dirty = true
+			walk_on_selection_change = true   -- the dial now belongs to the new selection
+		end
+	else
+		for i = #selected_ui_ids, 1, -1 do
+			if selected_ui_ids[i] == id then
+				table.remove(selected_ui_ids, i)
+				selection_set_dirty = true
+				walk_on_selection_change = true   -- the dial re-homes when a selection drops
+			end
+		end
+	end
+end
+
+-- THE REGISTERED CALLBACK: the body behind the error wall. The first swallowed
+-- error is logged once (it is also the proof the wall is doing its job); every
+-- later one is swallowed the same silent way.
+local function engine_selection_callback(unit, selected)
+	local ok, err = pcall(engine_selection_body, unit, selected)
+	if not ok and not selection_callback_error_logged then
+		selection_callback_error_logged = true
+		log("selection callback error (swallowed - the engine's callbacks stay alive): "
+			.. tostring(err))
+	end
+end
+
+
+-- ============================================================================
+-- 4. FIND THE ABILITY ON A UNIT
+--    Returns:
+--      matching_key : the ability key this unit owns, or nil
+--      all_keys     : every ability key the unit owns (for the log)
+-- ============================================================================
+
+local function scan_unit_abilities(unit)
+	local owned = unit:owned_special_abilities()
+	local matching_key = nil
+	local all_keys = {}
+
+	if owned == nil then
+		return nil, all_keys
+	end
+
+	for _, owned_key in pairs(owned) do
+		all_keys[#all_keys + 1] = owned_key
+
+		-- item 3.1: O(1) membership test against the static key set (the
+		-- ALL_ABILITY_KEYS array stays for the ordered iterations).
+		if ALL_ABILITY_KEYS_SET[owned_key] then
+			matching_key = owned_key
+		end
+	end
+
+	return matching_key, all_keys
+end
+
+-- THE CHEAP IDENTITY READ (this build, item 3.4): ONE engine call -
+-- battle_unit:type(), the unit's land_units key (battle_unit.lua: "Returns
+-- the unit type of the unit, from the land_units table"). It costs almost
+-- nothing and it is the value a transformation or a mount moves, so it is
+-- what the poll watches instead of re-running the full scan every 4 s. The
+-- read is pcall-guarded and FAIL-OPEN: a missing method, a raising read or a
+-- nil answer all come back as nil, and a nil identity never reports a change
+-- (the 60 s fallback then carries the re-scan). Used by the poll's redetect
+-- step only.
+local function unit_identity(unit)
+	local ok, value = pcall(function() return unit:type() end)
+	if ok and value ~= nil then
+		return tostring(value)
+	end
+	return nil
+end
+
+-- Which key of this ability (if any) did the unit list among its own? Used by
+-- the watch-list log. owned_keys is the all_keys list scan_unit_abilities gave.
+local function owned_key_in(ability, owned_keys)
+	for _, wanted_key in ipairs(ability.keys) do
+		for _, owned_key in ipairs(owned_keys) do
+			if owned_key == wanted_key then return wanted_key end
+		end
+	end
+	return nil
+end
+
+-- THE PER-UNIT OWNED-KEY CACHE (this build). The scan reports every ability a
+-- unit carries (all_keys); this keeps only OUR keys from that list, per unit,
+-- in owned_keys_by_unit (section 2). It answers one question without any
+-- engine read or searching - "does this unit own this ability?" - for the
+-- badge click's checkbox rule (section 10) and the collective badge letter.
+local function our_keys_of(all_keys)
+	local ours = {}
+	for k = 1, #all_keys do
+		-- item 3.1: O(1) membership test. The keys are unique, so an owned
+		-- key was appended exactly once before too.
+		if ALL_ABILITY_KEYS_SET[all_keys[k]] then
+			ours[#ours + 1] = all_keys[k]
+		end
+	end
+	return ours
+end
+
+-- Does this unit's cached owned-keys list carry one of this ability's keys?
+-- (the same exact-equality match the scan and the ready gate use). Unknown
+-- units and units the scan has not seen answer false.
+local function unit_owns_marker(ui_id, marker)
+	local ability = ability_for(marker)
+	if ability == nil then return false end
+	local owned = owned_keys_by_unit[tostring(ui_id)]
+	if owned == nil then return false end
+	return owned_key_in(ability, owned) ~= nil
+end
+
+-- WHY A WALK WOULD EVER BE NEEDED (this build). Two questions, both answered
+-- from state the mod already holds - no engine read, no searching of any kind:
+--   * is anything known yet about the SELECTED unit's own keys? (no selection,
+--     or a selected id the scan has not cached: the BOOTSTRAP phase, which
+--     keeps the old every-other-tick walk);
+--   * does the selected unit OWN one of our keys whose dial claim is still
+--     MISSING? (the dial-animation / lag case: retry briskly until claimed).
+local function selection_walk_info_known()
+	if selected_unit_id == nil then return false end
+	if owned_keys_by_unit[tostring(selected_unit_id)] == nil then return false end
+	return true
+end
+
+local function selected_unit_owns_unclaimed_key()
+	if selected_unit_id == nil then return false end
+	-- ITEM 11: read the selected unit's CACHED owned markers (item 1.3) -
+	-- the abilities the scan mapped from its owned keys, in ABILITIES order
+	-- - instead of walking the whole global table and asking the per-unit
+	-- ownership test about each entry (which searched the ability's
+	-- database-key list by string comparison on every gate evaluation). Every
+	-- entry of this list is by construction an ability the unit OWNS, so the
+	-- only question left here is whether its dial claim is still missing. A
+	-- unit with no cached owned-marker list owns nothing of ours we know of -
+	-- exactly the condition the old ownership test answered false on - so the
+	-- gate stays closed.
+	local list = owned_abilities_by_unit[tostring(selected_unit_id)]
+	if list == nil then return false end
+	for _, ability in ipairs(list) do
+		if ability_state[ability.marker].button == nil then
+			return true
+		end
+	end
+	return false
+end
+
+-- THE COLLECTIVE SWITCH READ (this build) - the expected letter behind EVERY
+-- badge write (the badge's first SetText, the cached writer, the per-tick
+-- safety net and the click refresh all call it, so they can never disagree).
+-- ONE selected unit: exactly the old read - that unit's own armed flag.
+-- SEVERAL selected units: the vanilla "common ability" rule - on only when
+-- EVERY selected unit that owns this ability has it armed, so the badge reads
+-- A while the whole group is armed and flips to M the moment any member is
+-- off. A group where no selected unit owns the ability reads off.
+local function collective_armed(marker)
+	local n = #selected_ui_ids
+	if n <= 1 then
+		-- ONE selected unit: exactly the old read - that unit's own flag.
+		return is_armed(selected_unit(), marker)
+	end
+	local owners = 0
+	for i = 1, n do
+		local id = selected_ui_ids[i]
+		-- ITEM 10: membership is read from the item-1.3 owned-marker cache
+		-- (this unit's ABILITIES entries, mapped and variant-deduped at scan
+		-- time) - a walk of a 1-4 element marker list, never the old per-key
+		-- string comparison against the ability's database-key list. That
+		-- search is gone from this per-tick path entirely. A unit with no
+		-- cached owned-marker list owns nothing of ours we know of, exactly
+		-- the condition the old ownership test answered false on, so it is not
+		-- one of this ability's owners.
+		local owns = false
+		local list = owned_abilities_by_unit[tostring(id)]
+		if list ~= nil then
+			for _, entry in ipairs(list) do
+				if entry.marker == marker then
+					owns = true
+					break
+				end
+			end
+		end
+		if owns then
+			owners = owners + 1
+			if not is_armed(units_by_ui_id[tostring(id)], marker) then
+				return false
+			end
+		end
+	end
+	return owners > 0
+end
+
+-- THE READINESS GATE (the engine's own "can I use this?" check). The key it
+-- asks about is the one the unit scan already found on this unit
+-- (target_key_by_unit, section 2): a database variant the unit does NOT
+-- carry can only ever answer false, so re-trying every variant at fire time
+-- told us nothing new - one query, on the owned key, is the whole question.
+-- The old walk over ability.keys stays ONLY as the fallback for a unit with
+-- no usable cached key: not scanned yet, or the cached key belongs to a
+-- DIFFERENT ability of ours (a unit can carry more than one - asking here
+-- about that key could fire the wrong ability, so it is not used). No
+-- fall-through when the owned key answers false: that means running/on
+-- cooldown, and no other variant changes that. Returns the key or nil, plus
+-- a text summary of every answer (logged on each evaluation, like the
+-- earlier two-ability build).
+local function check_readiness(unit, ability, cached_key)
+	local ready_key = nil
+	local parts = {}
+	local suffix = " (fallback scan)"   -- no usable cached key: the old walk ran
+
+	-- Which cached key may answer here: only one that belongs to THIS ability.
+	local owned_key = nil
+	if cached_key ~= nil then
+		for _, wanted_key in ipairs(ability.keys) do
+			if wanted_key == cached_key then owned_key = cached_key end
+		end
+	end
+
+	if owned_key ~= nil then
+		-- The one query: the key this unit was found to own.
+		suffix = " (owned key)"
+		local ok_c, can = pcall(function()
+			return unit:can_perform_special_ability(owned_key)
+		end)
+		parts[#parts + 1] = owned_key .. "=" .. tostring(ok_c and tostring(can) or "ERROR")
+		if ok_c and can == true then
+			ready_key = owned_key
+		end
+	else
+		-- No usable cached key yet: the original walk over the variants.
+		for _, wanted_key in ipairs(ability.keys) do
+			local ok_c, can = pcall(function()
+				return unit:can_perform_special_ability(wanted_key)
+			end)
+			parts[#parts + 1] = wanted_key .. "=" .. tostring(ok_c and tostring(can) or "ERROR")
+			if ok_c and can == true and ready_key == nil then
+				ready_key = wanted_key
+			end
+		end
+	end
+
+	return ready_key, table.concat(parts, ", ") .. suffix
+end
+
+
+-- ============================================================================
+-- 5. IS IT ACTUALLY CHARGING?
+--    A charge is an ATTACK order on an enemy that is about to connect.
+--    Returns a table of measurements, which the log prints, so every decision
+--    can be audited from real numbers.
+--
+--    charging = fast AND not melee AND has a target AND the order is an attack
+--               (not a move) AND the target is close enough that impact is
+--               within CHARGE_TIME_TO_CONTACT_S seconds.
+-- ============================================================================
+
+local function measure_charge(unit)
+	local m = {
+		fast = unit:is_moving_fast(),
+		melee = unit:is_in_melee(),
+		has_target = false,
+		order_gap = -1,      -- position() vs ordered_position(); -1 = unmeasurable
+		target_dist = -1,    -- metres to the target unit; -1 = unknown
+		ttc = -1,            -- estimated seconds until contact; -1 = unknown
+		charging = false,
+	}
+
+	local ok_target, target = pcall(function() return unit:current_target() end)
+	if ok_target and target ~= nil then
+		m.has_target = true
+	end
+
+	local ok_gap, gap = pcall(function()
+		return unit:position():distance(unit:ordered_position())
+	end)
+	if ok_gap and gap ~= nil then
+		m.order_gap = gap
+	end
+
+	if m.has_target then
+		local ok_dist, dist = pcall(function() return unit:unit_distance(target) end)
+		if ok_dist and dist ~= nil then
+			m.target_dist = dist
+		end
+
+		if m.target_dist >= 0 then
+			local ok_speed, speed = pcall(function() return unit:fast_speed() end)
+			if ok_speed and speed ~= nil and speed > 0 then
+
+				m.ttc = m.target_dist / speed
+			end
+		end
+	end
+
+	if m.fast and not m.melee and m.has_target then
+		-- Having a target at all is the attack-versus-move signal: a move
+		-- order sets none. (ordered_position() is NOT used here - round 7
+		-- proved it tracks time-since-order, not attack-versus-move.)
+
+		-- A real charge has a run-up: far enough that the unit actually
+		-- builds speed, close enough that the impact is imminent.
+		local enough_run_up = true
+		if m.target_dist >= 0 then
+			enough_run_up = (m.target_dist >= CHARGE_MIN_DISTANCE_M)
+		end
+
+		local close_enough = true
+		if m.target_dist >= 0 then
+			close_enough = (m.target_dist <= CHARGE_MAX_DISTANCE_M)
+		end
+
+		local soon_enough = true
+		if m.ttc >= 0 then
+			soon_enough = (m.ttc <= CHARGE_TIME_TO_CONTACT_S)
+		end
+
+		m.charging = enough_run_up and close_enough and soon_enough
+	end
+
+	return m
+end
+
+
+-- ============================================================================
+-- 6. BUILD THE WATCH LIST (and say out loud what we found)
+--    bm:get_scriptunits_for_local_players_army() gives us "script units": each
+--    wraps the unit itself (.unit) plus a controller that can give it orders
+--    (.uc). The ability dump is what makes a failed run diagnosable: it shows
+--    exactly which abilities each unit has, so we can retarget without guessing.
+-- ============================================================================
+
+-- THE ONE DROP ROUTINE (items 2 + 13). Defined here - ABOVE the watch-list
+-- builder - because BOTH drop paths call it: the re-list below, and the poll's
+-- dead-unit path in section 8. The unit leaves tracked_units and EVERY
+-- per-unit table is purged of its rows, so no stale row can be read for a unit
+-- that is gone (the stuck-collective-letter class) and the per-unit caches
+-- cannot grow without bound over a long battle. The id is put in gone_units,
+-- which is deliberately KEPT (sticky), so the next 10 s re-list cannot re-adopt
+-- a unit the engine has not yet taken off its army list - the removal notice is
+-- honoured once, not every re-list. Called AFTER the poll's tracking loop has
+-- stopped walking the list, so the table.remove here can never disturb the
+-- iteration it came from; it is silent - the caller has already written the one
+-- drop line.
+local function drop_unit_by_ui_id(ui_id)
+	local id_text = tostring(ui_id)
+	local id_slot = unit_slot(ui_id)
+	gone_units[id_text] = true          -- STICKY (never purged): the re-list must not re-adopt
+	if tracked_units ~= nil then
+		for i = #tracked_units, 1, -1 do
+			local script_unit = tracked_units[i]
+			local same = false
+			-- ITEMS 14 + 6 (ONE fix). Match on the id CACHED on the entry at
+			-- registration (section 6). The old shape read unit:unique_ui_id()
+			-- (pcall'd) right here, so a dead unit whose read now FAILED
+			-- matched nothing and its entry LINGERED on the watch list - and
+			-- every per-unit row the purge below is meant to clear lingered
+			-- with it. The cached text needs no engine read, so the removal
+			-- survives the dying engine's refusal. Fallback: an entry with no
+			-- cached id yet (registered before this build) still gets the old
+			-- pcall'd engine read.
+			local cached = script_unit and script_unit.zz_tracked_ui_id
+			if cached ~= nil then
+				same = (cached == id_text)
+			else
+				local unit = script_unit and script_unit.unit
+				if unit ~= nil then
+					local ok_id, id = pcall(function() return unit:unique_ui_id() end)
+					if ok_id and id ~= nil and tostring(id) == id_text then same = true end
+				end
+			end
+			if same then
+				-- PURGE the cached id WITH the entry (item 4 of the fix),
+				-- consistently with the per-unit purge below: the entry leaves
+				-- the list and its cache leaves with it.
+				if script_unit ~= nil then
+					script_unit.zz_tracked_ui_id = nil
+				end
+				table.remove(tracked_units, i)
+			end
+		end
+	end
+
+	-- PURGE EVERY PER-UNIT TABLE (items 2 + 13). The unit's id is stored in
+	-- two shapes - as TEXT (units_by_ui_id and the scan caches, all keyed by
+	-- tostring(id)) and as the normalised NUMBER (armed / last_attempt_at /
+	-- cooldown_hold via unit_slot; target_key_by_unit as the raw engine
+	-- number) - so BOTH forms are cleared; a nil write on a key that was never
+	-- set costs nothing. gone_units above is the one deliberate exception.
+	units_by_ui_id[id_text] = nil
+	owned_keys_by_unit[id_text] = nil
+	owned_abilities_by_unit[id_text] = nil
+	identity_by_unit[id_text] = nil
+	identity_checked[id_text] = nil
+	reconciled_card_ids[id_text] = nil
+	selection_callbacks_by_ui_id[id_text] = nil
+	target_key_by_unit[id_slot] = nil
+	target_key_by_unit[id_text] = nil
+	armed[id_slot] = nil
+	last_attempt_at[id_slot] = nil
+	cooldown_hold[id_slot] = nil
+
+	-- THE SELECTED SET (item 2). A dead unit must not stay selected: a stale
+	-- id in the set keeps collective_armed() computing the group's M/A letter
+	-- from a unit that no longer exists, which pins the letter (the group
+	-- reads M because the gone unit's is_armed() resolves false, even though
+	-- every surviving selected owner is armed). Remove the id, hand the
+	-- single-choice tracker to the first surviving selected id (or none), and
+	-- let the EXISTING selection convergence plus the ui tick's per-tick
+	-- letter net re-derive the letter - no new timer.
+	for i = #selected_ui_ids, 1, -1 do
+		if selected_ui_ids[i] == id_text then
+			table.remove(selected_ui_ids, i)
+		end
+	end
+	if selected_unit_id ~= nil and tostring(selected_unit_id) == id_text then
+		selected_unit_id = selected_ui_ids[1]
+	end
+	selection_set_dirty = true
+end
+
+local function rebuild_unit_list()
+	-- THE ADDITIVE RE-LIST (this build). The old function wiped the watch
+	-- list and rebuilt it from scratch - fine for its original single
+	-- startup call, but the poll now re-runs it every RELIST_EVERY_N_POLLS
+	-- polls (mid-battle arrivals: summons, Tzeentch splits, transformations),
+	-- and a wipe would lose per-unit state. So this function now MERGES, by
+	-- identity (ui id): every unit already on the list is left completely
+	-- untouched; only units the list has never seen are appended, scanned
+	-- and remembered; and a unit the engine no longer returns (died / left
+	-- the field) is dropped, exactly what the old wholesale rebuild did
+	-- with it.
+	local first_build = (tracked_units == nil)
+	if first_build then
+		tracked_units = {}
+	end
+
+	local sunits = bm:get_scriptunits_for_local_players_army()
+	if sunits == nil then
+		log("no units returned yet (army not on the field?)")
+		return
+	end
+
+	local total = sunits:count()
+	if first_build then
+		log("watching " .. tostring(total) .. " unit(s) in the local player's army")
+	end
+
+	local carriers = 0
+	local fresh = {}            -- ui id (as text) -> true: the engine reported it this pass
+	local new_count = 0
+	local new_ids = {}
+
+	for i = 1, total do
+		local script_unit = sunits:item(i)
+		local unit = script_unit.unit
+		local ui_id = unit:unique_ui_id()
+		local id_text = tostring(ui_id)
+
+		if fresh[id_text] == nil then
+			fresh[id_text] = true
+
+			-- A UNIT THE LIST HAS NOT SEEN: track it, scan it, remember it. Only
+			-- genuinely new arrivals run the scan below, so an existing unit's
+			-- remembered key and owned keys can never be overwritten by a refresh.
+			-- A unit in gone_units (this build) is NOT re-adopted: the pre-fire
+			-- read or an engine rejection already proved it is gone, and the
+			-- engine may still be listing it for a while.
+			if units_by_ui_id[id_text] == nil and gone_units[id_text] == nil then
+				tracked_units[#tracked_units + 1] = script_unit
+
+				-- ITEMS 14 + 6 (ONE fix - the cached id). The unit's ui id is
+				-- captured HERE, at registration, where it is already in hand,
+				-- and stored ON the tracked entry. Every later use - the card
+				-- sweep's wanted list and the drop routine's match - reads this
+				-- cached text instead of calling unit:unique_ui_id() again, so
+				-- (a) the sweep's order no longer comes from pairs() (no hash
+				-- order; the CARD_SWEEP_MAX subset is the same every call) and
+				-- (b) a dead unit whose engine id read now FAILS can still be
+				-- matched and removed. A unit is appended at most once
+				-- (guarded by units_by_ui_id / gone_units), so this cache is
+				-- written exactly once per tracked entry.
+				script_unit.zz_tracked_ui_id = id_text
+
+				-- The card-click bridge: a unit card's component id IS this unit's
+				-- unique_ui_id, so a click on the card finds the unit right here.
+				units_by_ui_id[id_text] = unit
+
+				local matching_key, all_keys = scan_unit_abilities(unit)
+
+				target_key_by_unit[ui_id] = matching_key
+				owned_keys_by_unit[id_text] = our_keys_of(all_keys)   -- the per-unit owned-key cache
+				owned_abilities_by_unit[id_text] =                       -- item 1.3: the short list
+					owned_abilities_of(owned_keys_by_unit[id_text])      -- this unit's poll walks
+				if matching_key ~= nil then
+					carriers = carriers + 1
+				end
+
+				new_count = new_count + 1
+				new_ids[#new_ids + 1] = id_text
+				walk_on_new_unit = true          -- a unit the list never saw: scan for its dial once
+
+				-- THE OPENING CENSUS keeps its full per-unit log; a later refresh
+				-- deliberately stays to its ONE change line below - a full census
+				-- per refresh is exactly the log spam this build avoids.
+				if first_build then
+					local own_parts = {}
+					for _, ability in ipairs(ABILITIES) do
+						local owned_key = owned_key_in(ability, all_keys)
+						own_parts[#own_parts + 1] = "owns " .. ability.name .. " = "
+							.. tostring(owned_key ~= nil)
+							.. (owned_key and (" as '" .. owned_key .. "'") or "")
+					end
+
+					log("  unit '" .. tostring(unit:type()) .. "'"
+						.. " ui id " .. tostring(ui_id)
+						.. " | " .. tostring(#all_keys) .. " abilities"
+						.. " | " .. table.concat(own_parts, " | ")
+						.. " | usable right now = "
+						.. tostring(unit:can_perform_special_ability(ALL_ABILITY_KEYS[1])))
+
+					for j = 1, #all_keys do
+						if j <= MAX_ABILITIES_TO_LOG then
+							log("      ability: " .. tostring(all_keys[j]))
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- THE DROP: a unit the engine did not return this pass (it died or left
+	-- the field) comes off the watch list, exactly as the old wholesale
+	-- rebuild dropped it. BOTH DROP PATHS PURGE IDENTICALLY (items 2 + 13):
+	-- instead of clearing only tracked_units / units_by_ui_id here, the ids
+	-- are collected and each one is handed to the SAME routine the poll's
+	-- dead-unit path uses (drop_unit_by_ui_id), so its rows leave every
+	-- per-unit table too. Collecting first keeps that routine's own scan of
+	-- tracked_units from disturbing this loop.
+	local dropped_count = 0
+	local dropped_ids = {}
+	for i = #tracked_units, 1, -1 do
+		-- Items 14 + 6: the id comes from the tracked entry's CACHE, not a
+		-- fresh engine read - a dead unit's unique_ui_id() can now fail, and
+		-- this loop must still name it so the drop below can purge it. The
+		-- pcall'd engine read is a fallback for an entry with no cached id
+		-- (registration always sets one, so it never runs).
+		local su = tracked_units[i]
+		local id_text = su and su.zz_tracked_ui_id
+		if id_text == nil then
+			local unit = su and su.unit
+			if unit ~= nil then
+				local ok_id, id = pcall(function() return unit:unique_ui_id() end)
+				if ok_id and id ~= nil then id_text = tostring(id) end
+			end
+		end
+		if id_text ~= nil and fresh[id_text] == nil then
+			dropped_ids[#dropped_ids + 1] = id_text
+		end
+	end
+	for d = 1, #dropped_ids do
+		drop_unit_by_ui_id(dropped_ids[d])
+		dropped_count = dropped_count + 1
+	end
+
+	-- Make the success case impossible to miss when reading the log (the
+	-- opening census only).
+	if first_build then
+		log("ability carriers found: " .. tostring(carriers))
+	end
+
+	-- THE ONE REFRESH LINE: a re-list speaks exactly once, and ONLY when the
+	-- watched set actually changed - silent while the army is steady, so the
+	-- 10-second refreshes can never turn into per-poll log spam. (The
+	-- opening census above is the initial build's voice; a refresh never
+	-- repeats it.)
+	if not first_build and (new_count > 0 or dropped_count > 0) then
+		local parts = {}
+		if new_count > 0 then
+			parts[#parts + 1] = tostring(new_count) .. " new unit(s) now tracked ("
+				.. table.concat(new_ids, ", ") .. ")"
+		end
+		if dropped_count > 0 then
+			parts[#parts + 1] = tostring(dropped_count) .. " unit(s) dropped ("
+				.. table.concat(dropped_ids, ", ") .. ")"
+		end
+		log("unit list refresh: " .. table.concat(parts, " | "))
+	end
+
+	-- THE ENGINE SELECTION CALLBACKS (this build): one registration per tracked
+	-- unit with the engine's own selection API, so a GROUP / BOX selection
+	-- reaches us per unit (the card states do not carry one - measured in
+	-- battle). Everything is guarded twice: the API may not exist (or may not
+	-- accept the unit) in some builds - the card sweep then stays in charge,
+	-- unchanged - and a registration that raises is caught here (a callback
+	-- that raises is caught again, inside, at every event). A unit already
+	-- registered keeps its single registration across rebuilds, so a refresh
+	-- registers for genuinely NEW units only - exactly once each.
+	local registered_now = 0
+	local ok_fn, is_fn = pcall(function()
+		return type(bm.register_unit_selection_callback) == "function"
+	end)
+	if ok_fn and is_fn then
+		for i = 1, #tracked_units do
+			local su = tracked_units[i]
+			local unit = su and su.unit
+			if unit ~= nil then
+				local ok_u, ui_id = pcall(function() return unit:unique_ui_id() end)
+				if ok_u and ui_id ~= nil and selection_callbacks_by_ui_id[tostring(ui_id)] == nil then
+					local ok_r, accepted = pcall(function()
+						return bm:register_unit_selection_callback(unit, engine_selection_callback)
+					end)
+					if ok_r and accepted ~= false then
+						selection_callbacks_by_ui_id[tostring(ui_id)] = true
+						registered_now = registered_now + 1
+					end
+				end
+			end
+		end
+		if first_build then
+			log("engine selection API: " .. tostring(registered_now) .. " new callback(s) registered ("
+				.. tostring(#selection_callbacks_by_ui_id) .. " unit(s) covered in total)")
+		end
+	else
+		if first_build then
+			log("engine selection API not available - the card-state sweep stays in charge (unchanged fallback)")
+		end
+	end
+
+	-- ITEM 1.4 - the re-list / drop just changed the inputs: refresh the
+	-- active set (silent unless the membership moved).
+	refresh_active_abilities()
+end
+
+
+-- ============================================================================
+-- 5b. THE ON/OFF SWITCH AND ITS BUTTON
+--     One boolean, flipped by a small button docked in the battle order bar.
+--
+--     WHERE THIS CODE MAY RUN - learned the hard way over rounds 9-15:
+--       * creating the component from a model timer or from a phase callback has
+--         twice killed the battle's model timer (and with it the poll that
+--         watches for charges) - rounds 9, 10 and 13;
+--       * painting it from a timer silently does nothing, so the button keeps the
+--         template's placeholder icon - rounds 11 and 14;
+--       * painting from a phase callback, or from a click handler, works - the
+--         icon was correct in rounds 9 and 13, and clicks repainted it correctly.
+--     So: create and paint in the phase callbacks and the click handler. The poll is
+--     registered once at load and never touched again (see the note at rearm's old
+--     place in section 9): removing and re-adding a model timer is what broke the
+--     trigger in round 17.
+-- ============================================================================
+
+-- (The switch is PER UNIT AND PER ABILITY: armed[ui_id][marker], section 2
+--  - absent means off (the badges show M) until the player clicks them. The
+--  player selects a unit by clicking its card (the card id IS the unit's
+--  unique_ui_id), then each badge click flips ONLY that unit's own ability.
+--  The badge click is the ONLY control - the keyboard, right-click and
+--  double-click routes have all been removed (rounds 15-25 measured that
+--  nothing else reaches script in battle).)
+
+-- The switch itself. Everything that used to make a button for it - the template clone,
+-- the docking, the two icon files, the bar-width fiddling and the click listener - has been
+-- removed: the control is a left-click on the M/A badge (section 8b).
+
+-- The poll's name, used once, where it is registered.
+local POLL_NAME = "zz_test_deadly_onslaught_poll"
+
+
+-- ============================================================================
+-- 6. HEARTBEAT
+--    One compact line every few seconds: the battle phase, and for each watched
+--    unit whether it is alive, running/charging, in melee, and able to use the
+--    ability. If a run fires nothing, this is what explains why.
+-- ============================================================================
+
+local function log_heartbeat()
+	-- The phase name is the one call here I have not yet seen run inside the
+	-- real game, so it is guarded: a failure must not break the poll loop.
+	local phase_name = "?"
+	local ok, value = pcall(function() return bm:get_current_phase_name() end)
+	if ok then
+		phase_name = value
+	end
+
+	local parts = {
+		"hb t=" .. tostring(tick_count),
+		"phase=" .. tostring(phase_name),
+		"conflict=" .. tostring(bm:is_conflict_phase()),
+		"auto=" .. armed_states_string(),
+	}
+
+	if tracked_units ~= nil then
+		for i = 1, #tracked_units do
+			local script_unit = tracked_units[i]
+			local unit = script_unit and script_unit.unit
+
+			if unit ~= nil then
+				local ui_id = unit:unique_ui_id()
+				local m = measure_charge(unit)
+
+				parts[#parts + 1] = string.format(
+					"%s#%s alive=%s fast=%s melee=%s tgt=%s gap=%.1fm dist=%.1fm eta=%.1fs",
+					tostring(unit:type()),
+					tostring(ui_id),
+					tostring(unit:number_of_men_alive()),
+					tostring(m.fast),
+					tostring(m.melee),
+					tostring(m.has_target),
+					m.order_gap,
+					m.target_dist,
+					m.ttc)
+			end
+		end
+	end
+
+	log(table.concat(parts, " | "))
+end
+
+
+-- ============================================================================
+-- 7. ACTIVATION
+--    Resolved from the game's OWN script files, not from documentation:
+--
+--      script/battle/quest_battles/tamurkhan/kayzk/battle_script.lua
+--        if sunit.unit:can_perform_special_ability("<key>") then
+--            sunit.uc:perform_special_ability("<key>", sunit.unit)
+--        end
+--
+--      script/benchmarks/battle_benchmark/battle_benchmark.lua
+--        --- Khorne Lord Buffing Himself ---
+--        sunit_kho_01.uc:perform_special_ability("<key>", sunit_kho_01.unit)
+--
+--    So: ability key FIRST, target unit SECOND, and the target is REQUIRED.
+--    For a self-buff the target is the unit itself. Every one of the 26 vanilla
+--    call sites passes a target; none omits it.
+--
+--    That explains the round 3 failure (we omitted the target) and the round 4
+--    failures (we had the arguments the other way round, which the engine
+--    reports as "bad self ... expecting special ability name (string)").
+--
+--    Round 3's ground-targeted variant is GONE - it is what left the unit
+--    holding a targeting cursor with a crossed-out ability icon.
+--
+--    Success is still judged objectively: a real activation starts the cooldown,
+--    so can_perform_special_ability must flip to false.
+-- ============================================================================
+
+-- (The old fixed brakes - 90 s per unit after an accepted activation, and the
+--  20 s floor between attempts - are gone. The readiness gate (section 4) and
+--  the short guard (GUARD_SECONDS, section 1) are the whole brake now.)
+
+
+-- ============================================================================
+-- 7c. ACTIVATION
+--     Resolved from the game's OWN script files, not from documentation:
+--
+--       script/battle/quest_battles/tamurkhan/kayzk/battle_script.lua
+--         if sunit.unit:can_perform_special_ability("<key>") then
+--             sunit.uc:perform_special_ability("<key>", sunit.unit)
+--         end
+--
+--       script/benchmarks/battle_benchmark/battle_benchmark.lua
+--         --- Khorne Lord Buffing Himself ---
+--         sunit_kho_01.uc:perform_special_ability("<key>", sunit_kho_01.unit)
+--
+--     Ability key FIRST, target unit SECOND, target REQUIRED. All 26 vanilla
+--     call sites pass a target; none omits it. For a self-buff the target is the
+--     unit itself. This is the call that worked in round 5.
+--
+--     A NOTE ON DETECTING SUCCESS
+--     can_perform_special_ability() does NOT report the cooldown. Round 5 proved
+--     that: the call was accepted and the ability fired, yet this check still
+--     returned true. What the engine does say, once the ability is active, is:
+--
+--        error: unit '1' does not support this special ability
+--
+--     So that error is treated here as evidence that the ability is currently
+--     active - i.e. that an earlier activation worked.
+-- ============================================================================
+
+-- A CONTAINS TEST WITH NO string.find IN IT. The bisect proved the engine
+-- dies inside the four-argument plain-mode find, and this build has removed
+-- every find call from the file. This small plain-Lua scan (string.sub
+-- slices; it only ever sees our own tostring() error text, never an engine
+-- value) is what checks for the engine's known "does not support this
+-- special ability" message instead.
+local function text_contains(haystack, needle)
+	local h = tostring(haystack or "")
+	local n = tostring(needle or "")
+	local hlen = string.len(h)
+	local nlen = string.len(n)
+	if nlen == 0 or nlen > hlen then return false end
+	for i = 1, hlen - nlen + 1 do
+		if string.sub(h, i, i + nlen - 1) == n then return true end
+	end
+	return false
+end
+
+-- THE NON-EXISTENCE REFUSALS (this build). The engine wraps a refused fire as
+-- "calling 'perform_special_ability' on bad self (error: ...)". When the unit
+-- it names is GONE, the inner text says so in one of the forms below - and
+-- those are what are matched here, exact substring only, through the same
+-- find-free text_contains() the cooldown check uses. THE COOLDOWN/ACTIVE
+-- REFUSAL THIS MOD HAS ALWAYS SEEN IS A DIFFERENT STRING ("does not support
+-- this special ability"): none of the markers below is a substring of it, so
+-- a LIVE unit that is merely on cooldown can never match and be dropped. The
+-- live battle log proves that string is a hold, not a death: one unit (ui id
+-- 1002) produced it dozens of times and ACCEPTED a fire minutes later.
+local GONE_UNIT_ERRORS = {
+	"does not exist",
+	"no longer exists",
+	"no such unit",
+	"invalid unit",
+	"unit is gone",
+}
+
+local function error_means_unit_gone(err_text)
+	local text = tostring(err_text or "")
+	for i = 1, #GONE_UNIT_ERRORS do
+		if text_contains(text, GONE_UNIT_ERRORS[i]) then return true end
+	end
+	return false
+end
+
+-- THE PRE-FIRE VALIDITY READ (this build). Two cheap, pcall'd engine reads
+-- immediately before the fire call, cutting the window between the poll's
+-- alive check (which reads number_of_men_alive) and the call itself - a unit
+-- that dies inside that window is exactly why this exists.
+--
+-- THE RULE is deliberately two-signal and fail-open, because an identity read
+-- alone is NOT a death test: an unreadable identity (battle_unit:type()
+-- answering nothing) is a state this mod already supports - the identity
+-- watch keeps such a unit and the slow 60 s fallback still rescues it. So:
+--   * if number_of_men_alive ANSWERS A NUMBER, that is the truth: > 0 alive,
+--     <= 0 gone;
+--   * only when it does NOT answer a number does the identity read decide,
+--     and only a CLEAN nil (the unit answered nothing at all) counts as gone.
+-- A READ THAT RAISES - either read - is a transient engine failure, exactly
+-- the shape pcall catches, and is NEVER death. Two independent failures are
+-- needed before a unit is called gone, so a single flaky read can never drop
+-- a live unit. (unit_identity() is not reused here on purpose: it folds a
+-- raising read and a nil answer into the same nil, which would make a
+-- transient failure look like death.)
+local function unit_is_gone(unit)
+	if unit == nil then return true end
+	local ok_alive, alive = pcall(function() return unit:number_of_men_alive() end)
+	if ok_alive and type(alive) == "number" then
+		return alive <= 0                  -- the engine answered: THAT is the truth
+	end
+	local ok_id, id = pcall(function() return unit:type() end)
+	return ok_id and id == nil             -- no answer from either read: gone
+end
+
+
+-- ============================================================================
+-- 7e. MORALE, AND THE GROUND-TARGETED CAST (the fourth ability)
+--     TWO capabilities the earlier abilities never needed, both pcall'd and
+--     FAIL-OPEN, and both in ONE place so the poll and the fire path can
+--     never disagree about them.
+--
+--     (a) THE MORALE THRESHOLD. There is NO percentage / unary morale read in
+--     the battle API. The only morale THRESHOLD the engine exposes to script
+--     is battle_unit:is_wavering() - "Returns whether the morale of the unit
+--     is currently wavering" (battle_unit.lua). Wavering is the first morale
+--     band below steady, so it is the honest stand-in for "morale below a
+--     threshold". (The API dump also carries morale_is_* @return names -
+--     morale_is_lower_than_half_of_base_morale and friends - but they are
+--     ORPHANED doc annotations with no callable function behind them, so
+--     is_wavering is the only one that can actually be read.)
+--     unit_is_wavering returns true (wavering - below the threshold), false
+--     (a READABLE, healthy morale) or nil (the read could not be taken:
+--     missing method, raising read or a nil answer). The trigger treats only
+--     exact true as "below threshold" and falls back to plain in-melee on
+--     nil, so an unreadable morale can never silently suppress the ability.
+--
+--     (b) THE GROUND-TARGETED CAST. The fourth ability carries TWO db keys
+--     with DIFFERENT targeting. The base
+--         wh_main_character_abilities_stand_your_ground
+--     is self-centred (target_ground = false, affect_self = true) and fires
+--     through the proven uc:perform_special_ability(key, unit). The DLC24
+--         wh3_dlc24_character_abilities_tacticians_stand_your_ground
+--     is friend- AND ground-targeted (target_friends = true,
+--     target_ground = true), and for that one the API offers a DIFFERENT
+--     call: battle_unitcontroller:perform_special_ability_ground(ability_key,
+--     position, orientation_in_degrees, width_in_m) - "on a specified
+--     position". The position is a battle_vector, and battle_unit:position()
+--     IS one, so the ground point is the caster's own ground position (the
+--     ability buffs itself and the friendly area around it). Vanilla passes a
+--     UNIT to perform_special_ability at all 26 of its call sites and never
+--     calls the _ground form, so the API documentation is the evidence for
+--     the ground path. GROUND_TARGETED_KEYS below is the ONE place that maps
+--     a key to it, so a later targeted ability is one line here.
+--
+--     FAIL-OPEN: if the position cannot be read, the cast is NOT made - the
+--     mod never fires a targeted ability with a guessed target. The reason is
+--     logged ONCE per (unit, marker) via FOURTH.missing_logged, not on every
+--     retry; the pair then re-probes on its normal guard cadence.
+--
+--     ONE NEW TOP-LEVEL LOCAL ONLY: the main chunk already sits at Lua's
+--     200-local ceiling, so the fourth ability's helpers are FIELDS of the
+--     single table below (a bare local function each would push the chunk
+--     over the limit and the whole file would fail to compile). Call sites
+--     read exactly as a function call would: FOURTH.wavering(unit),
+--     FOURTH.is_ground_key(key), FOURTH.ground_cast(uc, unit, key).
+-- ============================================================================
+local FOURTH = {
+	-- The keys whose engine call is the POSITION form. Exact keys, lowercase -
+	-- the same values the ABILITIES table (section 1) lists; a key that fires
+	-- through the ground form must be listed here AND there.
+	ground_keys = {
+		["wh3_dlc24_character_abilities_tacticians_stand_your_ground"] = true,
+	},
+	-- One line per (unit, marker) for a targeted cast with no readable target:
+	-- ui id -> (marker -> true), nested and miss-safe like armed /
+	-- last_attempt_at (a read never builds an inner table).
+	missing_logged = {},
+}
+
+-- ============================================================================
+-- THE STANDING RANGE RULE (this round, set by the user). EVERY trigger-range
+-- constant in this file MUST be AT MOST 70% of the ability's REAL game-data
+-- range, rounded DOWN to a whole metre. The user's words: "for abilities that
+-- include a range, we should always specify 70% of the actual range to avoid
+-- such things" - and, ruling it absolute, "...No exceptions." The symptom is
+-- the caster WALKING toward a target that sat inside the ability's own reach
+-- but outside a comfortable cast range. FOURTH.RANGE_FRACTION is that 70%;
+-- every range constant below names its real range, its source, and the
+-- floor(real * FOURTH.RANGE_FRACTION) derivation in the comment beside it.
+-- ============================================================================
+FOURTH.RANGE_FRACTION = 0.70
+
+
+-- true / false / nil - only exact true means "morale below the threshold".
+function FOURTH.wavering(unit)
+	local ok, wavering = pcall(function() return unit:is_wavering() end)
+	if ok then
+		if wavering == true then return true end
+		if wavering == false then return false end
+	end
+	return nil
+end
+
+function FOURTH.is_ground_key(ability_key)
+	return FOURTH.ground_keys[ability_key] == true
+end
+
+-- THE TARGETED-CAST HELPER (reusable by any later targeted ability): read the
+-- caster's own ground position, then issue the ground form of the call.
+-- Returns ok_call, err_call, no_target - no_target true means NOTHING was
+-- fired because the position could not be read (the caller must not fire).
+function FOURTH.ground_cast(uc, unit, ability_key)
+	local ok_pos, pos = pcall(function() return unit:position() end)
+	if not ok_pos or pos == nil then
+		return nil, nil, true
+	end
+	local ok_call, err_call = pcall(function()
+		uc:perform_special_ability_ground(ability_key, pos, 0, 0)
+	end)
+	return ok_call, err_call, false
+end
+
+-- THE CONTEXT-VALUE READ (BLOCK 2, this round): the live per-unit values the
+-- new triggers need - the barrier and the health percentage. The vanilla-
+-- proven read is common.get_context_value("CcoBattleUnit", <ui id>, <field>)
+-- (the same call the shipped UI binds its barrier/health fields through). The
+-- unit's own unique_ui_id is the object id. BOTH calls are pcall-guarded and
+-- a failure answers nil - every caller treats nil as "cannot read" and stays
+-- SILENT (fail-closed for these triggers: never fire on a guessed value).
+function FOURTH.context_value(unit, field)
+	local ok_id, id = pcall(function() return unit:unique_ui_id() end)
+	if not ok_id or id == nil then return nil end
+	local ok, value = pcall(function()
+		return common.get_context_value("CcoBattleUnit", id, field)
+	end)
+	if not ok then return nil end
+	return value
+end
+
+
+local function attempt_activation(script_unit, unit, ability_key, reason, ui_id, marker, quiet, target)
+	-- PRE-FIRE VALIDITY (this build): re-verify the unit is still usable
+	-- immediately before the call. A unit that is gone answers nothing, so it
+	-- is dropped at once - ONE line, and the fire is never attempted (this
+	-- check sits BEFORE the ATTEMPT line, so no attempt is ever logged for it).
+	if unit_is_gone(unit) then
+		log("unit " .. tostring(ui_id) .. " is gone (pre-fire check)"
+			.. " - dropped from tracking")
+		return "gone"
+	end
+
+	-- The armed-check outcome rides on the attempt line itself (once per
+	-- attempt): by the time an attempt runs, this unit's pair is armed. The
+	-- line is BUILT here (its unit:type() read stays where it always was) but
+	-- WRITTEN only for an ordinary attempt: a quiet re-probe inside a cooldown
+	-- hold is silent unless it actually FIRES (see below), and a fire is never
+	-- suppressed.
+	local attempt_line = "ATTEMPT " .. tostring(marker) .. " '" .. ability_key .. "' on '" .. tostring(unit:type())
+		.. "' ui id " .. tostring(ui_id) .. " | reason: " .. reason
+		.. " | armed=" .. (is_armed(unit, marker) and "ON" or "OFF")
+	if not quiet then
+		log(attempt_line)
+	end
+
+	-- THE PROVEN FRESH-HANDLE ROUTE (Accusation, this round): when the enemy
+	-- trigger chose a target, use the CASTER script_unit re-fetched FRESH from
+	-- the friendly enumerator THIS tick (never a controller held from an
+	-- earlier poll - the round-4 log-proven bench_fresh shape). Falls back to
+	-- the poll's own script_unit if the fresh fetch failed.
+	local uc = script_unit.uc
+	if FOURTH.eg_enemy ~= nil and FOURTH.eg_caster_su ~= nil and FOURTH.eg_caster_su.uc ~= nil then
+		uc = FOURTH.eg_caster_su.uc
+	end
+
+	if uc == nil then
+		log("  STOP: script_unit.uc is nil - there is no controller to order")
+		return
+	end
+
+	local took_control = false
+
+	if TAKE_CONTROL_FIRST then
+		local ok_take, err_take = pcall(function() uc:take_control() end)
+		took_control = ok_take
+		log("  take_control            : ok=" .. tostring(ok_take)
+			.. (ok_take and "" or ("  ERROR: " .. tostring(err_take))))
+	end
+
+	local _, can_before = pcall(function()
+		return unit:can_perform_special_ability(ability_key)
+	end)
+	if not quiet then
+		log("  can_perform before      : " .. tostring(can_before))
+	end
+
+	-- GLORIOUS DEATH RANGE RE-CHECK (this round). The Slayer-ally arm chose
+	-- the CLOSEST in-melee Slayer within GLORIOUS_DEATH_RANGE_M at evaluate
+	-- time and left it in FOURTH.gd_ally; RE-READ the gap NOW, immediately
+	-- before the cast - a unit can move a little between the poll and the
+	-- cast. If the ally has drifted beyond the 38 m trigger range (70% of
+	-- the ability's 55 m aura) the cast is wasted, so SKIP it rather than spend it.
+	-- The owner-in-melee self arm leaves FOURTH.gd_ally nil - never gated.
+	if FOURTH.gd_ally ~= nil and not FOURTH.gd_ally_in_range(unit, FOURTH.gd_ally) then
+		log("  glorious_death SKIPPED: the chosen in-melee Slayer ally drifted out of range"
+			.. " before the cast (the aura would not cover it) - cast not spent")
+		FOURTH.gd_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	-- WILL OF THE VERMINKING RANGE RE-CHECK (this round): the same safety
+	-- pattern as Glorious Death. The ally arm chose the CLOSEST in-range
+	-- wavering in-melee ally at evaluate time and left it in FOURTH.vm_ally;
+	-- RE-READ the gap NOW, immediately before the cast. If the ally has drifted
+	-- out of range the cast is wasted, so SKIP it rather than spend it.
+	if FOURTH.vm_ally ~= nil and not FOURTH.vm_ally_in_range(unit, FOURTH.vm_ally) then
+		log("  will_of_the_verminking SKIPPED: the chosen wavering ally drifted out of range"
+			.. " before the cast (the aura would not cover it) - cast not spent")
+		FOURTH.vm_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+
+	-- ENCHANTED METALLURGY RANGE RE-CHECK (this round): the same safety pattern
+	-- as Glorious Death / Will of the Verminking. The ALLY arm chose the CLOSEST
+	-- in-range in-melee ally at evaluate time and left it in FOURTH.mtl_ally;
+	-- RE-READ the gap NOW, immediately before the cast. If the ally has drifted
+	-- out of range the cast is wasted, so SKIP it rather than spend it. The
+	-- owner-in-melee self arm leaves FOURTH.mtl_ally nil - never gated.
+	if FOURTH.mtl_ally ~= nil and not FOURTH.mtl_ally_in_range(unit, FOURTH.mtl_ally) then
+		log("  enchanted_metallurgy SKIPPED: the chosen in-melee ally drifted out of range"
+			.. " before the cast (the aura would not cover it) - cast not spent")
+		FOURTH.mtl_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	-- WAVERING SELF-OR-ALLY RANGE RE-CHECK (blocks 7-9): the same safety pattern
+	-- as Glorious Death / Verminking / Metallurgy. The ALLY arm chose the
+	-- CLOSEST in-range in-melee wavering ally and left it in FOURTH.ws_ally;
+	-- RE-READ the gap NOW, immediately before the cast. If the ally has drifted
+	-- out of range the cast is wasted, so SKIP it rather than spend it. The
+	-- self-wavering arm leaves FOURTH.ws_ally nil - never gated.
+	if FOURTH.ws_ally ~= nil and not FOURTH.ws_ally_in_range(unit, FOURTH.ws_ally) then
+		log("  wavering_self_or_ally SKIPPED: the chosen wavering ally drifted out of range"
+			.. " before the cast (the aura would not cover it) - cast not spent")
+		FOURTH.ws_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	-- WAVERING ALLY IN RANGE RE-CHECK (blocks 7-9): the same safety pattern.
+	-- The ally arm chose the CLOSEST in-range wavering ally and left it in
+	-- FOURTH.wa_ally; RE-READ the gap NOW, immediately before the cast. If the
+	-- ally has drifted out of range, SKIP rather than waste the cast.
+	if FOURTH.wa_ally ~= nil and not FOURTH.wa_ally_in_range(unit, FOURTH.wa_ally) then
+		log("  wavering_ally_range SKIPPED: the chosen wavering ally drifted out of range"
+			.. " before the cast (the aura would not cover it) - cast not spent")
+		FOURTH.wa_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	-- BLOOD SACRIFICE / EAT DA RUNTS ALLY RE-CHECK (this round): the same
+	-- safety pattern as Glorious Death / Verminking / Metallurgy. The ally arm
+	-- chose a LOW-HEALTH ally and left it in FOURTH.bs_ally / FOURTH.edr_ally;
+	-- RE-READ the gap AND the ally's health NOW, immediately before the cast.
+	-- If the ally has drifted out of range or healed above the 75% line the cast
+	-- is wasted, so SKIP it rather than spend it. The Eat-da-Runts self arm
+	-- leaves FOURTH.edr_ally nil - never gated (casting on self is always in
+	-- range).
+	if FOURTH.bs_ally ~= nil and not FOURTH.bs_ally_valid(unit, FOURTH.bs_ally) then
+		log("  blood_sacrifice SKIPPED: the chosen ally drifted out of range or healed above 75%"
+			.. " before the cast - cast not spent")
+		FOURTH.bs_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+	if FOURTH.edr_ally ~= nil and not FOURTH.edr_ally_valid(unit, FOURTH.edr_ally) then
+		log("  eat_da_runts SKIPPED: the chosen ally drifted out of range or healed above 75%"
+			.. " before the cast - cast not spent")
+		FOURTH.edr_ally = nil
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	-- ACCUSATION ENEMY RE-CHECK (this round): the enemy trigger chose an ENEMY
+	-- unit and left it in FOURTH.eg_enemy (the cast target is the same unit,
+	-- in FOURTH.cast_target); RE-READ the condition NOW, immediately before the
+	-- cast - the enemy must still be ALIVE and still IN MELEE or UNDER FIRE and
+	-- still IN RANGE. If it lapsed the cast is wasted, so SKIP it rather than
+	-- spend it. The chosen enemy is the CAST TARGET - NEVER the owner.
+	if FOURTH.eg_enemy ~= nil then
+		local enemy = FOURTH.eg_enemy
+		local ok_alive, alive = pcall(function() return enemy:number_of_men_alive() end)
+		local ok_melee, melee = pcall(function() return enemy:is_in_melee() end)
+		local still_melee = (ok_melee and melee == true)
+		local still_shot = false
+		if not still_melee then
+			still_shot = FOURTH.eg_under_missile_attack(enemy)
+		end
+		local alive_now = (ok_alive and type(alive) == "number" and alive > 0)
+		local in_range_now = FOURTH.eg_enemy_in_range(unit, enemy)
+		if not alive_now or not (still_melee or still_shot) or not in_range_now then
+			log("  accusation SKIPPED: the chosen enemy lapsed before the cast"
+				.. " (alive=" .. tostring(alive_now) .. " melee=" .. tostring(still_melee)
+				.. " shot=" .. tostring(still_shot) .. " in_range=" .. tostring(in_range_now)
+				.. ") - cast not spent")
+			FOURTH.eg_enemy = nil
+			FOURTH.eg_arm = nil
+			if RELEASE_CONTROL_AFTER and took_control then
+				local ok_release, err_release = pcall(function() uc:release_control() end)
+				log("  release_control         : ok=" .. tostring(ok_release)
+					.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+			end
+			return "held"
+		end
+		log("  accusation pre-cast re-check: target still engaged (" .. tostring(FOURTH.eg_arm)
+			.. ", melee=" .. tostring(still_melee) .. " shot=" .. tostring(still_shot)
+			.. ", in_range=" .. tostring(in_range_now) .. ") - firing")
+	end
+
+	-- THE CALL. Ordinary keys (self- or unit-targeted) use the proven
+	-- perform_special_ability(key, unit). A GROUND-TARGETED key (section 7e)
+	-- uses the engine's own position form,
+	-- perform_special_ability_ground(ability_key, position, ...), with the
+	-- caster's own ground position - the correct call for a key whose db row
+	-- has target_ground = true.
+	local ok_call, err_call, no_target
+	if FOURTH.is_ground_key(ability_key) then
+		ok_call, err_call, no_target = FOURTH.ground_cast(uc, unit, ability_key)
+		if not quiet then
+			log("  ground cast            : perform_special_ability_ground('"
+				.. tostring(ability_key) .. "', <the unit's own position vector>) - the targeted form")
+		end
+	else
+		ok_call, err_call = pcall(function()
+			-- BLOCK 2: the ALLY-TARGETING call shape - an ability whose
+			-- evaluator chose another friendly unit passes it here as the
+			-- target; every self/unit-targeted ability passes nil and the
+			-- unit is its own target, exactly as before (target or unit).
+			uc:perform_special_ability(ability_key, target or unit)
+		end)
+	end
+
+	local outcome = "held"        -- held / cooling / fired / gone
+
+	-- FAIL-OPEN FOR A TARGETED CAST (section 7e): no readable position means
+	-- NO fire - never a guessed target. The reason is said ONCE per
+	-- (unit, marker), then silent; the pair re-probes on its guard cadence.
+	if no_target then
+		local slot = unit_slot(ui_id)
+		local per = FOURTH.missing_logged[slot]
+		if per == nil then
+			per = {}
+			FOURTH.missing_logged[slot] = per
+		end
+		if per[marker] ~= true then
+			per[marker] = true
+			log("  targeted cast " .. tostring(marker)
+				.. " SKIPPED: the unit's ground position could not be read"
+				.. " - not firing with a wrong target (fail-open)")
+		end
+		if RELEASE_CONTROL_AFTER and took_control then
+			local ok_release, err_release = pcall(function() uc:release_control() end)
+			log("  release_control         : ok=" .. tostring(ok_release)
+				.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+		end
+		return "held"
+	end
+
+	if ok_call then
+		-- A quiet re-probe that FIRED is reported in full: the fire is the
+		-- whole point, and a log that hides it would lie about the battle.
+		if quiet then
+			log(attempt_line)
+			log("  can_perform before      : " .. tostring(can_before))
+		end
+		log("  perform_special_ability(key, unit) : ACCEPTED")
+		log("  the readiness gate decides the next attempt (plus the "
+			.. tostring(GUARD_SECONDS) .. " s guard)")
+		outcome = "fired"
+	else
+		local err_text = tostring(err_call)
+
+		-- AN ENGINE REJECTION THAT NAMES A NON-EXISTENT UNIT IS A REMOVAL
+		-- NOTICE (this build): the unit it names is gone, so it is dropped at
+		-- once. ONLY the non-existence text matches - the cooldown text below
+		-- is a different string, so a live unit that is merely on cooldown
+		-- never reaches this branch and keeps behaving exactly as before.
+		if error_means_unit_gone(err_text) then
+			if quiet then
+				log(attempt_line)
+				log("  can_perform before      : " .. tostring(can_before))
+			end
+			log("  perform_special_ability(key, unit) : REJECTED - " .. err_text)
+			log("unit " .. tostring(ui_id) .. " is gone (engine rejected the call)"
+				.. " - dropped from tracking")
+			outcome = "gone"
+		elseif text_contains(err_text, "does not support this special ability") then
+			-- THE COOLDOWN HOLD (this round): the first refusal of an episode
+			-- speaks ONCE, coalesced; every repeat is silent (nothing is
+			-- written at all - the caller knows to stay quiet from the hold's
+			-- record). The caller arms/extends the back-off from "cooling".
+			if not quiet then
+				log("  perform_special_ability(key, unit) : REJECTED (on cooldown)"
+					.. " - further holds suppressed for " .. tostring(HOLD_SECONDS) .. "s")
+				log("  -> engine says the unit cannot use it right now, which is what it")
+				log("     says while the ability is active/on cooldown. The readiness gate")
+				log("     will hold the next attempt back until the engine says yes again.")
+			end
+			outcome = "cooling"
+		else
+			-- ANY OTHER REFUSAL is never suppressed: it is not a cooldown hold.
+			if quiet then
+				log(attempt_line)
+				log("  can_perform before      : " .. tostring(can_before))
+			end
+			log("  perform_special_ability(key, unit) : REJECTED - " .. err_text)
+		end
+	end
+
+	if RELEASE_CONTROL_AFTER and took_control then
+		local ok_release, err_release = pcall(function() uc:release_control() end)
+		log("  release_control         : ok=" .. tostring(ok_release)
+			.. (ok_release and "" or ("  ERROR: " .. tostring(err_release))))
+	end
+
+	return outcome
+end
+
+
+-- ============================================================================
+-- 7d. IS THE UNIT ROUTING? One shared engine read, per unit, per poll
+--     battle_unit:is_routing() is the script-reachable accessor. The vanilla
+--     scripts read exactly this call: lib_battle_misc.lua's is_routing_or_dead
+--     runs obj:is_routing() on the unit, and a script_unit reaches its unit
+--     through the .unit field - the very handle this poll already reads
+--     is_moving_fast() and is_in_melee() from.
+--
+--     WHY: a routing unit is fleeing the field, yet it can still look
+--     eligible to several triggers (it keeps a target while it runs, it can
+--     sit in melee geometry, and it still reports a fatigue state), so
+--     without this guard an armed unit would burn active buffs while
+--     running away.
+--
+--     THE RULES:
+--       * ONE read per unit per poll - the poll computes it once below and
+--         every trigger reuses that value, however many are armed;
+--       * guarded like every other engine read (pcall);
+--       * FAIL-OPEN: only an exact true answer suppresses a trigger. A
+--         missing method, a raising read or any other value counts as NOT
+--         routing, so when the state cannot be read the mod behaves exactly
+--         as it did before this condition existed.
+-- ============================================================================
+
+local function unit_is_routing(unit)
+	local ok, routing = pcall(function() return unit:is_routing() end)
+	if ok and routing == true then
+		return true
+	end
+	return false
+end
+
+
+-- ============================================================================
+-- 7f. THE FATIGUE READ (THIS ROUND): battle_unit:fatigue_state()
+--     The API dump offers ONE direct fatigue read - fatigue_state() - which
+--     answers the unit's state as a string (NOT the localised FatigueName
+--     the wheel shows, so no colour markup and no localised word is parsed:
+--     this path is language-independent). Documented possible values:
+--     threshold_fresh, threshold_active, threshold_winded, threshold_tired,
+--     threshold_very_tired and threshold_exhausted.
+--
+--     THE RULES:
+--       * EXACT matching only. The banned string.find NEVER runs here: the
+--         WHOLE value is compared, by equality, against the known state
+--         strings - both the documented "threshold_" form and the bare word
+--         are accepted (either shape is one exact comparison, never a
+--         substring search).
+--       * the result is the bare state word ("fresh".."exhausted"), so the
+--         caller tests "Tired or worse" with a simple lookup; nil means
+--         UNREADABLE (the call raised, answered a non-string, or named a
+--         state that is not one of the six).
+--       * FAIL CLOSED - deliberately unlike the morale guard (is_wavering),
+--         which fails OPEN: an unreadable fatigue NEVER fires the ability,
+--         and the FIRST unreadable read writes ONE loud line for the whole
+--         battle (never a per-tick stream). Assuming "fresh" would hide a
+--         broken read; assuming "tired" would fire the ability with no
+--         business to.
+-- ============================================================================
+
+-- THE LOCAL CEILING (why these live on FOURTH): the main chunk compiles
+-- EXACTLY at Lua's 200-local limit (an earlier round had to free a slot for
+-- it), so this round adds NO new locals - the reader, its two maps and its
+-- once-flag are FIELDS on the existing FOURTH helper bag (the same table
+-- the shared morale read lives on). No behaviour depends on the packing.
+FOURTH.fatigue_states = {
+	-- the documented "threshold_" forms...
+	["threshold_fresh"] = "fresh", ["threshold_active"] = "active",
+	["threshold_winded"] = "winded", ["threshold_tired"] = "tired",
+	["threshold_very_tired"] = "very_tired", ["threshold_exhausted"] = "exhausted",
+	-- ...and the bare words, in case this build answers those
+	["fresh"] = "fresh", ["active"] = "active", ["winded"] = "winded",
+	["tired"] = "tired", ["very_tired"] = "very_tired", ["exhausted"] = "exhausted",
+}
+FOURTH.fatigue_fire = {
+	["tired"] = true, ["very_tired"] = true, ["exhausted"] = true,
+}
+FOURTH.fatigue_unreadable_logged = false
+
+function FOURTH.fatigue_state(unit)
+	local ok, value = pcall(function() return unit:fatigue_state() end)
+	if not ok or type(value) ~= "string" then
+		if not FOURTH.fatigue_unreadable_logged then
+			FOURTH.fatigue_unreadable_logged = true
+			log("foe_seeker fatigue: read UNAVAILABLE (raised or no string) - the tired-or-worse trigger FAILS CLOSED (no fire). One-time notice.")
+		end
+		return nil
+	end
+	local state = FOURTH.fatigue_states[value]
+	if state == nil then
+		if not FOURTH.fatigue_unreadable_logged then
+			FOURTH.fatigue_unreadable_logged = true
+			log("foe_seeker fatigue: UNRECOGNISED value '" .. tostring(value) .. "' - not one of the six known states - the tired-or-worse trigger FAILS CLOSED (no fire). One-time notice.")
+		end
+		return nil
+	end
+	return state
+end
+
+
+-- ============================================================================
+-- 7g. THE TRIGGER EVALUATORS (critique-2 item 8: one dispatch per entry)
+--     The poll no longer walks an if/elseif chain over trigger strings.
+--     Every ability entry carries its own evaluate(unit, routing) - one
+--     function per trigger name, wired at load (the loop below) - and
+--     the poll makes ONE call: ability.evaluate(unit, routing). The
+--     evaluator answers the attempt's REASON string, exactly what the
+--     old chain left in the reason variable: nil = condition not met,
+--     otherwise the textual reason that rides the ATTEMPT line.
+--     The five shipped abilities' evaluators hold their old chain
+--     branches body for body - same engine reads, same guards, same
+--     reason strings - so behaviour and log text are unchanged.
+--     evaluate_charge keeps the charge arm AND the user-approved
+--     in-melee arm; evaluate_tired keeps the fail-closed fatigue gate;
+--     evaluate_in_melee_self is the approved batch rule ("when in
+--     melee (and not fleeing): cast on self") and is EXACTLY
+--     blood_lust's rule - blood_lust itself rides this same function,
+--     so the rule can never drift between the five and the batch.
+--     THE LOCAL CEILING: the main chunk sits at Lua's 200-local limit,
+--     so every evaluator is a FIELD of the existing FOURTH helper bag
+--     (a named local function each would not compile) and the entry
+--     wiring below is a load-time loop - no new chunk locals anywhere.
+-- ============================================================================
+
+function FOURTH.evaluate_charge(unit, routing)
+	local reason = nil
+	local m = measure_charge(unit)
+	if FIRE_ON_CHARGE and m.charging and not routing then
+		reason = string.format("charging (gap=%.1fm dist=%.1fm eta=%.1fs)",
+			m.order_gap, m.target_dist, m.ttc)
+	elseif FIRE_ON_MELEE and m.melee and not routing then
+		reason = "in melee"
+	end
+	return reason
+end
+
+function FOURTH.evaluate_tired(unit, routing)
+	local reason = nil
+	local fatigue = FOURTH.fatigue_state(unit)
+	if fatigue ~= nil and FOURTH.fatigue_fire[fatigue] and not routing then
+		reason = "tired or worse (fatigue: " .. fatigue .. ")"
+	end
+	return reason
+end
+
+function FOURTH.evaluate_melee(unit, routing)
+	local reason = nil
+	if unit:is_in_melee() and not routing then
+		reason = "in melee"
+	end
+	return reason
+end
+
+function FOURTH.evaluate_melee_low_morale(unit, routing)
+	local reason = nil
+	if unit:is_in_melee() and not routing then
+		local wavering = FOURTH.wavering(unit)
+		if wavering ~= false then
+			reason = (wavering == true)
+				and "in melee, morale below the wavering threshold"
+				or "in melee (morale unreadable - plain in-melee fallback)"
+		end
+	end
+	return reason
+end
+
+function FOURTH.evaluate_in_melee_self(unit, routing)
+	local reason = nil
+	if unit:is_in_melee() and not routing then
+		local wavering = FOURTH.wavering(unit)
+		if wavering ~= true then
+			reason = (wavering == false)
+				and "in melee, morale not wavering"
+				or "in melee (morale unreadable - plain in-melee fallback)"
+		end
+	end
+	return reason
+end
+
+-- ============================================================================
+-- BLOCK 2 - THE FOUR NEW-TRIGGER EVALUATORS (this round). Each carries its
+-- OWN distinct reason text so the field log tells the triggers apart. The
+-- FIFTH new trigger - the summoned Foe-Seeker - needs no evaluator: its key
+-- rides the existing foe_seeker entry and the shared evaluate_tired above.
+-- THE LOCAL CEILING: these are FIELDS of the same FOURTH helper bag (the
+-- chunk compiles at Lua's 200-local limit); their per-unit state
+-- (cast_target, plus the Slayer key list below) rides the same bag -
+-- NO new chunk locals.
+-- ============================================================================
+
+-- where an evaluator leaves the unit it chose for the cast. Glorious Death
+-- now ALWAYS leaves the OWNER itself - the ability is self-centred, so the
+-- caster is never ordered to walk to an ally. The dispatch clears it before
+-- each evaluate and passes it to the cast, so a self-targeted ability can
+-- never inherit a stale unit.
+FOURTH.cast_target = nil
+
+-- GLORIOUS DEATH's chosen ally (this round): the CLOSEST in-melee Slayer
+-- ally within GLORIOUS_DEATH_RANGE_M, kept only so the cast can RE-CHECK
+-- the gap immediately before firing. Cleared (with cast_target) before
+-- every evaluate, so it can never leak into another ability's attempt. The
+-- owner-in-melee self arm leaves it nil, so that cast is never gated.
+FOURTH.gd_ally = nil
+
+-- GLORIOUS DEATH's distance helper (this round): the gap in metres from
+-- the OWNER to a candidate Slayer ally, read through the SAME primitive
+-- the charge detector already uses (battle_unit:unit_distance, section 5).
+-- nil when the read cannot be taken.
+function FOURTH.gd_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+-- true when the gap is within the GD trigger range (38 m = 70% of the 55 m
+-- aura). An UNREADABLE gap (nil) is treated as IN range (fail-open) - exactly how the
+-- charge detector treats an unknown distance - so a flaky read can never
+-- silently disable the ability.
+function FOURTH.gd_ally_in_range(unit, ally)
+	local gap = FOURTH.gd_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= GLORIOUS_DEATH_RANGE_M)
+end
+
+-- EAGLE-FEATHER TORC: fire when the barrier is BROKEN - barrier HP at 0 with
+-- a NONZERO maximum, both read live. A unit with no barrier (max 0) or an
+-- intact one (hp > 0) stays silent; an unreadable value stays silent too.
+function FOURTH.evaluate_barrier_broken(unit, routing)
+	local reason = nil
+	if not routing then
+		local hp = FOURTH.context_value(unit, "BarrierHp")
+		local max = FOURTH.context_value(unit, "BarrierMaxHp")
+		if type(hp) == "number" and type(max) == "number" and max > 0 and hp <= 0 then
+			reason = string.format("barrier broken (BarrierHp %.0f/%.0f)", hp, max)
+		end
+	end
+	return reason
+end
+
+-- FANGSPIKE: the charge window OR in melee - the SAME charge detector the
+-- onslaught trigger uses (its flags and reads), but a DISTINCT in-melee
+-- reason. The arms cannot co-fire: the charge arm is tested first and wins.
+function FOURTH.evaluate_charge_or_melee(unit, routing)
+	local reason = FOURTH.evaluate_charge(unit, routing)
+	if reason == "in melee" then
+		reason = "in melee (charge or melee)"
+	end
+	return reason
+end
+
+-- GHOUL KING OF USHORAN: fire when the unit's OWN health is at or below 75%,
+-- read live. NO HYSTERESIS - removed this round after a field-test defect: a
+-- unit under sustained damage may never climb back above a second threshold,
+-- so a re-arm gate would disarm this trigger for good. Repeat attempts are
+-- held back by the EXISTING machinery only - the readiness gate
+-- (can_perform_special_ability), the ability's own engine cooldown and the
+-- rejection-informed back-off - never by a second health threshold.
+function FOURTH.evaluate_ushoran_health(unit, routing)
+	local reason = nil
+	if not routing then
+		local hp = FOURTH.context_value(unit, "HealthPercent")
+		if type(hp) == "number" and hp <= 75 then
+			reason = string.format("health %d%% (<= 75%%)", math.floor(hp))
+		end
+	end
+	return reason
+end
+
+-- THE SLAYER TYPE-KEY LIST (this round). The engine's battle_unit:type()
+-- answers the unit's land_units key (the vanilla API dump: "the unit type of
+-- the unit, from the land_units table"), and the mod already reads exactly
+-- that key in the identity watch - so a genuine Slayer CAN be recognised from
+-- script. The list below is DERIVED FROM THE GAME'S OWN DATA, not hand-
+-- written: every land_units key whose own key contains "slayer" or
+-- "doomseeker" was extracted from the game dump's localisation table
+-- (%LOCALAPPDATA%\Temp\wh3\land_units.loc.tsv - its
+-- land_units_onscreen_name_<key> rows) and copied here VERBATIM:
+--   wh_main_dwf_inf_slayers, wh2_dlc10_dwf_inf_giant_slayers,
+--   wh3_dlc25_dwf_cha_daemon_slayer, wh3_dlc25_dwf_cha_dragon_slayer,
+--   wh3_dlc25_dwf_inf_slayer_pirates, wh3_dlc25_dwf_inf_slayer_pirates_ror,
+--   wh3_dlc25_dwf_inf_slayers_grudge_unit, wh_dlc06_dwf_inf_dragonback_slayers_0,
+--   wh3_dlc25_dwf_inf_doomseekers, wh3_dlc25_dwf_inf_doomseekers_ror.
+-- Membership is EXACT WHOLE-KEY equality (ONE table read) - the banned
+-- string.find never runs, so a near-miss key (the Bretonnian ROR
+-- "Beastslayers of Bastonne", whose own key carries no "slayer") is
+-- correctly NOT a Slayer. LIMIT: a Slayer whose key does not spell it (e.g.
+-- Gotrek) is a deliberate under-approximation - such a unit is simply not
+-- offered to the engine by this trigger.
+FOURTH.slayer_keys = {
+	["wh_main_dwf_inf_slayers"] = true,
+	["wh2_dlc10_dwf_inf_giant_slayers"] = true,
+	["wh3_dlc25_dwf_cha_daemon_slayer"] = true,
+	["wh3_dlc25_dwf_cha_dragon_slayer"] = true,
+	["wh3_dlc25_dwf_inf_slayer_pirates"] = true,
+	["wh3_dlc25_dwf_inf_slayer_pirates_ror"] = true,
+	["wh3_dlc25_dwf_inf_slayers_grudge_unit"] = true,
+	["wh_dlc06_dwf_inf_dragonback_slayers_0"] = true,
+	["wh3_dlc25_dwf_inf_doomseekers"] = true,
+	["wh3_dlc25_dwf_inf_doomseekers_ror"] = true,
+}
+
+-- true only for a genuine Slayer unit: the engine's type() key is in the list
+-- above. A missing, raising or non-string read is NOT a Slayer (fail-safe).
+-- ONE pcall'd read, ONE table lookup - no string operation of any kind.
+function FOURTH.is_slayer(unit)
+	local ok, t = pcall(function() return unit:type() end)
+	if not ok or type(t) ~= "string" then return false end
+	return FOURTH.slayer_keys[t] == true
+end
+
+-- GLORIOUS DEATH: the mod's FIRST ability whose trigger does NOT require the
+-- OWNER to be in melee. THE TRIGGER stays SLAYER-ONLY: a unit is a Slayer
+-- exactly when its land_units type key is in FOURTH.slayer_keys.
+--   (a) an in-melee SLAYER ally (other than self) arms the ability; else
+--   (b) the OWNER itself arms it ONLY when it is a Slayer AND in melee; else
+--   (c) SILENT. A NON-Slayer ally is NEVER offered to the engine.
+-- THE CAST TARGET IS ALWAYS THE OWNER ITSELF (the ability is self-centred, so
+-- the caster must never be ordered to walk to the Slayer ally).
+-- THE RANGE GATE (this round, the reported bug fix): the ally arm only counts
+-- while the owner is WITHIN GLORIOUS_DEATH_RANGE_M (38 m = 70% of the
+-- ability's 55 m aura, FOURTH.RANGE_FRACTION) of the ally - otherwise the
+-- cast is wasted. The CLOSEST
+-- in-range in-melee
+-- Slayer is the one chosen; the gap is RE-CHECKED immediately before the cast
+-- (a unit can move a little between the poll and the cast) and the cast is
+-- SKIPPED if the ally has drifted out of range. The owner-in-melee self arm
+-- is NEVER gated (casting on self is always in range).
+function FOURTH.evaluate_glorious_death(unit, routing)
+	local reason = nil
+	if not routing then
+		local self_id = tostring(unit:unique_ui_id())
+		local best_ally = nil
+		local best_gap = nil
+		for i = 1, #tracked_units do
+			local other = tracked_units[i] and tracked_units[i].unit
+			if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+				if tostring(other:unique_ui_id()) ~= self_id
+					and other:is_in_melee() and not unit_is_routing(other)
+					and FOURTH.is_slayer(other) then
+					local gap = FOURTH.gd_ally_gap(unit, other)
+					if (gap == nil) or (gap <= GLORIOUS_DEATH_RANGE_M) then
+						if best_ally == nil then
+							best_ally, best_gap = other, gap
+						elseif gap ~= nil and (best_gap == nil or gap < best_gap) then
+							best_ally, best_gap = other, gap
+						end
+					end
+				end
+			end
+		end
+		if best_ally ~= nil then
+			if best_gap ~= nil then
+				log("  glorious_death ally: ui " .. tostring(best_ally:unique_ui_id())
+					.. " at " .. string.format("%.1f", best_gap) .. "m is the CLOSEST"
+					.. " in-melee Slayer within " .. tostring(GLORIOUS_DEATH_RANGE_M) .. "m")
+			end
+			FOURTH.cast_target = unit
+			FOURTH.gd_ally = best_ally
+			reason = "slayer in melee (self-cast)"
+		elseif FOURTH.is_slayer(unit) and unit:is_in_melee() then
+			FOURTH.cast_target = unit
+			reason = "self in melee (self-cast)"
+		end
+	end
+	return reason
+end
+
+
+-- ============================================================================
+-- BLOCK 4/5/6 - THE TWO NEW-TRIGGER EVALUATORS (this round). Each carries its
+-- OWN distinct reason text so the field log tells them apart.
+-- THE LOCAL CEILING: their per-unit state (vm_ally, plus the named trigger-
+-- range constant below) rides the FOURTH helper bag - the chunk compiles at
+-- Lua's 200-local limit, so NO new chunk-level locals are introduced.
+-- ============================================================================
+
+-- WILL OF THE VERMINKING'S TRIGGER RANGE (this round) - THE STANDING 70% RULE.
+-- REAL range 35.0000 m = effect_range (unit_spec_abil.tsv,
+-- wh3_dlc29_lord_abilities_will_of_the_verminking, ai_usage = augment_melee).
+-- 35 * 0.70 = 24.5 -> 24 m (FLOORED, FOURTH.RANGE_FRACTION). Stored on the
+-- FOURTH bag (no new chunk local). The ally arm fires only while the OWNER is
+-- within FOURTH.VERMINKING_RANGE_M of the wavering ally. ONE place to tune.
+FOURTH.VERMINKING_RANGE_M = 24
+
+-- WILL OF THE VERMINKING's chosen ally (this round): the CLOSEST in-melee
+-- WAVERING ally within FOURTH.VERMINKING_RANGE_M, kept only so the cast can
+-- RE-CHECK the gap immediately before firing. Cleared (with cast_target)
+-- before every evaluate, so it can never leak into another ability's attempt.
+FOURTH.vm_ally = nil
+
+-- the gap in metres from the OWNER to a candidate ally - the SAME
+-- battle_unit:unit_distance primitive the charge detector and Glorious Death
+-- already use. nil when the read cannot be taken.
+function FOURTH.vm_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+-- true when the gap is within the conservative trigger range. An UNREADABLE
+-- gap (nil) is treated as IN range (fail-open) - exactly how Glorious Death's
+-- gate treats an unknown distance - so a flaky read can never silently
+-- disable the ability.
+function FOURTH.vm_ally_in_range(unit, ally)
+	local gap = FOURTH.vm_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.VERMINKING_RANGE_M)
+end
+
+-- WILL OF THE VERMINKING: fire when ANY friendly unit OTHER THAN THE CASTER is
+-- IN MELEE and WAVERING and within the conservative trigger range of the
+-- owner; CAST ON SELF (the effect is an ally aura centred on the caster - the
+-- cast target is the OWNER, the DEFAULT target or unit, exactly how every
+-- in-melee-self entry casts, so no cast_target write is needed).
+-- THE SAME SAFETY PATTERN AS GLORIOUS DEATH: the CLOSEST qualifying ally is
+-- chosen, the gap is RE-CHECKED immediately before the cast and the cast is
+-- SKIPPED if the ally has drifted out of range. An unreadable morale
+-- suppresses (only an EXACT wavering answer counts - fail-closed).
+function FOURTH.evaluate_verminking_wavering(unit, routing)
+	local reason = nil
+	if not routing then
+		local self_id = tostring(unit:unique_ui_id())
+		local best_ally = nil
+		local best_gap = nil
+		for i = 1, #tracked_units do
+			local other = tracked_units[i] and tracked_units[i].unit
+			if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+				if tostring(other:unique_ui_id()) ~= self_id
+					and other:is_in_melee() and not unit_is_routing(other)
+					and FOURTH.wavering(other) == true then
+					local gap = FOURTH.vm_ally_gap(unit, other)
+					if (gap == nil) or (gap <= FOURTH.VERMINKING_RANGE_M) then
+						if best_ally == nil then
+							best_ally, best_gap = other, gap
+						elseif gap ~= nil and (best_gap == nil or gap < best_gap) then
+							best_ally, best_gap = other, gap
+						end
+					end
+				end
+			end
+		end
+		if best_ally ~= nil then
+			if best_gap ~= nil then
+				log("  will_of_the_verminking ally: ui " .. tostring(best_ally:unique_ui_id())
+					.. " at " .. string.format("%.1f", best_gap) .. "m is the CLOSEST"
+					.. " wavering in-melee ally within " .. tostring(FOURTH.VERMINKING_RANGE_M) .. "m")
+			end
+			FOURTH.vm_ally = best_ally
+			reason = "wavering ally in melee (self-cast)"
+		end
+	end
+	return reason
+end
+
+-- POTION OF TOUGHNESS: a ONE-TIME activation treated as a HEAL - fire when the
+-- OWNER is in melee AND its own health is at or below 75%. Reuses the SAME
+-- live health read (HealthPercent via FOURTH.context_value) and the SAME plain
+-- hysteresis-free threshold style as Ghoul King of Ushoran; NO second
+-- threshold. Repeat attempts are held back by the readiness gate, the engine
+-- cooldown and the rejection-informed back-off only.
+function FOURTH.evaluate_potion_health(unit, routing)
+	local reason = nil
+	if unit:is_in_melee() and not routing then
+		local hp = FOURTH.context_value(unit, "HealthPercent")
+		if type(hp) == "number" and hp <= 75 then
+			reason = string.format("in melee, health %d%% (<= 75%%)", math.floor(hp))
+		end
+	end
+	return reason
+end
+
+
+-- ============================================================================
+-- ENCHANTED METALLURGY (this round) - ONE new trigger for the whole family.
+-- The user's new trigger: "when self or ally in range is in melee; when ally
+-- in range is shooting". The MELEE half ships; the SHOOTING half COULD NOT be
+-- built, and NO proxy is used (see the note below).
+-- API RESEARCH (the shooting predicate): the vanilla battle-script API
+-- (battle_unit.lua in the game dump) exposes NO per-unit "is firing / is
+-- shooting" read. The ONLY missile-related reads are is_under_missile_attack
+-- ("Returns whether the unit is currently taking fire" - the unit RECEIVING
+-- fire: the WRONG direction), current_target (the unit's target - a melee unit
+-- has one too, so it proves nothing about firing), ammo_left / starting_ammo
+-- (a "has fired sometime this battle" count, not "is firing now") and
+-- missile_range (a static, ranged-capable property). battle_manager's
+-- get_num_units_under_fire / get_proportion_under_fire are battle-level and
+-- also count units UNDER fire. The engine's own flag vocabulary
+-- (flags.tsv: is_missile_unit, is_under_missile_fire, cannot_perform_missile_
+-- attack) is a DATA-TABLE construct for the ability auto-activate system, NOT
+-- a Lua read. There is therefore NO proven predicate for "this unit is firing"
+-- in the same trust class as is_in_melee / is_wavering / is_routing, so the
+-- shooting half is deliberately NOT built.
+-- THE MELEE HALF: fire when the OWNER is in melee, OR any friendly unit other
+-- than the caster is in melee within the conservative trigger range; cast ON
+-- SELF. THE LOCAL CEILING: the per-unit state (mtl_ally) and the named range
+-- constant ride the FOURTH helper bag - NO new chunk-level locals.
+-- ============================================================================
+
+-- ENCHANTED METALLURGY'S TRIGGER RANGE (this round) - THE STANDING 70% RULE.
+-- REAL range 35.0000 m = effect_range (unit_spec_abil.tsv, for all four keys
+-- wh3_main_character_abilities_enchanted_metallurgy[_flaming|_piercing|
+-- _poison], ai_usage = augment_melee). 35 * 0.70 = 24.5 -> 24 m (FLOORED,
+-- FOURTH.RANGE_FRACTION). Stored on the FOURTH bag (no new chunk local). The
+-- ally arm fires only while the OWNER is within FOURTH.METALLURGY_RANGE_M of
+-- the in-melee ally. ONE place to tune.
+FOURTH.METALLURGY_RANGE_M = 24
+
+-- ENCHANTED METALLURGY's chosen ally (this round): the CLOSEST in-melee ally
+-- within FOURTH.METALLURGY_RANGE_M, kept only so the cast can RE-CHECK the
+-- gap immediately before firing. Cleared (with cast_target) before every
+-- evaluate, so it can never leak into another ability's attempt.
+FOURTH.mtl_ally = nil
+
+-- the gap in metres from the OWNER to a candidate ally - the SAME
+-- battle_unit:unit_distance primitive the charge detector, Glorious Death and
+-- Will of the Verminking already use. nil when the read cannot be taken.
+function FOURTH.mtl_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+-- true when the gap is within the conservative trigger range. An UNREADABLE
+-- gap (nil) is treated as IN range (fail-open) - exactly how the Glorious
+-- Death / Verminking gate treats an unknown distance - so a flaky read can
+-- never silently disable the ability.
+function FOURTH.mtl_ally_in_range(unit, ally)
+	local gap = FOURTH.mtl_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.METALLURGY_RANGE_M)
+end
+
+-- ENCHANTED METALLURGY: fire when the OWNER ITSELF is in melee, OR any
+-- friendly unit OTHER THAN THE CASTER is in melee within the conservative
+-- trigger range of the owner; CAST ON SELF (these are self-centred dual-
+-- purpose buffs - +weapon damage and +missile damage - that also reach nearby
+-- allies: the cast target is the OWNER, the DEFAULT target or unit, exactly
+-- how every in-melee-self entry casts, so no cast_target write is needed).
+-- THE SAME SAFETY PATTERN AS GLORIOUS DEATH / VERMINKING: for the ALLY arm
+-- the CLOSEST qualifying in-melee ally is chosen, the gap is RE-CHECKED
+-- immediately before the cast and the cast is SKIPPED on drift. The
+-- owner-in-melee self arm leaves FOURTH.mtl_ally nil - never gated.
+function FOURTH.evaluate_metallurgy_melee(unit, routing)
+	if not routing then
+		if unit:is_in_melee() then
+			return "in melee (metallurgy self-cast)"
+		end
+		local self_id = tostring(unit:unique_ui_id())
+		local best_ally = nil
+		local best_gap = nil
+		for i = 1, #tracked_units do
+			local other = tracked_units[i] and tracked_units[i].unit
+			if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+				if tostring(other:unique_ui_id()) ~= self_id
+					and other:is_in_melee() and not unit_is_routing(other) then
+					local gap = FOURTH.mtl_ally_gap(unit, other)
+					if (gap == nil) or (gap <= FOURTH.METALLURGY_RANGE_M) then
+						if best_ally == nil then
+							best_ally, best_gap = other, gap
+						elseif gap ~= nil and (best_gap == nil or gap < best_gap) then
+							best_ally, best_gap = other, gap
+						end
+					end
+				end
+			end
+		end
+		if best_ally ~= nil then
+			if best_gap ~= nil then
+				log("  enchanted_metallurgy ally: ui " .. tostring(best_ally:unique_ui_id())
+					.. " at " .. string.format("%.1f", best_gap) .. "m is the CLOSEST"
+					.. " in-melee ally within " .. tostring(FOURTH.METALLURGY_RANGE_M) .. "m")
+			end
+			FOURTH.mtl_ally = best_ally
+			return "in-melee ally (metallurgy self-cast)"
+		end
+	end
+	return nil
+end
+
+
+-- ============================================================================
+-- BLOCKS 7-9 (this round) - FIVE new trigger types (and the redesigned pair).
+-- Every evaluator is a FIELD of the FOURTH helper bag and every new piece of
+-- state / constant rides the bag too: the chunk already sits at Lua's 200-local
+-- ceiling, so NO new chunk-level locals are introduced. Each LIVE evaluator
+-- answers its OWN distinct reason string so the field log tells the triggers
+-- apart; the reading copy answers true / false.
+-- ============================================================================
+
+-- CHARGE ONLY (Ferocious Battle Howl): fire in the charge window WITHOUT the
+-- melee arm - the split second before impact, cast on self. This is the plain
+-- charge detector (measure_charge, section 5) with the FIRE_ON_MELEE arm
+-- deliberately OMITTED.
+function FOURTH.evaluate_charge_only(unit, routing)
+	local reason = nil
+	local m = measure_charge(unit)
+	if FIRE_ON_CHARGE and m.charging and not routing then
+		reason = string.format("charging (charge only) (gap=%.1fm dist=%.1fm eta=%.1fs)",
+			m.order_gap, m.target_dist, m.ttc)
+	end
+	return reason
+end
+
+-- WAVERING SELF (Ferocious Fury of Ulric / Helm of Yvresse / Vial of Troll
+-- Blood): fire while the OWNER itself is wavering (while not routing); cast on
+-- self. The morale read is the SAME battle_unit:is_wavering the Stand Your
+-- Ground trigger uses (FOURTH.wavering); only an EXACT true answer fires
+-- (fail-closed - an unreadable morale never fires a self-only wavering buff).
+function FOURTH.evaluate_wavering_self(unit, routing)
+	local reason = nil
+	if not routing and FOURTH.wavering(unit) == true then
+		reason = "wavering (self)"
+	end
+	return reason
+end
+
+-- WAVERING SELF-OR-ALLY (Fury of Ulric / the redesigned Commanding Presence):
+-- fire when the OWNER is wavering, OR a friendly in-melee WAVERING ally lies
+-- within the trigger range; cast ON SELF (the effect is a self-centred aura).
+-- THE TRIGGER RANGE (this round) - THE STANDING 70% RULE. REAL range 35.0000 m
+-- = effect_range (unit_spec_abil.tsv) for all three keys that ride it -
+-- wh3_dlc29_lord_active_commanding_presence, wh3_dlc29_spell_bound_prayer_
+-- fury_of_ulric and wh2_dlc09_character_abilities_stay_here_ill_get_help.
+-- 35 * 0.70 = 24.5 -> 24 m (FLOORED, FOURTH.RANGE_FRACTION). THE SAME SAFETY
+-- PATTERN as Glorious Death / Verminking / Metallurgy: the CLOSEST qualifying
+-- in-melee wavering ally is chosen, the gap is RE-CHECKED immediately before
+-- the cast and the cast is SKIPPED on drift. The self-wavering arm leaves
+-- FOURTH.ws_ally nil - never gated.
+FOURTH.WAVERING_RANGE_M = 24
+
+-- the chosen ally (this round): cleared with cast_target before every evaluate.
+FOURTH.ws_ally = nil
+
+function FOURTH.ws_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+function FOURTH.ws_ally_in_range(unit, ally)
+	local gap = FOURTH.ws_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.WAVERING_RANGE_M)
+end
+
+function FOURTH.evaluate_wavering_self_or_ally(unit, routing)
+	local reason = nil
+	if not routing then
+		if FOURTH.wavering(unit) == true then
+			reason = "wavering (self-or-ally)"
+		else
+			local self_id = tostring(unit:unique_ui_id())
+			local best_ally = nil
+			local best_gap = nil
+			for i = 1, #tracked_units do
+				local other = tracked_units[i] and tracked_units[i].unit
+				if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+					if tostring(other:unique_ui_id()) ~= self_id
+						and other:is_in_melee() and not unit_is_routing(other)
+						and FOURTH.wavering(other) == true then
+						local gap = FOURTH.ws_ally_gap(unit, other)
+						if (gap == nil) or (gap <= FOURTH.WAVERING_RANGE_M) then
+							if best_ally == nil then
+								best_ally, best_gap = other, gap
+							elseif gap ~= nil and (best_gap == nil or gap < best_gap) then
+								best_ally, best_gap = other, gap
+							end
+						end
+					end
+				end
+			end
+			if best_ally ~= nil then
+				if best_gap ~= nil then
+					log("  wavering_self_or_ally ally: ui " .. tostring(best_ally:unique_ui_id())
+						.. " at " .. string.format("%.1f", best_gap) .. "m is the CLOSEST"
+						.. " in-melee wavering ally within " .. tostring(FOURTH.WAVERING_RANGE_M) .. "m")
+				end
+				FOURTH.ws_ally = best_ally
+				reason = "wavering in-melee ally (self-cast, self-or-ally)"
+			end
+		end
+	end
+	return reason
+end
+
+-- CHARGE OR WAVERING (Bangers & Smash): fire in the charge window OR while
+-- wavering (while not routing); cast on self. The charge arm is the plain charge
+-- detector (no melee arm); the wavering arm is FOURTH.wavering. The arms cannot
+-- co-fire - the charge arm is tested first and wins.
+function FOURTH.evaluate_charge_or_wavering(unit, routing)
+	local reason = nil
+	if not routing then
+		local m = measure_charge(unit)
+		if FIRE_ON_CHARGE and m.charging then
+			reason = string.format("charging (charge or wavering) (gap=%.1fm dist=%.1fm eta=%.1fs)",
+				m.order_gap, m.target_dist, m.ttc)
+		elseif FOURTH.wavering(unit) == true then
+			reason = "wavering (charge or wavering)"
+		end
+	end
+	return reason
+end
+
+-- WAVERING ALLY IN RANGE ("Stay Here, I'll Get Help!"): fire when a friendly
+-- WAVERING ally lies within the conservative trigger range; cast ON SELF. The
+-- owner need NOT be wavering and the ally need NOT be in melee - this is the
+-- Verminking evaluator shape with the ALLY-MELEE requirement REMOVED (the
+-- tracker note records the difference). Same safety pattern: closest in-range
+-- wavering ally, gap RE-CHECKED immediately before the cast, cast SKIPPED on
+-- drift.
+FOURTH.wa_ally = nil
+
+function FOURTH.wa_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+function FOURTH.wa_ally_in_range(unit, ally)
+	local gap = FOURTH.wa_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.WAVERING_RANGE_M)
+end
+
+function FOURTH.evaluate_wavering_ally_range(unit, routing)
+	local reason = nil
+	if not routing then
+		local self_id = tostring(unit:unique_ui_id())
+		local best_ally = nil
+		local best_gap = nil
+		for i = 1, #tracked_units do
+			local other = tracked_units[i] and tracked_units[i].unit
+			if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+				if tostring(other:unique_ui_id()) ~= self_id
+					and not unit_is_routing(other)
+					and FOURTH.wavering(other) == true then
+					local gap = FOURTH.wa_ally_gap(unit, other)
+					if (gap == nil) or (gap <= FOURTH.WAVERING_RANGE_M) then
+						if best_ally == nil then
+							best_ally, best_gap = other, gap
+						elseif gap ~= nil and (best_gap == nil or gap < best_gap) then
+							best_ally, best_gap = other, gap
+						end
+					end
+				end
+			end
+		end
+		if best_ally ~= nil then
+			if best_gap ~= nil then
+				log("  wavering_ally_range ally: ui " .. tostring(best_ally:unique_ui_id())
+					.. " at " .. string.format("%.1f", best_gap) .. "m is the CLOSEST"
+					.. " wavering ally within " .. tostring(FOURTH.WAVERING_RANGE_M) .. "m")
+			end
+			FOURTH.wa_ally = best_ally
+			reason = "wavering ally in range (self-cast)"
+		end
+	end
+	return reason
+end
+
+-- THE TRIGGER -> EVALUATOR MAP, and the load-time wiring of EVERY entry.
+-- The map is keyed by the trigger NAME the table in section 1 already
+-- carries; the loop below points each entry at its evaluator. An entry
+-- whose trigger name is missing from the map would leave evaluate nil -
+-- the harness asserts every entry is wired. A new ability: add its
+-- trigger name here and to the entry, nothing else.
+
+-- ============================================================================
+-- THE FINAL ROSTER ROUND (this round) - TWO new ALLY-HEAL evaluators for the
+--   two built individuals that need a new trigger:
+--     BLOOD SACRIFICE - cast on the LOWEST-health ally in range at or below 75%;
+--     EAT DA RUNTS!   - cast on self at or below 75%, ELSE on the lowest-health
+--                       ally in range at or below 75%.
+--   Both are ally-targeting HEALS: the cast target is the CHOSEN ALLY (unlike
+--   the self-centred auras, whose cast target is always the owner), so the
+--   chosen ally rides FOURTH.cast_target AND a per-trigger slot (FOURTH.bs_ally
+--   / FOURTH.edr_ally) so the cast can RE-CHECK the gap AND the ally's health
+--   immediately before firing and SKIP on drift (the field-proven Glorious
+--   Death / Verminking safety pattern). The self arm of Eat da Runts! writes NO
+--   cast_target (the default target or unit = the owner), exactly the
+--   Verminking convention - so the self-cast writes stay exactly two.
+--   THE TRIGGER RANGE is a DELIBERATELY CONSERVATIVE named constant. The game
+--   data (unit_spec_abil.tsv) gives these two SINGLE-ally heals NO aura radius
+--   (effect_range = 0.0000; num_effected_friendly_units = 1) and a
+--   target_intercept_range of 100.0000 m, so - following the file's field-proven
+--   conservative pattern (25 m against larger auras) - the trigger radius is a
+--   25 m constant. ONE place to tune.
+--   THE LOCAL CEILING: every helper / constant / state is a FIELD of the FOURTH
+--   bag - NO new chunk-level locals.
+-- ============================================================================
+
+-- BLOOD SACRIFICE'S TRIGGER RANGE (this round) - THE STANDING 70% RULE. The
+-- ability has NO aura (effect_range = 0.0000, num_effected_friendly_units = 1),
+-- so its REAL game-data range is its target_intercept_range = 100.0000 m
+-- (unit_spec_abil.tsv, wh3_dlc26_lord_abilities_blood_sacrifice).
+-- 100 * 0.70 = 70.0 -> 70 m (FLOORED, FOURTH.RANGE_FRACTION).
+FOURTH.BLOOD_SACRIFICE_RANGE_M = 70
+FOURTH.bs_ally = nil
+function FOURTH.bs_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+function FOURTH.bs_ally_in_range(unit, ally)
+	local gap = FOURTH.bs_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.BLOOD_SACRIFICE_RANGE_M)
+end
+-- the chosen ally is STILL a valid heal target: in range AND still at or below
+-- 75% health (an unreadable health read is treated as still-valid, fail-open,
+-- exactly how the range gate treats an unknown distance).
+function FOURTH.bs_ally_valid(unit, ally)
+	if ally == nil then return false end
+	if not FOURTH.bs_ally_in_range(unit, ally) then return false end
+	local hp = FOURTH.context_value(ally, "HealthPercent")
+	return (type(hp) ~= "number") or (hp <= 75)
+end
+-- BLOOD SACRIFICE: fire when a friendly unit other than the caster is at or
+-- below 75% health within the conservative trigger range; CAST ON THE
+-- LOWEST-HEALTH such ally. Silent when no in-range ally is hurt.
+function FOURTH.evaluate_blood_sacrifice(unit, routing)
+	local reason = nil
+	if not routing then
+		local self_id = tostring(unit:unique_ui_id())
+		local best_ally = nil
+		local best_gap = nil
+		local best_hp = nil
+		for i = 1, #tracked_units do
+			local other = tracked_units[i] and tracked_units[i].unit
+			if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+				if tostring(other:unique_ui_id()) ~= self_id and not unit_is_routing(other) then
+					local hp = FOURTH.context_value(other, "HealthPercent")
+					if type(hp) == "number" and hp <= 75 then
+						local gap = FOURTH.bs_ally_gap(unit, other)
+						if (gap == nil) or (gap <= FOURTH.BLOOD_SACRIFICE_RANGE_M) then
+							if best_ally == nil or (type(best_hp) == "number" and hp < best_hp) then
+								best_ally, best_gap, best_hp = other, gap, hp
+							end
+						end
+					end
+				end
+			end
+		end
+		if best_ally ~= nil then
+			if best_gap ~= nil then
+				log("  blood_sacrifice ally: ui " .. tostring(best_ally:unique_ui_id())
+					.. " at " .. string.format("%.1f", best_gap) .. "m is the LOWEST-health in-range ally"
+					.. " within " .. tostring(FOURTH.BLOOD_SACRIFICE_RANGE_M) .. "m")
+			end
+			FOURTH.cast_target = best_ally
+			FOURTH.bs_ally = best_ally
+			reason = string.format("blood sacrifice: lowest-health ally %d%% (<= 75%%), cast on ally", math.floor(best_hp))
+		end
+	end
+	return reason
+end
+
+-- EAT DA RUNTS!'S TRIGGER RANGE (this round) - THE STANDING 70% RULE. The
+-- ability has NO aura (effect_range = 0.0000, num_effected_friendly_units = 1),
+-- so its REAL game-data range is its target_intercept_range = 100.0000 m
+-- (unit_spec_abil.tsv, wh3_dlc26_unit_abilities_eat_da_runts).
+-- 100 * 0.70 = 70.0 -> 70 m (FLOORED, FOURTH.RANGE_FRACTION).
+FOURTH.EAT_DA_RUNTS_RANGE_M = 70
+FOURTH.edr_ally = nil
+function FOURTH.edr_ally_gap(unit, ally)
+	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+function FOURTH.edr_ally_in_range(unit, ally)
+	local gap = FOURTH.edr_ally_gap(unit, ally)
+	return (gap == nil) or (gap <= FOURTH.EAT_DA_RUNTS_RANGE_M)
+end
+-- a nil ally (the SELF arm) is always valid - never gated.
+function FOURTH.edr_ally_valid(unit, ally)
+	if ally == nil then return true end
+	if not FOURTH.edr_ally_in_range(unit, ally) then return false end
+	local hp = FOURTH.context_value(ally, "HealthPercent")
+	return (type(hp) ~= "number") or (hp <= 75)
+end
+-- EAT DA RUNTS!: fire when the OWNER itself is at or below 75% health (cast on
+-- self), ELSE when a friendly unit other than the caster is at or below 75%
+-- within the conservative trigger range (cast on the LOWEST-health such ally).
+function FOURTH.evaluate_eat_da_runts(unit, routing)
+	local reason = nil
+	if not routing then
+		local hp = FOURTH.context_value(unit, "HealthPercent")
+		if type(hp) == "number" and hp <= 75 then
+			reason = string.format("eat da runts: self health %d%% (<= 75%%), cast on self", math.floor(hp))
+		else
+			local self_id = tostring(unit:unique_ui_id())
+			local best_ally = nil
+			local best_gap = nil
+			local best_hp = nil
+			for i = 1, #tracked_units do
+				local other = tracked_units[i] and tracked_units[i].unit
+				if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
+					if tostring(other:unique_ui_id()) ~= self_id and not unit_is_routing(other) then
+						local ahp = FOURTH.context_value(other, "HealthPercent")
+						if type(ahp) == "number" and ahp <= 75 then
+							local gap = FOURTH.edr_ally_gap(unit, other)
+							if (gap == nil) or (gap <= FOURTH.EAT_DA_RUNTS_RANGE_M) then
+								if best_ally == nil or (type(best_hp) == "number" and ahp < best_hp) then
+									best_ally, best_gap, best_hp = other, gap, ahp
+								end
+							end
+						end
+					end
+				end
+			end
+			if best_ally ~= nil then
+				if best_gap ~= nil then
+					log("  eat_da_runts ally: ui " .. tostring(best_ally:unique_ui_id())
+						.. " at " .. string.format("%.1f", best_gap) .. "m is the LOWEST-health in-range ally"
+						.. " within " .. tostring(FOURTH.EAT_DA_RUNTS_RANGE_M) .. "m")
+				end
+				FOURTH.cast_target = best_ally
+				FOURTH.edr_ally = best_ally
+				reason = string.format("eat da runts: lowest-health ally %d%% (<= 75%%), cast on ally", math.floor(best_hp))
+			end
+		end
+	end
+	return reason
+end
+
+
+-- ============================================================================
+-- ACCUSATION (this round) - the FIRST ENEMY-TARGETED trigger, and the first
+-- ability whose cast target is an ENEMY unit.
+--   THE USER'S RULE (verbatim): "implement accusation automatic activation when
+--   enemy unit in range is in melee or being shot at."
+--   THE TRIGGER (per poll, for a unit that owns an enemy-targeted key):
+--   enumerate the enemy script units; keep those that are (a) valid and alive
+--   and (b) inside the ability's own reach; of those pick one that is IN MELEE
+--   or UNDER MISSILE FIRE (prefer in-melee; among equals the closest). If none
+--   qualifies, do nothing. The chosen enemy becomes the CAST TARGET - NEVER
+--   the owner.
+--   THE PROVEN ROUTE (round-4 probe, log-confirmed): the target is re-fetched
+--   FRESH from the enemy enumerator on the SAME tick and the caster's
+--   controller is re-read fresh (FOURTH.eg_fresh_caster_su) - the bench_fresh
+--   shape `caster_su.uc:perform_special_ability(key, enemy_su.unit)`, which
+--   LANDED in the probe (target effect count 0->1, `CMD event=SpecialAbility`,
+--   RESULT route=bench_fresh landed=yes). A controller handle held from an
+--   earlier poll silently no-ops (accepted=true, nothing applies).
+--   THE RANGE SOURCE: Accusation's own target_intercept_range in
+--   unit_spec_abil.tsv = 75.0000 m - the exact reach the round-4 probe named
+--   and used. The enemy is offered only while unit:unit_in_range(enemy) is
+--   true, else while unit:unit_distance(enemy) <= FOURTH.ACCUSATION_RANGE_M,
+--   else while the caster itself is in melee. CONSERVATIVE: the value is a
+--   named constant - ONE place to tune.
+--   THE SAFETY PATTERN: the chosen enemy rides FOURTH.eg_enemy; the condition
+--   (alive + still in melee/under fire + still in range) is RE-CHECKED
+--   immediately before the cast and the cast is SKIPPED if it lapsed. The HOLD
+--   is the existing per-pair guard + cooldown hold - it never fires every tick.
+--   FIELD READS (round 4, proven live on enemies): type(), number_of_men_alive(),
+--   is_in_melee(), is_valid_target(). is_under_missile_attack() is NOT proven
+--   on an enemy - an unreadable read is treated as FALSE (fail-safe), logged
+--   once for the whole battle.
+--   THE LOCAL CEILING: every helper, constant and slot rides the FOURTH bag -
+--   NO new chunk-level locals.
+-- ============================================================================
+
+-- ACCUSATION'S TRIGGER RANGE (this round) - THE STANDING 70% RULE. REAL range
+-- 75.0000 m = the ability's own target_intercept_range (unit_spec_abil.tsv,
+-- wh_main_hero_abilities_accusation; effect_range = 0.0000, so the intercept
+-- reach is the real range). 75 * 0.70 = 52.5 -> 52 m (FLOORED,
+-- FOURTH.RANGE_FRACTION). SET TO 52 AFTER THE CASTER WAS SEEN TO WALK toward
+-- an enemy that sat inside the 75 m reach but outside a comfortable cast range
+-- - the very symptom this rule exists to remove.
+FOURTH.ACCUSATION_RANGE_M = 52
+
+-- the chosen ENEMY unit (re-fetched fresh each tick), its arm ("melee" /
+-- "missile") and the fresh CASTER script_unit - all cleared before every
+-- evaluate so no ability can inherit a stale enemy.
+FOURTH.eg_enemy = nil
+FOURTH.eg_arm = nil
+FOURTH.eg_caster_su = nil
+
+-- one-time notice for an unreadable is_under_missile_attack.
+FOURTH.eg_unreadable_logged = false
+
+-- the gap in metres from the OWNER to a candidate enemy - the SAME
+-- battle_unit:unit_distance primitive the charge detector and every ally
+-- trigger already use. nil when the read cannot be taken.
+function FOURTH.eg_enemy_gap(unit, enemy)
+	local ok, gap = pcall(function() return unit:unit_distance(enemy) end)
+	if ok and type(gap) == "number" then return gap end
+	return nil
+end
+
+-- true while the enemy is inside the ability's own reach. unit_in_range is the
+-- engine's reach read (the probe logged in_range=yes(unit_in_range)); a
+-- readable distance is the fallback; caster-in-melee is the last resort. A
+-- wholly unreadable reach is treated as OUT of range (fail-safe: never offer an
+-- enemy the ability may not cover).
+function FOURTH.eg_enemy_in_range(unit, enemy)
+	local okr, inr = pcall(function() return unit:unit_in_range(enemy) end)
+	if okr and inr == true then return true end
+	if okr and inr == false then return false end
+	local gap = FOURTH.eg_enemy_gap(unit, enemy)
+	if gap ~= nil then return gap <= FOURTH.ACCUSATION_RANGE_M end
+	local okm, m = pcall(function() return unit:is_in_melee() end)
+	return (okm and m == true)
+end
+
+-- true / false / nil - the enemy's validity. is_valid_target() is the read the
+-- round-4 probe took; is_valid() is the documented name. A raising read on both
+-- answers nil (the caller fail-opens: an unreadable validity never blocks).
+function FOURTH.eg_enemy_valid(enemy)
+	local ok, v = pcall(function() return enemy:is_valid_target() end)
+	if ok then
+		if v == true then return true end
+		if v == false then return false end
+	end
+	local ok2, v2 = pcall(function() return enemy:is_valid() end)
+	if ok2 then
+		if v2 == true then return true end
+		if v2 == false then return false end
+	end
+	return nil
+end
+
+-- true when the enemy is currently TAKING missile fire. battle_unit:
+-- is_under_missile_attack() exists but was NEVER probed on an enemy, so an
+-- unreadable read is treated as FALSE (fail-safe) and a raising read writes ONE
+-- loud line for the whole battle (never a per-tick stream).
+function FOURTH.eg_under_missile_attack(enemy)
+	local ok, v = pcall(function() return enemy:is_under_missile_attack() end)
+	if ok and v == true then return true end
+	if not ok and not FOURTH.eg_unreadable_logged then
+		FOURTH.eg_unreadable_logged = true
+		log("accusation: enemy is_under_missile_attack read UNAVAILABLE (raised) - treated as FALSE (fail-safe). One-time notice.")
+	end
+	return false
+end
+
+-- re-fetch the CASTER's script_unit FRESH from the friendly enumerator THIS
+-- tick (never a controller held from an earlier poll - the round-4 lesson).
+-- nil when the army or the matching unit cannot be found.
+function FOURTH.eg_fresh_caster_su(unit)
+	local ok_coll, coll = pcall(function()
+		return bm:get_scriptunits_for_local_players_army()
+	end)
+	if not ok_coll or coll == nil then return nil end
+	local ok_n, n = pcall(function() return coll:count() end)
+	if not ok_n or type(n) ~= "number" then return nil end
+	local want = nil
+	pcall(function() want = tostring(unit:unique_ui_id()) end)
+	if want == nil then return nil end
+	for i = 1, n do
+		local ok_su, su = pcall(function() return coll:item(i) end)
+		if ok_su and su ~= nil then
+			local u = nil
+			pcall(function() u = su.unit end)
+			if u ~= nil then
+				local id = nil
+				pcall(function() id = u:unique_ui_id() end)
+				if id ~= nil and tostring(id) == want then return su end
+			end
+		end
+	end
+	return nil
+end
+
+-- THE EVALUATOR: fire when an ENEMY unit in range is in melee OR under missile
+-- fire. The chosen enemy rides FOURTH.cast_target (the CAST TARGET) and
+-- FOURTH.eg_enemy (the pre-cast re-check slot) - the owner is NEVER the target.
+-- Returns the ATTEMPT reason string, or nil when nothing qualifies.
+function FOURTH.evaluate_enemy_engaged_or_shot(unit, routing)
+	local reason = nil
+	if not routing then
+		local ok_coll, coll = pcall(function()
+			return bm:get_scriptunits_for_main_enemy_army_to_local_player()
+		end)
+		if ok_coll and coll ~= nil then
+			local ok_n, n = pcall(function() return coll:count() end)
+			if ok_n and type(n) == "number" then
+				local best_enemy, best_gap, best_arm = nil, nil, nil
+				for i = 1, n do
+					local ok_su, su = pcall(function() return coll:item(i) end)
+					if ok_su and su ~= nil then
+						local enemy = nil
+						pcall(function() enemy = su.unit end)
+						if enemy ~= nil then
+							local ok_alive, alive = pcall(function() return enemy:number_of_men_alive() end)
+							local valid = FOURTH.eg_enemy_valid(enemy)
+							local ok_melee, melee = pcall(function() return enemy:is_in_melee() end)
+							local arm = nil
+							if ok_melee and melee == true then
+								arm = "melee"
+							elseif FOURTH.eg_under_missile_attack(enemy) then
+								arm = "missile"
+							end
+							if arm ~= nil
+								and ok_alive and type(alive) == "number" and alive > 0
+								and (valid == nil or valid == true)
+								and FOURTH.eg_enemy_in_range(unit, enemy) then
+								local gap = FOURTH.eg_enemy_gap(unit, enemy)
+								if best_enemy == nil
+									or (arm == "melee" and best_arm ~= "melee")
+									or (arm == best_arm and gap ~= nil and (best_gap == nil or gap < best_gap)) then
+									best_enemy, best_gap, best_arm = enemy, gap, arm
+								end
+							end
+						end
+					end
+				end
+				if best_enemy ~= nil then
+					local etype = "enemy"
+					pcall(function() etype = tostring(best_enemy:type()) end)
+					log("  accusation target: '" .. etype .. "' is the chosen enemy (" .. tostring(best_arm)
+						.. ") within " .. tostring(FOURTH.ACCUSATION_RANGE_M) .. "m")
+					FOURTH.eg_enemy = best_enemy
+					FOURTH.eg_arm = best_arm
+					FOURTH.eg_caster_su = FOURTH.eg_fresh_caster_su(unit)
+					FOURTH.cast_target = best_enemy
+					if best_arm == "melee" then
+						reason = "enemy in melee (targeting " .. etype .. ")"
+					else
+						reason = "enemy under missile fire (targeting " .. etype .. ")"
+					end
+				end
+			end
+		end
+	end
+	return reason
+end
+
+FOURTH.evaluators = {
+	charge = FOURTH.evaluate_charge,
+	tired = FOURTH.evaluate_tired,
+	melee = FOURTH.evaluate_melee,
+	melee_low_morale = FOURTH.evaluate_melee_low_morale,
+	melee_unwavering = FOURTH.evaluate_in_melee_self,
+	-- BLOCK 2 (this round): the four new triggers, each its own evaluator.
+	barrier_broken = FOURTH.evaluate_barrier_broken,
+	charge_or_melee = FOURTH.evaluate_charge_or_melee,
+	ushoran_health = FOURTH.evaluate_ushoran_health,
+	glorious_death = FOURTH.evaluate_glorious_death,
+	-- BLOCK 4/5/6 (this round): the two new triggers, each its own evaluator.
+	verminking_wavering = FOURTH.evaluate_verminking_wavering,
+	melee_health75 = FOURTH.evaluate_potion_health,
+	-- ROUND h89 (this round): the Enchanted Metallurgy family - one new trigger.
+	metallurgy_melee = FOURTH.evaluate_metallurgy_melee,
+	-- BLOCKS 7-9 (this round): five new triggers, each its own evaluator.
+	charge_only = FOURTH.evaluate_charge_only,
+	wavering_self = FOURTH.evaluate_wavering_self,
+	wavering_self_or_ally = FOURTH.evaluate_wavering_self_or_ally,
+	charge_or_wavering = FOURTH.evaluate_charge_or_wavering,
+	wavering_ally_range = FOURTH.evaluate_wavering_ally_range,
+	-- THE FINAL ROSTER ROUND (this round): the two ally-heal triggers.
+	blood_sacrifice = FOURTH.evaluate_blood_sacrifice,
+	eat_da_runts = FOURTH.evaluate_eat_da_runts,
+	-- ACCUSATION (this round): the FIRST ENEMY-TARGETED trigger.
+	enemy_engaged_or_shot = FOURTH.evaluate_enemy_engaged_or_shot,
+}
+
+-- THE TOOLTIP LINE (this round): the short sentence the mod appends to an
+-- implemented ability's tooltip - ONE clause describing the TRIGGER that the
+-- entry actually rides. It is composed at load from the entry's own trigger
+-- field (never written per ability by hand), so every entry's line names the
+-- evaluator that entry really calls. The old one-size generic line ("this
+-- ability fires by itself while the unit charges ...") is REMOVED: it
+-- described a charge behaviour most abilities do not have.
+FOURTH.TRIGGER_TIP = {
+	-- the legacy Deadly Onslaught family: the charge window OR already in melee
+	charge = "When armed, fires when this unit charges or is in melee",
+	tired = "When armed, fires when this unit is tired or worse",
+	melee = "When armed, fires when this unit is in melee",
+	melee_low_morale = "When armed, fires when this unit is in melee and wavering",
+	melee_unwavering = "When armed, fires when this unit is in melee",
+	barrier_broken = "When armed, fires when this unit's barrier breaks",
+	charge_or_melee = "When armed, fires when this unit charges or is in melee",
+	ushoran_health = "When armed, fires when this unit is at or below 75% health",
+	glorious_death = "When armed, fires when a Slayer ally in range is in melee",
+	verminking_wavering = "When armed, fires when an ally in range is wavering",
+	melee_health75 = "When armed, fires when this unit is in melee and at or below 75% health",
+	metallurgy_melee = "When armed, fires when this unit or an ally in range is in melee",
+	charge_only = "When armed, fires when this unit charges",
+	wavering_self = "When armed, fires when this unit is wavering",
+	wavering_self_or_ally = "When armed, fires when this unit or an ally in range is wavering",
+	charge_or_wavering = "When armed, fires when this unit charges or is wavering",
+	wavering_ally_range = "When armed, fires when an ally in range is wavering",
+	blood_sacrifice = "When armed, fires on the lowest-health ally in range when it is at or below 75% health",
+	eat_da_runts = "When armed, fires when this unit is at or below 75% health, otherwise on the lowest-health ally in range",
+	enemy_engaged_or_shot = "When armed, fires when an enemy unit in range is in melee or under missile fire",
+}
+for _, ability in ipairs(ABILITIES) do
+	ability.evaluate = FOURTH.evaluators[ability.trigger]
+	ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]
+end
+
+
+-- ============================================================================
+-- 8. THE POLL - runs every POLL_MS milliseconds for the whole battle
+-- ============================================================================
+
+-- THE ONE DROP ROUTINE (drop_unit_by_ui_id) lives in section 6, above the
+-- watch-list builder, because BOTH drop paths call it - the re-list's own drop
+-- there, and the poll's dead-unit path just below. It purges the unit's rows
+-- from every per-unit table and settles the selected set (items 2 + 13); its
+-- full note sits with its definition.
+
+local function poll_body()
+	tick_count = tick_count + 1
+
+	-- Proof of life: if this line is in the log, the repeating timer works.
+	if tick_count == 1 then
+		log("poll is running (first tick)")
+	end
+
+	-- The switch is flipped by right-clicking the ability icon in battle - see the
+	-- listener at the bottom of the file. No UI component is created anywhere in
+	-- this mod: doing so from a timer or a phase callback is what broke the model
+	-- timer in rounds 9-14.
+
+	-- Say something every 10 s whatever the phase, so a silent run is provable
+	-- and so we can see whether the timer is still being called at all.
+	if (tick_count % 40) == 0 then
+		log("tick " .. tostring(tick_count)
+			.. " | phase=" .. tostring(bm:get_current_phase_name())
+			.. " | conflict=" .. tostring(bm:is_conflict_phase())
+			.. " | auto=" .. armed_states_string()
+			.. " | tracked=" .. (tracked_units ~= nil and tostring(#tracked_units) or "nil"))
+	end
+
+	if (tick_count % HEARTBEAT_EVERY_N_POLLS) == 0 then
+		log_heartbeat()
+	end
+
+	-- Deferred "did it take effect?" check, for the case where a call was
+	-- accepted but the ability did not go on cooldown immediately.
+	if pending_verify ~= nil and tick_count >= pending_verify.at_tick then
+		local pv = pending_verify
+		pending_verify = nil
+
+		if tracked_units ~= nil then
+			for i = 1, #tracked_units do
+				local u = tracked_units[i].unit
+				if u ~= nil and u:unique_ui_id() == pv.ui_id then
+					local _, still = pcall(function()
+						return u:can_perform_special_ability(pv.key)
+					end)
+					log("  verify 1 s later        : can_perform = " .. tostring(still))
+				end
+			end
+		end
+	end
+
+	-- Nothing to do during deployment or after the battle is decided.
+	if not bm:is_conflict_phase() then return end
+
+	-- First poll after contact: build the list.
+	if tracked_units == nil then
+		rebuild_unit_list()
+		return
+	end
+
+	-- THE PERIODIC RE-LIST (this build): mid-battle arrivals - summons,
+	-- Tzeentch splits, transformations - must become watched, scanned and
+	-- selection-registered exactly like a starting unit, so the watch list is
+	-- re-listed every RELIST_EVERY_N_POLLS polls (40 x 250 ms = 10 s).
+	-- rebuild_unit_list is additive: existing units are untouched, only
+	-- genuinely new ones are added (and units the engine no longer returns
+	-- are dropped), and it speaks ONE line only when the set actually
+	-- changed. No return here: the refreshed list is processed on this very
+	-- tick.
+	if (tick_count % RELIST_EVERY_N_POLLS) == 0 then
+		rebuild_unit_list()
+	end
+
+	local do_redetect = (tick_count % REDETECT_EVERY_N_POLLS) == 0
+	local do_fallback_rescan = (tick_count % FALLBACK_RESCAN_EVERY_N_POLLS) == 0
+
+	-- EVERY unit a fire proves gone THIS TICK is collected here and dropped
+	-- AFTER the loop (never mid-iteration, never breaking the walk): hitting a
+	-- death must not cost the rest of the army its tick, and multiple deaths in
+	-- one tick are all collected and all dropped.
+	local gone_ids = {}
+
+	-- ITEM 12 - THE DEFERRED ACTIVE-SET REFRESH. The per-unit re-scan block
+	-- below (the identity-moved rescan and the 60 s fallback rescan both run
+	-- through it) used to call the active-set recompute DIRECTLY, so a tick
+	-- that re-scanned N units recomputed the set N times - each a pass
+	-- over units x owned markers. They now only RAISE this flag; ONE call
+	-- after the loop - and after the post-loop drop walk, so it observes the
+	-- FINAL state - recomputes the set exactly ONCE per tick. Membership is
+	-- unchanged: by the time the deferred call reads, exactly the same inputs
+	-- the old last in-loop refresh saw are in place.
+	local active_refresh_pending = false
+
+	for i = 1, #tracked_units do
+		local script_unit = tracked_units[i]
+		local unit = script_unit and script_unit.unit
+
+		-- Only look at units still alive on the field.
+		if unit ~= nil and unit:number_of_men_alive() > 0 then
+			-- The routing guard's ONE read for this unit this poll (section
+			-- 7d): every ability below reuses this same value.
+			local routing = unit_is_routing(unit)
+			local ui_id = unit:unique_ui_id()
+			local ability_key = target_key_by_unit[ui_id]
+
+			-- Nothing of ours on this unit yet. THE IDENTITY WATCH (item
+			-- 3.4): at the old 4 s cadence the cheap identity read runs
+			-- INSTEAD of a full scan - unit_identity (section 4), one
+			-- pcall'd battle_unit:type() - and the unit is re-scanned
+			-- when that value CHANGES (a transformation / a mount
+			-- moves the land_units key, so a loadout that gained
+			-- abilities mid-battle is picked up and its new abilities
+			-- arm and fire). ITEM 5: a nil read is NEVER cached and the
+			-- unit's very first check merely records - so a failed FIRST
+			-- check (no cached value) is re-scanned as soon as a later
+			-- check reads a good value, which is exactly the poisoned-
+			-- first-check case that used to go unseen for up to 60 s. A
+			-- unit that has never been checked is not re-scanned on its
+			-- first good read: the unit was already scanned when it
+			-- entered the watch list. THE SLOW SAFETY FALLBACK: one
+			-- full scan every 60 s whatever the identity says, so an
+			-- unreadable or unchanging identity degrades to the old
+			-- behaviour, just far rarer.
+			if ability_key == nil and (do_redetect or do_fallback_rescan) then
+				local id_text = tostring(ui_id)
+				local old_identity = identity_by_unit[id_text]
+				local new_identity = unit_identity(unit)
+				-- ITEM 5: NEVER cache a nil read. A transient failure must
+				-- not erase the last good value, or the next good read would
+				-- compare against nil and never look like a change. A unit's
+				-- per-unit checked flag (identity_checked) says it has been
+				-- identity checked at least once regardless of outcome, so a
+				-- failed first check can still be turned into a re-scan by
+				-- the next good read.
+				local first_identity_check = (identity_checked[id_text] == nil)
+				identity_checked[id_text] = true
+				if new_identity ~= nil then
+					identity_by_unit[id_text] = new_identity
+				end
+
+				-- ITEM 5 RESCAN RULE: re-scan when this unit HAS been checked
+				-- before and the new read is good AND either the cache is
+				-- still empty (its first read failed and this is the first
+				-- good one) or the value actually moved. A unit's very first
+				-- check merely records. A nil read changes nothing and never
+				-- re-scans; the slow fallback below is the late-attachment
+				-- insurance either way.
+				local identity_moved = (not first_identity_check
+					and new_identity ~= nil
+					and (old_identity == nil or new_identity ~= old_identity))
+				local rescan = identity_moved or do_fallback_rescan
+
+				if rescan then
+					local found, all_keys = scan_unit_abilities(unit)
+					owned_keys_by_unit[id_text] = our_keys_of(all_keys)   -- refresh the owned-key cache
+					-- item 1.3: the learned keys change this unit's
+					-- owned-ability list, so rebuild it too...
+					owned_abilities_by_unit[id_text] =
+						owned_abilities_of(owned_keys_by_unit[id_text])
+					-- ...and tell item 1.4: the owned keys were just
+					-- learned, so the active set (the UI tick's
+					-- badge paths) must see them at once. ITEM 12:
+					-- only RAISE the flag - the ONE refresh for this
+					-- tick runs after the loop, so N re-scans cost
+					-- ONE refresh instead of N.
+					active_refresh_pending = true
+					-- ONE line, and ONLY when the re-scan discovered
+					-- something of ours - completely silent otherwise
+					-- (a re-scan that finds nothing writes nothing).
+					if found ~= nil then
+						target_key_by_unit[ui_id] = found
+						ability_key = found
+						local why = "fallback rescan"
+						if identity_moved then
+							why = "identity changed (" .. tostring(old_identity)
+								.. " -> " .. tostring(new_identity) .. ")"
+						end
+						log("re-scan: unit " .. tostring(ui_id) .. " " .. why
+							.. " - keys: " .. table.concat(all_keys, ", "))
+					end
+				end
+			end
+
+			-- One pass per ability (section 1): its own per-UNIT switch, its
+			-- own trigger, then the readiness gate and the short guard.
+			-- ITEM 1.3: iterate only the markers THIS unit OWNS - the list
+			-- the scan cached (owned_abilities_by_unit, section 2), mapped
+			-- from the owned DB keys and variant-deduped, so a unit carrying
+			-- one of three abilities costs ONE evaluation instead of three.
+			-- A unit whose owned-key cache is UNKNOWN (nil - never scanned)
+			-- falls back to the FULL table, exactly like today, so no unit
+			-- is ever silently skipped.
+			local unit_abilities = owned_abilities_by_unit[tostring(ui_id)]
+			if unit_abilities == nil then
+				unit_abilities = ABILITIES
+			end
+			for _, ability in ipairs(unit_abilities) do
+
+				-- THE PER-UNIT SWITCH: this (unit, ability) pair must be
+				-- armed. Nothing fires for a unit the player has not armed -
+				-- two units carrying the same ability are independent.
+				if is_armed(unit, ability.marker) then
+					-- ITEM 8 (critique-2): PER-ENTRY DISPATCH. The old if/elseif
+					-- chain over ability.trigger is gone: the entry carries its own
+					-- evaluate(unit, routing), wired at load to its trigger's
+					-- evaluator (section 7g), and this ONE call is the whole
+					-- dispatch. It yields the attempt's reason - exactly what the
+					-- chain used to leave in this variable (nil = condition unmet).
+					-- BLOCK 2: the ally-target slot is CLEARED before every
+					-- evaluate; an ally-targeting evaluator (Glorious Death)
+					-- fills it, and the cast below passes it - so a self-cast
+					-- can never inherit a stale ally.
+					FOURTH.cast_target = nil
+					FOURTH.gd_ally = nil
+					FOURTH.vm_ally = nil
+					FOURTH.mtl_ally = nil
+					FOURTH.ws_ally = nil
+					FOURTH.wa_ally = nil
+					FOURTH.bs_ally = nil
+					FOURTH.edr_ally = nil
+					FOURTH.eg_enemy = nil
+					FOURTH.eg_caster_su = nil
+					local reason = ability.evaluate(unit, routing)
+
+					if reason ~= nil then
+						-- The readiness gate: the engine's own check.
+						-- One query, on the key this unit was found to
+						-- own (section 2); the variant list is walked
+						-- only when no usable key is cached, and the
+						-- answer is logged on this evaluation.
+						local ready_key, readiness = check_readiness(unit, ability, ability_key)
+
+						-- THE COOLDOWN-HOLD GATE (this round): a pair the
+						-- engine already refused ON COOLDOWN is governed by
+						-- its own record - the next_at back-off (a longer
+						-- back-off after a repeat) plus the hard bound -
+						-- instead of the raw guard, and a pair that has
+						-- already spoken this episode is probed SILENTLY.
+						local bucket = cooldown_hold[ui_id]
+						local hold = (bucket ~= nil and bucket[ability.marker]) or nil
+
+						-- The readiness query ALWAYS runs (the gate is
+						-- untouched), but its per-tick whisper does not repeat
+						-- while the pair sits in an already-spoken hold: the
+						-- answer has not changed, so repeating it is noise.
+						if hold == nil or hold.logged ~= true then
+							log("  readiness " .. ability.marker .. " on ui id " .. tostring(ui_id)
+								.. ": " .. readiness)
+						end
+
+						if ready_key ~= nil then
+							local eligible, quiet
+							if hold ~= nil then
+								-- THE HARD BOUND: however the hold was set, it
+								-- may never outlive MAX_HOLD_SECONDS. When it
+								-- fires the bound re-bases, so an unreadable or
+								-- stuck signal still gets probed - and, if the
+								-- engine then allows it, still fires.
+								if (tick_count - hold.since) >= MAX_HOLD_TICKS then
+									hold.since = tick_count
+									hold.next_at = 0
+								end
+								eligible = (tick_count >= hold.next_at)
+								quiet = (hold.logged == true)
+							else
+								local guard = last_attempt_at[ui_id]
+								local last_attempt = (guard ~= nil and guard[ability.marker]) or -999999
+								eligible = (tick_count - last_attempt) >= GUARD_TICKS
+								quiet = false
+							end
+
+							if eligible then
+								local guard = last_attempt_at[ui_id]
+								if guard == nil then
+									guard = {}
+									last_attempt_at[ui_id] = guard
+								end
+								guard[ability.marker] = tick_count
+								-- THE OUTCOME (this build): "gone" means the
+								-- pre-fire check or an engine rejection proved
+								-- this unit is no longer there. Leave the walk
+								-- and drop it after the loop (never mid-iteration).
+								-- "cooling" is the engine's cooldown refusal:
+								-- arm or extend this pair's cooldown hold.
+								local outcome = attempt_activation(script_unit, unit, ready_key, reason,
+									ui_id, ability.marker, quiet, FOURTH.cast_target)
+								if outcome == "gone" then
+									gone_ids[#gone_ids + 1] = ui_id
+									break
+								elseif outcome == "cooling" then
+									local b = cooldown_hold[ui_id]
+									if b == nil then
+										b = {}
+										cooldown_hold[ui_id] = b
+									end
+									local rec = b[ability.marker]
+									if rec == nil then
+										rec = { since = tick_count, next_at = 0, streak = 0, logged = false }
+										b[ability.marker] = rec
+									end
+									rec.streak = rec.streak + 1
+									if rec.streak <= 1 then
+										-- the first refusal of the episode is the
+										-- one that speaks; it keeps the short guard
+										rec.next_at = tick_count + GUARD_TICKS
+									else
+										rec.next_at = tick_count + HOLD_TICKS
+									end
+									rec.logged = true
+								elseif outcome == "fired" then
+									-- a real fire ends the cooldown episode
+									local b = cooldown_hold[ui_id]
+									if b ~= nil then
+										b[ability.marker] = nil
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	-- DROP EVERY COLLECTED id via the ONE drop routine (items 2 + 13). Done
+	-- here, AFTER the per-unit loop: the tracked list is never mutated
+	-- mid-iteration (the routine's own scan + table.remove run freely now) and
+	-- a death never costs the rest of the army its tick.
+	for g = 1, #gone_ids do
+		drop_unit_by_ui_id(gone_ids[g])
+	end
+
+	-- ITEM 12 - THE ONE (DEFERRED) ACTIVE-SET REFRESH of this tick. It runs
+	-- here, AFTER the per-unit loop AND after the drop walk, so it observes the
+	-- FINAL state - any owned-key learning done in the loop AND any unit the
+	-- walk just dropped. A tick that re-scanned nothing raises nothing and
+	-- recomputes nothing (exactly as before); a tick that re-scanned N units
+	-- recomputes the set ONCE instead of N times. Silent unless the membership
+	-- actually moved.
+	if active_refresh_pending then
+		refresh_active_abilities()
+	end
+end
+
+
+-- An error escaping a timer callback does not merely skip that tick: the battle
+-- model's timer driver aborts before re-arming itself, which kills EVERY
+-- repeating callback in the battle for the rest of the fight
+-- (lib_timer_manager.lua, "timer_manager_battle_callback"). So the body is
+-- wrapped, and the first few errors are logged rather than swallowing the battle.
+local poll_errors = 0
+
+local function poll()
+	local ok, err = pcall(poll_body)
+	if not ok then
+		poll_errors = poll_errors + 1
+		if poll_errors <= 3 or (poll_errors % 40) == 0 then
+			log("POLL ERROR #" .. tostring(poll_errors) .. " (poll continues): "
+				.. tostring(err))
+		end
+	end
+end
+
+
+-- ============================================================================
+-- ============================================================================
+-- 8b. THE ABILITY ICON ITSELF: THE RIGHT-CLICK TOGGLE, AND THE FEEDBACK
+--
+-- The control the player uses is a RIGHT-CLICK ON THE ABILITY'S OWN ICON, and it
+-- needs two halves, because the engine only routes a mouse button to a component
+-- whose layout declares it (no vanilla layout declares rclick - 0 of the 907 in
+-- ui3.pack, which is why right-clicking an ability icon has never done anything):
+--
+--   * the layout half - shipped in this pack as ui/battle ui/hud_battle.twui.xml
+--     and ui/common ui/land_unit_card.twui.xml - adds CA's own
+--     ContextEventBroadcaster callback, whose documented trigger list includes
+--     rclick, to every component that draws a unit ability icon;
+--   * this half listens for whatever comes back and flips the switch.
+--
+-- The engine's own script says where those icons are: lib_battle_ui.lua's
+-- highlight_unit_abilities() walks battle_orders -> orders_parent ->
+-- behaviour_parent, takes child 0 of each slot, and calls
+-- InterfaceFunction("AbilityKeyForScript") to learn which ability a button shows.
+-- ============================================================================
+
+local logged_no_parent = false
+
+-- (The single button reference, watch chain and feedback flag that used to sit
+--  here are per ability now - ability_state[marker].button / .watch_chain /
+--  .feedback_on, section 2.)
+
+-- THE FEEDBACK: a plain image swap on the ability icon. Static - no pulse, no blink.
+-- The icon slot is the one the vanilla layout marks with icon_index = 8 (round 21's layout read).
+-- (ROUND 86: the vestigial ICON_INDEX / original_icon / read_icon / original_state
+--  locals that used to sit here were DEAD - the read_icon helper and the two
+--  original_* savers were never called or read anywhere, and the icon-swap
+--  feedback never used them. They were removed to free local-ceiling slots for
+--  GLORIOUS_DEATH_RANGE_M (section 1). The reading copy never carried them.)
+
+-- THE BADGES - one per ability (option B, done right). Rounds 32-33 measured two things: an
+-- engine-owned ability button does not draw children, and writing to it rebuilds it. So each
+-- badge is created on the button's own ancestor (a plain container, the kind that demonstrably
+-- draws components we create). Reading the button is safe; only writing to it is fatal.
+--
+-- Each ability has ONE badge component (the id from the table in section 1: zz_auto_badge for
+-- Deadly Onslaught, zz_auto_badge_fs for Foe-Seeker), created HIDDEN and SHOWN only while ITS
+-- ability is positively confirmed on the dial (the ui_tick test at the bottom of the file).
+-- Its letter shows the collective switch for this ability (ONE selected unit: that unit's own
+-- switch; SEVERAL: A only while every selected owner is armed) - "A" = armed/auto, "M" =
+-- manual - and a click on it flips the selected owners' pairs (the checkbox rule, section 10):
+-- the only control.
+-- The components and flags live in ability_state[marker] (section 2).
+local badge_parent = nil
+local track = false          -- no computed tracking: the frames of reference do not match
+                             -- (round 42). Position is the hand-tuned offset above.
+local BADGE_X, BADGE_Y = -865, -209   -- the spot tuned by hand in-game (round 41), used as-is.
+                                     -- MINUS is left/up, PLUS is right/down, from the bottom-centre
+                                     -- dock of the badge's parent. Each ability's badge adds its
+                                     -- own ox/oy from the table in section 1 (foe_seeker:
+                                     -- +70,+30 - the measured top-slot-to-45-degree step), so a
+                                     -- re-tune of these two numbers carries Foe-Seeker along.
+
+-- THE MEASURED WHEEL (this build): the visible wheel is a circle centred
+-- (95,944) radius 99 with six slots ~45 degrees apart; the six positions
+-- below were measured over two battles. Deadly Onslaught sat on slot 1 (top)
+-- in every observation - the slot the hand-tuned BADGE_X/BADGE_Y above were
+-- tuned for - so slot 1 is the reference (WHEEL_TOP_X/WHEEL_TOP_Y).
+--
+-- WHICH SLOT AN ABILITY SITS ON IS ITS BAR POSITION: the claimed button's
+-- ORDINAL among the key-bearing children of its parent bar (button_parent -
+-- where the claimed buttons actually live) equals its wheel slot number,
+-- 1-based. The claim walk counts it into slot_index (bar_ordinal_for,
+-- section 8b), and every badge's offset is then
+--     BADGE_X + (WHEEL_SLOT[k][1] - WHEEL_TOP_X),
+--     BADGE_Y + (WHEEL_SLOT[k][2] - WHEEL_TOP_Y)
+-- - that slot's delta from the top slot - so an ability on any of the six
+-- slots gets the hand-tuned pair moved to its slot, and re-tuning the Deadly
+-- Onslaught badge (zz_badge_set) still carries every other ability along.
+-- Only when k is unknown (no claim yet, the bar unreadable, or more than six
+-- key-bearing children - unexpected) does the badge fall back to section 1's
+-- ox/oy pair, and that use is logged.
+local WHEEL_TOP_X, WHEEL_TOP_Y = 96, 845
+
+-- The six measured wheel slot positions, in slot order: 1 top (96,845),
+-- 2 the 45-degree slot, 3 right, 4 the -45-degree slot, 5 the 135-degree
+-- slot, 6 left. WHEEL_SLOT[k] is where the ability whose bar position is k
+-- sits on the wheel.
+local WHEEL_SLOT = {
+	{ 96, 845 },      -- 1 - top (the hand-tuned reference slot)
+	{ 166, 875 },     -- 2 - 45 degrees
+	{ 194, 947 },     -- 3 - right
+	{ 162, 1017 },    -- 4 - -45 degrees
+	{ 28, 877 },      -- 5 - 135 degrees
+	{ 2, 949 },       -- 6 - left
+}
+
+-- THE DEFERRED, STEPPED BADGE CREATION. The scan walk only records the button
+-- and raises pending_badge[marker]; the badge is built HERE, on the ui tick,
+-- one engine call group at a time, and every step is pcall'd and bracketed by
+-- its own log lines ("step N <name>", then "step N ok" / "step N err: ..."),
+-- so the last line of a crashed log names the step that died. A failed step
+-- leaves the badge ABSENT (state.badge = nil) and the next tick tries again,
+-- up to MAX_BADGE_ATTEMPTS per claim; after that the marker gives up until
+-- the dial rebuilds (a fresh claim resets the budget).
+--
+-- The calls themselves are the stable single-badge path's, unchanged: the
+-- same parent walk to hud_battle, the same template layout, the same
+-- docking/resize/art-blank/SetText/place calls - only split into steps.
+local MAX_BADGE_ATTEMPTS = 3
+
+-- THE BADGE OFFSET, DERIVED FROM THE CLAIMED BUTTON'S BAR POSITION (this
+-- build). slot_index[marker] is the claimed button's 1-based position among
+-- the key-bearing children of its parent bar - which two measured battles
+-- proved IS the wheel slot. When it is a slot number 1..6, the offset is
+-- BADGE_X/BADGE_Y - the hand-tuned pair for the measured TOP slot (slot 1,
+-- WHEEL_TOP_X/WHEEL_TOP_Y) - shifted by this slot's delta from that top slot,
+-- through the static WHEEL_SLOT table above. Only when k is unknown (never
+-- claimed, the bar unreadable, or more than six key-bearing children) does
+-- it fall back to section 1's ox/oy pair (onslaught BADGE_X/BADGE_Y,
+-- foe_seeker BADGE_X+70/BADGE_Y+30); the callers log which one was used.
+-- Returns: ox, oy, wheel (slot number, nil on fallback), slot_x, slot_y.
+local function badge_offsets_for(marker)
+	local ability = ability_for(marker)
+	if ability == nil then return nil end
+	local k = slot_index[marker]
+	if k ~= nil and k >= 1 and k <= 6 then
+		local slot = WHEEL_SLOT[k]
+		if slot ~= nil then
+			return BADGE_X + (slot[1] - WHEEL_TOP_X), BADGE_Y + (slot[2] - WHEEL_TOP_Y),
+				k, slot[1], slot[2]
+		end
+	end
+	return BADGE_X + ability.ox, BADGE_Y + ability.oy, nil, nil, nil
+end
+
+-- One instrumented step: opening breadcrumb, the step's engine calls inside a
+-- pcall, then ok/err. Returns true when the step completed.
+local function badge_step(marker, step_no, step_name, fn)
+	log("badge " .. marker .. ": step " .. tostring(step_no) .. " " .. step_name)
+	local ok, err = pcall(fn)
+	if ok then
+		log("badge " .. marker .. ": step " .. tostring(step_no) .. " ok")
+	else
+		log("badge " .. marker .. ": step " .. tostring(step_no) .. " err: " .. tostring(err))
+	end
+	return ok
+end
+
+-- THE LAYOUT NUDGE (this build): THE ONE LETTER WRITE below is this
+-- function's only caller, and it runs immediately after every REAL letter
+-- write - creation step 5, the badge-click/feedback path and the selection
+-- refresh all write through that one primitive - asking the engine to
+-- re-run its layout/repaint pass for the badge AND for the parent it was
+-- created on (the same badge_parent the placement code uses); when no
+-- parent is known the badge alone is nudged. Layout() is the only
+-- redraw-adjacent call the game exposes to script, so it is the one lever
+-- against the delay between a letter write and its pixels. Both calls are
+-- pcall'd: an error is swallowed and never aborts a letter write - the
+-- outcome is reported on the letter's own log line
+-- ('layout ok=<true|false>', the failing side named). Never called on a
+-- cache hit: a write that did not happen gets no nudge and no line.
+local function nudge_badge_layout(state)
+	local ok_badge = pcall(function() state.badge:Layout() end)
+	local ok_parent = true
+	if badge_parent ~= nil then
+		ok_parent = pcall(function() badge_parent:Layout() end)
+	end
+	if ok_badge and ok_parent then return true end
+	if not ok_badge then return false, "badge" end
+	return false, "parent"
+end
+
+-- THE ONE LETTER WRITE (this build): every path that moves a badge's letter
+-- goes through this function and NOTHING else writes a badge's text - the
+-- SetText call and the layout nudge are one primitive, so a caller cannot
+-- write the letter without repainting it. (Before this build the nudge
+-- lived at each call site; a path that forgot it produced exactly the bare,
+-- outcome-less letter lines the battle log kept showing, so the last
+-- un-nudged writer is now structurally impossible.) state.last_letter is
+-- the one shared cache and moves only when SetText did not raise, so a
+-- failed write does not poison it and the next path retries. Returns the
+-- SetText outcome plus the nudge's outcome, so the caller's line can carry
+-- both.
+local function write_badge_letter(state, letter)
+	local ok_text = pcall(function() state.badge:SetText(letter) end)
+	if ok_text then state.last_letter = letter end
+	local ok_layout, layout_err = nudge_badge_layout(state)
+	return ok_text, ok_layout, layout_err
+end
+
+-- THE DISCARD (this build): the one way a created badge leaves the engine
+-- tree. Dropping the Lua reference does NOT remove a created component - it
+-- stays parented to hud_battle forever, and a systematic-failure state would
+-- leak one doomed component per tick (every retry creates one more). Every
+-- site that abandons a created-but-unfinished badge - a failed creation
+-- step, or a creation attempt that raised mid-way - calls this instead of
+-- clearing the reference directly: with the reference live and the component
+-- supporting Destroy, the engine call is made inside a pcall (an engine-side
+-- refusal is swallowed and logged, never raised into the retry path), and
+-- the reference is cleared whatever happened - the badge is dead to this
+-- code either way. NEVER called on a placed, working badge: only the
+-- discard-on-failure sites and the create-attempt cleanup.
+local function discard_badge(state)
+	if state == nil or state.badge == nil then return end
+	local ok_has, has_destroy = pcall(function() return state.badge.Destroy ~= nil end)
+	if ok_has and has_destroy then
+		local ok_destroy, destroy_err = pcall(function() state.badge:Destroy() end)
+		if not ok_destroy then
+			log("badge discard: Destroy raised: " .. tostring(destroy_err))
+		end
+	end
+	state.badge = nil
+end
+
+local function create_badge(marker)
+	local state = ability_state[marker]
+	local ability = ability_for(marker)
+	if state == nil or ability == nil or state.button == nil or state.badge ~= nil then return false end
+
+	-- STEP 1 - create: walk up to hud_battle (the proven parent) and create
+	-- the component there. Same walk, same template as the stable path.
+	if not badge_step(marker, 1, "create", function()
+		local node = state.button
+		for _ = 1, 8 do
+			local ok_id, id = pcall(function() return node:Id() end)
+			if ok_id and tostring(id) == "hud_battle" then break end
+			local ok_p, parent = pcall(function() return node:Parent() end)
+			if not ok_p or parent == nil then break end
+			local ok_w, wrapped = pcall(function() return UIComponent(parent) end)
+			if not ok_w or wrapped == nil then break end
+			node = wrapped
+		end
+		badge_parent = node
+		state.badge = UIComponent(badge_parent:CreateComponent(ability.badge,
+			"ui/templates/zz_auto_badge"))
+		if state.badge == nil then error("CreateComponent returned nothing", 0) end
+	end) then
+		state.badge = nil
+		return false
+	end
+	local ok_cid, pid = pcall(function() return badge_parent:Id() end)
+	log("badge [" .. marker .. "]: created on '" .. tostring(ok_cid and pid or "?")
+		.. "' (not on the ability button)")
+
+	-- STEP 2 - dock the fresh component to the top-left of its parent.
+	if not badge_step(marker, 2, "dock", function()
+		state.badge:SetDockingPoint(0)
+	end) then
+		discard_badge(state)
+		return false
+	end
+
+	-- STEP 3 - resize: room for the letter.
+	if not badge_step(marker, 3, "resize", function()
+		state.badge:Resize(24, 24)
+	end) then
+		discard_badge(state)
+		return false
+	end
+
+	-- STEP 4 - blank art: the letter carries the look, so the template's own
+	-- title-bar art is blanked on every slot (0-4). A failed art WRITE fails
+	-- the step; a failed read is logged as '?' and does not (stable's rule).
+	if not badge_step(marker, 4, "blank art", function()
+		for i = 0, 4 do
+			state.badge:SetImagePath("ui/zz_auto/blank.png", i)
+			local ok_r, rep = pcall(function() return state.badge:GetImagePath(i) end)
+			log("   badge [" .. marker .. "] art slot " .. i .. " -> '"
+				.. tostring(ok_r and rep or "?") .. "'")
+		end
+	end) then
+		discard_badge(state)
+		return false
+	end
+
+	-- STEP 5 - SetText: the letter is supplied here (our copy of a vanilla
+	-- text layout; SetText exists, SetTextColour does not). The letter shows
+	-- the COLLECTIVE armed state for this ability (ONE selected unit: exactly
+	-- the old read - the single unit's own flag; SEVERAL: A only while every
+	-- selected unit that owns the ability is armed), and the write - the
+	-- SetText call, its layout nudge and the state.last_letter cache update
+	-- - goes through THE ONE LETTER WRITE like every later write, so this
+	-- first write cannot repaint any differently from the others. A SetText
+	-- that raises still fails this step (the badge is discarded and the
+	-- next tick retries), so ok_text is always true by the time the line is
+	-- logged.
+	if not badge_step(marker, 5, "SetText", function()
+		local letter = collective_armed(marker) and "A" or "M"
+		local ok_text, ok_layout, layout_err = write_badge_letter(state, letter)
+		if not ok_text then error("SetText raised - discarding the badge", 0) end
+		local ok_g, got = pcall(function() return state.badge:GetText() end)
+		log("   badge [" .. marker .. "] set text ok=true engine reports='"
+			.. tostring(ok_g and got or "?") .. "' layout ok=" .. tostring(ok_layout)
+			.. (layout_err and (" (" .. layout_err .. ")") or ""))
+	end) then
+		discard_badge(state)
+		return false
+	end
+
+	-- STEP 6 - place: HIDDEN AT BIRTH first (so a discarded badge can never
+	-- linger on screen), then the stable's proven placement - dock point 8
+	-- (bottom-centre) and THIS ability's own offset: derived from the bar
+	-- position its button was claimed at (badge_offsets_for -> WHEEL_SLOT),
+	-- or section 1's fallback pair when no bar position could be determined -
+	-- and which one was used is logged.
+	if not badge_step(marker, 6, "place", function()
+		local ox, oy, wheel, sx, sy = badge_offsets_for(marker)
+		state.badge_shown = false
+		state.badge:SetVisible(false)
+		state.badge:SetDockingPoint(8)                 -- 8 = bottom-centre
+		state.badge:SetDockOffset(ox, oy)
+		badge_parent:Layout()
+		state.placed = true
+		state.applied_ox, state.applied_oy = ox, oy
+		local ok_pid, pid2 = pcall(function() return badge_parent:Id() end)
+		if wheel ~= nil then
+			log("badge " .. marker .. ": placed bottom-centre of '" .. tostring(ok_pid and pid2 or "?")
+				.. "' (offset " .. tostring(ox) .. "," .. tostring(oy) .. ") [wheel slot "
+				.. tostring(wheel) .. " (" .. tostring(sx) .. "," .. tostring(sy) .. ")] ok=true")
+		else
+			log("badge " .. marker .. ": using fallback offset ("
+				.. tostring(ox) .. "," .. tostring(oy) .. ")")
+			log("badge " .. marker .. ": placed bottom-centre of '" .. tostring(ok_pid and pid2 or "?")
+				.. "' (offset " .. tostring(ox) .. "," .. tostring(oy) .. ") [fallback] ok=true")
+		end
+	end) then
+		discard_badge(state)
+		return false
+	end
+	return true
+end
+
+local function button_xy(button)
+	if button == nil then return nil, nil end
+	local ok, a, b = pcall(function() return button:Position() end)
+	if ok and type(a) == "number" and type(b) == "number" then return a, b end
+	return nil, nil
+end
+
+local function place_badge(marker)
+	local state = ability_state[marker]
+	local ability = ability_for(marker)
+	if state == nil or state.badge == nil or ability == nil then return end
+
+	-- The badge's own offset (this build): DERIVED FROM THE CLAIMED BUTTON'S
+	-- BAR POSITION - badge_offsets_for reads slot_index (the 1-based position
+	-- among the key-bearing children of the claimed button's parent bar, which
+	-- IS the wheel slot) and moves the hand-tuned pair by that slot's delta
+	-- from the measured top slot; only when no bar position is known does it
+	-- fall back to section 1's ox/oy pair.
+	local ox, oy, wheel, sx, sy = badge_offsets_for(marker)
+
+	-- TRACK MODE (round 40): the two numbers above stop being "where on the bar" and become the
+	-- constant delta from the ability button's OWN position, recomputed every tick. Tune the delta
+	-- once with the console while tracking, and the badge follows that icon - and, per ability, its
+	-- own icon, since each badge is created for its own button.
+	if track then
+		local bx, by = button_xy(state.button)
+		if bx ~= nil then
+			pcall(function() state.badge:SetDockOffset(bx + ox, by + oy) end)
+		end
+		return
+	end
+
+	-- Re-place when the offset has MOVED (a fresh claim can bring a new slot),
+	-- not only the first time: state.applied_ox/applied_oy remember what is on
+	-- screen, so an unchanged offset stays quiet.
+	if state.placed and state.applied_ox == ox and state.applied_oy == oy then return end
+	-- AI General's proven configuration, and nothing cleverer than it: dock the created component to
+	-- the BOTTOM-CENTRE of the bar and give it one offset. Round 38 proved the engine both reinterprets
+	-- offsets and misreports the component's position, so there is nothing to steer by - one shot, and
+	-- the numbers above are the only knobs left.
+	pcall(function() state.badge:SetDockingPoint(8) end)                 -- 8 = bottom-centre
+	local ok_o = pcall(function() state.badge:SetDockOffset(ox, oy) end)
+	pcall(function() badge_parent:Layout() end)
+	state.placed = true
+	state.applied_ox, state.applied_oy = ox, oy
+	if wheel ~= nil then
+		log("badge " .. marker .. ": placed bottom-centre of '" .. tostring(badge_parent:Id())
+			.. "' (offset " .. tostring(ox) .. "," .. tostring(oy) .. ") [wheel slot "
+			.. tostring(wheel) .. " (" .. tostring(sx) .. "," .. tostring(sy) .. ")] ok=" .. tostring(ok_o))
+	else
+		log("badge " .. marker .. ": using fallback offset ("
+			.. tostring(ox) .. "," .. tostring(oy) .. ")")
+		log("badge " .. marker .. ": placed bottom-centre of '" .. tostring(badge_parent:Id())
+			.. "' (offset " .. tostring(ox) .. "," .. tostring(oy) .. ") [fallback] ok="
+			.. tostring(ok_o))
+	end
+end
+
+-- Re-place every ability's badge from the current BADGE_X/BADGE_Y (the console
+-- hooks call this, so a re-tune of the Deadly Onslaught badge carries Foe-Seeker).
+local function replace_all_badges()
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if state ~= nil then
+			state.placed = false
+			pcall(place_badge, ability.marker)
+		end
+	end
+end
+local function badge_visible(marker, on)
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return end
+	state.badge_visible_state = on    -- legacy bookkeeping; the letter cache is state.last_letter now
+	-- THE LETTER IS THIS PATH'S WHOLE JOB - it must NOT touch visibility any
+	-- more. The unconditional SetVisible(true) that used to sit here is one
+	-- of the paths that left a stale badge visible while its marker was not
+	-- on the dial (a card click or a toggle re-showed a badge the tick had
+	-- hidden). Visibility now belongs to the ui tick's claimed-set logic
+	-- alone, which re-applies the desired state on every single tick.
+	-- THE CACHE (this build): the letter line happens ONLY when the desired
+	-- letter differs from state.last_letter - the one shared cache every
+	-- letter write updates - so a path that calls this with a letter the
+	-- badge already shows is completely silent. A changed letter goes
+	-- through THE ONE LETTER WRITE (SetText plus the layout nudge in one
+	-- primitive) so the engine repaints it sooner and no caller can skip the
+	-- nudge; a cache hit writes nothing and nudges nothing.
+	local letter = on and "A" or "M"
+	if state.last_letter == letter then return end
+	local ok_t, ok_layout, layout_err = write_badge_letter(state, letter)
+	log("   badge [" .. marker .. "] letter='" .. letter .. "' (auto "
+		.. (on and "ON" or "OFF") .. ") layout ok=" .. tostring(ok_layout)
+		.. (layout_err and (" (" .. layout_err .. ")") or "")
+		.. " visible=" .. tostring(state.badge_shown == true)
+		.. " text=" .. tostring(ok_t))
+end
+
+-- THE LETTER CACHE AND THE ONE LETTER WRITE (this build). The desired letter
+-- is the COLLECTIVE armed state for this ability (collective_armed, section
+-- 4): ONE selected unit - exactly the single unit's armed flag, as before;
+-- SEVERAL selected units - "A" only while EVERY selected unit that owns the
+-- ability is armed, "M" the moment any member is off or none owns it. The
+-- write runs ONLY when the desired letter differs from state.last_letter -
+-- the cache of what the badge was last told to show - so a steady letter is
+-- never re-written and the per-tick safety net can run on every tick (any
+-- change converges on screen within one tick; a write that failed does not
+-- move the cache and is retried by the next path). Every actual write goes
+-- through THE ONE LETTER WRITE (write_badge_letter: SetText + the layout
+-- nudge in a single primitive) and its line carries the nudge's outcome
+-- right after the letter; force_line additionally logs the line when the
+-- letter was already correct (the selection-change refresh uses that, so its
+-- header is followed by one line per badge whatever they show - a forced
+-- line wrote nothing and is marked '(no write)', so no log reader can
+-- mistake it for a write that skipped its nudge). Returns true when the
+-- letter changed.
+local function refresh_badge_letter(marker, force_line)
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return false end
+	local on = collective_armed(marker)
+	local letter = on and "A" or "M"
+	if state.last_letter == letter then
+		if force_line then
+			log("   badge [" .. marker .. "] letter='" .. letter .. "' (auto "
+				.. (on and "ON" or "OFF") .. ") (no write)")
+		end
+		return false
+	end
+	local ok_text, ok_layout, layout_err = write_badge_letter(state, letter)
+	log("   badge [" .. marker .. "] letter='" .. letter .. "' (auto "
+		.. (on and "ON" or "OFF") .. ") layout ok=" .. tostring(ok_layout)
+		.. (layout_err and (" (" .. layout_err .. ")") or ""))
+	return true
+end
+
+-- THE SELECTION CHANGED - refresh BOTH badges' letters from the new
+-- selection, immediately (this build). Called from every path that sets
+-- selected_unit_id (the fast card path on every ui tick, the once-per-second
+-- census when it adopts first, the card click fast-path), in the same call,
+-- so the letters never lag the selection. Logged once per change: the header
+-- line names the new selection, followed by each existing badge's own letter
+-- line (the write inside still runs only when a letter actually changed -
+-- the cache above; a forced line says '(no write)').
+-- THE OPTIONAL TICK (this build) stamps the header with the battle clock:
+--   selection changed to <ui_id> - refreshing badge letters (tick N)
+-- The fast card path (section 8e) passes tick_count, so an adoption can be
+-- measured against the tick it happened on; the click path and the census
+-- call it without a tick and keep their headers exactly as they were.
+local function refresh_badge_letters_for_selection(new_id, tick)
+	local header = "selection changed to " .. tostring(new_id or "none")
+		.. " - refreshing badge letters"
+	if tick ~= nil then
+		header = header .. " (tick " .. tostring(tick) .. ")"
+	end
+	log(header)
+	for _, ability in ipairs(active_abilities_list()) do
+		refresh_badge_letter(ability.marker, true)
+	end
+end
+
+-- ============================================================================
+-- 11. THE TUNING HOOK - for the Lua console (Modding Development Tools, shift+F3)
+--     Global functions so they can be typed in-game. They close over the badge's
+--     position, which matters: nothing in script can read where a created component
+--     really is (round 38: Position() reported a place the badge was not), so the
+--     human eye is the measuring instrument. That is how the community's own
+--     positioning tutorial does it - "test coordinates until the new UIC looks like
+--     it's in the right place".
+-- ============================================================================
+function zz_badge_set(x, y)
+	BADGE_X = tonumber(x) or BADGE_X
+	BADGE_Y = tonumber(y) or BADGE_Y
+	-- re-place EVERY ability's badge: each one's offset is computed in
+	-- place_badge (its wheel slot's delta when its bar position is known,
+	-- its own ox/oy otherwise), so a re-tune of the Deadly Onslaught badge
+	-- carries Foe-Seeker along.
+	replace_all_badges()
+	local msg = "BADGE offset = " .. tostring(BADGE_X) .. "," .. tostring(BADGE_Y)
+		.. " track=" .. tostring(track)
+	log(msg)
+	return msg
+end
+
+
+function zz_badge_track(on)
+	local want = (on == true) or (tostring(on) == "true") or (tonumber(on) == 1)
+	if want == track then
+		local m = "BADGE already tracking=" .. tostring(track) .. " delta=" .. tostring(BADGE_X)
+			.. "," .. tostring(BADGE_Y)
+		log(m)
+		return m
+	end
+	-- switching modes CONVERTS the numbers, so the badge stays exactly where it is:
+	-- absolute -> delta = subtract the button position; delta -> absolute = add it back.
+	local master = ability_state[ABILITIES[1].marker]
+	local bx, by = button_xy(master ~= nil and master.button or nil)
+	if bx == nil then
+		local m = "BADGE mode switch failed: no button position"
+		log(m)
+		return m
+	end
+	if want then
+		BADGE_X, BADGE_Y = BADGE_X - bx, BADGE_Y - by
+	else
+		BADGE_X, BADGE_Y = BADGE_X + bx, BADGE_Y + by
+	end
+	track = want
+	replace_all_badges()
+	local m = "BADGE track=" .. tostring(track) .. " now " .. tostring(BADGE_X) .. "," .. tostring(BADGE_Y)
+		.. " (button at " .. tostring(bx) .. "," .. tostring(by) .. ")"
+	log(m)
+	return m
+end
+
+function zz_badge_calibrate()
+	return zz_badge_track(true)
+end
+
+function zz_badge_nudge(dx, dy)
+	return zz_badge_set(BADGE_X + (tonumber(dx) or 0), BADGE_Y + (tonumber(dy) or 0))
+end
+
+function zz_badge_show(marker)
+	marker = marker or "onslaught"
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return "badge not created yet" end
+	state.badge_shown = true    -- the next ui tick re-checks this against the claimed set
+	pcall(function() state.badge:SetVisible(true) end)
+	local ability = ability_for(marker)
+	return "badge shown at " .. tostring(BADGE_X + ability.ox) .. "," .. tostring(BADGE_Y + ability.oy)
+end
+
+function zz_badge_hide(marker)
+	marker = marker or "onslaught"
+	local state = ability_state[marker]
+	if state == nil or state.badge == nil then return "badge not created yet" end
+	state.badge_shown = false   -- the next ui tick re-checks this against the claimed set
+	pcall(function() state.badge:SetVisible(false) end)
+	return "badge hidden"
+end
+
+function zz_badge_parent(marker)
+	marker = marker or "onslaught"
+	if badge_parent == nil then return "no parent yet" end
+	local ability = ability_for(marker)
+	if ability == nil then return "no ability with marker '" .. tostring(marker) .. "'" end
+	local state = ability_state[marker]
+	local ok, id = pcall(function() return badge_parent:Id() end)
+	local ok2, w = pcall(function() return badge_parent:Width() end)
+	local ok3, h = pcall(function() return badge_parent:Height() end)
+	local bx, by = button_xy(state ~= nil and state.button or nil)
+	local msg = "BADGE parent=" .. tostring(ok and id or "?") .. " size=" .. tostring(w)
+		.. "x" .. tostring(h) .. " offset=" .. tostring(BADGE_X + ability.ox) .. ","
+		.. tostring(BADGE_Y + ability.oy)
+		.. " track=" .. tostring(track) .. " button=" .. tostring(bx) .. "," .. tostring(by)
+		.. " marker=" .. tostring(marker)
+	log(msg)
+	return msg
+end
+
+local function set_armed_look(marker, on)
+	-- Availability is NEVER touched: the ability can always be used by hand.
+	-- The state is shown by the badge instead.
+	badge_visible(marker, on)
+end
+local function apply_ability_feedback(marker)
+	local state = ability_state[marker]
+	if state == nil or state.button == nil then return end
+	local on = collective_armed(marker)            -- the collective state (one unit: its own flag)
+	if state.feedback_on == on then return end     -- nothing to change
+
+	set_armed_look(marker, on)
+	state.feedback_on = on
+end
+
+-- The one place a per-unit switch is flipped, whichever control did it
+-- (currently: a click on the ability's M/A badge - the click handler calls
+-- this once per unit its checkbox rule acts on). The state belongs to ONE
+-- (unit, ability) pair; every other unit's state for the same ability is
+-- untouched. The letter line comes from apply_ability_feedback right after,
+-- so a toggle always reports both what changed and what the badge now shows.
+local function set_auto_for_unit(ui_id, marker, value)
+	local id = unit_slot(ui_id)
+	local per = armed[id]
+	if per == nil then
+		per = {}
+		armed[id] = per
+	end
+	per[marker] = value == true
+	log("AUTO " .. tostring(marker) .. " for unit " .. tostring(ui_id) .. ": now "
+		.. (value and "ON" or "OFF"))
+	apply_ability_feedback(marker)   -- the letter on the badge - the only feedback now
+end
+
+-- Find the ability icon. Round 18 showed the engine's own highlight path
+-- (battle_orders/orders_parent/behaviour_parent) is the fire-at-will/skirmish row: for Boris
+-- all three slots report an EMPTY ability key, so Deadly Onslaught is not there. So scan the
+-- HUD instead, bounded, and ask every component the one question the engine documents for
+-- identifying an ability button - InterfaceFunction("AbilityKeyForScript") - logging each hit
+-- with its Address(). A scan that finds nothing still reports how far it got.
+local walk_visits = 0
+local walk_skipped = 0        -- components this scan skipped after an error
+
+-- ============================================================================
+-- 1a's logging helpers (the switch itself, CLAIM_BISECT, sits in section 1a).
+-- Every claim-test operation runs between a bisect_enter() and its bisect_ok()
+-- (or bisect_fail(), when the operation itself errored). REMOVED steps (7-8,
+-- the find that killed the engine) run nothing and always log their removal.
+-- A DISABLED step logs SKIPPED and its result simply does not contribute -
+-- the claim verdict falls back to 'not ours' and the walk keeps going.
+-- ============================================================================
+
+local last_key_type = nil     -- bisect step 1's answer, for the scan probe line
+
+-- What each step may log per battle (an enter/ok pair = 1, a SKIPPED line = 1)
+-- before it goes quiet. The crash this hunt is after happens on the FIRST
+-- key-bearing component, so a small budget loses no evidence - it only keeps
+-- a long battle's log readable.
+local BISECT_LINE_CAP = 40
+
+local bisect_slots_used = {}  -- step -> line-events written so far
+local bisect_muted = {}       -- step -> true once its budget is spent
+
+local function bisect_on(step)
+	return step <= CLAIM_BISECT
+end
+
+-- One slot per logged event; the ok/fail line rides the entering line's slot,
+-- so an `entering` with no `ok` (and no `FAILED`) after it can ONLY mean the
+-- game itself died inside that operation - which is exactly the signal.
+local function bisect_slot(step)
+	local used = bisect_slots_used[step] or 0
+	if used < BISECT_LINE_CAP then
+		bisect_slots_used[step] = used + 1
+		return true
+	end
+	if not bisect_muted[step] then
+		bisect_muted[step] = true
+		log("bisect: step " .. tostring(step) .. " - further lines suppressed for this battle (cap "
+			.. tostring(BISECT_LINE_CAP) .. ")")
+	end
+	return false
+end
+
+-- Immediately BEFORE the step's operation. Returns enabled, shown.
+local function bisect_enter(step, name)
+	local enabled = bisect_on(step)
+	local shown = bisect_slot(step)
+	if shown then
+		log("bisect: step " .. tostring(step) .. " " .. name
+			.. (enabled and " entering" or " SKIPPED (disabled)"))
+	end
+	return enabled, shown
+end
+
+-- Immediately AFTER the step's operation completed cleanly.
+local function bisect_ok(step, name, shown)
+	if shown and bisect_on(step) then
+		log("bisect: step " .. tostring(step) .. " " .. name .. " ok")
+	end
+end
+
+-- The operation ran but failed (pcall caught it): the step is NAMED in the
+-- log instead of an 'ok' line that would be a lie.
+local function bisect_fail(step, name, shown, err)
+	if shown and bisect_on(step) then
+		log("bisect: step " .. tostring(step) .. " " .. name .. " FAILED: " .. tostring(err))
+	end
+end
+
+-- A REMOVED SLOT (steps 7-8). The operation that used to sit here was
+-- string.find - the four-argument plain form is what the bisect caught
+-- killing the engine - and no find of any kind remains in the match paths.
+-- The slot still logs so the ladder's record stays honest: it names the
+-- removal, never `entering`/`ok`, at any level (there is no operation left
+-- to enable or disable).
+local function bisect_removed(step, name)
+	if bisect_slot(step) then
+		log("bisect: step " .. tostring(step) .. " " .. name
+			.. " SKIPPED (equality match - find removed)")
+	end
+end
+
+local function bisect_summary()
+	local bits = {}
+	for step = 1, 9 do
+		bits[#bits + 1] = tostring(step) .. (bisect_on(step) and "=on" or "=off")
+	end
+	return table.concat(bits, " ")
+end
+
+-- A FRESH PLAIN-LUA COPY OF WHATEVER THE ENGINE RETURNED. The value a read
+-- like InterfaceFunction("AbilityKeyForScript") answers with has passed
+-- `type(key) == "string"` and still killed the game the moment it reached a C
+-- string function (the crashed sessions' last line was the walk's own header
+-- for our key - `.. key ..` printed fine just before the crash; the
+-- `^ that one is ours` line and the claim line never followed, and between
+-- them the only work was string.lower / find in key_is_ours below). The
+-- bisect later named the killer: the four-argument plain-mode find, now
+-- removed entirely - the match is exact key equality and runs on the copy
+-- only. So nothing in the claim path ever hands the engine's value to a
+-- string function: the copy is made by Lua's own concatenation - the one
+-- operation the engine's value provably survives - with tostring as the
+-- fallback, pcall'd like everything else here. nil when even that fails.
+local function as_plain_string(v)
+	if v == nil then return nil end
+
+	-- BISECT STEP 1 - type(v): the value's Lua type (remembered for the probe).
+	local on1, shown1 = bisect_enter(1, "type(v)")
+	if on1 then
+		local ok1, t1 = pcall(type, v)
+		if ok1 then
+			last_key_type = t1
+			bisect_ok(1, "type(v)", shown1)
+		else
+			bisect_fail(1, "type(v)", shown1, t1)
+		end
+	end
+
+	-- BISECT STEP 2 - tostring(v): pcall'd, the copy's fallback source.
+	local text = nil
+	local on2, shown2 = bisect_enter(2, "tostring(v)")
+	if on2 then
+		local ok2, t2 = pcall(tostring, v)
+		if ok2 and type(t2) == "string" then
+			text = t2
+			bisect_ok(2, "tostring(v)", shown2)
+		else
+			bisect_fail(2, "tostring(v)", shown2,
+				ok2 and "tostring answered a non-string" or t2)
+		end
+	end
+
+	-- BISECT STEP 3 - v .. "": the fresh plain copy; tostring is the fallback.
+	local on3, shown3 = bisect_enter(3, "v .. '' (concat copy)")
+	if on3 then
+		local ok_copy, copied = pcall(function() return v .. "" end)
+		if ok_copy and type(copied) == "string" then
+			bisect_ok(3, "v .. '' (concat copy)", shown3)
+			return copied
+		end
+		bisect_fail(3, "v .. '' (concat copy)", shown3,
+			ok_copy and "the concat did not make a plain string" or copied)
+	end
+	return text
+end
+
+-- A LENGTH READ MUST NEVER KILL THE SCAN. The engine can hand back a STRING
+-- from a length read on these long ability keys (the in-battle failure this
+-- guards: `string.len(key) > 3` raised "attempt to compare string with number"
+-- and killed the whole walk before the button was ever claimed). The value is
+-- copied FIRST (as_plain_string) - the length read and the # fallback below
+-- only ever act on the copy, never on the engine value. The read is pcall'd,
+-- the # operator is the language-level fallback, and nil means "unreadable".
+local function safe_len(s)
+	local plain = as_plain_string(s)
+	if plain == nil then return nil end
+
+	-- BISECT STEP 4 - string.len on the copy.
+	local n = nil
+	local on4, shown4 = bisect_enter(4, "string.len on the copy")
+	if on4 then
+		local ok4, n4 = pcall(string.len, plain)
+		if ok4 and type(n4) == "number" then
+			n = n4
+			bisect_ok(4, "string.len on the copy", shown4)
+		else
+			bisect_fail(4, "string.len on the copy", shown4,
+				ok4 and "the length read answered a non-number" or n4)
+		end
+	end
+	if n ~= nil then return n end
+
+	-- BISECT STEP 5 - # on the copy (the language-level fallback).
+	local on5, shown5 = bisect_enter(5, "# on the copy")
+	if on5 then
+		local ok5, n5 = pcall(function() return #plain end)
+		if ok5 and type(n5) == "number" then
+			n = n5
+			bisect_ok(5, "# on the copy", shown5)
+		else
+			bisect_fail(5, "# on the copy", shown5,
+				ok5 and "the # read answered a non-number" or n5)
+		end
+	end
+	return n
+end
+
+-- IS THIS BUTTON SHOWING THIS ABILITY? The claim test is the KEY ALONE - no
+-- Id(): on a real ability button the engine answers Id() with a function (the
+-- quirk the battle log printed as 'function: 0000000154EC9390') or fails
+-- outright, so anything Id-gated rejects every ability button before its key
+-- is ever considered. The match is EXACT KEY EQUALITY, hardened like safe_len
+-- AND COPY-FIRST: string.lower only ever sees a fresh plain copy of the key
+-- (as_plain_string), and the lowered copy is then compared, character for
+-- character, against every key listed for the ability in ABILITIES (section
+-- 1) - the table is the single source of truth. No find of any kind runs
+-- here any more: the bisect proved the four-argument plain-mode string.find
+-- kills the engine (the log's last line was `bisect: step 7 string.find
+-- plain entering`, with no `ok`), so steps 7-8 are removed slots that only
+-- log the removal and contribute nothing to the verdict.
+--
+-- THE NARROWING IS DELIBERATE: a key that merely CONTAINS an ability's name
+-- (e.g. 'zz_wh_main_character_abilities_deadly_onslaught_xx') no longer
+-- claims. Only the exact keys listed in ABILITIES are accepted - and the
+-- scan probe prints every key-bearing component we did not claim (ours=no),
+-- so an unknown engine variant shows up in the battle log immediately and
+-- the fix is one line in the table.
+--
+-- THE BISECT (section 1a) splits this sequence into steps 6-9: at level 9 the
+-- behaviour is the equality match; a disabled step logs SKIPPED and its
+-- result simply does not contribute, so the verdict falls back to 'not ours'.
+-- (The lower is pcall'd on its own, so an error in it is NAMED, not a silent
+-- skip - and if it fails, the un-lowered copy is compared instead: a
+-- misbehaving helper must not lose a button.)
+local function key_is_ours(ability, key)
+	if ability == nil then return false end
+	local plain = as_plain_string(key)
+	if plain == nil then return false end
+
+	-- BISECT STEP 6 - string.lower on the copy.
+	local lowered = nil
+	local on6, shown6 = bisect_enter(6, "string.lower on the copy")
+	if on6 then
+		local ok6, l6 = pcall(string.lower, plain)
+		if ok6 then
+			lowered = l6
+			bisect_ok(6, "string.lower on the copy", shown6)
+		else
+			bisect_fail(6, "string.lower on the copy", shown6, l6)
+		end
+	end
+
+	-- BISECT STEPS 7-8 - REMOVED SLOTS. Step 7 was `string.find plain` and
+	-- step 8 `string.find pattern-form`; the bisect named the plain form as
+	-- the killer, so both are gone from every match path. The slots always
+	-- log their removal and run nothing - they can never crash, and the
+	-- ladder's record of what happened stays honest.
+	bisect_removed(7, "string.find plain")
+	bisect_removed(8, "string.find pattern-form")
+
+	-- BISECT STEP 9 - THE EQUALITY COMPARE, the verdict gate. Equality, not
+	-- containment: the lowered copy must EQUAL one of the ability's listed
+	-- keys (they are lowercase already). If the lower failed or its step was
+	-- disabled, the un-lowered copy is compared instead.
+	local verdict = false
+	local on9, shown9 = bisect_enter(9, "the equality compare")
+	if on9 then
+		local candidate = lowered or plain
+		for _, listed_key in ipairs(ability.keys) do
+			if candidate == listed_key then
+				verdict = true
+			end
+		end
+		bisect_ok(9, "the equality compare", shown9)
+	end
+	return verdict
+end
+
+-- THE LIVE CLAIM TEST, shared by the ui tick and the badge click guard: a
+-- marker is ON THE CURRENTLY SELECTED UNIT'S DIAL right now when its claimed
+-- button reference still exists AND its key read passes key_is_ours - the
+-- same gate the scan claimed it with. One test in one place, so a click can
+-- never act on a badge the tick considers unclaimed (or the other way round).
+local function marker_claimed_now(ability)
+	if ability == nil then return false end
+	local state = ability_state[ability.marker]
+	if state == nil or state.button == nil then return false end
+	local ok_k, key = pcall(function() return state.button:InterfaceFunction("AbilityKeyForScript") end)
+	if ok_k and (safe_len(key) or 0) > 3 and key_is_ours(ability, key) then
+		return true
+	end
+	return false
+end
+
+-- THE SCAN PROBE: every component that reported a key but was NOT claimed is
+-- recorded here (up to scan_probe_cap), and find_ability_buttons writes the
+-- block - rate-limited - so a seen-but-unclaimed button can never be silent
+-- again. ours= says whether our own matcher would have claimed it.
+local scan_probe_queue = {}
+local scan_probe_cap = 3
+local scan_probe_diag_cap = 2         -- keytype/copyok/lenok line: at most this many per write
+local scan_count = 0                  -- how many scans this battle
+local last_probe_claim_count = -1     -- claim count of the last probe block written
+
+-- THE ACTIVE-DIAL TEST (critique-2 item 1). True when every ability that can
+-- matter THIS battle has its dial button: the scan stops there. The test now
+-- runs over the ACTIVE set - item 1.4's active_abilities_list(), i.e. every
+-- marker a tracked unit OWNS or that is CURRENTLY CLAIMED - rather than the
+-- whole ABILITIES table. A battle where nothing of ours can be on the dial
+-- (the selected unit a Cathayan or Tzeentch lord that owns none of our
+-- markers, and nothing claimed) therefore yields an EMPTY active set, and an
+-- empty set is VACUOUSLY complete: the ui tick's walk gate closes entirely
+-- instead of running the 5 s safety net for the whole fight - the repetition
+-- the user's log showed ("scan done: 632 component(s) visited - none of ours
+-- found"). The BOOTSTRAP is untouched: while no information exists yet,
+-- active_abilities_list() falls back to the full ABILITIES table, so this is
+-- byte-for-byte the old full-table walk.
+--
+-- SELF-CORRECTING - nothing is lost by stopping: a scan, the re-list, the
+-- identity watch or the 60 s fallback can reveal a NEWLY OWNED marker with no
+-- walk at all; the active-set refresh then puts it in the active set, this
+-- test returns false again (its button is not claimed yet) and walking
+-- resumes. A selection change raises walk_on_selection_change, so the next
+-- tick walks too.
+local function all_buttons_found()
+	for _, ability in ipairs(active_abilities_list()) do
+		local state = ability_state[ability.marker]
+		if state == nil or state.button == nil then return false end
+	end
+	return true
+end
+
+-- THE CLAIMED BUTTON'S 1-BASED POSITION AMONG THE KEY-BEARING CHILDREN OF
+-- ITS PARENT BAR (this build). This is what maps to the wheel: two measured
+-- battles showed the bar's key-bearing children sit in wheel order 1..6, so
+-- the ordinal IS the slot number. ("Key-bearing" is the same gate the scan
+-- walk uses: the child's key read passes safe_len > 3.) Every read here is
+-- pcall'd exactly like the walk's, so no sibling - however hostile its key -
+-- can kill the claim; a component whose reads fail simply does not count
+-- (the badges then fall back, logged). "Ours" is found by IDENTITY first
+-- (the component's own Address(), the stable per-component pointer the
+-- battle log prints) and by EXACT key equality second (key_is_ours), so a
+-- twin of our key earlier on the bar cannot steal our position. Returns
+-- k >= 1, or nil when the parent or the children cannot be read.
+local function bar_ordinal_for(uic, ability)
+	if uic == nil or ability == nil then return nil end
+
+	local ok_p, parent = pcall(function() return uic:Parent() end)
+	if not ok_p or parent == nil then return nil end
+	local ok_w, container = pcall(function() return UIComponent(parent) end)
+	if not ok_w or container == nil then return nil end
+
+	local ok_n, n = pcall(function() return container:ChildCount() end)
+	if not ok_n or type(n) ~= "number" or n <= 0 then return nil end
+
+	-- Our own address, for the identity test (nil when unreadable).
+	local my_addr = nil
+	local ok_my, my = pcall(function() return uic:Address() end)
+	if ok_my and my ~= nil then my_addr = tostring(my) end
+
+	local seen = 0
+	for i = 0, n - 1 do
+		local ok_c, child = pcall(function() return container:Find(i) end)
+		if ok_c and child ~= nil then
+			local ok_cw, cc = pcall(function() return UIComponent(child) end)
+			if ok_cw and cc ~= nil then
+				local ok_k, key = pcall(function() return cc:InterfaceFunction("AbilityKeyForScript") end)
+				if ok_k and (safe_len(key) or 0) > 3 then
+					seen = seen + 1
+
+					local is_ours = false
+					if my_addr ~= nil then
+						local ok_a, addr = pcall(function() return cc:Address() end)
+						if ok_a and addr ~= nil and tostring(addr) == my_addr then
+							is_ours = true
+						end
+					end
+					if not is_ours and key_is_ours(ability, key) then
+						is_ours = true
+					end
+
+					if is_ours then return seen end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+-- ONE COMPONENT'S WORTH OF SCAN WORK. The walk below runs this inside its own
+-- pcall, so no single component - however hostile its reads - can kill the
+-- walk (the known in-game failure) or abort the scan silently.
+local function scan_component_body(uic)
+	local ok_key, key = pcall(function() return uic:InterfaceFunction("AbilityKeyForScript") end)
+	if not ok_key then
+		walk_skipped = walk_skipped + 1
+		if walk_skipped <= 5 then
+			log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+				.. tostring(key))
+		end
+	end
+	-- The gate is the COPY's length (as_plain_string inside safe_len), not a
+	-- type() test on the engine value: a value the engine dressed as anything
+	-- other than a plain string still gets its chance, and nothing raw is
+	-- string-op'd anywhere in this body.
+	if ok_key and (safe_len(key) or 0) > 3 then
+		-- The id is LOGGED for diagnostics but never judged: on a real ability
+		-- button the engine can answer Id() with a function, or fail outright,
+		-- and an un-pcall'd read here killed the whole body BEFORE the key was
+		-- considered. Nothing in this block may reject the component - the
+		-- claim below is the key alone.
+		local ok_addr, addr = pcall(function() return uic:Address() end)
+		local ok_id, id = pcall(function() return uic:Id() end)
+		log("   ability button: key='" .. key .. "' id='" .. tostring(ok_id and id or "?")
+			.. "' address=" .. tostring(addr))
+
+		-- One claim per ability: the judgement is the KEY ALONE - it passed
+		-- safe_len() > 3 in the gate above and must EQUAL one of the
+		-- ability's listed keys, lowercased (key_is_ours; exact equality,
+		-- no find of any kind). Every database variant listed in the table
+		-- attaches; an unlisted variant shows up in the probe below.
+		-- No Id check, no Id-based liveness gate in this path.
+		local claimed = nil
+		for _, ability in ipairs(ABILITIES) do
+			local state = ability_state[ability.marker]
+			if state.button == nil and key_is_ours(ability, key) then
+				-- RECORD ONLY - nothing is created, painted or written to the
+				-- engine from inside this walk. The reference and the flag are
+				-- all a claim leaves behind; the ui tick builds the badge from
+				-- the flag, step by step, instrumented (section 8b).
+				state.button = uic
+				pending_badge[ability.marker] = true
+				badge_attempts[ability.marker] = 0
+				badge_gave_up[ability.marker] = nil
+				claimed = ability
+				log("   ^ that one is ours (" .. ability.marker .. ")")
+				log("claim: " .. ability.marker
+					.. " button found - badge creation deferred to the tick")
+				-- THE BAR POSITION (this build): the old live Position()
+				-- read is GONE - it read the wrong widget (the claimed
+				-- button lives in the HIDDEN BAR, so its Position() is a
+				-- bar coordinate like (1130,1052), not a wheel slot, and
+				-- the badges landed off-screen). What maps to the wheel is
+				-- the button's 1-based position among the KEY-BEARING
+				-- children of its parent bar - measured over two battles.
+				-- bar_ordinal_for walks the siblings (every read pcall'd),
+				-- and slot_index is refreshed on every claim; the badge's
+				-- offset follows through WHEEL_SLOT (section 8b).
+				local k = bar_ordinal_for(uic, ability)
+				if k ~= nil and k >= 1 and k <= 6 then
+					slot_index[ability.marker] = k
+					local slot = WHEEL_SLOT[k]
+					log("claim: " .. ability.marker .. " is bar position " .. tostring(k)
+						.. " -> wheel slot (" .. tostring(slot[1]) .. "," .. tostring(slot[2]) .. ")")
+				elseif k ~= nil then
+					slot_index[ability.marker] = nil
+					log("claim: " .. ability.marker .. " is bar position " .. tostring(k)
+						.. " - MORE THAN SIX key-bearing bar children (unexpected) - badge will use its fallback offset")
+				else
+					slot_index[ability.marker] = nil
+					log("claim: " .. ability.marker
+						.. " bar position unreadable - badge will use its fallback offset")
+				end
+			end
+		end
+
+		-- The probe, collected here and written by find_ability_buttons: this
+		-- component reported a key but did not become a button. ours=yes is
+		-- the alarming case - our own matcher would have taken it.
+		if claimed == nil and #scan_probe_queue < scan_probe_cap then
+			local ours = false
+			for _, ability in ipairs(ABILITIES) do
+				if key_is_ours(ability, key) then
+					ours = true
+				end
+			end
+			local ok_id2, probe_id = pcall(function() return uic:Id() end)
+			-- The key's own properties, so the next battle's log names exactly
+			-- which of them is hostile: keytype is what the bisect's step 1
+			-- (type(v)) answered for this value, copyok whether
+			-- as_plain_string could make the fresh plain copy, lenok whether
+			-- the copy measured (safe_len acts on the copy).
+			scan_probe_queue[#scan_probe_queue + 1] = {
+				id = tostring(ok_id2 and probe_id or "?"),
+				key = key,
+				keytype = last_key_type,
+				copyok = (as_plain_string(key) ~= nil),
+				lenok = (safe_len(key) ~= nil),
+				ours = ours,
+			}
+		end
+
+		if claimed ~= nil then
+			-- NOTHING RUNS HERE ANY MORE. The claim used to continue with the
+			-- event-reporter chain (7 x AddScriptEventReporter on the button and
+			-- its ancestors), the container-chain walk, the icon/state reads and
+			-- the feedback call - a dozen engine touches on a freshly claimed,
+			-- engine-owned button, inside a walk, while the HUD may be mid-rebuild.
+			-- The crashed session's log ends at the claim with no line after it,
+			-- so a successful claim now leaves only the reference and the flag
+			-- (above); every engine touch on the badge path happens on the ui
+			-- tick, instrumented step by step (section 8b). The event reporters
+			-- existed to hear right-clicks on the button - a control this mod no
+			-- longer has (the M/A badge click is the only control).
+			do end
+		end
+	end
+end
+
+local function scan_component(uic, depth)
+	if uic == nil or depth > 6 or walk_visits > 4000 or all_buttons_found() then return end
+	walk_visits = walk_visits + 1
+
+	local ok_one, err_one = pcall(scan_component_body, uic)
+	if not ok_one then
+		walk_skipped = walk_skipped + 1
+		if walk_skipped <= 5 then
+			log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+				.. tostring(err_one))
+		end
+	end
+
+	local ok_n, n = pcall(function() return uic:ChildCount() end)
+	if ok_n and type(n) == "number" then
+		for i = 0, n - 1 do
+			local ok_c, child = pcall(function() return uic:Find(i) end)
+			if ok_c and child ~= nil then
+				local ok_r, err_r = pcall(function()
+					scan_component(UIComponent(child), depth + 1)
+				end)
+				if not ok_r then
+					walk_skipped = walk_skipped + 1
+					if walk_skipped <= 5 then
+						log("scan: " .. tostring(walk_skipped) .. " component(s) skipped after an error: "
+							.. tostring(err_r))
+					end
+				end
+			end
+		end
+	end
+end
+
+local function find_ability_buttons()
+	if all_buttons_found() then return end
+	walk_visits = 0
+	walk_skipped = 0
+	scan_probe_queue = {}
+	scan_count = scan_count + 1
+
+	local ok, err = pcall(function()
+		local hud = UIComponent(core:get_ui_root():Find("hud_battle"))
+		if hud == nil then
+			if not logged_no_parent then
+				logged_no_parent = true
+				log("ability icons: hud_battle is not on screen yet (will keep trying)")
+			end
+			return
+		end
+
+		log("ability icons: scanning the HUD for ability buttons")
+		scan_component(hud, 0)
+
+		local found = {}
+		local claim_bits = {}
+		local claimed_count = 0
+		for _, ability in ipairs(ABILITIES) do
+			local is_claimed = ability_state[ability.marker].button ~= nil
+			if is_claimed then
+				found[#found + 1] = ability.marker
+				claimed_count = claimed_count + 1
+			end
+			claim_bits[#claim_bits + 1] = ability.marker .. "=" .. tostring(is_claimed)
+		end
+		log("   scan done: " .. tostring(walk_visits) .. " component(s) visited - "
+			.. (#found > 0 and ("found: " .. table.concat(found, ", ")) or "none of ours found")
+			.. " | scan: claimed " .. table.concat(claim_bits, " "))
+
+		-- HANDLE HEALTH: a scan that cannot walk the HUD is never silent again.
+		-- A HUD that has children yet yields a one-component walk is the known
+		-- dead-handle signature (the engine rebuilt hud_battle), so it is
+		-- called out too and the next scan re-fetches.
+		local children_str = "invalid"
+		local ok_hc, hc = pcall(function() return hud:ChildCount() end)
+		if ok_hc and type(hc) == "number" then children_str = tostring(hc) end
+		log("   scan: hud_battle children=" .. children_str .. " visits=" .. tostring(walk_visits)
+			.. " skipped=" .. tostring(walk_skipped))
+		if children_str == "invalid"
+			or (ok_hc and type(hc) == "number" and hc >= 1 and walk_visits <= 1) then
+			log("   scan: hud_battle handle unusable this scan - refetching next time")
+		end
+
+		-- THE PROBE: write the collected unclaimed keys, rate-limited to a
+		-- claim-count change or every 10th scan, so a mismatch is never
+		-- silent and the log stays readable.
+		if #scan_probe_queue > 0
+			and (claimed_count ~= last_probe_claim_count or (scan_count % 10) == 0) then
+			for i = 1, #scan_probe_queue do
+				local entry = scan_probe_queue[i]
+				-- Up to scan_probe_diag_cap entries also get the key's property
+				-- line, immediately before the ours verdict.
+				if i <= scan_probe_diag_cap then
+					log("scan probe: keytype=" .. tostring(entry.keytype)
+						.. " copyok=" .. tostring(entry.copyok)
+						.. " lenok=" .. tostring(entry.lenok))
+				end
+				log("scan probe: id='" .. entry.id .. "' key='" .. entry.key .. "' ours="
+					.. (entry.ours and "yes" or "no"))
+			end
+			last_probe_claim_count = claimed_count
+		end
+	end)
+
+	if not ok then log("ability icon scan failed: " .. tostring(err)) end
+
+	-- ITEM 1.4 - the scan just ran: a claim (or a fresh owned-key read) may
+	-- have changed the inputs, so refresh the active set. Silent unless it moved.
+	refresh_active_abilities()
+end
+
+
+-- (4) the engine's own report that an ability was *used* - the documented command channel
+--     (battle.lua: "Special Ability - a command to use a special ability has been issued",
+--     get_string1() = the ability name). Log only, but it is the control case for the whole
+--     question: if a click on the icon reaches the game at all, this fires.
+bm:register_command_handler_callback("Special Ability", function(context)
+	local ability = "?"
+	pcall(function() ability = context:get_string1() end)
+	log("command: 'Special Ability' issued for '" .. tostring(ability) .. "'")
+end, "zz_deadly_onslaught_ability_used")
+
+
+
+-- Does this event belong to our chain? Returns the id of the matching component, or nil.
+-- Compared by address first (what vanilla does) and by id second.
+local function in_chain(context)
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		for i = 1, #state.watch_chain do
+			local e = state.watch_chain[i]
+			if e.addr ~= nil and context.component ~= nil and context.component == e.addr then
+				return e.id or "?"
+			end
+		end
+	end
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		for i = 1, #state.watch_chain do
+			local e = state.watch_chain[i]
+			if e.id ~= nil and context.string == e.id then return e.id end
+		end
+	end
+	return nil
+end
+
+-- (1) THE EVENT THAT MATTERS: a right-click on the ability icon, now that the component
+-- reports its events. script/events.lua declares ComponentRClickUp; this is the first time we are
+-- actually asking for it. Matched by component id and by address, so whichever the context fills in
+-- one of them will agree.
+local rclick_other = 0
+core:add_listener(
+	"zz_deadly_onslaught_rclick",
+	"ComponentRClickUp",
+	function(context) return true end,          -- unfiltered ON PURPOSE: the log labels it
+	function(context)
+		local who = in_chain(context)
+		if who ~= nil then
+			log("RCLICK: right-click came in on '" .. tostring(context.string) .. "' - in our chain ("
+				.. who .. ")")
+			-- (the right-click toggle is gone: the badge click is the only control)
+		else
+			if rclick_other < 15 then
+				rclick_other = rclick_other + 1
+				log("RCLICK: right-click on '" .. tostring(context.string) .. "' - not ours")
+			end
+		end
+	end,
+	true
+)
+
+-- (2) THE KEYBOARD: gone. The shortcut listeners and their on_shortcut helper were deleted,
+-- so pressing '8' (usegroup8) no longer reaches the mod at all. The badge click is the only control.
+
+-- (3) THE CONTROL: a left-click on the same icon, which happens whenever the ability is used -
+-- so this one is seen without the player doing anything special. If this reports and the
+-- right-click does not, the reporter works and the engine simply never raises the right-click.
+local lclick_other = 0
+core:add_listener(
+	"zz_deadly_onslaught_lclick_control",
+	"ComponentLClickUp",
+	function(context) return true end,          -- unfiltered ON PURPOSE: the log labels it
+	function(context)
+		local clicked_id = tostring(context.string)
+
+		-- THE BADGE CLICK: a left-click on our OWN badge flips the per-unit
+		-- switch(es) for that badge's ability. Round 43+ measured that these
+		-- clicks DO reach script - six clicks each arrived as a "left-click
+		-- on 'zz_auto_badge'" and were simply logged as "not ours". The badge
+		-- is the component created on hud_battle with the id 'zz_auto_badge';
+		-- any future 'zz_auto_*' component is routed the same way, so an
+		-- added or renamed badge keeps working. Each badge id resolves to its
+		-- own ability (section 1), so a click flips ONLY that ability - for
+		-- every unit the engine reports as selected that owns it: one
+		-- selected unit - exactly as before; several - the checkbox rule
+		-- (all armed -> disarm all, else arm all; selected non-owners are
+		-- never touched). With no unit selected the click does nothing but
+		-- say so.
+		if string.sub(clicked_id, 1, 8) == "zz_auto_" then
+			local ability = ability_for_badge(clicked_id)
+			if ability == nil then
+				log("badge click on '" .. clicked_id
+					.. "' - no ability has that badge id, ignored")
+				return
+			end
+			if selected_unit_id == nil and #selected_ui_ids == 0 then
+				log("click ignored: no unit selected yet - click the unit's card first")
+				return
+			end
+
+			-- THE CLICK GUARD (this build): a badge whose marker is NOT
+			-- currently claimed - i.e. NOT on the selected unit's dial - is
+			-- INERT. The battle log showed a stale, still-visible badge
+			-- being clicked while the dial had no Deadly Onslaught, and the
+			-- click toggled the ability on for a unit that does not even
+			-- own it. The test is marker_claimed_now, the same one the ui
+			-- tick uses, so the tick and the click can never disagree.
+			if not marker_claimed_now(ability) then
+				log("click ignored: " .. ability.marker .. " is not on this unit's dial")
+				return
+			end
+
+			-- THE SELECTED SET (this build): the badge click acts on EVERY
+			-- unit the engine reports as selected, not just the single
+			-- tracker below - the vanilla "common ability" behaviour. The
+			-- shared card read keeps the set current (section 8e); when it
+			-- is empty the tracker stands in alone, exactly as before.
+			local targets, target_ids = {}, {}
+			for i = 1, #selected_ui_ids do
+				local id = selected_ui_ids[i]
+				if id ~= nil then
+					targets[#targets + 1] = id
+					target_ids[#target_ids + 1] = tostring(id)
+				end
+			end
+			if #targets == 0 then
+				if selection_callback_alive then
+					-- THE ENGINE'S OWN ANSWER: nothing is selected. The
+					-- tracker may still name the last unit, but acting on
+					-- it would toggle a unit the player has deselected -
+					-- the callback set is authoritative, so the click acts
+					-- on nobody.
+					log("click ignored: no unit selected yet - click the unit's card first")
+					return
+				end
+				targets[1] = tostring(selected_unit_id)
+				target_ids[1] = tostring(selected_unit_id)
+			end
+
+			if #targets <= 1 then
+				-- ONE SELECTED UNIT - one unit's own pair flips, whether or
+				-- not the scan has seen the ability on it yet (a
+				-- late-arriving ability stays armable). When the callback set
+				-- is in charge, the one id IS the engine's answer (and may
+				-- already be newer than the tracker, which catches up at the
+				-- next convergence); the fallback world keeps acting on the
+				-- tracker, exactly as before. The click-time context - the
+				-- unit, its type and the state as it was - is written BEFORE
+				-- the toggle takes effect: the diagnostic for the reported
+				-- cross-unit toggle, so the log names the unit a click
+				-- really acted on.
+				local single_id = target_ids[1]
+				if not selection_callback_alive then single_id = tostring(selected_unit_id) end
+				local unit = units_by_ui_id[tostring(single_id)]
+				local arm_slot = unit_slot(single_id)
+				local per = armed[arm_slot]
+				local was_armed = per ~= nil and per[ability.marker] == true
+				local ok_t, unit_type = pcall(function() return unit:type() end)
+				log("click: " .. ability.marker .. " badge -> selected unit "
+					.. tostring(single_id) .. " ('" .. tostring(ok_t and unit_type or "?")
+					.. "') armed was " .. (was_armed and "ON" or "OFF"))
+				set_auto_for_unit(single_id, ability.marker, not was_armed)
+				return
+			end
+
+			-- SEVERAL SELECTED UNITS - THE CHECKBOX RULE (this build): over
+			-- every selected unit that OWNS one of this ability's keys (the
+			-- per-unit owned-key cache, section 4), ALL armed -> disarm
+			-- all, otherwise -> arm all. Selected units that do not own the
+			-- ability are never touched, so per-unit independence holds.
+			local owners, owner_ids = {}, {}
+			for i = 1, #targets do
+				if unit_owns_marker(targets[i], ability.marker) then
+					owners[#owners + 1] = targets[i]
+					owner_ids[#owner_ids + 1] = target_ids[i]
+				end
+			end
+			if #owners == 0 then
+				log("click: " .. ability.marker .. " badge -> " .. tostring(#targets)
+					.. " selected unit(s), none owns the ability - nothing toggled")
+				return
+			end
+			local all_armed = true
+			for i = 1, #owners do
+				local per = armed[unit_slot(owners[i])]
+				if per == nil or per[ability.marker] ~= true then
+					all_armed = false
+				end
+			end
+			local value = not all_armed
+			for i = 1, #owners do
+				set_auto_for_unit(owners[i], ability.marker, value)
+			end
+			log("click: " .. ability.marker .. " badge -> " .. tostring(#owners)
+				.. " selected unit(s) toggled " .. (value and "ON" or "OFF")
+				.. " (" .. table.concat(owner_ids, ", ") .. ")")
+			return
+		end
+
+		-- THE UNIT CARD: a click on a unit's card selects the unit the badge
+		-- clicks act on. The card's component id IS its unit's own
+		-- unique_ui_id (the proven bridge - vanilla matches
+		-- uic_card:Id() == unit:unique_ui_id() the same way), so this is a
+		-- plain table lookup, never a find. This is the FAST-PATH: the card
+		-- sweep (section 8e) re-derives the selection from the engine's own
+		-- card states within ~1 s and WINS over whatever this click set.
+		local clicked_unit = units_by_ui_id[clicked_id]
+		if clicked_unit ~= nil then
+			-- IS THIS A SELECTION CHANGE? (this build) The letters are
+			-- driven from a card click ONLY when the click actually moves
+			-- the selection; a click that re-selects the same unit stays
+			-- silent (the letter cache has nothing to change).
+			local selection_changed = (selected_unit_id ~= clicked_id)
+			selected_unit_id = clicked_id
+			local ok_t, unit_type = pcall(function() return clicked_unit:type() end)
+			log("SELECTED unit ui id " .. clicked_id .. " ('"
+				.. tostring(ok_t and unit_type or "?")
+				.. "') - badge clicks now act on it")
+			if selection_changed then
+				walk_on_selection_change = true   -- the dial now belongs to this unit
+				-- THE SELECTION CHANGED: refresh BOTH badges' letters from
+				-- the new selection in this same handler call (this build) -
+				-- the letters never wait for a timer - then log the
+				-- tick-stamped card-click line, so the click itself is the
+				-- refresh trigger. The feedback caches are re-synced right
+				-- after, so every other path agrees.
+				refresh_badge_letters_for_selection(selected_unit_id)
+				log("card click: selection -> " .. tostring(selected_unit_id)
+					.. " - letters refreshed at tick " .. tostring(tick_count))
+			end
+			for _, ability in ipairs(ABILITIES) do
+				apply_ability_feedback(ability.marker)
+			end
+			return
+		end
+
+		local who = in_chain(context)
+		if who ~= nil then
+			log("CONTROL: left-click came in on '" .. tostring(context.string) .. "' - in our chain ("
+				.. who .. ") - component click events DO reach script in battle")
+		else
+			if lclick_other < 15 then
+				lclick_other = lclick_other + 1
+				log("CONTROL: left-click on '" .. tostring(context.string) .. "' - not ours")
+			end
+		end
+	end,
+	true
+)
+
+-- ============================================================================
+-- 8c. THE DIAL DUMP - a once-per-second, READ-ONLY census of the ability dial
+--     What the script sees vs what the screen shows: every child of our button's
+--     parent container (the 'button_parent' next to our button), each with its
+--     id, its AbilityKeyForScript and its Position(), plus the parent's and the
+--     'SA_dial' ancestor's own positions and our badge's position/offset/letter.
+--     The caller gates it to one block per ~1 s of battle time (4 x 250 ms), and
+--     every engine read is pcall'd and type-checked, so it can never error out of
+--     the tick. NOTHING here writes to any button.
+-- ============================================================================
+
+local DIAL_DUMP_EVERY_N_POLL_TICKS = 4      -- 4 x 250 ms = ~1 s of battle time
+local last_dial_dump_tick = -1000           -- so the first confirmed tick dumps at once
+
+local function fmt_xy(x, y)
+	if type(x) == "number" and type(y) == "number" then
+		return "(" .. tostring(x) .. "," .. tostring(y) .. ")"
+	end
+	return "(?,?)"
+end
+
+local function read_xy(uic)
+	local ok, x, y = pcall(function() return uic:Position() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+local function log_dial_dump()
+	local master = ability_state[ABILITIES[1].marker]
+	if master == nil or master.button == nil then return end
+
+	local ok_p, parent = pcall(function() return master.button:Parent() end)
+	if not ok_p or parent == nil then return end
+	local ok_w, container = pcall(function() return UIComponent(parent) end)
+	if not ok_w or container == nil then return end
+
+	-- The dial itself: the first 'SA_dial' on the way up from our button.
+	local dial_str = "?"
+	local node = master.button
+	for _ = 1, 8 do
+		local ok_up, up = pcall(function() return node:Parent() end)
+		if not ok_up or up == nil then break end
+		local ok_w2, wrapped = pcall(function() return UIComponent(up) end)
+		if not ok_w2 or wrapped == nil then break end
+		node = wrapped
+		local ok_id, id = pcall(function() return node:Id() end)
+		if ok_id and type(id) == "string" and id == "SA_dial" then
+			local dx, dy = read_xy(node)
+			dial_str = fmt_xy(dx, dy)
+			break
+		end
+	end
+
+	local slot_count = nil
+	local ok_n, n = pcall(function() return container:ChildCount() end)
+	if ok_n and type(n) == "number" then slot_count = n end
+
+	local px, py = read_xy(container)
+	log("DIAL t=" .. string.format("%.1f", tick_count * POLL_MS / 1000) .. "s slots="
+		.. (slot_count ~= nil and tostring(slot_count) or "?")
+		.. " parent=" .. fmt_xy(px, py) .. " dial=" .. dial_str)
+
+	if slot_count ~= nil then
+		for i = 0, slot_count - 1 do
+			local ok_c, child = pcall(function() return container:Find(i) end)
+			if ok_c and child ~= nil then
+				local ok_c2, cc = pcall(function() return UIComponent(child) end)
+				if ok_c2 and cc ~= nil then
+					local cid = "?"
+					local ok_i, id = pcall(function() return cc:Id() end)
+					if ok_i and type(id) == "string" then cid = id end
+
+					local ckey = "-"
+					local ok_k, key = pcall(function() return cc:InterfaceFunction("AbilityKeyForScript") end)
+					if ok_k and type(key) == "string" and (safe_len(key) or 0) > 3 then
+						ckey = key
+					end
+
+					local cx, cy = read_xy(cc)
+					log("  slot " .. tostring(i + 1) .. ": id='" .. cid
+						.. "' key='" .. ckey .. "' pos=" .. fmt_xy(cx, cy))
+				end
+			end
+		end
+	end
+
+	-- ONE FOOTER LINE PER ABILITY: the badge's visibility, position and letter,
+	-- plus the offset it was placed at (BADGE_X/BADGE_Y + its own ox/oy). The
+	-- onslaught footer keeps its original wording; added abilities get a tag.
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		local bvis, bpos, bletter = false, "(?,?)", "-"
+		if state.badge ~= nil then
+			bvis = state.badge_shown == true
+			local bx, by = read_xy(state.badge)
+			bpos = fmt_xy(bx, by)
+			local ok_g, got = pcall(function() return state.badge:GetText() end)
+			if ok_g and type(got) == "string" then
+				bletter = got
+			else
+				bletter = is_armed(selected_unit(), ability.marker) and "A" or "M"
+			end
+		end
+		local prefix = "OUR BADGE"
+		if ability.marker ~= "onslaught" then
+			prefix = prefix .. " [" .. ability.marker .. "]"
+		end
+		log(prefix .. ": visible=" .. (bvis and "true" or "false") .. " pos=" .. bpos
+			.. " offset=(" .. tostring(BADGE_X + ability.ox) .. "," .. tostring(BADGE_Y + ability.oy)
+			.. ") letter='" .. bletter .. "'")
+	end
+end
+
+-- ============================================================================
+-- 8d. THE INVENTORY SWEEP - a once-per-second, READ-ONLY census of every
+--     candidate ability component, in TWO coordinate spaces at once.
+--     The player sees a CIRCLE, but the DIAL dump above reports the button bar
+--     as a straight line (same y, x stepping by 59 px). So either the circle is
+--     a component outside button_parent, or Position() and the drawn position
+--     live in different spaces - RelativePosition() and GetDockOffset() have
+--     never been read. This sweep reads them, pcall'd, for every candidate id
+--     and logs ONE line per candidate; a read that fails prints '?' and NEVER
+--     skips its line. It runs whenever our ability button OR any candidate can
+--     be found - NOT only while the dial is confirmed - once per ~1 s.
+-- ============================================================================
+
+local INVENTORY_EVERY_N_POLL_TICKS = 4      -- 4 x 250 ms = ~1 s of battle time
+local last_inventory_tick = -1000           -- so the first tick with a find dumps at once
+
+-- The fixed candidate ids, read and logged in this order. Every one is looked
+-- up by id from the UI root: root:Find(id) is the engine's own recursive search.
+local INVENTORY_FIXED = {
+	"SA_dial", "dial_frame", "button_parent",
+	"button_ability",
+	"button_ability1", "button_ability2", "button_ability3",
+	"button_ability4", "button_ability5", "button_ability6",
+	"button_slot1", "button_slot2", "button_slot3",
+	"button_slot4", "button_slot5", "button_slot6",
+	"behaviour_parent", "orders_parent", "army_ability_parent", "ability_parent",
+	"zz_auto_badge", "zz_auto_badge_fs",
+}
+
+local function inv_id_of(uic)
+	local ok, id = pcall(function() return uic:Id() end)
+	if ok and type(id) == "string" and string.len(id) > 0 then return id end
+	return nil
+end
+
+-- Find one candidate: the engine's recursive Find from the ui root first, and
+-- a bounded walk of the tree as a fallback. Returns the component, or nil.
+local function inv_find(wanted)
+	local ok, got = pcall(function()
+		local root = core:get_ui_root()
+		if root == nil then return nil end
+		local raw = root:Find(wanted, false)      -- false = do not assert when missing
+		if raw == nil then return nil end
+		local ok_w, wrapped = pcall(UIComponent, raw)
+		if ok_w and wrapped ~= nil then return wrapped end
+		return raw
+	end)
+	if ok and got ~= nil then
+		local id = inv_id_of(got)
+		if id == nil or id == wanted then return got end
+	end
+	return nil
+end
+
+-- ONE bounded walk from the ui root, collecting every still-missing id at once.
+-- Read-only; depth- and visit-bounded; every read pcall'd.
+local function inv_walk(missing, found)
+	local ok_r, root = pcall(function() return core:get_ui_root() end)
+	if not ok_r or root == nil then return end
+
+	local visits, max_visits = 0, 900
+	local stack = { { node = root, depth = 0 } }
+	while #stack > 0 and visits < max_visits do
+		local item = table.remove(stack)
+		local node, depth = item.node, item.depth
+		visits = visits + 1
+
+		local id = inv_id_of(node)
+		if id ~= nil and missing[id] ~= nil and found[id] == nil then
+			found[id] = node
+		end
+
+		if depth < 8 then
+			local ok_n, n = pcall(function() return node:ChildCount() end)
+			if ok_n and type(n) == "number" and n > 0 then
+				for i = n - 1, 0, -1 do
+					local ok_c, child = pcall(function() return node:Find(i) end)
+					if ok_c and child ~= nil then
+						local ok_w, wrapped = pcall(UIComponent, child)
+						if ok_w and wrapped ~= nil then
+							stack[#stack + 1] = { node = wrapped, depth = depth + 1 }
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+-- Resolve every wanted id, fresh each sweep: the engine's own Find per id,
+-- then one shared walk for whatever is still missing.
+local function inv_resolve(ids)
+	local found = {}
+
+	for i = 1, #ids do
+		local got = inv_find(ids[i])
+		if got ~= nil then found[ids[i]] = got end
+	end
+
+	local missing = {}
+	local anything_missing = false
+	for i = 1, #ids do
+		if found[ids[i]] == nil then
+			missing[ids[i]] = true
+			anything_missing = true
+		end
+	end
+	if anything_missing then inv_walk(missing, found) end
+
+	-- Our own badges are special: if the engine's search cannot see a component
+	-- WE created, the handle we already hold is the truth about it.
+	for _, ability in ipairs(ABILITIES) do
+		local state = ability_state[ability.marker]
+		if found[ability.badge] == nil and state.badge ~= nil
+			and inv_id_of(state.badge) == ability.badge then
+			found[ability.badge] = state.badge
+		end
+	end
+
+	return found
+end
+
+local function inv_rel_xy(uic)
+	local ok, x, y = pcall(function() return uic:RelativePosition() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+local function inv_dock_xy(uic)
+	local ok, x, y = pcall(function() return uic:GetDockOffset() end)
+	if ok and type(x) == "number" and type(y) == "number" then return x, y end
+	return nil, nil
+end
+
+-- One INVENTORY line. Every read is pcall'd and type-checked; a failed read
+-- prints '?' and NEVER shortens the line. comp == nil means the candidate does
+-- not exist right now - still a line, all fields '?', marked [not found].
+local function inv_line(wanted, comp)
+	if comp == nil then
+		return "INVENTORY " .. wanted
+			.. ": visible=? pos=(?,?) relpos=(?,?) dock=(?,?) state='?' key='?' [not found]"
+	end
+
+	local vis = "?"
+	local ok_v, v = pcall(function() return comp:Visible(true) end)
+	if ok_v and type(v) == "boolean" then
+		vis = v and "true" or "false"
+	end
+
+	local px, py = read_xy(comp)
+	local rx, ry = inv_rel_xy(comp)
+	local dx, dy = inv_dock_xy(comp)
+
+	local state = "?"
+	local ok_s, s = pcall(function() return comp:CurrentState() end)
+	if ok_s and type(s) == "string" then state = s end
+
+	local key = "?"
+	local ok_k, k = pcall(function() return comp:InterfaceFunction("AbilityKeyForScript") end)
+	if ok_k then
+		if type(k) == "string" and (safe_len(k) or 0) > 3 then
+			key = k
+		else
+			key = "-"
+		end
+	end
+
+	return "INVENTORY " .. wanted
+		.. ": visible=" .. vis
+		.. " pos=" .. fmt_xy(px, py)
+		.. " relpos=" .. fmt_xy(rx, ry)
+		.. " dock=" .. fmt_xy(dx, dy)
+		.. " state='" .. state .. "'"
+		.. " key='" .. key .. "'"
+end
+
+local function log_inventory_sweep()
+	local found = inv_resolve(INVENTORY_FIXED)
+
+	-- Children of button_parent whose id starts with 'button_order' (dynamic:
+	-- the engine names them button_order1, button_order12, ... per unit).
+	local order_children = {}
+	local bp = found["button_parent"]
+	if bp ~= nil then
+		local ok_n, n = pcall(function() return bp:ChildCount() end)
+		if ok_n and type(n) == "number" and n > 0 then
+			for i = 0, n - 1 do
+				local ok_c, child = pcall(function() return bp:Find(i) end)
+				if ok_c and child ~= nil then
+					local ok_w, cc = pcall(UIComponent, child)
+					if ok_w and cc ~= nil then
+						local cid = inv_id_of(cc)
+						if cid ~= nil and string.sub(cid, 1, 12) == "button_order" then
+							order_children[#order_children + 1] = { id = cid, comp = cc }
+						elseif cid == nil then
+							-- a child whose id cannot be read: still a line, never skipped
+							order_children[#order_children + 1] =
+								{ id = "button_order?[" .. tostring(i + 1) .. "]", comp = cc }
+						end
+					end
+				end
+			end
+		end
+	end
+
+	local found_count = #order_children
+	for i = 1, #INVENTORY_FIXED do
+		if found[INVENTORY_FIXED[i]] ~= nil then found_count = found_count + 1 end
+	end
+	local total = #INVENTORY_FIXED + #order_children
+
+	-- Run whenever one of our ability buttons OR any candidate exists; stay
+	-- silent only when there is nothing at all to report on.
+	local any_button = false
+	for _, ability in ipairs(ABILITIES) do
+		if ability_state[ability.marker].button ~= nil then any_button = true end
+	end
+	if not any_button and found_count == 0 then return end
+
+	log("INVENTORY sweep t=" .. string.format("%.1f", tick_count * POLL_MS / 1000) .. "s"
+		.. " found=" .. tostring(found_count) .. "/" .. tostring(total))
+
+	log(inv_line("SA_dial", found["SA_dial"]))
+	log(inv_line("dial_frame", found["dial_frame"]))
+	log(inv_line("button_parent", found["button_parent"]))
+	for i = 1, #order_children do
+		log(inv_line(order_children[i].id, order_children[i].comp))
+	end
+	log(inv_line("button_ability", found["button_ability"]))
+	for i = 1, 6 do
+		log(inv_line("button_ability" .. tostring(i), found["button_ability" .. tostring(i)]))
+	end
+	for i = 1, 6 do
+		log(inv_line("button_slot" .. tostring(i), found["button_slot" .. tostring(i)]))
+	end
+	log(inv_line("behaviour_parent", found["behaviour_parent"]))
+	log(inv_line("orders_parent", found["orders_parent"]))
+	log(inv_line("army_ability_parent", found["army_ability_parent"]))
+	log(inv_line("ability_parent", found["ability_parent"]))
+	log(inv_line("zz_auto_badge", found["zz_auto_badge"]))
+	log(inv_line("zz_auto_badge_fs", found["zz_auto_badge_fs"]))
+end
+
+-- ============================================================================
+-- 8e. THE SELECTION - the engine's selection callback FIRST, the card sweep
+--     as the fallback and reconciliation, both converging on ONE set
+--     (selected_ui_ids) and ONE tracker (selected_unit_id):
+--
+--     * THE ENGINE SELECTION CONVERGENCE (converge_engine_selection) runs on
+--       every ui tick BEFORE the sweep: the callback (section 3b) maintains
+--       the set event by event; the convergence folds any change into ONE
+--       logged line naming the whole set
+--           selection callback: <n> unit(s) selected now (<id1>, <id2>, ...)
+--       adopts the tracker with the same rule the card derivation uses, and
+--       refreshes the badge letters - all ONCE per change, never once per
+--       unit event (a ten-unit box selection is one line, not ten).
+--
+--     * THE CARD SWEEP - the player's unit cards DRIVE THE SELECTION when no
+--       callback event has EVER been delivered (API missing / behaviour
+--       differs - the unchanged fallback), and RECONCILE the callback-fed
+--       set otherwise (a card-reported id is added; a card-added id is
+--       dropped once the cards stop reporting it). At TWO cadences:
+--
+--     * THE FAST PATH (fast_card_selection) runs on EVERY ui tick: it reads
+--       the tracked units' card states and derives the selection the same
+--       way the census always did (exactly one card reports 'selected' ->
+--       adopt its id; several -> keep the tracker when it is one of them,
+--       else the deterministic first; none/failed -> keep). On any change it
+--       adopts the derived id and refreshes both badges' letters with the
+--       tick number on the established header:
+--           selection changed to <ui_id> - refreshing badge letters (tick N)
+--       so the change reaches the tracker AND the letters within ONE ui tick
+--       (~50 ms) instead of waiting up to a second for the next census. It
+--       is QUIET while nothing changes - no notes, no summary, no repeated
+--       lines - and on a change it includes the card lines ONCE, so the
+--       change is documented with the states that caused it.
+--
+--     * THE VERBOSE CENSUS (log_card_sweep) stays at ONE BLOCK PER ~1 s of
+--       battle time exactly as before (the 4 x 250 ms gate, same lines): the
+--       once-per-change notes, its own adoption line should it ever get
+--       there first, then the summary and one line per card:
+--           card <ui_id> state='<CurrentState()>' visible=<true|false>
+--           cards: selected-tracker=<ui_id or none>
+--       with the [selected-tracker] tag on the card the tracker currently
+--       names. The fast path runs first on every tick, so in practice the
+--       census reports; its adoption branch stays as the safety net.
+--
+--     Both cadences share ONE read and ONE derivation (read_tracked_card_states
+--     + derive_selection_from_cards) and one card-line writer (log_card_lines),
+--     so they can never disagree about what the cards say.
+--
+--     The engine marks the selected unit's card with CurrentState() ==
+--     'selected' (measured in battle: the selected card reads 'selected',
+--     every other card reads 'active'); the card CLICK path stays as an
+--     immediate fast-path (it sets the tracker on the spot), but the card
+--     states win: whatever a click set, the next ui tick's read follows the
+--     game. For each tracked unit (the read collects up to CARD_SWEEP_MAX
+--     wanted ids first - a runaway guard, not a working limit: see the
+--     constant below), the unit's CARD is the component in the cards panel
+--     whose Id() EQUALS
+--     the unit's unique_ui_id() - the proven bridge (vanilla matches
+--     uic_card:Id() == unit:unique_ui_id() the same way; the card clicks
+--     this build routes rely on exactly that identity). Every engine read is
+--     pcall'd and type-checked: a failing or hostile read prints '?' and
+--     NEVER shortens a line, and nothing here can error out of the tick.
+--     Ids are matched by EXACT EQUALITY on a copied string - there is no
+--     find of any kind (string.find is banned from this file). The walk is
+--     depth- and visit-bounded; NOTHING here writes to any component.
+-- ============================================================================
+
+local CARD_SWEEP_EVERY_N_POLL_TICKS = 4      -- 4 x 250 ms = ~1 s of battle time
+local last_card_sweep_tick = -1000           -- so the first tick with units sweeps at once
+-- A RUNAWAY GUARD, not a working limit: a single-player unit-card panel
+-- tops out at 20 cards, so 40 can never bind for a real army - it is only
+-- a belt against a pathological wanted-list (the walk itself is separately
+-- visit-bounded). The old value (12) was a legacy work-cap that made units
+-- past the 12th collected card invisible to selection tracking.
+local CARD_SWEEP_MAX = 40                    -- at most this many wanted ids per read
+
+-- The last state-note this sweep logged (the multiple-selected and the
+-- no-card-selected lines). A note is logged only when its TEXT changes -
+-- once per change - so a steady state stays quiet however many sweeps pass.
+local last_selection_note = nil
+
+-- Resolve the cards-panel container by id: the engine's recursive Find from
+-- the ui root first (the same call the inventory sweep proves works),
+-- verified against the component's own id; nil when the search finds nothing
+-- usable, so the caller can fall back to the ui root itself.
+local function card_panel_find(root, wanted)
+	local ok, got = pcall(function()
+		local raw = root:Find(wanted, false)   -- false = do not assert when missing
+		if raw == nil then return nil end
+		local ok_w, wrapped = pcall(UIComponent, raw)
+		if ok_w and wrapped ~= nil then return wrapped end
+		return raw
+	end)
+	if ok and got ~= nil and inv_id_of(got) == wanted then return got end
+	return nil
+end
+
+-- ONE bounded walk of the panel subtree, collecting the wanted cards: every
+-- node's id is read through pcall (a failing read is simply not a card - the
+-- walk carries on), the walk is visit- and depth-bounded like the inventory
+-- walk, and each child read is pcall'd. Nothing here can raise.
+local function card_collect_from(start, wanted, found)
+	local visits, max_visits = 0, 900
+	local stack = { { node = start, depth = 0 } }
+	while #stack > 0 and visits < max_visits do
+		local item = table.remove(stack)
+		local node, depth = item.node, item.depth
+		visits = visits + 1
+
+		local id = inv_id_of(node)
+		if id ~= nil and wanted[id] ~= nil and found[id] == nil then
+			found[id] = node
+		end
+
+		if depth < 8 then
+			local ok_n, n = pcall(function() return node:ChildCount() end)
+			if ok_n and type(n) == "number" and n > 0 then
+				for i = n - 1, 0, -1 do
+					local ok_c, child = pcall(function() return node:Find(i) end)
+					if ok_c and child ~= nil then
+						local ok_w, wrapped = pcall(UIComponent, child)
+						if ok_w and wrapped ~= nil then
+							stack[#stack + 1] = { node = wrapped, depth = depth + 1 }
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+-- THE SHARED CARD READ (this build - the sweep is split into two cadences).
+-- Resolves the tracked units' cards and reads each card's engine state ONCE.
+-- Both cadences use it - the FAST path on every ui tick and the verbose
+-- once-per-second census - so they can never disagree about what the cards
+-- say. Every read is pcall'd and type-checked like the census always was: a
+-- failing or hostile read prints '?' and NEVER shortens a line.
+-- Returns:
+--   ordered  - the wanted ids, sorted, so "the first selected card" is a
+--              stable, reproducible choice. The COLLECTION order is the
+--              tracked array's own order (items 14 + 6), each entry read
+--              through its cached ui id - never pairs() order, so under
+--              CARD_SWEEP_MAX the swept subset is the same every call
+--   found    - id -> the card component found for it (absent = not found)
+--   states   - id -> the card's CurrentState() string ('?' on a failed read)
+--   selected - the ids whose state reads exactly 'selected', ordered order
+local function read_tracked_card_states()
+	-- THE WANTED IDS, IN A STABLE ORDER (items 14 + 6 - ONE fix with the
+	-- cached id in section 6). Old shape: the lookup table walked with
+	-- pairs() - which has NO defined order (in-process hash order) - so above
+	-- CARD_SWEEP_MAX the collected SUBSET - and with it which cards got
+	-- state-read - changed from call to call. The ordered watch list is now
+	-- the source: iterate tracked_units BY INDEX and read each entry's CACHED
+	-- ui id (attached at registration), so the first CARD_SWEEP_MAX ids are
+	-- ALWAYS the same list. No pairs(), no engine read on the cached path.
+	-- The cap is unchanged as a runaway guard: a real panel (<= 20 cards)
+	-- never reaches it, and past it units are now EXCLUDED CONSISTENTLY (a
+	-- stable truncation) instead of flickering in and out of the sweep.
+	local wanted, wanted_count = {}, 0
+	local ordered = {}
+	if tracked_units ~= nil then
+		for i = 1, #tracked_units do
+			if wanted_count >= CARD_SWEEP_MAX then break end
+			local su = tracked_units[i]
+			local cached = su and su.zz_tracked_ui_id
+			if cached == nil then
+				-- Every registered entry carries the cache, so this branch is
+				-- unreachable; kept only as a defensive fallback for an entry
+				-- with no cached id yet (the old pcall'd engine read).
+				local unit = su and su.unit
+				if unit ~= nil then
+					local ok_id, id = pcall(function() return unit:unique_ui_id() end)
+					if ok_id and id ~= nil then cached = tostring(id) end
+				end
+			end
+			if cached ~= nil and wanted[cached] == nil then
+				wanted[cached] = true
+				ordered[#ordered + 1] = cached
+				wanted_count = wanted_count + 1
+			end
+		end
+	end
+	table.sort(ordered)
+
+	local found = {}
+	if wanted_count > 0 then
+		local ok_r, root = pcall(function() return core:get_ui_root() end)
+		if ok_r and root ~= nil then
+			-- The cards panel: 'card_panel_docker', else 'cards_panel', else
+			-- the ui root itself (the walk then simply looks from the top).
+			-- NOT finding the panel is not fatal - the derivation simply
+			-- sees no cards this read.
+			local start = card_panel_find(root, "card_panel_docker")
+			if start == nil then start = card_panel_find(root, "cards_panel") end
+			if start == nil then start = root end
+			card_collect_from(start, wanted, found)
+		end
+	end
+
+	-- Every card's engine state, read ONCE (pcall'd and type-checked; '?' on
+	-- failure and never a claim): a card whose state reads exactly 'selected'
+	-- is one of the units the game currently has selected.
+	local states = {}
+	local selected = {}
+	for i = 1, #ordered do
+		local ui_id = ordered[i]
+		local card = found[ui_id]
+		if card ~= nil then
+			local state = "?"
+			local ok_s, s = pcall(function() return card:CurrentState() end)
+			if ok_s and type(s) == "string" then state = s end
+			states[ui_id] = state
+			if state == "selected" then
+				selected[#selected + 1] = ui_id
+			end
+		end
+	end
+
+	-- THE SELECTED SET (this build): expose the WHOLE group, not just the
+	-- single-choice derivation built over it - the badge click and the
+	-- collective letter read selected_ui_ids (section 2). Two regimes:
+	--   * NO callback event has EVER been delivered (API missing, or the
+	--     engine never called back): the cards are in charge and REPLACE the
+	--     set, exactly as before - the unchanged fallback. A read that found
+	--     no cards at all leaves the set alone, like the derivation keeping
+	--     the tracker.
+	--   * the callback HAS delivered (it is the engine's own word on group
+	--     selections, which the cards do not report): the callback-fed set is
+	--     in charge. The cards may still ADD an id the set has not seen (a
+	--     single selection whose event did not arrive) - and such a
+	--     card-added id is dropped again once the cards stop reporting it, so
+	--     the reconciliation can never leave a phantom selected unit behind.
+	if next(found) ~= nil then
+		if not selection_callback_alive then
+			selected_ui_ids = selected
+		else
+			for i = 1, #selected do
+				local id = selected[i]
+				if not engine_selection_has(id) then
+					selected_ui_ids[#selected_ui_ids + 1] = id
+					reconciled_card_ids[id] = true
+					selection_set_dirty = true
+				end
+			end
+			for id in pairs(reconciled_card_ids) do
+				local still_reported = false
+				for i = 1, #selected do
+					if selected[i] == id then still_reported = true end
+				end
+				if not still_reported then
+					reconciled_card_ids[id] = nil
+					for i = #selected_ui_ids, 1, -1 do
+						if selected_ui_ids[i] == id then
+							table.remove(selected_ui_ids, i)
+							selection_set_dirty = true
+						end
+					end
+				end
+			end
+		end
+	end
+
+	return ordered, found, states, selected
+end
+
+-- THE SHARED DERIVATION (this build): the engine's own signal decides the
+-- selection, exactly as the census always did. Given the ordered selected
+-- list:
+--   * exactly one card reports 'selected' -> adopt its id;
+--   * several (group selection)           -> keep the tracker when it is one
+--     of them, else take the first (ordered) selected card;
+--   * none (or the reads fail)            -> keep the tracker.
+-- Returns the id to adopt (nil when nothing can be adopted) plus the note
+-- text the verbose census logs once per change; the FAST path stays quiet
+-- and ignores the note.
+local function derive_selection_from_cards(previous, selected)
+	local derived = nil
+	local note = nil
+	if #selected == 1 then
+		derived = selected[1]
+	elseif #selected > 1 then
+		-- Group selection: keep the tracker when it is one of the selected
+		-- cards, else take the first (ordered) one.
+		derived = previous
+		local among = false
+		for i = 1, #selected do
+			if selected[i] == previous then among = true end
+		end
+		if not among then derived = selected[1] end
+		note = "multiple selected cards - tracker=" .. tostring(derived)
+	else
+		-- No card reports 'selected' (or the reads failed): keep the current
+		-- value, and say so once per change (the note-text dedupe below).
+		note = "no card reports selected - tracker stays " .. tostring(previous)
+	end
+	return derived, note
+end
+
+-- ONE CARD-LINE BLOCK (this build): the per-card census lines, in the same
+-- ordered sequence: each card's state and visibility, the card the tracker
+-- currently names tagged [selected-tracker]. Used by the verbose census once
+-- per second AND by the fast path when the selection changes (the change is
+-- then documented with the card states that caused it, once). Every read is
+-- pcall'd and type-checked: a failing read prints '?' and NEVER shortens a
+-- line. Nothing here writes to any component.
+local function log_card_lines(ordered, found, states, tracker)
+	for i = 1, #ordered do
+		local ui_id = ordered[i]
+		local card = found[ui_id]
+		if card ~= nil then
+			local state = states[ui_id] or "?"
+
+			local vis = "?"
+			local ok_v, v = pcall(function() return card:Visible(true) end)
+			if ok_v and type(v) == "boolean" then vis = v and "true" or "false" end
+
+			local line = "card " .. tostring(ui_id) .. " state='" .. state .. "' visible=" .. vis
+			if tracker ~= "none" and tostring(ui_id) == tracker then
+				line = line .. " [selected-tracker]"
+			end
+			log(line)
+		end
+	end
+end
+
+-- THE FAST PATH (this build): the selection is derived from the card states
+-- on EVERY ui tick, so a change - a card click on the battlefield, a group
+-- select, the engine's own reselection - is adopted, and both badges'
+-- letters refreshed, within ONE ui tick instead of waiting for the next
+-- census. It is QUIET unless the tracker actually changes: no notes, no
+-- summary, no repeated lines. On a change it adopts the derived id, logs the
+-- established header with the tick number on it
+--     selection changed to <ui_id> - refreshing badge letters (tick N)
+-- refreshes both badges' letters in the same call, and includes the card
+-- lines ONCE - the change's own evidence block. Every read is pcall'd (the
+-- shared reader above) and the caller pcalls this function, so nothing here
+-- can error out of the ui tick.
+-- In callback mode (section 3b) this path keeps only its single-select job:
+-- the shared read hands the set to the callback regime, and the derivation
+-- below adopts a change the callback has not reported yet (or adopts first in
+-- the fallback world, exactly as it always did).
+local function fast_card_selection()
+	local previous = "none"
+	if selected_unit_id ~= nil then previous = tostring(selected_unit_id) end
+
+	local ordered, found, states, selected = read_tracked_card_states()
+	local derived = derive_selection_from_cards(previous, selected)
+	if derived == nil or derived == previous then return end
+
+	-- THE SELECTION CHANGED: adopt it, refresh the letters (tick-stamped),
+	-- and include the card lines once.
+	walk_on_selection_change = true   -- the dial now belongs to the adopted unit
+	selected_unit_id = derived
+	refresh_badge_letters_for_selection(derived, tick_count)
+	log_card_lines(ordered, found, states, tostring(derived))
+end
+
+-- THE ENGINE SELECTION CONVERGENCE (this build): the callback (section 3b)
+-- maintains selected_ui_ids event by event; this runs on every ui tick and
+-- turns whatever it collected into ONE coalesced act:
+--   * ONE log line per set change, naming the whole set - a box selection of
+--     ten units is ONE line, never ten (the signature below collapses any
+--     burst of events between two ticks, and a steady set costs one string
+--     compare and nothing else);
+--   * the tracker adoption - the same rule the card derivation uses, so the
+--     two mechanisms can never disagree (one selected id -> adopt it; several
+--     -> keep the tracker when it is among them, else the first; none -> keep
+--     it);
+--   * the badge letters: refreshed in the same call (with the established
+--     tick-stamped line when the tracker moves, per letter - silently unless
+--     a letter really changed - when only the collective state changed).
+local function converge_engine_selection(tick)
+	if not selection_set_dirty then return end
+	selection_set_dirty = false
+
+	local ids = {}
+	for i = 1, #selected_ui_ids do ids[i] = tostring(selected_ui_ids[i]) end
+	table.sort(ids)
+	local sig = table.concat(ids, ",")
+	if sig == selection_set_sig then return end
+	selection_set_sig = sig
+
+	log("selection callback: " .. tostring(#ids) .. " unit(s) selected now ("
+		.. (#ids > 0 and table.concat(ids, ", ") or "none") .. ")")
+
+	local previous = "none"
+	if selected_unit_id ~= nil then previous = tostring(selected_unit_id) end
+	local derived = derive_selection_from_cards(previous, ids)
+	if derived ~= nil and derived ~= previous then
+		walk_on_selection_change = true   -- the dial now belongs to the adopted unit
+		selected_unit_id = derived
+		refresh_badge_letters_for_selection(derived, tick)
+	else
+		for _, ability in ipairs(active_abilities_list()) do
+			refresh_badge_letter(ability.marker)
+		end
+	end
+end
+
+-- THE VERBOSE CENSUS (the once-per-second half of the split - the same gate,
+-- the same lines, the same formats as it has had since it was built): the
+-- notes once per change, its own adoption (the safety net - in practice the
+-- fast path above ran first on every tick), the summary, then the per-card
+-- lines. See the section header. Every engine read is pcall'd and
+-- type-checked; nothing here can error out of the tick.
+local function log_card_sweep()
+	local previous = "none"
+	if selected_unit_id ~= nil then previous = tostring(selected_unit_id) end
+
+	local ordered, found, states, selected = read_tracked_card_states()
+	local derived, note = derive_selection_from_cards(previous, selected)
+
+	if note ~= nil then
+		if note ~= last_selection_note then
+			log(note)
+			last_selection_note = note
+		end
+	else
+		last_selection_note = nil
+	end
+
+	if derived ~= nil and derived ~= previous then
+		log("selection updated from card states: " .. previous .. " -> " .. derived)
+		selected_unit_id = derived
+		walk_on_selection_change = true   -- the census adoption re-homes the dial too
+		-- THE SELECTION CHANGED: refresh BOTH badges' letters from the new
+		-- selection in this same call. The fast path and its per-tick
+		-- safety net are the convergence mechanism now; this stays for the
+		-- case where the census itself adopts first.
+		refresh_badge_letters_for_selection(derived)
+	end
+
+	local tracker = "none"
+	if selected_unit_id ~= nil then tracker = tostring(selected_unit_id) end
+	log("cards: selected-tracker=" .. tracker)
+
+	-- One line per card found, in the same ordered sequence: its state and
+	-- visibility, the card the tracker currently names tagged.
+	log_card_lines(ordered, found, states, tracker)
+end
+
+-- ============================================================================
+-- 9. START IT UP
+--    The poll, the on/off button, and the watchdog that keeps the poll alive.
+-- ============================================================================
+
+-- The watchdog's bookkeeping. Round 16 declared these where round 19's deletion removed them,
+-- which silently left them as globals - harmless until the stall branch ran, where the arithmetic
+-- on a nil would throw and take the UI timer with it. Caught by the mock, not by a battle.
+local last_seen_tick = -1
+local stalled_checks = 0
+
+local function phase_ui_refresh()
+	find_ability_buttons()          -- the abilities' own icons (section 8b)
+	for _, ability in ipairs(ABILITIES) do
+		apply_ability_feedback(ability.marker)  -- keep each badge's letter in step with the collective switch
+	end
+	last_seen_tick = tick_count     -- so the watchdog does not read this as a stall
+end
+
+bm:register_phase_change_callback("Deployment", function()
+	local ok, err = pcall(phase_ui_refresh)
+	if not ok then log("phase_ui_refresh (Deployment) FAILED: " .. tostring(err)) end
+end)
+bm:register_phase_change_callback("Deployed", function()
+	local ok, err = pcall(phase_ui_refresh)
+	if not ok then log("phase_ui_refresh (Deployed) FAILED: " .. tostring(err)) end
+end)
+bm:register_phase_change_callback("Deployed", function()
+	local ok, err = pcall(function()
+		log("combat phase started - building watch list")
+		rebuild_unit_list()
+	end)
+	if not ok then log("deployed callback failed: " .. tostring(err)) end
+end)
+
+-- Diagnostic: the phase dispatcher triggers this event unconditionally, so its
+-- presence (or absence) tells us whether phase changes reach scripts at all.
+core:add_listener(
+	"zz_deadly_onslaught_phase_watch",
+	"ScriptEventBattlePhaseChanged",
+	function(context) return true end,
+	function(context)
+		-- Log only. Painting here is what broke round 12: the phase dispatcher
+		-- runs this via core:trigger_event, and UI work inside it stopped the
+		-- whole phase system after Startup.
+		log("phase change seen: " .. tostring(context.string))
+	end,
+	true
+)
+
+bm:repeat_callback(poll, POLL_MS, POLL_NAME)
+
+-- POLL WATCHDOG (real / UI timer, 500 ms)
+-- The poll is the only thing watching for charges, and UI work in a phase
+-- callback can kill the model timer that drives it (rounds 9, 10, 13). This runs
+-- in the UI timer - the one context that has never died - and only checks whether
+-- the poll's tick counter is still moving; if it is not, the poll is put back.
+-- Nothing is created or painted from here.
+-- ---------------------------------------------------------------------------
+local ui_ticks = 0
+
+local function ui_tick()
+	ui_ticks = ui_ticks + 1
+	if ui_ticks == 1 then
+		log("ui timer is running (real callback, 500 ms) - watching the poll")
+	end
+
+	-- Watch the poll's tick counter and REPORT only: touching the timer registry from a UI
+	-- context is what broke the trigger in round 17. While the ability icons are still
+	-- unknown, keep trying to find them - the orders bar does not exist in the early
+	-- phases, so the first attempts are expected to fail.
+	-- THE DEFERRED CREATION (this build): a claim in the walk only records the
+	-- button and raises pending_badge[marker] (scan_component_body); the badge
+	-- itself is built HERE, on the tick, one instrumented pcall'd step at a
+	-- time - never from inside the walk. A step that fails is logged with its
+	-- own err line, the badge stays absent and the next tick retries, up to
+	-- MAX_BADGE_ATTEMPTS per claim; after that the marker waits for the dial to
+	-- rebuild (a fresh claim resets the budget).
+	for _, ability in ipairs(active_abilities_list()) do
+		local marker = ability.marker
+		local state = ability_state[marker]
+		if state.badge == nil and state.button ~= nil and pending_badge[marker] ~= nil
+			and badge_gave_up[marker] == nil then
+			if (badge_attempts[marker] or 0) >= MAX_BADGE_ATTEMPTS then
+				badge_gave_up[marker] = true
+				log("badge " .. marker .. ": giving up until the dial rebuilds ("
+					.. tostring(MAX_BADGE_ATTEMPTS) .. " failed attempts)")
+			else
+				badge_attempts[marker] = (badge_attempts[marker] or 0) + 1
+				local ok, err = pcall(create_badge, marker)
+				if not ok then
+					discard_badge(state)
+					log("badge " .. marker .. ": create attempt raised: " .. tostring(err))
+				end
+			end
+		end
+		if state.badge ~= nil then pending_badge[marker] = nil end
+	end
+
+	-- HIDDEN RELIABLY, NOT ON TRANSITIONS ALONE. Every tick, per ability: the
+	-- DESIRED visibility is recomputed from the CLAIMED SET - the marker is
+	-- claimed on the dial right now (marker_claimed_now: the claimed button
+	-- reference still read as ours by the same key gate the scan used) AND
+	-- there is a button reference - and whenever it differs from what the
+	-- tick last applied (state.badge_shown), the badge is set to the desired
+	-- state again, with exactly one log line for the change. No path can
+	-- leave a badge visible while its marker is unclaimed: badge_visible
+	-- (the letter path) no longer touches visibility at all, and the console
+	-- hooks write the same bookkeeping so the next tick corrects them too.
+	-- This holds after a dial rebuild, a slot change and an ability
+	-- disappearing from the dial - whatever moved the dial.
+	-- Per ability: judge ITS marker and show/hide/letter ITS own badge.
+	local onslaught_confirmed = false
+	local active_dropped = false    -- item 1.4: a stale claim died this tick - the set shrank
+
+	for _, ability in ipairs(active_abilities_list()) do
+		local state = ability_state[ability.marker]
+
+		-- IS THE MARKER CLAIMED ON THIS DIAL RIGHT NOW? The same test the
+		-- badge click guard runs, from the one shared place. A read that
+		-- raises, an empty key or a foreign key means gone: the claim dies
+		-- with the button (a rebuilt dial loses its stale claim).
+		local claimed = marker_claimed_now(ability)
+		if not claimed and state.button ~= nil then
+			state.button = nil
+			pending_badge[ability.marker] = nil   -- a stale claim dies with the button
+			active_dropped = true
+		end
+
+		if ability.marker == "onslaught" then onslaught_confirmed = claimed end
+
+		if state.badge ~= nil then
+			local desired = claimed and state.button ~= nil
+
+			if (state.badge_shown == true) ~= desired then
+				state.badge_shown = desired
+				pcall(function() state.badge:SetVisible(desired) end)
+				if desired then
+					log("badge " .. ability.marker .. ": shown (marker claimed)")
+				else
+					log("badge " .. ability.marker .. ": hidden (marker not claimed on this dial)")
+				end
+			end
+
+			if state.badge_shown == true then
+				-- THE PER-TICK SAFETY NET (this build): whichever event moved
+				-- the selection or a unit's armed state, the letter is
+				-- re-derived here every tick from the COLLECTIVE switch read
+				-- (one unit: its own flag; several: all owners armed?) and
+				-- re-written ONLY when it differs from the cached last
+				-- letter (state.last_letter). So the display converges
+				-- within one tick (250 ms) of ANY change, and a steady letter
+				-- stays completely silent - no repeated SetText, no repeated
+				-- line.
+				refresh_badge_letter(ability.marker)
+			end
+		end
+		if state.badge ~= nil then pcall(place_badge, ability.marker) end
+	end
+
+	-- ITEM 1.4 - a stale claim dropped this tick shrank the inputs: refresh
+	-- the active set (silent unless the membership moved).
+	if active_dropped then refresh_active_abilities() end
+
+	-- THE DIAL DUMP (section 8c): while the dial positively shows our ability, one
+	-- read-only census block per ~1 s of battle time. pcall'd so a surprise can
+	-- never take the UI tick down with it.
+	if onslaught_confirmed and (tick_count - last_dial_dump_tick) >= DIAL_DUMP_EVERY_N_POLL_TICKS then
+		last_dial_dump_tick = tick_count
+		pcall(log_dial_dump)
+	end
+
+	-- THE INVENTORY SWEEP (section 8d): one read-only block per ~1 s of battle
+	-- time, whenever our ability button OR any candidate component can be found
+	-- - not only while the dial is confirmed. pcall'd like the dump above so a
+	-- surprise can never take the UI tick down with it.
+	if (tick_count - last_inventory_tick) >= INVENTORY_EVERY_N_POLL_TICKS then
+		last_inventory_tick = tick_count
+		pcall(log_inventory_sweep)
+	end
+
+	-- THE ENGINE SELECTION CONVERGENCE (section 8e): the callback (section 3b)
+	-- may have collected selection/deselection events since the last tick;
+	-- fold them into ONE logged set change (exactly one line naming the whole
+	-- set), adopt the tracker and refresh the badge letters before the card
+	-- fast path reads anything. pcall'd like everything else so a surprise
+	-- can never take the UI tick down.
+	pcall(converge_engine_selection, tick_count)
+
+	-- THE CARD SELECTION, FAST (section 8e): derived from the engine's own
+	-- 'selected' card states on EVERY ui tick, so a selection change reaches
+	-- the tracker and both badge letters within ONE tick (~50 ms). Quiet
+	-- unless the tracker changes; on a change it logs the tick-stamped header
+	-- and the card lines once. pcall'd like everything else so a surprise can
+	-- never take the UI tick down.
+	pcall(fast_card_selection)
+
+	-- THE VERBOSE CARD SWEEP (section 8e): still one block per ~1 s of battle
+	-- time - the same gate, the same lines. The fast path above ran first on
+	-- this tick, so the sweep mostly reports; its own adoption branch stays
+	-- as the safety net. pcall'd like the sweeps above so a surprise can
+	-- never take the UI tick down.
+	if (tick_count - last_card_sweep_tick) >= CARD_SWEEP_EVERY_N_POLL_TICKS then
+		last_card_sweep_tick = tick_count
+		pcall(log_card_sweep)
+	end
+
+	if tick_count == last_seen_tick then
+		stalled_checks = stalled_checks + 1
+		-- 12 strikes = 6 seconds of real time with no model time passing. Long enough that the
+		-- pause menu (which freezes model time) does not read as a dead timer - round 20's log
+		-- flagged a "stall" that was almost certainly the player being paused.
+		if stalled_checks == 12 then
+			log("WATCHDOG: model time has not advanced for 6 s (tick " .. tostring(tick_count)
+				.. ") - paused, or the poll is dead. NOT repairing it (the timer registry must not be touched from a UI context)")
+		end
+	else
+		stalled_checks = 0
+	end
+	last_seen_tick = tick_count
+
+	-- THE REASONED HUD WALK (this build). The walk runs only when there is a
+	-- reason to expect OUR buttons on the dial:
+	--   * a selection change this tick, or a newly tracked unit from the
+	--     re-list (coalesced - one walk at most): walk immediately;
+	--   * nothing known yet about the selected unit's keys (early battle, or
+	--     nothing selected): walk as before, every other tick - the
+	--     BOOTSTRAPPING phase;
+	--   * the selected unit OWNS one of our keys whose claim is missing: retry
+	--     every 4th tick (~200 ms) until the dial yields it;
+	--   * otherwise: a coarse safety net, every 100th tick (~5 s), so a bound
+	--     ability, a granted ability or a wrong owned-keys read can never
+	--     leave us permanently blind.
+	-- The walk itself, its cap and its probe behaviour are unchanged;
+	-- all_buttons_found() now ends every walk the moment the ACTIVE dial is
+	-- complete - which an EMPTY active set is, vacuously - so no walk runs at
+	-- all when nothing of ours can be on the dial.
+	if not all_buttons_found() then
+		local walk_now = false
+		if walk_on_selection_change or walk_on_new_unit then
+			walk_now = true
+			walk_on_selection_change = false
+			walk_on_new_unit = false
+			brisk_walk_until = ui_ticks + 48   -- a FRESH brisk window per event (48 ui ticks)
+		elseif not selection_walk_info_known() then
+			-- ROUND 7 BOUND: once any event has opened a window, the old
+			-- every-2nd-tick cadence runs only inside it; outside -> the 5 s net.
+			if brisk_walk_until < 0 or ui_ticks <= brisk_walk_until then
+				walk_now = (ui_ticks % 2) == 0
+			else
+				walk_now = (ui_ticks % 100) == 0
+			end
+		elseif selected_unit_owns_unclaimed_key() then
+			-- ROUND 7 BOUND: the "missing owned ability claim" retry is a
+			-- retry, not a permanent state - it stops with the window.
+			if brisk_walk_until < 0 or ui_ticks <= brisk_walk_until then
+				walk_now = (ui_ticks % 4) == 0
+			else
+				walk_now = (ui_ticks % 100) == 0
+			end
+		else
+			walk_now = (ui_ticks % 100) == 0
+		end
+		if walk_now then
+			find_ability_buttons()
+		end
+	end
+
+end
+
+bm:repeat_real_callback(ui_tick, 50, "zz_deadly_onslaught_ui")
+
+-- ---------------------------------------------------------------------------
+-- THE BUTTON ITSELF
+-- A click handler is a UI context, and painting works from here (rounds 9-14:
+-- both the state and the icon followed the clicks).
+-- ---------------------------------------------------------------------------
+
+log("loaded. polling every " .. tostring(POLL_MS) .. " ms"
+	.. " | fire on charge = " .. tostring(FIRE_ON_CHARGE)
+	.. " | fire on melee = " .. tostring(FIRE_ON_MELEE)
+	.. " | automatic activation is PER UNIT: " .. armed_states_string()
+	.. " | click a unit's card to select it, then the ability's M/A badge to flip it")
+log("control: take=" .. (TAKE_CONTROL_FIRST and "explicit before every attempt" or "disabled")
+	.. ", release=" .. (RELEASE_CONTROL_AFTER and "runs only after a successful take" or "off"))
+log("claim-test bisect level " .. tostring(CLAIM_BISECT) .. "/9 - " .. bisect_summary()
+	.. " (steps 1-6 + 9 run - the equality match; steps 7-8 log their removal; a step with 'entering' but no 'ok' names a crash)")
+log("claim-test bisect steps: 1 type(v) | 2 tostring(v) | 3 concat copy | 4 string.len | 5 # | 6 string.lower | 7 find plain (removed) | 8 find pattern (removed) | 9 equality compare")
+for _, ability in ipairs(ABILITIES) do
+	for _, wanted_key in ipairs(ability.keys) do
+		log("  accepting ability (" .. ability.marker .. "): " .. wanted_key)
+	end
+end
+
+-- The tooltip override is a localisation file (text/db/zz_deadly_onslaught__.loc) that
+-- re-writes the vanilla description of this ability with the right-click instruction
+-- appended. This line proves whether it actually loaded: vanilla flavour text with no
+-- "Right-click" line means the override lost, and only the tooltip is affected.
+local TOOLTIP_KEY = "unit_abilities_tooltip_text_wh_main_character_abilities_deadly_onslaught"
+local loc_ok, loc_text = pcall(function() return common.get_localised_string(TOOLTIP_KEY) end)
+log("tooltip text in use (" .. (loc_ok and "ok" or "FAILED") .. "): " .. tostring(loc_text))

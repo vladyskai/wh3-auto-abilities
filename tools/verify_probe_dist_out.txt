@@ -1,0 +1,51 @@
+C:\Users\vlady\Desktop\rpfm_tools\verify_probe_dist_installed.py:32: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  self.ws.recv(timeout=20)  # hello
+opened INSTALLED pack; type: Movie | version: PFH5
+
+=== 1 file(s) in the INSTALLED distance-observer pack ===
+   - script/battle/mod/zz_probe_dist.lua
+only the observer file present : True
+no main-mod path present       : True
+
+byte-for-byte vs source:
+   pack     19567  sha256 df2d4ea8d7714d4306a1eda8cc66f515e54f1bc2a755ffe1c66402802796df15
+   source   19567  sha256 df2d4ea8d7714d4306a1eda8cc66f515e54f1bc2a755ffe1c66402802796df15
+   MATCHES SOURCE (byte-identical): True
+   token zz_probe_dist_status                                 present: True
+   token get_scriptunits_for_local_players_army               present: True
+   token get_scriptunits_for_main_enemy_army_to_local_player  present: True
+   token unit_distance                                        present: True
+   token unit_in_range                                        present: True
+   token OWNER chosen:                                        present: True
+   token OBS tick=                                            present: True
+   token caster_pos=                                          present: True
+   token caster_moved_since_last=                             present: True
+   token caster_is_moving=                                    present: True
+   token caster_is_idle=                                      present: True
+   token CAND tick=                                           present: True
+   token in_melee=                                            present: True
+   token under_fire=                                          present: True
+   token engine_unit_in_range=                                present: True
+   token our_52_test=                                         present: True
+   token our_75_test=                                         present: True
+   token CAND-FIRST tick=                                     present: True
+   token first_passing_test=                                  present: True
+   token mode=first                                           present: True
+   token CANPERF tick=                                        present: True
+   token GATE conflict phase ENTERED                          present: True
+   token conflict=                                            present: True
+   token phase=                                               present: True
+   token probe finished (poll cap                             present: True
+
+no cast call, no write-shaped call, CANPERF present : True
+
+== step-probe retirement re-check ==
+   data/zz_probe_step.pack present  : False  (want False)
+   zz_probe_step_log.txt present    : False  (want False)
+   zz_probe_step_log_run1.txt present: True  (want True)
+
+main mod pack md5 (now)              : f1b7363e411bfc340423d4ecdc1ea91c
+main mod pack md5 (expected, before) : f1b7363e411bfc340423d4ecdc1ea91c
+   UNCHANGED : True
+
+INSTALLED-PACK VERIFY OK

@@ -1,0 +1,20 @@
+[2m2026-10-09T19:17:55.814940Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Sentry logging support for RPFM SERVER enabled. Starting...
+[2m2026-10-09T19:17:55.818302Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Listening on 127.0.0.1:45127
+[2m2026-10-09T19:18:01.376202Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Created new session with ID: 1
+[2m2026-10-09T19:18:01.376253Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m New WebSocket client connected, created session ID: 1
+[2m2026-10-09T19:18:01.376335Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 background thread starting...
+[2m2026-10-09T19:18:01.376613Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 1]: SetGameSelected("warhammer_3", false)
+[2m2026-10-09T19:18:01.379872Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Background Thread looping around…
+[2m2026-10-09T19:18:01.379892Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Setting game selected.
+[2m2026-10-09T19:18:01.415797Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Branch 2.
+[2m2026-10-09T19:18:01.415814Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Switching game selected done.
+[2m2026-10-09T19:18:01.416127Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 2]: OpenPackFiles(["C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_probe_enemy_target.pack"])
+[2m2026-10-09T19:18:01.417753Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 3]: GetPackFileDataForTreeView("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_probe_enemy_target.pack")
+[2m2026-10-09T19:18:01.417913Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 4]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_probe_enemy_target.pack", "script/battle/mod/zz_probe_enemy_target.lua")
+[2m2026-10-09T19:18:01.419122Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 5]: ClientDisconnecting
+[2m2026-10-09T19:18:01.419139Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Client requested graceful disconnect, removing session immediately
+[2m2026-10-09T19:18:01.419146Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Removing session 1
+[2m2026-10-09T19:18:01.419149Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 shutting down...
+[2m2026-10-09T19:18:01.419154Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m No more active sessions, shutting down server...
+[2m2026-10-09T19:18:01.419174Z[0m [32m INFO[0m [2mrpfm_telemetry::actions[0m[2m:[0m Flushing action telemetry to PostHog (4 distinct actions)...
+[2m2026-10-09T19:18:01.474177Z[0m [32m INFO[0m [2mrpfm_telemetry::actions[0m[2m:[0m PostHog action telemetry sent.

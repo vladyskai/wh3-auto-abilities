@@ -1,0 +1,2085 @@
+[
+ {
+  "n": 291,
+  "marker": "blooood",
+  "name": "Blooood!",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_unit_abilities_blooood",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Blooood!",
+    "tooltip": "The Hellcannon breaks its chains and rushes forwards. Increased movement speed.",
+    "spec": "ai=augment_defense_melee;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=18.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_unit_abilities_blooood",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=18.0000",
+       "effect_type=positive",
+       "fatigue_change_ratio=-0.0200",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Acceleration: 1.1800 (mult);Speed: 1.2500 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": [
+     "cannot_perform_missile_attack"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 292,
+  "marker": "book_of_arkhan",
+  "name": "Book of Arkhan",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_spell_bound_book_of_arkhan",
+    "ub_type": "wh_type_augment",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Book of Arkhan",
+    "tooltip": "Friendly units targeted by the caster are filled with magical energy, making them even more aggressive!",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=4;rech=60.0000;act=25.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_bound_book_of_arkhan",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=25.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 1.2500 (mult);Melee Attack: 24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 293,
+  "marker": "book_of_hoeth",
+  "name": "Book of Hoeth",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_main_item_abilities_book_of_hoeth",
+    "ub_type": "wh_type_augment_of_the_winds",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Book of Hoeth",
+    "tooltip": "This tome has been studied throughout the ages, yet its covers remain as blue and pristine as the day it was bound.",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=36.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_main_item_abilities_book_of_hoeth",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=positive",
+       "mana_regen_mod=1.6000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 294,
+  "marker": "book_of_secrets",
+  "name": "Book of Secrets",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc24_item_abilities_book_of_secrets",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Book of Secrets",
+    "tooltip": "Fire, Death and Shadow; all parts of a balanced, nutritious breakfast. Mmmm…",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=3;rech=90.0000;act=20.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_death",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=20.0000",
+       "effect_type=negative",
+       "damage_amount=10",
+       "max_damaged_entities=25",
+       "hp_change_frequency=1.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     },
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_fire",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=20.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 0.7500 (mult);Weakness to Fire Damage: -20.0000 (add)"
+     },
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_shadows",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=20.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: -24.0000 (add);Melee Defence: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 295,
+  "marker": "boom",
+  "name": "Boom!",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_unit_abilities_boom",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Boom!",
+    "tooltip": "The Hellcannon's blasts are devastating!",
+    "spec": "ai=augment_ranged;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=15.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_unit_abilities_boom",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=15.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour-Piercing Explosive Damage: 1.2000 (mult);Base Explosive Damage: 1.2500 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": [
+     "cannot_perform_missile_attack"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 296,
+  "marker": "call_of_violence",
+  "name": "Call of Violence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_dlc03_character_abilities_call_of_violence",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Call of Violence",
+    "tooltip": "We feel it. We all feel it. The pull to war. The tug of battle. The NEED to kill.",
+    "spec": "ai=augment_morale_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=14.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc03_character_abilities_call_of_violence",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=14.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 297,
+  "marker": "cascading_fire_cloak",
+  "name": "Cascading Fire Cloak",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_spell_bound_cascading_fire_cloak",
+    "ub_type": "wh_type_augment",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "{{tr:unit_abilities_onscreen_name_wh_main_spell_fire_cascading_fire_cloak}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_main_spell_fire_cascading_fire_cloak}}",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=2;rech=60.0000;act=19.0000;wup=1.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_fire_cascading_fire_cloak",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=19.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour-Piercing Weapon Damage: 1.2500 (mult);Melee Defence: 24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 298,
+  "marker": "chalice_of_dark_rain",
+  "name": "Chalice of Dark Rain",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_dlc03_item_abilities_chalice_of_dark_rain",
+    "ub_type": "wh_type_area_of_hexes",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Chalice of Dark Rain",
+    "tooltip": "Made from the skull of a geomancer - when filled with soil, the chalice can summon a deluge of blood-soaked mud.",
+    "spec": "ai=hex_ranged_area;self=false;tf=false;te=true;tg=true;nfu=0;neu=-1;er=35.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=89.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc03_item_abilities_chalice_of_dark_rain",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=89.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Accuracy: -30.0000 (add)"
+     }
+    ],
+    "ui": [
+     "Reduced accuracy for affected combatants"
+    ],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 299,
+  "marker": "channelling_staff",
+  "name": "Channelling Staff",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_item_abilities_channelling_staff",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Channelling Staff",
+    "tooltip": "A staff of pure silver etched with all eight runes from the magic wheel. Such an item can only enhance a Wizard's ability to channel.",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=29.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_item_abilities_channelling_staff",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=29.0000",
+       "effect_type=positive",
+       "ability_recharge_change=-15.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 300,
+  "marker": "charmed_shield",
+  "name": "Charmed Shield",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_weapon_abilities_charmed_shield",
+    "ub_type": "wh_type_ward_save",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Charmed Shield",
+    "tooltip": "The front of this shield depicts a warrior being blessed by a nameless lady. Its wielder gains protection from the sigil, especially against foes armed with missiles.",
+    "spec": "ai=augment_defense_ranged;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=17.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_weapon_abilities_charmed_shield",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=17.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Missile Block Chance: 25.0000 (add);Damage Resistance: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 301,
+  "marker": "cold_blooded",
+  "name": "Cold-Blooded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_main_character_abilities_cold_blooded",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Cold-Blooded",
+    "tooltip": "While Lizardmen may be slow to react due to their cold-blooded nature, this also makes them stoic in battle.",
+    "spec": "ai=augment_morale;self=true;tf=true;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=40.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_main_character_abilities_cold_blooded",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=40.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_a_lizard_unit"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 302,
+  "marker": "crown_of_command",
+  "name": "Crown of Command",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_item_abilities_crown_of_command",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Crown of Command",
+    "tooltip": "The Crown of Command has been worn in countless battles. Its wearer is given great authority, instilling in his subjects an unbreakable courage.",
+    "spec": "ai=augment_morale;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=30.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_item_abilities_crown_of_command",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=30.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 303,
+  "marker": "cube_of_darkness",
+  "name": "Cube of Darkness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_main_item_abilities_cube_of_darkness",
+    "ub_type": "wh_type_hex_of_the_winds",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Cube of Darkness",
+    "tooltip": "This small black cube contains millions of tiny pin-pricks of light circling around a sphere of pure darkness.",
+    "spec": "ai=hex_spellcaster;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=18.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_main_item_abilities_cube_of_darkness",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=18.0000",
+       "effect_type=negative",
+       "mana_regen_mod=-0.4000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 304,
+  "marker": "curse_of_khsar",
+  "name": "Curse of Khsar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc09_character_abilities_curse_of_khsar",
+    "ub_type": "wh_type_area_of_hexes",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Curse of Khsar",
+    "tooltip": "The harsh, howling desert winds cut through everything, be it armour or clothing or raw flesh.",
+    "spec": "ai=hex_armour_area;self=false;tf=false;te=true;tg=true;nfu=0;neu=-1;er=35.0000;icpt=100.0000;aas=false;oat=false;uses=1;rech=0.0000;act=25.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc09_character_abilities_curse_of_khsar",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=25.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour: -60.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": [
+     "health_above_50%"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 305,
+  "marker": "slezuzus_voice",
+  "name": "Daemonic Whispers",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc27_character_abilities_slezuzus_voice",
+    "ub_type": "wh_type_augment",
+    "owner": "character",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Daemonic Whispers",
+    "tooltip": "A Daemonic presence seems to influence Styrkaar and those around him, bending their will to give him thanks and praise even as he disembowels them.",
+    "spec": "ai=augment_morale;self=false;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=26.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc27_character_abilities_slezuzus_voice",
+      "flags": "s=false,f=true,e=false",
+      "detail": [
+       "duration=26.0000",
+       "effect_type=negative",
+       "max_damaged_entities=-1",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "hasnt_slaanesh_mark"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 306,
+  "marker": "dark_fortune",
+  "name": "Dark Fortune",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_item_abilities_dark_fortune",
+    "ub_type": "wh_type_ward_save",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Dark Fortune",
+    "tooltip": "Asavar Kul, the Butcher of Praag, demanded his Champions sup boiled Daemon blood from the Chalice of Chaos, imbuing them with strength and vigour.",
+    "spec": "ai=augment_melee_self;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=1;rech=60.0000;act=57.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_item_abilities_dark_fortune",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=57.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Damage Resistance: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 307,
+  "marker": "deranged_munitions",
+  "name": "Deranged Munitions",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc25_lord_abilities_deranged_munitions",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Deranged Munitions",
+    "tooltip": "The experiments might look like madness, but the results unleash devastating firepower.",
+    "spec": "ai=augment_ranged;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=30.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=30.0000",
+       "effect_type=positive",
+       "imbue_magical=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour-Piercing Missile Damage: 1.5000 (mult);Base Missile Damage: 1.5000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "cannot_perform_missile_attack"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 308,
+  "marker": "deranged_munitions_upgraded",
+  "name": "Deranged Munitions Upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc25_lord_abilities_deranged_munitions_upgraded",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "{{tr:unit_abilities_onscreen_name_wh3_dlc25_lord_abilities_deranged_munitions}} Upgraded",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh3_dlc25_lord_abilities_deranged_munitions}}",
+    "spec": "ai=augment_ranged_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=30.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=30.0000",
+       "effect_type=positive",
+       "imbue_magical=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour-Piercing Missile Damage: 1.5000 (mult);Base Missile Damage: 1.5000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "cannot_perform_missile_attack"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 309,
+  "marker": "dont_even_try_it",
+  "name": "Don't Even Try It",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc15_lord_abilities_dont_even_try_it",
+    "ub_type": "wh_type_direct_damage",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Don't Even Try It",
+    "tooltip": "Goblins, in general, are a little twitchy to say the least. If you’ve flinched too soon, you’re probably already dead.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=2;rech=90.0000;act=18.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc15_lord_abilities_dont_even_try_it",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=18.0000",
+       "effect_type=negative",
+       "damage_amount=144",
+       "max_damaged_entities=1",
+       "ability_recharge_change=15.0000",
+       "hp_change_frequency=2.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [
+     "Strong vs characters",
+     "Causes damage to combatants",
+     "Strong vs a single combatant",
+     "Weak vs multiple combatants"
+    ],
+    "inv_t": [],
+    "inv_u": [
+     "climbing"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 310,
+  "marker": "doom_and_darkness_gunnery_school",
+  "name": "Doom & Darkness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+    "ub_type": "wh_type_hex",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "{{tr:unit_abilities_onscreen_name_wh_dlc08_spell_bound_death_doom_and_darkness}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_dlc08_spell_bound_death_doom_and_darkness}}",
+    "spec": "ai=hex_morale;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=2;rech=90.0000;act=36.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: -16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   },
+   {
+    "key": "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+    "ub_type": "wh_type_hex",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Doom & Darkness",
+    "tooltip": "Spirits of the departed assail the Wizard’s foes, sapping their resolve and causing dread among their numbers.",
+    "spec": "ai=hex_morale;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=3;rech=90.0000;act=36.0000;wup=1.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: -16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   },
+   {
+    "key": "wh_dlc08_spell_bound_death_doom_and_darkness",
+    "ub_type": "wh_type_hex",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Doom & Darkness",
+    "tooltip": "Spirits of the departed assail the Wizard’s foes, sapping their resolve and causing dread among their numbers.",
+    "spec": "ai=hex_morale;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=3;rech=90.0000;act=36.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: -16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 311,
+  "marker": "doom_lord",
+  "name": "Doom Lord",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_lord_abilities_doom_lord",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Doom Lord",
+    "tooltip": "I do not fear death, for it answers to me!",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=40.0000;wup=1.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_lord_abilities_doom_lord",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=40.0000",
+       "effect_type=positive",
+       "max_damaged_entities=-1",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 312,
+  "marker": "earthing_rod",
+  "name": "Earthing Rod",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_item_abilities_earthing_rod",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Earthing Rod",
+    "tooltip": "When planted in the ground this obsidian rod becalms the arcane winds for the briefest moment, allowing the Wizard to cast one of his powerful enchantments unopposed.",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=1;rech=60.0000;act=36.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_item_abilities_earthing_rod",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Miscast Chance: 0.0000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 313,
+  "marker": "el_syf",
+  "name": "El Syf",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_dlc05_weapon_abilities_el_syf",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "El Syf",
+    "tooltip": "The so-called 'Northern Sword' fears no duel; anyone who dares confront him will surely meet their death!",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=24.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc05_weapon_abilities_el_syf",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=24.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 0.5500 (mult);Melee Defence: -40.0000 (add);Physical Resistance: -20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_commander_class"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 314,
+  "marker": "elixir_of_might",
+  "name": "Elixir of Might",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc09_item_abilities_elixir_of_might",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Elixir of Might",
+    "tooltip": "One sip of the elixir fills the body of its drinker with the strength of many powerful, elite warriors.",
+    "spec": "ai=augment_melee_self;self=true;tf=true;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=1;rech=60.0000;act=36.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc09_item_abilities_elixir_of_might",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: 24.0000 (add);Base Weapon Damage: 1.6000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 315,
+  "marker": "embers_of_the_phoenix",
+  "name": "Embers of the Phoenix",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_main_spell_bound_embers_of_the_phoenix",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Embers of the Phoenix",
+    "tooltip": "The Wizard ensorcels allied weapons, making them burn with a savage fire. Friendly targets are augmented with superior flaming blades.",
+    "spec": "ai=augment_ranged_area;self=true;tf=true;te=false;tg=true;nfu=-1;neu=0;er=35.0000;icpt=200.0000;aas=false;oat=false;uses=3;rech=90.0000;act=28.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_main_spell_bound_embers_of_the_phoenix",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=28.0000",
+       "effect_type=positive",
+       "imbue_magical=true",
+       "imbue_ignition=10",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Base Missile Damage: 1.2500 (mult);Base Weapon Damage: 1.3000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 316,
+  "marker": "ballistic_enchantment",
+  "name": "Enchanted Ballistics",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc11_character_abilities_ballistic_enchantment",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Enchanted Ballistics",
+    "tooltip": "These particular balls give the shooter a magical advantage over their targets.",
+    "spec": "ai=augment_ranged_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=55.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=32.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc11_character_abilities_ballistic_enchantment",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=32.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Accuracy: 60.0000 (add);Reload Skill: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 317,
+  "marker": "enhanced_skavenbrew",
+  "name": "Enhanced Skavenbrew",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_item_abilities_enhanced_skavenbrew",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_unique",
+    "loc_name": "Enhanced Skavenbrew",
+    "tooltip": "This concoction is made of Warpstone and the blood of many different creatures, making its effects even more devastating.",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=2;rech=90.0000;act=60.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_item_abilities_enhanced_skavenbrew",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=60.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour: -40.0000 (add);Mass: 1.2500 (mult);Melee Attack: 50.0000 (add);Base Weapon Damage: 1.5000 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 318,
+  "marker": "entangle",
+  "name": "Entangle",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc10_character_abilities_entangle",
+    "ub_type": "wh_type_area_of_hexes",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Entangle",
+    "tooltip": "A thicket of briars will entangle the enemy, covering them in dry, flammable foliage.",
+    "spec": "ai=hex_speed_under_fire;self=false;tf=false;te=true;tg=true;nfu=0;neu=-1;er=15.0000;icpt=100.0000;aas=false;oat=false;uses=2;rech=120.0000;act=15.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc10_character_abilities_entangle",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=15.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Weakness to Fire Damage: -20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "flying_currently"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 319,
+  "marker": "entrenchment",
+  "name": "Entrenchment",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_unit_abilities_entrenchment",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Entrenchment",
+    "tooltip": "All the sons of Grungni can dig-in, enabling them to better resist physical attacks from the foe. Any missile attacks they can make are also improved.",
+    "spec": "ai=augment_ranged;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=150.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=44.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_unit_abilities_entrenchment",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=44.0000",
+       "effect_type=positive",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Armour-Piercing Missile Damage: 1.4000 (mult);Physical Resistance: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "climbing",
+     "flying_currently",
+     "manning_equipment"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 320,
+  "marker": "gaze_of_usirian",
+  "name": "Eternal Gaze",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_lord_abilities_gaze_of_usirian",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Eternal Gaze",
+    "tooltip": "To a mighty Liche, death is never the end. It is a terrifying, debilitating prospect held entire in a Liche's hollow gaze.",
+    "spec": "ai=hex_morale;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=15.0000;wup=3.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_lord_abilities_gaze_of_usirian",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=15.0000",
+       "effect_type=negative",
+       "fatigue_change_ratio=0.0200",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [
+     "Does not affect units with immunity to Terror.",
+     "Inflicts Terror on the target."
+    ],
+    "inv_t": [
+     "undead_unit"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 321,
+  "marker": "eternal_vigour",
+  "name": "Eternal Vigour",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_character_abilities_eternal_vigour",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_unique",
+    "loc_name": "Eternal Vigour",
+    "tooltip": "It is hard to strike one whose cloak carries them through the veil between worlds.",
+    "spec": "ai=augment_defense_melee_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=-1.0000;icpt=0.0000;aas=false;oat=false;uses=2;rech=120.0000;act=26.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_character_abilities_eternal_vigour",
+      "flags": "s=false,f=true,e=false",
+      "detail": [
+       "duration=26.0000",
+       "effect_type=positive",
+       "affects_allies=true"
+      ],
+      "stats": "Melee Defence: 24.0000 (add);Physical Resistance: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 322,
+  "marker": "extra_ingredients",
+  "name": "Extra Ingredients",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_character_abilities_extra_ingredients",
+    "ub_type": "wh_type_augment_of_the_winds",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Extra Ingredients",
+    "tooltip": "A little bit of this, a pinch of that, and a touch of the other and... stand well back!",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=31.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_character_abilities_extra_ingredients",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=31.0000",
+       "effect_type=positive",
+       "mana_regen_mod=1.6000",
+       "mana_max_depletion_mod=0.2000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 323,
+  "marker": "favoured_by_the_matriarch",
+  "name": "Favoured by the Matriarch",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc27_hero_abilities_favoured_by_the_matriarch",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "{{tr:character_skills_localised_name_wh3_dlc27_skill_nor_fimir_noble_unique_1}}",
+    "tooltip": "{{tr:character_skills_localised_description_wh3_dlc27_skill_nor_fimir_noble_unique_1}}",
+    "spec": "ai=augment_defense_ranged;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=55.0000;icpt=0.0000;aas=true;oat=false;uses=-1;rech=90.0000;act=26.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc27_hero_abilities_favoured_by_the_matriarch",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=26.0000",
+       "effect_type=positive",
+       "max_damaged_entities=-1",
+       "affects_allies=true"
+      ],
+      "stats": "Melee Attack: 24.0000 (add);Leadership: 8.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": [
+     "health_below_25%"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 324,
+  "marker": "fear_of_aramar",
+  "name": "Fear of Aramar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc10_item_abilities_fear_of_aramar",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Fear of Aramar",
+    "tooltip": "A scroll describing a dread spell that fills the foes' minds with images from their own worst nightmares!",
+    "spec": "ai=hex_morale;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=1;rech=120.0000;act=47.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc10_item_abilities_fear_of_aramar",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=47.0000",
+       "effect_type=negative",
+       "fatigue_change_ratio=0.0100",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 325,
+  "marker": "fearsome_roar",
+  "name": "Fearsome Roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc24_unit_abilities_fearsome_roar",
+    "ub_type": "wh_type_area_of_hexes",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Fearsome Roar",
+    "tooltip": "This one's bark is at least as bad as their bite…",
+    "spec": "ai=hex_morale_area;self=false;tf=false;te=false;tg=false;nfu=0;neu=-1;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=25.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc24_unit_abilities_fearsome_roar",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=25.0000",
+       "effect_type=negative",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: -8.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 326,
+  "marker": "mark_of_the_monster",
+  "name": "Fecund Rebirth",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_character_active_mark_of_the_monster",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_unique",
+    "loc_name": "Fecund Rebirth",
+    "tooltip": "A host of Daemon Flies plunges down the ailing beast's throat, laying a thousand eggs. The wriggling larvae nestle among the lungs, guts, and heart – chewing the three-pocked mark through their innards, heralding the agonised birth of a creature darker still.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=32.0000;wup=1.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_character_active_mark_of_the_monster",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=32.0000",
+       "effect_type=negative",
+       "damage_amount=38",
+       "max_damaged_entities=1",
+       "hp_change_frequency=1.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Charge Speed: 0.5000 (mult);Speed: 0.5000 (mult);Incoming Healing Modifier: 0.0000 (mult)"
+     }
+    ],
+    "ui": [
+     "Causes damage to combatants",
+     "Strong vs a single combatant"
+    ],
+    "inv_t": [
+     "unit_is_not_large",
+     "unit_is_not_single_entity"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 327,
+  "marker": "fermented_fungi",
+  "name": "Fermented Fungi",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc15_lord_abilities_fermented_fungi",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Fermented Fungi",
+    "tooltip": "Rotten mushroom gas wafted towards the enemy can cause them to lose their mind at the worst possible moment in battle.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=75.0000;aas=false;oat=false;uses=3;rech=90.0000;act=15.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc15_abilities_fermented_fungi",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=15.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Defence: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 328,
+  "marker": "fight_or_die",
+  "name": "Fight or Die!",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_dlc08_lord_abilities_fight_or_die",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Fight or Die!",
+    "tooltip": "There is no other choice. There never was.",
+    "spec": "ai=augment_morale_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=18.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc08_unit_abilities_fight_or_die",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=18.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: 24.0000 (add);Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 329,
+  "marker": "fistful_of_laurels",
+  "name": "Fistful of Laurels",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_item_abilities_fistful_of_laurels",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Fistful of Laurels",
+    "tooltip": "Ogres don't believe in declaring their leadership qualities via trinkets, but that doesn't mean they're above robbing the dead if it inspires their forces to push even harder.",
+    "spec": "ai=augment_melee_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=2;rech=120.0000;act=50.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_item_abilities_fistful_of_laurels",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=50.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: 40.0000 (add);Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 330,
+  "marker": "flesh_to_stone",
+  "name": "Flesh to Stone",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc16_spell_bound_flesh_to_stone",
+    "ub_type": "wh_type_augment",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Flesh to Stone",
+    "tooltip": "This spell temporarily transforms allies' mortal flesh into unbreakable rock, increasing tenfold their resistance to attack.",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=3;rech=90.0000;act=19.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc05_spell_life_flesh_to_stone",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=19.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Physical Resistance: 60.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 331,
+  "marker": "focus_instincts",
+  "name": "Focus Instincts",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc12_lord_abilities_focus_instincts",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Focus Instincts",
+    "tooltip": "By which the mind is concentrated on the task at hand, allowing it to be carried out effectively whilst keeping passion and abandon firmly in check.",
+    "spec": "ai=augment_morale;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=40.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc12_lord_abilities_focus_instincts",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=40.0000",
+       "effect_type=positive",
+       "affects_allies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_a_lizard_unit"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 332,
+  "marker": "forbidden_rod",
+  "name": "Forbidden Rod",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_item_abilities_forbidden_rod",
+    "ub_type": "wh_type_augment_of_the_winds",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Forbidden Rod",
+    "tooltip": "This marble and golden-laced artefact can summon the Winds of Magic, but at a cost to the user.",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=3;rech=90.0000;act=23.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_item_abilities_forbidden_rod",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=23.0000",
+       "effect_type=positive",
+       "damage_amount=33",
+       "max_damaged_entities=1",
+       "mana_regen_mod=1.6000",
+       "mana_max_depletion_mod=0.2000",
+       "hp_change_frequency=1.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [
+     "Causes damage to self"
+    ],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 333,
+  "marker": "frenzied_challenge",
+  "name": "Frenzied Challenge",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc27_qb_unit_abilities_frenzied_challenge",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Frenzied Challenge",
+    "tooltip": "Faced with this creature's challenge, one either fights or flees. Yet who would flee and doom themselves to nightmares of becoming its meal? Fight it is.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=150.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=15.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc27_qb_unit_abilities_frenzied_challenge",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=15.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 1.2500 (mult);Melee Defence: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 334,
+  "marker": "frost_shard_glaive",
+  "name": "Frost Shard Glaive",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_weapon_abilities_frost_shard_glaive",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Frost Shard Glaive",
+    "tooltip": "The frost shard blade of this revered weapon sparkles with the cold, hard promise of sharp slaughter.",
+    "spec": "ai=hex_melee_area_self;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=50.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=30.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_item_abilities_frost_shard_glaive",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=30.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 0.5500 (mult);Melee Defence: -40.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 335,
+  "marker": "funnel_of_flame",
+  "name": "Funnel of Flame",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc13_lord_abilities_funnel_of_flame",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Funnel of Flame",
+    "tooltip": "As they careen and stagger about, their flesh irreparably charred beyond recognition, perhaps the foe will rue the day they made war on the Empire?",
+    "spec": "ai=augment_ranged;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=55.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=33.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc13_lord_abilities_funnel_of_flame",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=33.0000",
+       "effect_type=positive",
+       "imbue_ignition=10",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Reload Skill: 30.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 336,
+  "marker": "gaze_of_fate",
+  "name": "Gaze of Fate",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_lord_abilities_gaze_of_fate",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Gaze of Fate",
+    "tooltip": "Sometimes, the abyss stares right back at you, and true perspective is revealed. The shock freezes the foe where they stand.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=3;rech=90.0000;act=14.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_lord_abilities_gaze_of_fate",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=14.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: -40.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 337,
+  "marker": "get_em",
+  "name": "Get 'Em!",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc25_character_abilities_get_em",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Get 'Em!",
+    "tooltip": "Don't just stand there like a pig-kissa! Get 'Em!",
+    "spec": "ai=hex_speed_under_fire;self=false;tf=false;te=true;tg=true;nfu=0;neu=-1;er=35.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=11.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc25_character_abilities_get_em",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=11.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 338,
+  "marker": "get_back_ere",
+  "name": "Get Back 'Ere!",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_main_character_abilities_get_back_ere",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Get Back 'Ere!",
+    "tooltip": "Da Boss ain't ready to run an' so expects da boyz to stay put too!",
+    "spec": "ai=augment_morale_area;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=35.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=14.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_character_abilities_get_back_ere",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=14.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Leadership: 16.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 339,
+  "marker": "soulnetter",
+  "name": "Gilellion's Soulnetter",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_weapon_abilities_soulnetter",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_unique",
+    "loc_name": "Gilellion's Soulnetter",
+    "tooltip": "This blade of Gilellion the Lewd, champion of Slaanesh, traps its victims in immortal servitude to its bearer.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=0;er=0.0000;icpt=50.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=26.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_weapon_abilities_soulnetter",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=26.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 340,
+  "marker": "glacial_defence",
+  "name": "Glacial Defence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_twa08_unit_abilities_glacial_defence",
+    "ub_type": "wh_type_augment",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Glacial Defence",
+    "tooltip": "An icy carapace surrounds the Stonehorn, slowing the lumbering beast down further while adding a layer of natural armour to their defences.",
+    "spec": "ai=augment_defense_ranged;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=60.0000;act=21.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_twa08_unit_abilities_glacial_defence",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=21.0000",
+       "effect_type=positive",
+       "max_damaged_entities=-1",
+       "hp_change_frequency=1.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Speed: 0.7500 (mult);Armour: 60.0000 (add);Missile Resistance: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 341,
+  "marker": "glory_seeker",
+  "name": "Glory Seeker",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_hero_active_glory_seeker",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Glory Seeker",
+    "tooltip": "Meeting the gaze of Orghotts Daemonspew is enough to render a creature numb, such is the malice behind his eyes",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=24.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_hero_active_glory_seeker",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=24.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Incoming Healing Modifier: 0.0000 (mult);Melee Defence: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_commander_class"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 342,
+  "marker": "glory_seeker_upgraded",
+  "name": "Glory Seeker Upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc29_hero_active_glory_seeker_upgraded",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "{{tr:unit_abilities_onscreen_name_wh3_dlc29_hero_active_glory_seeker}} Upgraded",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh3_dlc29_hero_active_glory_seeker}}",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=120.0000;act=36.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc29_hero_active_glory_seeker_upgraded",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=36.0000",
+       "effect_type=negative",
+       "cant_move=true",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Incoming Healing Modifier: 0.0000 (mult);Melee Defence: -36.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_commander_class"
+    ],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 343,
+  "marker": "gruts_sickle",
+  "name": "Grut's Sickle",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_item_abilities_gruts_sickle",
+    "ub_type": "wh_type_augment_of_the_winds",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Grut's Sickle",
+    "tooltip": "Grut the Bloodthirsty's culinary malevolence seems to live on in his rusty sickle, which gives the Butcher greater command over the Winds, but at a cost to his own health.",
+    "spec": "ai=augment_spellcasting;self=false;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=100.0000;aas=false;oat=false;uses=3;rech=60.0000;act=20.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_main_item_abilities_gruts_sickle",
+      "flags": "s=false,f=true,e=false",
+      "detail": [
+       "duration=20.0000",
+       "effect_type=positive",
+       "damage_amount=33",
+       "max_damaged_entities=1",
+       "mana_regen_mod=0.8000",
+       "mana_max_depletion_mod=0.4000",
+       "hp_change_frequency=1.0000",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": ""
+     }
+    ],
+    "ui": [
+     "Causes damage to self"
+    ],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 344,
+  "marker": "guttural_roar",
+  "name": "Guttural Roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc27_qb_unit_abilities_guttural_roar",
+    "ub_type": "wh_type_area_of_hexes",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_rare",
+    "loc_name": "Guttural Roar",
+    "tooltip": "This is not a warning for evildoers to go. It is a promise of what is to come.",
+    "spec": "ai=hex_morale_area;self=false;tf=false;te=false;tg=false;nfu=0;neu=-1;er=90.0000;icpt=0.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=25.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc27_qb_unit_abilities_guttural_roar",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=25.0000",
+       "effect_type=negative",
+       "affects_enemies=true"
+      ],
+      "stats": "Base Weapon Damage: 0.8500 (mult);Melee Defence: -16.0000 (add);Leadership: -24.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 345,
+  "marker": "hagtree_fetish",
+  "name": "Hagtree Fetish",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh_dlc03_item_abilities_hagtree_fetish",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "Hagtree Fetish",
+    "tooltip": "A crude effigy and shamanic heirloom from one of the hag trees that grow deep in the forest.",
+    "spec": "ai=augment_spellcasting;self=false;tf=false;te=false;tg=false;nfu=0;neu=0;er=0.0000;icpt=0.0000;aas=false;oat=false;uses=1;rech=60.0000;act=29.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_dlc03_item_abilities_hagtree_fetish",
+      "flags": "s=true,f=false,e=false",
+      "detail": [
+       "duration=29.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Miscast Chance: 0.2500 (mult)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 346,
+  "marker": "hail_of_fire",
+  "name": "Hail of Fire",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh2_dlc13_lord_abilities_hail_of_fire",
+    "ub_type": "wh_type_area_of_augments",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Hail of Fire",
+    "tooltip": "It may be cruel, but the power to burn the foe to ash is extremely useful when you want to be sure of winning.",
+    "spec": "ai=augment_ranged;self=false;tf=false;te=false;tg=false;nfu=-1;neu=0;er=55.0000;icpt=100.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=22.0000;wup=0.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh2_dlc13_lord_abilities_hail_of_fire",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=22.0000",
+       "effect_type=positive",
+       "imbue_ignition=10",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Reload Skill: 30.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 347,
+  "marker": "harmonic_convergence",
+  "name": "Harmonic Convergence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_main_spell_bound_harmonic_convergence",
+    "ub_type": "wh_type_augment",
+    "owner": "bound",
+    "uniq": "wh_main_anc_group_common",
+    "loc_name": "{{tr:unit_abilities_onscreen_name_wh_main_spell_heavens_harmonic_convergence}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_main_spell_heavens_harmonic_convergence}}",
+    "spec": "ai=augment_melee;self=true;tf=true;te=false;tg=false;nfu=1;neu=0;er=0.0000;icpt=200.0000;aas=false;oat=false;uses=2;rech=60.0000;act=27.0000;wup=1.0000;pas=false;ast=true;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh_main_spell_heavens_harmonic_convergence",
+      "flags": "s=true,f=true,e=false",
+      "detail": [
+       "duration=27.0000",
+       "effect_type=positive",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Attack: 24.0000 (add);Melee Defence: 24.0000 (add);Reload Skill: 20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [],
+    "inv_u": []
+   }
+  ]
+ },
+ {
+  "n": 348,
+  "marker": "headhunt",
+  "name": "Headhunt",
+  "trigger": "melee_unwavering",
+  "keys": [
+   {
+    "key": "wh3_dlc26_character_abilities_headhunt",
+    "ub_type": "wh_type_hex",
+    "owner": "active",
+    "uniq": "wh_main_anc_group_uncommon",
+    "loc_name": "Headhunt",
+    "tooltip": "Promising a bonus for each and every skull detached, whether or not its owner objects, has proved to be something of a motivator among Ogre mercenaries.",
+    "spec": "ai=hex_melee;self=false;tf=false;te=true;tg=false;nfu=0;neu=1;er=0.0000;icpt=150.0000;aas=false;oat=false;uses=-1;rech=90.0000;act=31.0000;wup=0.0000;pas=false;ast=false;minr=0.0000;oaou=false;tgua=false;tgue=false;mcost=0.0000",
+    "phases": [
+     {
+      "phase": "wh3_dlc26_character_abilities_headhunt",
+      "flags": "s=false,f=false,e=true",
+      "detail": [
+       "duration=31.0000",
+       "effect_type=negative",
+       "affects_allies=true",
+       "affects_enemies=true"
+      ],
+      "stats": "Melee Defence: -40.0000 (add);Missile Resistance: -20.0000 (add)"
+     }
+    ],
+    "ui": [],
+    "inv_t": [
+     "unit_is_not_commander_class"
+    ],
+    "inv_u": []
+   }
+  ]
+ }
+]

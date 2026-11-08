@@ -1,0 +1,5470 @@
+{
+ "groups": [
+  {
+   "sig": [
+    "wh3_dlc29_spell_bound_eye_jabber",
+    "wh3_dlc29_weapon_abilities_legbiter",
+    "wh_main_character_abilities_deadly_onslaught",
+    "wh_main_character_abilities_foe_seeker"
+   ],
+   "blocks": [
+    {
+     "t": 5.8,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 10.5,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 11.5,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 12.5,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 13.5,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 19.8,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 20.8,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 21.8,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 22.8,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 24.0,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 25.0,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 26.0,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 28.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 29.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 30.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 31.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 32.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 33.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 34.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 35.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 36.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 37.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 38.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 39.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 40.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 41.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 42.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 43.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 44.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 45.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 46.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 47.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 48.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 49.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 50.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 51.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 52.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 53.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 54.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 55.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 56.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 57.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 58.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 59.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 60.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 61.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 62.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 63.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 64.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 65.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 66.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 67.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 68.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 69.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 70.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 71.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 72.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 73.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 74.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "M"
+     }
+    },
+    {
+     "t": 75.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 76.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 77.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 78.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 79.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 80.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 81.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 82.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 83.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 84.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 85.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 86.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 87.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 88.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 89.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 90.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 91.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 92.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 93.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 94.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 95.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 96.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 97.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 98.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 99.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 100.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 101.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 102.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    },
+    {
+     "t": 103.3,
+     "slots_declared": 4,
+     "parent": [
+      1072,
+      1052
+     ],
+     "dial": [
+      1072,
+      1052
+     ],
+     "slots": [
+      {
+       "i": 1,
+       "id": "button_order1",
+       "key": "wh_main_character_abilities_deadly_onslaught",
+       "pos": [
+        1130,
+        1052
+       ]
+      },
+      {
+       "i": 2,
+       "id": "button_order12",
+       "key": "wh_main_character_abilities_foe_seeker",
+       "pos": [
+        1189,
+        1052
+       ]
+      },
+      {
+       "i": 3,
+       "id": "button_order123",
+       "key": "wh3_dlc29_spell_bound_eye_jabber",
+       "pos": [
+        1248,
+        1052
+       ]
+      },
+      {
+       "i": 4,
+       "id": "button_order1234",
+       "key": "wh3_dlc29_weapon_abilities_legbiter",
+       "pos": [
+        1307,
+        1052
+       ]
+      }
+     ],
+     "badge": {
+      "visible": true,
+      "pos": [
+       115,
+       883
+      ],
+      "offset": [
+       -865,
+       -209
+      ],
+      "letter": "A"
+     }
+    }
+   ]
+  }
+ ]
+}

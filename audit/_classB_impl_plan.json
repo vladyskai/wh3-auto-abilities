@@ -1,0 +1,129 @@
+[
+ {
+  "marker": "captain_of_the_phoenix_guard",
+  "num": 199,
+  "trigger": "ally_heal_melee",
+  "real": 50,
+  "bound": 35
+ },
+ {
+  "marker": "da_boss_as_a_plan",
+  "num": 204,
+  "trigger": "ally_melee_buff",
+  "real": 150,
+  "bound": 105
+ },
+ {
+  "marker": "favour_of_the_fay",
+  "num": 209,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "helping_hand",
+  "num": 220,
+  "trigger": "ally_melee_buff",
+  "real": 50,
+  "bound": 35
+ },
+ {
+  "marker": "inspired_assault_i",
+  "num": 222,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "inspired_assault_ii",
+  "num": 223,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "inspired_assault_iii",
+  "num": 224,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "inspired_defence_i",
+  "num": 225,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "inspired_defence_ii",
+  "num": 226,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "inspired_defence_iii",
+  "num": 227,
+  "trigger": "ally_melee_buff",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "orcs_are_da_best",
+  "num": 238,
+  "trigger": "ally_melee_buff",
+  "real": 150,
+  "bound": 105
+ },
+ {
+  "marker": "hellish_vigour",
+  "num": 349,
+  "trigger": "ally_melee_buff",
+  "real": 75,
+  "bound": 52
+ },
+ {
+  "marker": "shock_collar",
+  "num": 439,
+  "trigger": "ally_wavering",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "were_you_goin",
+  "num": 508,
+  "trigger": "ally_wavering",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "elfish_healing_herbs",
+  "num": 534,
+  "trigger": "ally_heal",
+  "real": 50,
+  "bound": 35
+ },
+ {
+  "marker": "patch_up",
+  "num": 543,
+  "trigger": "ally_heal",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "revivification_crystal",
+  "num": 553,
+  "trigger": "ally_heal",
+  "real": 100,
+  "bound": 70
+ },
+ {
+  "marker": "stay_here_ill_get_help",
+  "num": 250,
+  "trigger": "wavering_ally_range",
+  "real": 60,
+  "bound": 42,
+  "existing": true
+ }
+]

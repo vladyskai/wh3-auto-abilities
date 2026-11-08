@@ -1,0 +1,68 @@
+  [PASS] probe captured the poll callback (timer registered)
+== drive 34 polls, firing engine command events around the casts
+  [PASS] probe wrote its own log file
+== gate + polling
+  [PASS] conflict phase ENTERED logged
+  [PASS] polls ran
+  [PASS] NO POLL ERROR
+== the exhaustive command-event instrument
+  [PASS] command listeners registered 26/26
+  [PASS] the source registers all command families (incl. Attack Unit / Move / Special Ability)
+  [PASS] engine 'Attack Unit' command logged
+  [PASS] engine 'Move' command logged
+== the movement/order read inventory
+  [PASS] READ unit.is_moving line
+  [PASS] READ unit.ordered_position line
+  [PASS] READ unit.is_moving_fast line
+  [PASS] READ unit.slow_speed line
+  [PASS] READ script_unit.has_moved line
+  [PASS] an ABSENT line lists the names that do not exist
+  [PASS] a write-shaped member guard exists in the source
+== the BEFORE record
+  [PASS] BEFORE cast=1 line
+  [PASS] BEFORE carries edge-to-edge unit_distance
+  [PASS] BEFORE carries both melee flags + missile state
+== the cast record (CAST-PLAN / TRY / ACCEPTED / POSTPOS)
+  [PASS] CAST-PLAN cast=1
+  [PASS] TRY cast=1
+  [PASS] ACCEPTED cast=1
+  [PASS] POSTPOS cast=1 (immediate same-tick re-read)
+  [PASS] CAST-PLAN cast=2
+  [PASS] TRY cast=2
+  [PASS] ACCEPTED cast=2
+  [PASS] POSTPOS cast=2 (immediate same-tick re-read)
+  [PASS] CAST-PLAN cast=3
+  [PASS] TRY cast=3
+  [PASS] ACCEPTED cast=3
+  [PASS] POSTPOS cast=3 (immediate same-tick re-read)
+  [PASS] CAST-PLAN cast=4
+  [PASS] TRY cast=4
+  [PASS] ACCEPTED cast=4
+  [PASS] POSTPOS cast=4 (immediate same-tick re-read)
+  [PASS] ACCEPTED cast=2 accepted=false (the refusal)
+  [PASS] REFUSED cast=2 logged (candidate-5 evidence)
+== the per-poll sampler
+  [PASS] SAMPLING cast=1 begins
+  [PASS] SAMPLE lines carry delta_from_pre + step_delta
+  [PASS] SAMPLE cast=1 reaches the full 6 polls
+== STEP RESULT + the machine-checkable VERDICT
+  [PASS] STEP RESULT cast=1
+  [PASS] VERDICT cast=1
+  [PASS] STEP RESULT cast=2
+  [PASS] VERDICT cast=2
+  [PASS] STEP RESULT cast=3
+  [PASS] VERDICT cast=3
+  [PASS] STEP RESULT cast=4
+  [PASS] VERDICT cast=4
+  [PASS] VERDICT cast=1 order_after_attack=y
+  [PASS] VERDICT cast=1 not refused
+  [PASS] VERDICT cast=2 refused=y order_after_move=y
+  [PASS] cast=2 line shows refused=y
+  [PASS] cast=3 shows moved_total=0.00 and no orders
+  [PASS] cast=4 shows already_moving_before=y
+  [PASS] cast=2 orders_seen names the engine Move
+== no state changed beyond the casts
+  [PASS] zero forbidden writes (trips=0: )
+  [PASS] exactly 4 cast attempts (perf_calls)
+
+SMOKE TEST PASSED - 4 casts, refused arm, deltas, orders and the VERDICT lines all recorded; zero forbidden writes.

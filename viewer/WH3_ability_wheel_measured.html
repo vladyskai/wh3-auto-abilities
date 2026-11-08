@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>WH3 ability wheel - measured, with your observation</title>
+<style>body{background:#141414;color:#e8e8e8;font-family:system-ui,Segoe UI,Arial;margin:24px}
+h1{font-size:18px} .muted{color:#9a9a9a} .k{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#9ecbff}
+table{border-collapse:collapse;margin:8px 0 18px} td,th{border:1px solid #333;padding:3px 9px;font-size:13px} th{background:#1e1e1e;text-align:left}
+canvas{background:#0d0d0d;border:1px solid #333}</style></head><body>
+<h1>Ability wheel: centre (95,944), radius 99, six slots ~45&deg; apart &mdash; identical in both battles</h1>
+<p class="muted">Measured from button_ability1..6 in your Boris battle and your Tzeentch battle. Max residual 6 px. Canvas 2.4&times; scale.</p>
+<table><tr><th>slot</th><th>angle</th><th>ability (Boris)</th><th>delta from the top slot</th></tr>
+<tr><td>1</td><td>top</td><td class="k">Deadly Onslaught</td><td class="k">&mdash; (badge is here now)</td></tr>
+<tr><td>2</td><td>45&deg;</td><td class="k">Foe-Seeker</td><td class="k">(+70, +30)</td></tr>
+<tr><td>3</td><td>right</td><td class="k">eye jabber</td><td class="k">(+98, +102)</td></tr>
+<tr><td>4</td><td>-45&deg;</td><td class="k">legbiter</td><td class="k">(+66, +172)</td></tr>
+<tr><td>5</td><td>135&deg;</td><td class="k">empty</td><td class="k">(-68, +32)</td></tr>
+<tr><td>6</td><td>left</td><td class="k">empty</td><td class="k">(-94, +104)</td></tr></table>
+<canvas id="c" width="700" height="560"></canvas>
+<p class="muted">Green = your M/A as you described it (top slot, lower part of the icon). Orange ring = where a second badge for Foe-Seeker would go with the delta above.</p>
+<script>
+const c=document.getElementById('c'), x=c.getContext('2d'), S=2.4, CX=350, CY=300;
+function P(px,py){ return [CX+(px-95)*S, CY+(py-944)*S]; }
+// wheel
+x.strokeStyle='#4c9aff'; x.lineWidth=2; x.beginPath(); x.arc(CX,CY,99*S,0,7); x.stroke();
+x.fillStyle='#3ddc84'; x.fillRect(CX-3,CY-3,6,6); x.fillText('centre (95,944)', CX+8, CY-8);
+// portrait hint
+x.strokeStyle='#444'; x.beginPath(); x.arc(CX,CY,60*S,0,7); x.stroke();
+x.fillStyle='#666'; x.fillText('portrait', CX-24, CY+4);
+const lbl=['1 Deadly Onslaught','2 Foe-Seeker','3 eye jabber','4 legbiter','5 empty','6 empty'];
+for(let i=0;i<6;i++){
+  const a=Math.PI/2 - i*Math.PI/4, px=95+99*Math.cos(a), py=944-99*Math.sin(a);
+  const q=P(px,py);
+  x.beginPath(); x.arc(q[0],q[1],7,0,7); x.fillStyle='#4c9aff'; x.fill();
+  x.fillStyle='#9ecbff'; x.font='13px ui-monospace,monospace';
+  const dxp = px>95 ? 16 : -170; x.fillText(lbl[i], q[0]+dxp, q[1]+4);
+}
+// your badge as you described it: top slot, lower part of the icon
+const top=P(96,845);
+x.beginPath(); x.arc(top[0], top[1]+26, 9, 0, 7); x.fillStyle='#ffd166'; x.fill();
+x.strokeStyle='#ffd166'; x.beginPath(); x.arc(top[0], top[1]+26, 14, 0, 7); x.stroke();
+x.fillStyle='#ffd166'; x.font='13px ui-monospace,monospace'; x.fillText('your M/A here', top[0]+20, top[1]+42);
+// proposed: Foe-Seeker at the 45 deg slot
+const fs=P(166,875);
+x.strokeStyle='#ff9f43'; x.lineWidth=2; x.beginPath(); x.arc(fs[0], fs[1]+26, 14, 0, 7); x.stroke();
+x.fillStyle='#ff9f43'; x.fillText('second badge (Foe-Seeker)', fs[0]+20, fs[1]+30);
+</script></body></html>

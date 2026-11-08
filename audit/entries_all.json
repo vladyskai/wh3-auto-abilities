@@ -1,0 +1,5239 @@
+[
+ {
+  "marker": "onslaught",
+  "name": "Deadly Onslaught",
+  "trigger": "charge",
+  "badge": "zz_auto_badge",
+  "keys": [
+   "wh_main_character_abilities_deadly_onslaught"
+  ]
+ },
+ {
+  "marker": "foe_seeker",
+  "name": "Foe-Seeker",
+  "trigger": "tired",
+  "badge": "zz_auto_badge_fs",
+  "keys": [
+   "wh_main_character_abilities_foe_seeker",
+   "wh_dlc03_character_abilities_foe_seeker",
+   "wh_main_character_abilities_foe_seeker_summoned"
+  ]
+ },
+ {
+  "marker": "hammer_of_sigmar",
+  "name": "Hammer of Sigmar",
+  "trigger": "melee",
+  "badge": "zz_auto_badge_hos",
+  "keys": [
+   "wh_main_spell_bound_hammer_of_sigmar",
+   "wh_dlc04_spell_bound_hammer_of_sigmar_upgraded"
+  ]
+ },
+ {
+  "marker": "stand_your_ground",
+  "name": "Stand Your Ground",
+  "trigger": "melee_low_morale",
+  "badge": "zz_auto_badge_syg",
+  "keys": [
+   "wh_main_character_abilities_stand_your_ground",
+   "wh3_dlc24_character_abilities_tacticians_stand_your_ground"
+  ]
+ },
+ {
+  "marker": "blood_lust",
+  "name": "Blood Lust",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bl",
+  "keys": [
+   "wh_main_character_abilities_blood_lust",
+   "wh_dlc03_character_abilities_blood_lust"
+  ]
+ },
+ {
+  "marker": "aether_sword",
+  "name": "Aether Sword",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_aether_sword",
+  "keys": [
+   "wh3_dlc20_weapon_abilities_aether_sword"
+  ]
+ },
+ {
+  "marker": "apocalyptic_vision",
+  "name": "Apocalyptic Vision",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_apocalyptic_vision",
+  "keys": [
+   "wh_dlc03_character_abilities_apocalyptic_vision"
+  ]
+ },
+ {
+  "marker": "armour_of_gazrakh",
+  "name": "Armour of Gazrakh",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_armour_of_gazrakh",
+  "keys": [
+   "wh3_dlc23_item_abilities_armour_of_gazrakh"
+  ]
+ },
+ {
+  "marker": "aura_of_quetzl",
+  "name": "Aura of Quetzl",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_aura_of_quetzl",
+  "keys": [
+   "wh2_main_item_abilities_aura_of_quetzl"
+  ]
+ },
+ {
+  "marker": "axe_of_dargo",
+  "name": "Axe of Dargo",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_axe_of_dargo",
+  "keys": [
+   "wh_main_weapon_abilities_axe_of_dargo"
+  ]
+ },
+ {
+  "marker": "axe_of_grom",
+  "name": "Axe of Grom",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_axe_of_grom",
+  "keys": [
+   "wh2_dlc15_weapon_abilities_axe_of_grom"
+  ]
+ },
+ {
+  "marker": "axes_of_kadrin",
+  "name": "Axes of Kadrin",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_axes_of_kadrin",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_axes_of_kadrin"
+  ]
+ },
+ {
+  "marker": "azhags_ard_armour",
+  "name": "Azhag's 'Ard Armour",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_azhags_ard_armour",
+  "keys": [
+   "wh2_dlc15_item_abilities_azhags_ard_armour"
+  ]
+ },
+ {
+  "marker": "ballet_of_blows",
+  "name": "Ballet of Blows",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ballet_of_blows",
+  "keys": [
+   "wh3_main_lord_abilities_ballet_of_blows"
+  ]
+ },
+ {
+  "marker": "bear_fang_talisman",
+  "name": "Bear Fang Talisman",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bear_fang_talisman",
+  "keys": [
+   "wh3_dlc27_item_abilities_bear_fang_talisman"
+  ]
+ },
+ {
+  "marker": "beastslaver",
+  "name": "Beastslaver",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_beastslaver",
+  "keys": [
+   "wh2_dlc14_lord_abilities_beastslaver"
+  ]
+ },
+ {
+  "marker": "blade_of_bel_korhadris",
+  "name": "Blade of Bel-Korhadris",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blade_of_bel_korhadris",
+  "keys": [
+   "wh2_main_item_abilities_blade_of_bel_korhadris"
+  ]
+ },
+ {
+  "marker": "blades_of_shang_yang",
+  "name": "Blades of Shang-Yang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blades_of_shang_yang",
+  "keys": [
+   "wh3_cp1_weapon_abilities_blades_of_shang_yang"
+  ]
+ },
+ {
+  "marker": "bloodstorm_blades",
+  "name": "Bloodstorm Blades",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bloodstorm_blades",
+  "keys": [
+   "wh3_dlc26_weapon_abilities_bloodstorm_blades"
+  ]
+ },
+ {
+  "marker": "brass_body",
+  "name": "Brass Body",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_brass_body",
+  "keys": [
+   "wh2_dlc17_lord_abilities_brass_body"
+  ]
+ },
+ {
+  "marker": "change_or_die",
+  "name": "Change or Die!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_change_or_die",
+  "keys": [
+   "wh3_dlc24_character_abilities_change_or_die"
+  ]
+ },
+ {
+  "marker": "claws_of_mourkain",
+  "name": "Claws of Mourkain",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_claws_of_mourkain",
+  "keys": [
+   "wh2_dlc11_lord_abilities_claws_of_mourkain"
+  ]
+ },
+ {
+  "marker": "cloak_of_mists_and_shadows",
+  "name": "Cloak of Mists & Shadows",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_cloak_of_mists_and_shadows",
+  "keys": [
+   "wh_main_item_abilities_cloak_of_mists_and_shadows"
+  ]
+ },
+ {
+  "marker": "coat_in_blood",
+  "name": "Coat in Blood",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_coat_in_blood",
+  "keys": [
+   "wh3_dlc29_hero_abilities_coat_in_blood"
+  ]
+ },
+ {
+  "marker": "creature_killer",
+  "name": "Creature-Killer",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_creature_killer",
+  "keys": [
+   "wh2_dlc16_weapon_abilities_creature_killer"
+  ]
+ },
+ {
+  "marker": "da_great_un_iz_ere",
+  "name": "Da Great 'Un Iz 'Ere!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_da_great_un_iz_ere",
+  "keys": [
+   "wh2_dlc15_lord_abilities_da_great_un_iz_ere"
+  ]
+ },
+ {
+  "marker": "daemonblade",
+  "name": "Daemonblade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_daemonblade",
+  "keys": [
+   "wh3_dlc20_weapon_abilities_daemonblade"
+  ]
+ },
+ {
+  "marker": "daemonshield",
+  "name": "Daemonshield",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_daemonshield",
+  "keys": [
+   "wh3_dlc20_item_abilities_daemonshield"
+  ]
+ },
+ {
+  "marker": "dagger_of_malice",
+  "name": "Dagger of Malice",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dagger_of_malice",
+  "keys": [
+   "wh3_dlc23_weapon_abilities_dagger_of_malice"
+  ]
+ },
+ {
+  "marker": "dark_protection",
+  "name": "Dark Protection",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dark_protection",
+  "keys": [
+   "wh2_dlc11_lord_abilities_dark_protection"
+  ]
+ },
+ {
+  "marker": "darkwalker",
+  "name": "Darkwalker",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_darkwalker",
+  "keys": [
+   "wh3_dlc25_lord_abilities_darkwalker"
+  ]
+ },
+ {
+  "marker": "deathbringer",
+  "name": "Deathbringer",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_deathbringer",
+  "keys": [
+   "wh3_main_lord_abilities_deathbringer",
+   "wh3_main_lord_abilities_deathbringer_upgraded"
+  ]
+ },
+ {
+  "marker": "strike_of_nehekhara",
+  "name": "Desertstrike",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_strike_of_nehekhara",
+  "keys": [
+   "wh2_dlc09_character_abilities_strike_of_nehekhara"
+  ]
+ },
+ {
+  "marker": "dolorous_blade",
+  "name": "Dolorous Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dolorous_blade",
+  "keys": [
+   "wh_dlc07_hero_abilities_dolorous_blade"
+  ]
+ },
+ {
+  "marker": "dragon_spear",
+  "name": "Dragon Spear",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dragon_spear",
+  "keys": [
+   "wh2_dlc16_weapon_abilities_dragon_spear"
+  ]
+ },
+ {
+  "marker": "dreaded_duelist",
+  "name": "Dreaded Duelist",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dreaded_duelist",
+  "keys": [
+   "wh2_dlc11_lord_abilities_dreaded_duelist"
+  ]
+ },
+ {
+  "marker": "dwarf_gouger",
+  "name": "Dwarf Gouger",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dwarf_gouger",
+  "keys": [
+   "wh2_main_weapon_abilities_dwarf_gouger"
+  ]
+ },
+ {
+  "marker": "enrage",
+  "name": "Enrage",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_enrage",
+  "keys": [
+   "wh_pro04_unit_abilities_enrage"
+  ]
+ },
+ {
+  "marker": "entice",
+  "name": "Entice",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_entice",
+  "keys": [
+   "wh3_dlc29_unit_abilities_entice"
+  ]
+ },
+ {
+  "marker": "everyone_has_their_price",
+  "name": "Everyone Has Their Price",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_everyone_has_their_price",
+  "keys": [
+   "wh3_main_lord_abilities_everyone_has_their_price"
+  ]
+ },
+ {
+  "marker": "evisceration",
+  "name": "Evisceration",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_evisceration",
+  "keys": [
+   "wh2_dlc16_hero_abilities_evisceration"
+  ]
+ },
+ {
+  "marker": "eye_jabber",
+  "name": "Eye Jabber",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_eye_jabber",
+  "keys": [
+   "wh3_dlc29_spell_bound_eye_jabber"
+  ]
+ },
+ {
+  "marker": "eye_gouger",
+  "name": "Eye Gouger",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_eye_gouger",
+  "keys": [
+   "wh3_dlc29_spell_bound_eye_gouger"
+  ]
+ },
+ {
+  "marker": "eye_of_the_storm",
+  "name": "Eye of the Storm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_eye_of_the_storm",
+  "keys": [
+   "wh3_main_lord_abilities_eye_of_the_storm"
+  ]
+ },
+ {
+  "marker": "faiths_bastion",
+  "name": "Faith's Bastion",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_faiths_bastion",
+  "keys": [
+   "wh_main_hero_abilities_faiths_bastion"
+  ]
+ },
+ {
+  "marker": "fangsword_of_eltharion",
+  "name": "Fangsword of Eltharion",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fangsword_of_eltharion",
+  "keys": [
+   "wh2_dlc15_weapon_abilities_fangsword_of_eltharion"
+  ]
+ },
+ {
+  "marker": "feint_and_reposte",
+  "name": "Feint and Reposte",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_feint_and_reposte",
+  "keys": [
+   "wh2_main_lord_abilities_feint_and_reposte"
+  ]
+ },
+ {
+  "marker": "filth_mace",
+  "name": "Filth Mace",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_filth_mace",
+  "keys": [
+   "wh_main_weapon_abilities_filth_mace"
+  ]
+ },
+ {
+  "marker": "fluid_injection",
+  "name": "Fluid Injection",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fluid_injection",
+  "keys": [
+   "wh2_dlc16_unit_abilities_fluid_injection"
+  ]
+ },
+ {
+  "marker": "gaze_of_khorne",
+  "name": "Gaze of Khorne",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gaze_of_khorne",
+  "keys": [
+   "wh3_dlc26_lord_abilities_gaze_of_khorne"
+  ]
+ },
+ {
+  "marker": "fury_of_the_land",
+  "name": "Fury of the Land",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fury_of_the_land",
+  "keys": [
+   "wh3_dlc24_character_abilities_fury_of_the_land"
+  ]
+ },
+ {
+  "marker": "fury_of_ursun",
+  "name": "Fury of Ursun",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fury_of_ursun",
+  "keys": [
+   "wh3_main_lord_abilities_fury_of_ursun"
+  ]
+ },
+ {
+  "marker": "ghal_maraz",
+  "name": "Ghal Maraz",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ghal_maraz",
+  "keys": [
+   "wh_main_weapon_abilities_ghal_maraz"
+  ]
+ },
+ {
+  "marker": "giant_leap",
+  "name": "Giant Leap",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_giant_leap",
+  "keys": [
+   "wh3_dlc24_character_abilities_giant_leap"
+  ]
+ },
+ {
+  "marker": "gitsnik",
+  "name": "Gitsnik",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gitsnik",
+  "keys": [
+   "wh_main_weapon_abilities_gitsnik"
+  ]
+ },
+ {
+  "marker": "gotrek_doom",
+  "name": "Gotrek's Doom",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gotrek_doom",
+  "keys": [
+   "wh2_pro08_character_abilities_gotrek_doom"
+  ]
+ },
+ {
+  "marker": "shield_of_faith_upgraded",
+  "name": "Shield of Faith (Upgraded)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shield_of_faith_upgraded",
+  "keys": [
+   "wh_dlc04_spell_bound_shield_of_faith_upgraded"
+  ]
+ },
+ {
+  "marker": "great_gutgouger",
+  "name": "Great Gutgouger",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_great_gutgouger",
+  "keys": [
+   "wh3_dlc26_weapon_abilities_great_gutgouger"
+  ]
+ },
+ {
+  "marker": "halo_of_maidenly_wrath",
+  "name": "Halo of Maidenly Wrath",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_halo_of_maidenly_wrath",
+  "keys": [
+   "wh2_dlc14_lord_abilities_halo_of_maidenly_wrath"
+  ]
+ },
+ {
+  "marker": "hammer_axe_of_skoll",
+  "name": "Hammer-Axe of Skoll",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hammer_axe_of_skoll",
+  "keys": [
+   "wh3_dlc29_weapon_active_hammer_axe_of_skoll"
+  ]
+ },
+ {
+  "marker": "eagle_feather_torc",
+  "name": "Eagle-Feather Torc",
+  "trigger": "barrier_broken",
+  "badge": "zz_auto_badge_eagle_feather_torc",
+  "keys": [
+   "wh3_dlc27_item_abilities_eagle_feather_torc"
+  ]
+ },
+ {
+  "marker": "fangspike",
+  "name": "Fangspike",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_fangspike",
+  "keys": [
+   "wh3_dlc26_weapon_abilities_fangspike"
+  ]
+ },
+ {
+  "marker": "ghoul_king_of_ushoran",
+  "name": "Ghoul King of Ushoran",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_ghoul_king_of_ushoran",
+  "keys": [
+   "wh2_dlc11_lord_abilities_ghoul_king_of_ushoran"
+  ]
+ },
+ {
+  "marker": "glorious_death",
+  "name": "Glorious Death",
+  "trigger": "glorious_death",
+  "badge": "zz_auto_badge_glorious_death",
+  "keys": [
+   "wh3_dlc25_lord_abilities_glorious_death"
+  ]
+ },
+ {
+  "marker": "legbiter",
+  "name": "Legbiter",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_legbiter",
+  "keys": [
+   "wh3_dlc29_weapon_abilities_legbiter"
+  ]
+ },
+ {
+  "marker": "hellfire_sword",
+  "name": "Hellfire Sword",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hellfire_sword",
+  "keys": [
+   "wh_main_weapon_abilities_hellfire_sword"
+  ]
+ },
+ {
+  "marker": "helm_of_discord",
+  "name": "Helm of Discord",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_helm_of_discord",
+  "keys": [
+   "wh_main_weapon_abilities_helm_of_discord"
+  ]
+ },
+ {
+  "marker": "helm_of_many_eyes",
+  "name": "Helm of Many Eyes",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_helm_of_many_eyes",
+  "keys": [
+   "wh_dlc01_item_passive_helm_of_many_eyes"
+  ]
+ },
+ {
+  "marker": "heroic_killing_blow_2",
+  "name": "Heroic Killing Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_heroic_killing_blow_2",
+  "keys": [
+   "wh3_main_pro_character_abilities_heroic_killing_blow_2"
+  ]
+ },
+ {
+  "marker": "heroic_killing_blow_dlc07",
+  "name": "Heroic Killing Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_heroic_killing_blow_dlc07",
+  "keys": [
+   "wh_dlc07_character_abilities_heroic_killing_blow"
+  ]
+ },
+ {
+  "marker": "heroic_killing_blow_main",
+  "name": "Heroic Killing Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_heroic_killing_blow_main",
+  "keys": [
+   "wh_main_character_abilities_heroic_killing_blow"
+  ]
+ },
+ {
+  "marker": "hydra_blade",
+  "name": "Hydra Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hydra_blade",
+  "keys": [
+   "wh2_main_weapon_abilities_hydra_blade"
+  ]
+ },
+ {
+  "marker": "inevitable_horror",
+  "name": "Inevitable Horror",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inevitable_horror",
+  "keys": [
+   "wh3_dlc26_character_abilities_inevitable_horror"
+  ]
+ },
+ {
+  "marker": "karaghul",
+  "name": "Karaghul",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_karaghul",
+  "keys": [
+   "wh2_pro08_weapon_abilities_karaghul"
+  ]
+ },
+ {
+  "marker": "killing_blow_1",
+  "name": "Killing Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_killing_blow_1",
+  "keys": [
+   "wh3_main_pro_character_abilities_heroic_killing_blow_1"
+  ]
+ },
+ {
+  "marker": "killing_blow",
+  "name": "Killing Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_killing_blow",
+  "keys": [
+   "wh_main_unit_abilities_killing_blow"
+  ]
+ },
+ {
+  "marker": "liarsbane",
+  "name": "Liarsbane",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_liarsbane",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_liarsbane"
+  ]
+ },
+ {
+  "marker": "lightning_reflexes",
+  "name": "Lightning Reflexes",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_lightning_reflexes",
+  "keys": [
+   "wh2_dlc11_lord_abilities_lightning_reflexes"
+  ]
+ },
+ {
+  "marker": "locus_of_beguilement",
+  "name": "Locus of Beguilement",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_beguilement",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_beguilement"
+  ]
+ },
+ {
+  "marker": "locus_of_grace",
+  "name": "Locus of Grace",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_grace",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_grace"
+  ]
+ },
+ {
+  "marker": "locus_of_wrath",
+  "name": "Locus of Wrath",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_wrath",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_wrath"
+  ]
+ },
+ {
+  "marker": "lucky_banner",
+  "name": "Lucky Banner",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_lucky_banner",
+  "keys": [
+   "wh2_dlc15_item_abilities_lucky_banner"
+  ]
+ },
+ {
+  "marker": "mace_of_ulumak",
+  "name": "Mace of Ulumak",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mace_of_ulumak",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_mace_of_ulumak"
+  ]
+ },
+ {
+  "marker": "mananns_luck",
+  "name": "Manann's Luck",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mananns_luck",
+  "keys": [
+   "wh2_dlc11_lord_abilities_mananns_luck"
+  ]
+ },
+ {
+  "marker": "master_of_the_skies",
+  "name": "Master of the Skies",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_of_the_skies",
+  "keys": [
+   "wh2_dlc12_lord_abilities_master_of_the_skies"
+  ]
+ },
+ {
+  "marker": "mimic_waaagh",
+  "name": "Mirror (Waaagh!)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mimic_waaagh",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_waaagh"
+  ]
+ },
+ {
+  "marker": "mimic_grom_waaagh",
+  "name": "Mirror (Grom's Big Waaagh!)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mimic_grom_waaagh",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_grom_waaagh"
+  ]
+ },
+ {
+  "marker": "monstrous_strength",
+  "name": "Monstrous Strength",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_monstrous_strength",
+  "keys": [
+   "wh2_dlc13_lord_abilities_monstrous_strength"
+  ]
+ },
+ {
+  "marker": "mortal_blow",
+  "name": "Mortal Blow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mortal_blow",
+  "keys": [
+   "wh3_main_daemon_arms_abilities_mortal_blow"
+  ]
+ },
+ {
+  "marker": "mortal_blow_upgraded",
+  "name": "Mortal Blow (Upgraded)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mortal_blow_upgraded",
+  "keys": [
+   "wh3_main_daemon_arms_abilities_mortal_blow_upgraded"
+  ]
+ },
+ {
+  "marker": "mumbo_jumbo_chant",
+  "name": "Mumbo-Jumbo Chant",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mumbo_jumbo_chant",
+  "keys": [
+   "wh3_dlc26_character_abilities_mumbo_jumbo_chant"
+  ]
+ },
+ {
+  "marker": "strike_of_nagash",
+  "name": "Necrostrike",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_strike_of_nagash",
+  "keys": [
+   "wh2_dlc09_character_abilities_strike_of_nagash"
+  ]
+ },
+ {
+  "marker": "nurgles_favoured_son",
+  "name": "Nurgle's Favoured Son",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_nurgles_favoured_son",
+  "keys": [
+   "wh3_dlc25_lord_abilities_nurgles_favoured_son"
+  ]
+ },
+ {
+  "marker": "opal_amulet",
+  "name": "Opal Amulet",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_opal_amulet",
+  "keys": [
+   "wh_main_item_abilities_opal_amulet"
+  ]
+ },
+ {
+  "marker": "oracle_of_eternity",
+  "name": "Oracle of Eternity",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_oracle_of_eternity",
+  "keys": [
+   "wh3_main_lord_abilities_oracle_of_eternity"
+  ]
+ },
+ {
+  "marker": "pendant_of_slaanesh",
+  "name": "Pendant of Slaanesh",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pendant_of_slaanesh",
+  "keys": [
+   "wh_main_item_abilities_pendant_of_slaanesh"
+  ]
+ },
+ {
+  "marker": "plaguefathers_oration",
+  "name": "Plaguefather's Oration",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_plaguefathers_oration",
+  "keys": [
+   "wh3_main_lord_abilities_plaguefathers_oration"
+  ]
+ },
+ {
+  "marker": "primal_roar",
+  "name": "Primal Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_primal_roar",
+  "keys": [
+   "wh2_dlc13_lord_abilities_primal_roar"
+  ]
+ },
+ {
+  "marker": "puncture",
+  "name": "Puncture",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_puncture",
+  "keys": [
+   "wh3_dlc26_character_abilities_puncture"
+  ]
+ },
+ {
+  "marker": "heart_piercing",
+  "name": "Heart Piercing",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_heart_piercing",
+  "keys": [
+   "wh2_dlc11_lord_abilities_heart_piercing"
+  ]
+ },
+ {
+  "marker": "horn_of_the_first_beast",
+  "name": "Horn of the First Beast",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_horn_of_the_first_beast",
+  "keys": [
+   "wh_dlc03_item_abilities_horn_of_the_first_beast"
+  ]
+ },
+ {
+  "marker": "morglor_the_mangler",
+  "name": "Morglor the Mangler",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_morglor_the_mangler",
+  "keys": [
+   "wh3_dlc26_weapon_abilities_morglor_the_mangler"
+  ]
+ },
+ {
+  "marker": "banespear",
+  "name": "The Bane Spear",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_banespear",
+  "keys": [
+   "wh3_main_weapon_abilities_banespear"
+  ]
+ },
+ {
+  "marker": "black_axe_of_krell",
+  "name": "The Black Axe of Krell",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_black_axe_of_krell",
+  "keys": [
+   "wh3_dlc29_item_abilities_black_axe_of_krell"
+  ]
+ },
+ {
+  "marker": "black_lotus",
+  "name": "Black Lotus",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_black_lotus",
+  "keys": [
+   "wh2_main_character_abilities_black_lotus"
+  ]
+ },
+ {
+  "marker": "blessed_blade_of_ptra",
+  "name": "The Blessed Blade of Ptra",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blessed_blade_of_ptra",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blessed_blade_of_ptra"
+  ]
+ },
+ {
+  "marker": "daemonic_strength",
+  "name": "Daemonic Strength",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_daemonic_strength",
+  "keys": [
+   "wh_main_item_abilities_daemonic_strength"
+  ]
+ },
+ {
+  "marker": "dark_venom",
+  "name": "Dark Venom",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dark_venom",
+  "keys": [
+   "wh2_main_character_abilities_dark_venom"
+  ]
+ },
+ {
+  "marker": "doom_glaive",
+  "name": "Doom Glaive",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_doom_glaive",
+  "keys": [
+   "wh3_dlc29_item_abilities_doom_glaive"
+  ]
+ },
+ {
+  "marker": "dragons_fang",
+  "name": "The Dragon's Fang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dragons_fang",
+  "keys": [
+   "wh3_dlc24_weapon_abilities_dragons_fang"
+  ]
+ },
+ {
+  "marker": "drakwald_runefang",
+  "name": "The Drakwald Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_drakwald_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_drakwald_runefang"
+  ]
+ },
+ {
+  "marker": "elixir_of_damnation",
+  "name": "Elixir of Damnation",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_elixir_of_damnation",
+  "keys": [
+   "wh3_dlc27_item_abilities_elixir_of_damnation"
+  ]
+ },
+ {
+  "marker": "hochland_runefang",
+  "name": "The Hochland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hochland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_hochland_runefang"
+  ]
+ },
+ {
+  "marker": "nordland_runefang",
+  "name": "The Nordland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_nordland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_nordland_runefang"
+  ]
+ },
+ {
+  "marker": "ostermark_runefang",
+  "name": "The Ostermark Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ostermark_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_ostermark_runefang"
+  ]
+ },
+ {
+  "marker": "ostland_runefang",
+  "name": "The Ostland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ostland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_ostland_runefang"
+  ]
+ },
+ {
+  "marker": "potion_of_strength",
+  "name": "Potion of Strength",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_potion_of_strength",
+  "keys": [
+   "wh_main_item_abilities_potion_of_strength"
+  ]
+ },
+ {
+  "marker": "potion_of_toughness",
+  "name": "Potion of Toughness",
+  "trigger": "melee_health75",
+  "badge": "zz_auto_badge_potion_of_toughness",
+  "keys": [
+   "wh_main_item_abilities_potion_of_toughness"
+  ]
+ },
+ {
+  "marker": "quickblood",
+  "name": "Quickblood",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_quickblood",
+  "keys": [
+   "wh3_dlc29_lord_abilities_lightning_reflexes"
+  ]
+ },
+ {
+  "marker": "quicksilver_strike",
+  "name": "Quicksilver Strike",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_quicksilver_strike",
+  "keys": [
+   "wh3_dlc27_lord_abilities_quicksilver_strike"
+  ]
+ },
+ {
+  "marker": "rage_embodied",
+  "name": "Rage Embodied",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rage_embodied",
+  "keys": [
+   "wh3_main_lord_abilities_rage_embodied"
+  ]
+ },
+ {
+  "marker": "rage_incarnate",
+  "name": "Rage Incarnate",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rage_incarnate",
+  "keys": [
+   "wh3_main_lord_abilities_rage_incarnate"
+  ]
+ },
+ {
+  "marker": "rapier_of_ecstasy",
+  "name": "Rapier of Ecstasy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rapier_of_ecstasy",
+  "keys": [
+   "wh3_dlc20_weapon_abilities_rapier_of_ecstasy"
+  ]
+ },
+ {
+  "marker": "red_ruin",
+  "name": "Red Ruin",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_red_ruin",
+  "keys": [
+   "wh2_dlc10_lord_abilities_red_ruin"
+  ]
+ },
+ {
+  "marker": "refuse_to_die",
+  "name": "Refuse to Die",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_refuse_to_die",
+  "keys": [
+   "wh2_dlc12_unit_abilities_refuse_to_die"
+  ]
+ },
+ {
+  "marker": "revenge_incarnate",
+  "name": "Revenge Incarnate",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_revenge_incarnate",
+  "keys": [
+   "wh_dlc06_lord_abilities_revenge_incarnate"
+  ]
+ },
+ {
+  "marker": "rock_of_itza",
+  "name": "Rok of Itza",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rock_of_itza",
+  "keys": [
+   "wh2_dlc13_lord_abilities_rock_of_itza"
+  ]
+ },
+ {
+  "marker": "rot_or_die",
+  "name": "Rot or Die!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rot_or_die",
+  "keys": [
+   "wh3_dlc25_lord_abilities_rot_or_die"
+  ]
+ },
+ {
+  "marker": "rot_pocked_axe",
+  "name": "Rot-pocked Axe",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rot_pocked_axe",
+  "keys": [
+   "wh3_dlc29_item_active_rot_pocked_axe"
+  ]
+ },
+ {
+  "marker": "rune_axe_of_gotrek",
+  "name": "Rune Axe of Gotrek",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_axe_of_gotrek",
+  "keys": [
+   "wh2_pro08_weapon_abilities_rune_axe_of_gotrek"
+  ]
+ },
+ {
+  "marker": "rune_axe_of_grombrindal",
+  "name": "Rune Axe of Grombrindal",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_axe_of_grombrindal",
+  "keys": [
+   "wh_pro01_weapon_abilities_rune_axe_of_grombrindal"
+  ]
+ },
+ {
+  "marker": "runefang",
+  "name": "Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_runefang",
+  "keys": [
+   "wh_main_weapon_abilities_runefang"
+  ]
+ },
+ {
+  "marker": "sacred_spawning_of_xhotl",
+  "name": "Sacred Spawning of Xhotl",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sacred_spawning_of_xhotl",
+  "keys": [
+   "wh2_main_lord_abilities_sacred_spawning_of_xhotl"
+  ]
+ },
+ {
+  "marker": "sands_of_sickness",
+  "name": "Sands of Sickness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sands_of_sickness",
+  "keys": [
+   "wh3_dlc25_character_abilities_sands_of_sickness"
+  ]
+ },
+ {
+  "marker": "scales_of_the_celestial_court",
+  "name": "Scales of the Celestial Court",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scales_of_the_celestial_court",
+  "keys": [
+   "wh3_main_item_abilities_scales_of_the_celestial_court"
+  ]
+ },
+ {
+  "marker": "sceptre_of_titans",
+  "name": "Sceptre of Titans",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sceptre_of_titans",
+  "keys": [
+   "wh3_main_weapon_abilities_sceptre_of_titans"
+  ]
+ },
+ {
+  "marker": "scourge",
+  "name": "Scourge",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scourge",
+  "keys": [
+   "wh_dlc03_weapon_abilities_scourge"
+  ]
+ },
+ {
+  "marker": "scrying_stone",
+  "name": "Scrying Stone",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scrying_stone",
+  "keys": [
+   "wh2_main_item_abilities_scrying_stone"
+  ]
+ },
+ {
+  "marker": "seduction_of_the_serpent",
+  "name": "Seduction of the Serpent",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_seduction_of_the_serpent",
+  "keys": [
+   "wh_dlc08_lord_abilities_seduction_of_the_serpent"
+  ]
+ },
+ {
+  "marker": "shadow_shroud",
+  "name": "Shadow Shroud",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shadow_shroud",
+  "keys": [
+   "wh3_main_lord_abilities_shadow_shroud"
+  ]
+ },
+ {
+  "marker": "shield_of_aeons",
+  "name": "Shield of Aeons",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shield_of_aeons",
+  "keys": [
+   "wh2_dlc13_item_abilities_shield_of_aeons"
+  ]
+ },
+ {
+  "marker": "shield_of_faith",
+  "name": "Shield of Faith",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shield_of_faith",
+  "keys": [
+   "wh_main_spell_bound_shield_of_faith"
+  ]
+ },
+ {
+  "marker": "silver_dagger",
+  "name": "Silver Dagger",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_silver_dagger",
+  "keys": [
+   "wh3_dlc23_weapon_abilities_silver_dagger"
+  ]
+ },
+ {
+  "marker": "skull_wand_of_kaloth",
+  "name": "Skull Wand of Kaloth",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_skull_wand_of_kaloth",
+  "keys": [
+   "wh_main_item_abilities_skull_wand_of_kaloth"
+  ]
+ },
+ {
+  "marker": "slippery",
+  "name": "Slippery",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_slippery",
+  "keys": [
+   "wh_main_hero_abilities_slippery"
+  ]
+ },
+ {
+  "marker": "sliverslash",
+  "name": "Sliverslash",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sliverslash",
+  "keys": [
+   "wh3_dlc20_weapon_abilities_sliverslash"
+  ]
+ },
+ {
+  "marker": "smash_em_faster",
+  "name": "Smash 'Em Faster",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_smash_em_faster",
+  "keys": [
+   "wh2_dlc15_lord_abilities_smash_em_faster"
+  ]
+ },
+ {
+  "marker": "stand_or_die",
+  "name": "Stand or Die!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_stand_or_die",
+  "keys": [
+   "wh_main_character_abilities_stand_or_die"
+  ]
+ },
+ {
+  "marker": "star_lance",
+  "name": "Star Lance",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_star_lance",
+  "keys": [
+   "wh2_dlc15_weapon_abilities_star_lance"
+  ]
+ },
+ {
+  "marker": "starcrusher",
+  "name": "Starcrusher",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_starcrusher",
+  "keys": [
+   "wh_dlc01_weapon_abilities_starcrusher"
+  ]
+ },
+ {
+  "marker": "steppe_hunters_horn",
+  "name": "Steppe Hunter's Horn",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_steppe_hunters_horn",
+  "keys": [
+   "wh3_main_item_abilities_steppe_hunters_horn"
+  ]
+ },
+ {
+  "marker": "stinky_giant_club",
+  "name": "Stinky Giant Club",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_stinky_giant_club",
+  "keys": [
+   "wh_dlc08_weapon_abilities_stinky_giant_club"
+  ]
+ },
+ {
+  "marker": "storm_rage",
+  "name": "Storm Rage",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_storm_rage",
+  "keys": [
+   "wh3_dlc20_unit_abilities_storm_rage"
+  ]
+ },
+ {
+  "marker": "stormlance",
+  "name": "Stormlance",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_stormlance",
+  "keys": [
+   "wh3_dlc25_item_abilities_stormlance"
+  ]
+ },
+ {
+  "marker": "strike_of_tombs",
+  "name": "Tombstrike",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_strike_of_tombs",
+  "keys": [
+   "wh2_dlc09_character_abilities_strike_of_tombs"
+  ]
+ },
+ {
+  "marker": "sword_dance",
+  "name": "The Dancing Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sword_dance",
+  "keys": [
+   "wh3_dlc23_character_abilities_sword_dance"
+  ]
+ },
+ {
+  "marker": "sword_of_anti_heroes",
+  "name": "Sword of Anti-Heroes",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sword_of_anti_heroes",
+  "keys": [
+   "wh_main_weapon_abilities_sword_of_anti_heroes"
+  ]
+ },
+ {
+  "marker": "sword_of_lyonesse",
+  "name": "The Sword of Lyonesse",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sword_of_lyonesse",
+  "keys": [
+   "wh2_dlc14_weapon_abilities_sword_of_lyonesse"
+  ]
+ },
+ {
+  "marker": "sword_of_torgald",
+  "name": "Sword of Torgald",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sword_of_torgald",
+  "keys": [
+   "wh_dlc08_weapon_abilities_sword_of_torgald"
+  ]
+ },
+ {
+  "marker": "talabecland_runefang",
+  "name": "The Talabecland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_talabecland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_talabecland_runefang"
+  ]
+ },
+ {
+  "marker": "tempest_rage",
+  "name": "Tempest Rage",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_tempest_rage",
+  "keys": [
+   "wh3_dlc20_lord_abilities_tempest_rage"
+  ]
+ },
+ {
+  "marker": "tenebrous_forge_hammer",
+  "name": "Tenebrous Forge-Hammer",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tenebrous_forge_hammer",
+  "keys": [
+   "wh3_dlc27_weapon_abilities_tenebrous_forge_hammer"
+  ]
+ },
+ {
+  "marker": "the_armour_of_morkar",
+  "name": "The Armour of Morkar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_armour_of_morkar",
+  "keys": [
+   "wh3_dlc20_item_abilities_the_armour_of_morkar"
+  ]
+ },
+ {
+  "marker": "the_black_cleaver",
+  "name": "The Black Cleaver",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_black_cleaver",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_the_black_cleaver"
+  ]
+ },
+ {
+  "marker": "the_blood_price",
+  "name": "The Blood Price",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_blood_price",
+  "keys": [
+   "wh2_dlc14_lord_abilities_the_blood_price"
+  ]
+ },
+ {
+  "marker": "the_carstein_ring",
+  "name": "The Carstein Ring",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_carstein_ring",
+  "keys": [
+   "wh_dlc04_item_abilities_the_carstein_ring"
+  ]
+ },
+ {
+  "marker": "the_daemons_curse",
+  "name": "The Daemon's Curse",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_daemons_curse",
+  "keys": [
+   "wh2_dlc14_lord_abilities_the_daemons_curse"
+  ]
+ },
+ {
+  "marker": "the_eternal_blade",
+  "name": "The Eternal Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_eternal_blade",
+  "keys": [
+   "wh3_main_weapon_abilities_the_eternal_blade"
+  ]
+ },
+ {
+  "marker": "the_father_of_blades",
+  "name": "The Father of Blades",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_father_of_blades",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_the_father_of_blades"
+  ]
+ },
+ {
+  "marker": "the_horn_of_kygor",
+  "name": "The Horn of Kygor",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_the_horn_of_kygor",
+  "keys": [
+   "wh2_main_item_abilities_the_horn_of_kygor"
+  ]
+ },
+ {
+  "marker": "the_mace_of_helsturm",
+  "name": "The Mace of Helsturm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_mace_of_helsturm",
+  "keys": [
+   "wh_main_weapon_abilities_the_mace_of_helsturm"
+  ]
+ },
+ {
+  "marker": "the_phoenix_blade",
+  "name": "The Phoenix Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_phoenix_blade",
+  "keys": [
+   "wh3_dlc27_weapon_abilities_the_phoenix_blade"
+  ]
+ },
+ {
+  "marker": "the_reikland_runefang",
+  "name": "The Reikland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_reikland_runefang",
+  "keys": [
+   "wh_main_weapon_abilities_the_reikland_runefang"
+  ]
+ },
+ {
+  "marker": "the_rock_of_inevitability",
+  "name": "The Rock of Inevitability",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_rock_of_inevitability",
+  "keys": [
+   "wh3_main_item_abilities_the_rock_of_inevitability"
+  ]
+ },
+ {
+  "marker": "the_rotaxes",
+  "name": "The Rotaxes",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_rotaxes",
+  "keys": [
+   "wh3_dlc29_item_active_the_rotaxes"
+  ]
+ },
+ {
+  "marker": "the_slayer_of_kings",
+  "name": "The Slayer of Kings",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_slayer_of_kings",
+  "keys": [
+   "wh_dlc01_weapon_abilities_the_slayer_of_kings"
+  ]
+ },
+ {
+  "marker": "the_slayer_sword",
+  "name": "The Slayer Sword",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_slayer_sword",
+  "keys": [
+   "wh3_dlc26_weapon_abilities_the_slayer_sword"
+  ]
+ },
+ {
+  "marker": "the_sword_of_couronne",
+  "name": "The Sword of Couronne",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_sword_of_couronne",
+  "keys": [
+   "wh_main_weapon_abilities_the_sword_of_couronne"
+  ]
+ },
+ {
+  "marker": "the_tenderiser",
+  "name": "The Tenderiser",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_tenderiser",
+  "keys": [
+   "wh3_main_weapon_abilities_the_tenderiser"
+  ]
+ },
+ {
+  "marker": "toad_rage",
+  "name": "Toad Rage",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_toad_rage",
+  "keys": [
+   "wh2_dlc12_unit_abilities_toad_rage"
+  ]
+ },
+ {
+  "marker": "tormentor_sword",
+  "name": "Tormentor Sword",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tormentor_sword",
+  "keys": [
+   "wh_main_weapon_abilities_tormentor_sword"
+  ]
+ },
+ {
+  "marker": "tors_battle_hymn",
+  "name": "Tor's Battle Hymn",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tors_battle_hymn",
+  "keys": [
+   "wh3_main_character_abilities_tors_battle_hymn"
+  ]
+ },
+ {
+  "marker": "transfix",
+  "name": "Transfix",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_transfix",
+  "keys": [
+   "wh2_dlc11_lord_abilities_transfix"
+  ]
+ },
+ {
+  "marker": "unyielding_defender",
+  "name": "Unyielding Defence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_unyielding_defender",
+  "keys": [
+   "wh3_main_character_abilities_unyielding_defender"
+  ]
+ },
+ {
+  "marker": "ursuns_claw",
+  "name": "Ursun's Claw",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ursuns_claw",
+  "keys": [
+   "wh3_dlc24_weapon_abilities_ursuns_claw"
+  ]
+ },
+ {
+  "marker": "warp_frenzy",
+  "name": "Warp Frenzy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warp_frenzy",
+  "keys": [
+   "wh2_dlc16_hero_abilities_warp_frenzy"
+  ]
+ },
+ {
+  "marker": "warriors_crest",
+  "name": "Warrior's Crest",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warriors_crest",
+  "keys": [
+   "wh2_dlc12_lord_abilities_warriors_crest"
+  ]
+ },
+ {
+  "marker": "will_of_the_verminking",
+  "name": "Will of the Verminking",
+  "trigger": "verminking_wavering",
+  "badge": "zz_auto_badge_will_of_the_verminking",
+  "keys": [
+   "wh3_dlc29_lord_abilities_will_of_the_verminking"
+  ]
+ },
+ {
+  "marker": "witstealer_sword",
+  "name": "Witstealer Sword",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_witstealer_sword",
+  "keys": [
+   "wh3_main_weapon_abilities_witstealer_sword"
+  ]
+ },
+ {
+  "marker": "enchanted_metallurgy",
+  "name": "Enchanted Metallurgy",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_enchanted_metallurgy",
+  "keys": [
+   "wh3_main_character_abilities_enchanted_metallurgy"
+  ]
+ },
+ {
+  "marker": "enchanted_metallurgy_flaming",
+  "name": "Enchanted Metallurgy: Flaming",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_enchanted_metallurgy_flaming",
+  "keys": [
+   "wh3_main_character_abilities_enchanted_metallurgy_flaming"
+  ]
+ },
+ {
+  "marker": "enchanted_metallurgy_piercing",
+  "name": "Enchanted Metallurgy: Piercing",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_enchanted_metallurgy_piercing",
+  "keys": [
+   "wh3_main_character_abilities_enchanted_metallurgy_piercing"
+  ]
+ },
+ {
+  "marker": "enchanted_metallurgy_poison",
+  "name": "Enchanted Metallurgy: Poison",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_enchanted_metallurgy_poison",
+  "keys": [
+   "wh3_main_character_abilities_enchanted_metallurgy_poison"
+  ]
+ },
+ {
+  "marker": "bastions_defenders",
+  "name": "Bastion's Defenders",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bastions_defenders",
+  "keys": [
+   "wh3_dlc24_character_abilities_bastions_defenders"
+  ]
+ },
+ {
+  "marker": "battle_of_wills",
+  "name": "Battle of Wills",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_battle_of_wills",
+  "keys": [
+   "wh3_dlc29_unit_abilities_battle_of_wills"
+  ]
+ },
+ {
+  "marker": "bironas_timewarp",
+  "name": "Birona's Timewarp",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_bironas_timewarp",
+  "keys": [
+   "wh_main_spell_bound_bironas_timewarp"
+  ]
+ },
+ {
+  "marker": "breath_of_hatred",
+  "name": "Breath of Hatred",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_breath_of_hatred",
+  "keys": [
+   "wh3_dlc23_bound_abilities_breath_of_hatred",
+   "wh3_dlc23_character_abilities_breath_of_hatred"
+  ]
+ },
+ {
+  "marker": "butcher",
+  "name": "Meat Feast",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_butcher",
+  "keys": [
+   "wh3_main_prisoners_butcher"
+  ]
+ },
+ {
+  "marker": "captain_of_the_phoenix_guard",
+  "name": "Captain of the Phoenix Guard",
+  "trigger": "melee_health75",
+  "badge": "zz_auto_badge_captain_of_the_phoenix_guard",
+  "keys": [
+   "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard"
+  ]
+ },
+ {
+  "marker": "cash_cascade",
+  "name": "Cash Cascade",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_cash_cascade",
+  "keys": [
+   "wh3_dlc26_character_abilities_cash_cascade"
+  ]
+ },
+ {
+  "marker": "chanson_of_caging",
+  "name": "Chanson of Caging",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_chanson_of_caging",
+  "keys": [
+   "wh3_dlc27_lord_abilities_chanson_of_caging"
+  ]
+ },
+ {
+  "marker": "commanding_presence",
+  "name": "Commanding Presence",
+  "trigger": "wavering_self_or_ally",
+  "badge": "zz_auto_badge_commanding_presence",
+  "keys": [
+   "wh3_dlc29_lord_active_commanding_presence"
+  ]
+ },
+ {
+  "marker": "curse_of_years",
+  "name": "Curse of Years",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_curse_of_years",
+  "keys": [
+   "wh3_dlc29_spell_bound_curse_of_years"
+  ]
+ },
+ {
+  "marker": "da_boss_as_a_plan",
+  "name": "Da Boss 'as a Plan!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_da_boss_as_a_plan",
+  "keys": [
+   "wh3_dlc26_character_abilities_da_boss_as_a_plan"
+  ]
+ },
+ {
+  "marker": "dazs_song_of_winter_sunlight",
+  "name": "Dazh's Song of Winter Sunlight",
+  "trigger": "tired",
+  "badge": "zz_auto_badge_dazs_song_of_winter_sunlight",
+  "keys": [
+   "wh3_main_character_abilities_dazs_song_of_winter_sunlight",
+   "wh3_twa06_unit_abilities_dazs_song_of_winter_sunlight"
+  ]
+ },
+ {
+  "marker": "death_frenzy",
+  "name": "Death Frenzy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_death_frenzy",
+  "keys": [
+   "wh2_dlc16_spell_bound_death_frenzy"
+  ]
+ },
+ {
+  "marker": "dragonhorn",
+  "name": "Dragonhorn",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dragonhorn",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dragonhorn"
+  ]
+ },
+ {
+  "marker": "empowering_shrooms",
+  "name": "Empowering Shrooms",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_empowering_shrooms",
+  "keys": [
+   "wh3_dlc26_character_abilities_empowering_shrooms"
+  ]
+ },
+ {
+  "marker": "favour_of_the_fay",
+  "name": "Favour of the Fay",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_favour_of_the_fay",
+  "keys": [
+   "wh_dlc07_lord_abilities_favour_of_the_fay"
+  ]
+ },
+ {
+  "marker": "ferocious_battle_howl",
+  "name": "Ferocious Battle Howl",
+  "trigger": "charge_only",
+  "badge": "zz_auto_badge_ferocious_battle_howl",
+  "keys": [
+   "wh3_dlc29_spell_bound_prayer_ferocious_battle_howl"
+  ]
+ },
+ {
+  "marker": "ferocious_fury_of_ulric",
+  "name": "Ferocious Fury of Ulric",
+  "trigger": "wavering_self",
+  "badge": "zz_auto_badge_ferocious_fury_of_ulric",
+  "keys": [
+   "wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric"
+  ]
+ },
+ {
+  "marker": "ferocious_winters_chill",
+  "name": "Ferocious Winter’s Chill",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ferocious_winters_chill",
+  "keys": [
+   "wh3_dlc29_spell_bound_prayer_ferocious_winters_chill"
+  ]
+ },
+ {
+  "marker": "flame_incarnate",
+  "name": "Flame Incarnate",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_flame_incarnate",
+  "keys": [
+   "wh3_main_character_abilities_flame_incarnate"
+  ]
+ },
+ {
+  "marker": "fury_of_khaine",
+  "name": "Fury of Khaine",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_fury_of_khaine",
+  "keys": [
+   "wh2_main_unit_abilities_fury_of_khaine"
+  ]
+ },
+ {
+  "marker": "fury_of_ulric",
+  "name": "Fury of Ulric",
+  "trigger": "wavering_self_or_ally",
+  "badge": "zz_auto_badge_fury_of_ulric",
+  "keys": [
+   "wh3_dlc29_spell_bound_prayer_fury_of_ulric"
+  ]
+ },
+ {
+  "marker": "gaze_of_khaine",
+  "name": "Gaze of Khaine",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gaze_of_khaine",
+  "keys": [
+   "wh2_dlc10_lord_abilities_gaze_of_khaine"
+  ]
+ },
+ {
+  "marker": "grand_faiths_bastion",
+  "name": "Greater Faith Bastion",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_grand_faiths_bastion",
+  "keys": [
+   "wh_dlc06_quest_abilities_grand_faiths_bastion"
+  ]
+ },
+ {
+  "marker": "gulyas",
+  "name": "Gulyas",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_gulyas",
+  "keys": [
+   "wh3_dlc24_lord_abilities_gulyas"
+  ]
+ },
+ {
+  "marker": "helm_of_yvresse",
+  "name": "Helm of Yvresse",
+  "trigger": "wavering_self",
+  "badge": "zz_auto_badge_helm_of_yvresse",
+  "keys": [
+   "wh2_dlc15_item_abilities_helm_of_yvresse"
+  ]
+ },
+ {
+  "marker": "helping_hand",
+  "name": "Helping Hand",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_helping_hand",
+  "keys": [
+   "wh2_pro08_character_abilities_helping_hand"
+  ]
+ },
+ {
+  "marker": "immovable_bulwark",
+  "name": "Immovable Bulwark",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_immovable_bulwark",
+  "keys": [
+   "wh3_dlc26_unit_abilities_immovable_bulwark"
+  ]
+ },
+ {
+  "marker": "inspired_assault_i",
+  "name": "Inspired Assault I",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_inspired_assault_i",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_i"
+  ]
+ },
+ {
+  "marker": "inspired_assault_ii",
+  "name": "Inspired Assault II",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_inspired_assault_ii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_ii"
+  ]
+ },
+ {
+  "marker": "inspired_assault_iii",
+  "name": "Inspired Assault III",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_inspired_assault_iii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_iii"
+  ]
+ },
+ {
+  "marker": "inspired_defence_i",
+  "name": "Inspired Defence I",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_defence_i",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_i"
+  ]
+ },
+ {
+  "marker": "inspired_defence_ii",
+  "name": "Inspired Defence II",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_defence_ii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_ii"
+  ]
+ },
+ {
+  "marker": "inspired_defence_iii",
+  "name": "Inspired Defence III",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_defence_iii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_iii"
+  ]
+ },
+ {
+  "marker": "lord_of_grand_cathay",
+  "name": "Lord of Grand Cathay",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_lord_of_grand_cathay",
+  "keys": [
+   "wh3_dlc24_lord_abilities_lord_of_grand_cathay"
+  ]
+ },
+ {
+  "marker": "massacre",
+  "name": "Massacre",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_massacre",
+  "keys": [
+   "wh3_main_prisoners_massacre"
+  ]
+ },
+ {
+  "marker": "master_of_alchemy",
+  "name": "Master of Alchemy",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_master_of_alchemy",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy"
+  ]
+ },
+ {
+  "marker": "master_of_alchemy_flaming",
+  "name": "Master of Alchemy: Flaming",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_master_of_alchemy_flaming",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy_flaming"
+  ]
+ },
+ {
+  "marker": "master_of_alchemy_piercing",
+  "name": "Master of Alchemy: Piercing",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_master_of_alchemy_piercing",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy_piercing"
+  ]
+ },
+ {
+  "marker": "master_of_alchemy_poison",
+  "name": "Master of Alchemy: Poison",
+  "trigger": "metallurgy_melee",
+  "badge": "zz_auto_badge_master_of_alchemy_poison",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy_poison"
+  ]
+ },
+ {
+  "marker": "master_rune_of_oath_and_steel",
+  "name": "Master Rune of Oath & Steel",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_rune_of_oath_and_steel",
+  "keys": [
+   "wh_dlc06_rune_abilities_master_rune_of_oath_and_steel"
+  ]
+ },
+ {
+  "marker": "master_rune_of_speed",
+  "name": "Master Rune of Speed",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_rune_of_speed",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_speed"
+  ]
+ },
+ {
+  "marker": "offense_prayer",
+  "name": "Mantra of Righteousness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_offense_prayer",
+  "keys": [
+   "wh3_cp1_character_abilities_offense_prayer"
+  ]
+ },
+ {
+  "marker": "okkams_mindrazor",
+  "name": "Okkam's Mindrazor",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_okkams_mindrazor",
+  "keys": [
+   "wh3_dlc29_spell_bound_okkams_mindrazor"
+  ]
+ },
+ {
+  "marker": "orcs_are_da_best",
+  "name": "Orcs are da Best!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_orcs_are_da_best",
+  "keys": [
+   "wh3_dlc26_character_abilities_orcs_are_da_best"
+  ]
+ },
+ {
+  "marker": "overseer_of_the_unseen",
+  "name": "Overseer of the Unseen",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_overseer_of_the_unseen",
+  "keys": [
+   "wh3_dlc29_hero_active_overseer_of_the_unseen"
+  ]
+ },
+ {
+  "marker": "primeval_roar",
+  "name": "Primeval Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_primeval_roar",
+  "keys": [
+   "wh2_dlc17_unit_abilities_primeval_roar"
+  ]
+ },
+ {
+  "marker": "protection_prayer",
+  "name": "Mantra of Invigoration",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_protection_prayer",
+  "keys": [
+   "wh3_cp1_character_abilities_protection_prayer"
+  ]
+ },
+ {
+  "marker": "rune_of_doom",
+  "name": "Rune of Doom",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_doom",
+  "keys": [
+   "wh2_dlc17_lord_abilities_rune_of_doom"
+  ]
+ },
+ {
+  "marker": "rune_of_oath_and_steel",
+  "name": "Rune of Oath & Steel",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_oath_and_steel",
+  "keys": [
+   "wh_main_rune_abilities_rune_of_oath_and_steel"
+  ]
+ },
+ {
+  "marker": "rune_of_speed",
+  "name": "Rune of Speed",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_speed",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_speed"
+  ]
+ },
+ {
+  "marker": "sausage_busta",
+  "name": "Bangers & Smash",
+  "trigger": "charge_or_wavering",
+  "badge": "zz_auto_badge_sausage_busta",
+  "keys": [
+   "wh2_dlc15_character_abilities_sausage_busta"
+  ]
+ },
+ {
+  "marker": "shield_of_the_old_ones",
+  "name": "Shield of the Old Ones",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shield_of_the_old_ones",
+  "keys": [
+   "wh2_main_character_abilities_shield_of_the_old_ones"
+  ]
+ },
+ {
+  "marker": "slayer_for_chaos",
+  "name": "Slayer for Chaos",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_slayer_for_chaos",
+  "keys": [
+   "wh3_dlc23_item_abilities_slayer_for_chaos"
+  ]
+ },
+ {
+  "marker": "spite_of_da_bad_moon",
+  "name": "Spite of Da Bad Moon",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_spite_of_da_bad_moon",
+  "keys": [
+   "wh_dlc06_lord_abilities_spite_of_da_bad_moon"
+  ]
+ },
+ {
+  "marker": "star_of_avelorn",
+  "name": "Star of Avelorn",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_star_of_avelorn",
+  "keys": [
+   "wh2_dlc10_item_abilities_star_of_avelorn"
+  ]
+ },
+ {
+  "marker": "stay_here_ill_get_help",
+  "name": "\\",
+  "trigger": "wavering_ally_range",
+  "badge": "zz_auto_badge_stay_here_ill_get_help",
+  "keys": [
+   "wh2_dlc09_character_abilities_stay_here_ill_get_help"
+  ]
+ },
+ {
+  "marker": "supreme_shield_of_the_old_ones",
+  "name": "Supreme Shield of the Old Ones",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_supreme_shield_of_the_old_ones",
+  "keys": [
+   "wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones"
+  ]
+ },
+ {
+  "marker": "talisman_of_loec",
+  "name": "Talisman of Loec",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_talisman_of_loec",
+  "keys": [
+   "wh2_main_item_abilities_talisman_of_loec"
+  ]
+ },
+ {
+  "marker": "the_liber_mortis",
+  "name": "The Liber Mortis",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_liber_mortis",
+  "keys": [
+   "wh2_dlc09_lord_abilities_the_liber_mortis"
+  ]
+ },
+ {
+  "marker": "the_shadows_coil",
+  "name": "The Shadow's Coil",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_shadows_coil",
+  "keys": [
+   "wh_dlc05_unit_abilities_the_shadows_coil"
+  ]
+ },
+ {
+  "marker": "unstoppable_choppas",
+  "name": "Unstoppable Choppas",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_unstoppable_choppas",
+  "keys": [
+   "wh3_dlc26_unit_abilities_unstoppable_choppas"
+  ]
+ },
+ {
+  "marker": "vial_of_troll_blood",
+  "name": "Vial of Troll Blood",
+  "trigger": "wavering_self",
+  "badge": "zz_auto_badge_vial_of_troll_blood",
+  "keys": [
+   "wh_dlc08_item_abilities_vial_of_troll_blood"
+  ]
+ },
+ {
+  "marker": "warpstone_addiction",
+  "name": "Warpstone Addiction",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warpstone_addiction",
+  "keys": [
+   "wh3_dlc29_lord_abilities_warpstone_addiction"
+  ]
+ },
+ {
+  "marker": "warrior_familiar",
+  "name": "Warrior Familiar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warrior_familiar",
+  "keys": [
+   "wh3_dlc27_item_abilities_warrior_familiar"
+  ]
+ },
+ {
+  "marker": "winters_chill",
+  "name": "Winter’s Chill",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_winters_chill",
+  "keys": [
+   "wh3_dlc29_ability_bound_prayer_winters_chill",
+   "wh3_dlc29_spell_bound_prayer_winters_chill"
+  ]
+ },
+ {
+  "marker": "witchbrew",
+  "name": "Witchbrew",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_witchbrew",
+  "keys": [
+   "wh2_main_character_abilities_witchbrew",
+   "wh3_dlc24_unit_abilities_witchbrew"
+  ]
+ },
+ {
+  "marker": "worlds_edge_armour",
+  "name": "World's Edge Armour",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_worlds_edge_armour",
+  "keys": [
+   "wh2_main_item_abilities_worlds_edge_armour"
+  ]
+ },
+ {
+  "marker": "znarkharjas_ward",
+  "name": "Znarkharja's Ward",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_znarkharjas_ward",
+  "keys": [
+   "wh3_dlc24_hero_abilities_znarkharjas_ward"
+  ]
+ },
+ {
+  "marker": "accusation",
+  "name": "Accusation",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_accusation",
+  "keys": [
+   "wh_main_hero_abilities_accusation"
+  ]
+ },
+ {
+  "marker": "acquiescence",
+  "name": "Acquiescence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_acquiescence",
+  "keys": [
+   "wh3_dlc27_spell_bound_acquiescence"
+  ]
+ },
+ {
+  "marker": "aken_seth_the_staff_of_pain",
+  "name": "Aken-seth, the Staff of Pain",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_aken_seth_the_staff_of_pain",
+  "keys": [
+   "wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain"
+  ]
+ },
+ {
+  "marker": "alchemists_elixir_of_iron_skin",
+  "name": "Alchemist's Elixir of Iron Skin",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_alchemists_elixir_of_iron_skin",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_iron_skin"
+  ]
+ },
+ {
+  "marker": "alchemists_elixir_of_puissance",
+  "name": "Alchemist's Elixir of Puissance",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_alchemists_elixir_of_puissance",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_puissance"
+  ]
+ },
+ {
+  "marker": "alchemists_elixir_of_venom",
+  "name": "Alchemist's Elixir of Venom",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_alchemists_elixir_of_venom",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_venom"
+  ]
+ },
+ {
+  "marker": "all_hands_hoay",
+  "name": "All Hands Hoay!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_all_hands_hoay",
+  "keys": [
+   "wh2_dlc11_character_abilities_all_hands_hoay"
+  ]
+ },
+ {
+  "marker": "amulet_of_itzl",
+  "name": "Amulet of Itzl",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_amulet_of_itzl",
+  "keys": [
+   "wh2_main_item_abilities_amulet_of_itzl"
+  ]
+ },
+ {
+  "marker": "amulet_of_phastah",
+  "name": "Amulet of Pha-Stah",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_amulet_of_phastah",
+  "keys": [
+   "wh2_dlc09_item_abilities_amulet_of_phastah"
+  ]
+ },
+ {
+  "marker": "apocalyptic_charge",
+  "name": "Apocalyptic Charge",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_apocalyptic_charge",
+  "keys": [
+   "wh_pro04_unit_abilities_apocalyptic_charge"
+  ]
+ },
+ {
+  "marker": "magic_prayer",
+  "name": "Arcane Hymn",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_magic_prayer",
+  "keys": [
+   "wh3_cp1_character_abilities_magic_prayer"
+  ]
+ },
+ {
+  "marker": "armour_of_caledor",
+  "name": "Armour of Caledor",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_armour_of_caledor",
+  "keys": [
+   "wh2_dlc15_item_abilities_armour_of_caledor"
+  ]
+ },
+ {
+  "marker": "armour_of_the_burrows",
+  "name": "Armour of the Barrows",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_armour_of_the_burrows",
+  "keys": [
+   "wh3_dlc29_item_abilities_armour_of_the_burrows"
+  ]
+ },
+ {
+  "marker": "assassins_trophy",
+  "name": "Assassin's Trophy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_assassins_trophy",
+  "keys": [
+   "wh2_main_character_abilities_assassins_trophy"
+  ]
+ },
+ {
+  "marker": "aura_of_inertia",
+  "name": "Aura of Inertia",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_aura_of_inertia",
+  "keys": [
+   "wh2_dlc13_lord_abilities_aura_of_inertia"
+  ]
+ },
+ {
+  "marker": "avast_ye",
+  "name": "Avast Ye!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_avast_ye",
+  "keys": [
+   "wh2_dlc11_character_abilities_avast_ye"
+  ]
+ },
+ {
+  "marker": "axe_of_men",
+  "name": "Axe of Men",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_axe_of_men",
+  "keys": [
+   "wh_dlc03_weapon_abilities_axe_of_men"
+  ]
+ },
+ {
+  "marker": "barbed_knuckle_boxing",
+  "name": "Barbed-Knuckle Boxing",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_barbed_knuckle_boxing",
+  "keys": [
+   "wh2_dlc17_lord_abilities_barbed_knuckle_boxing"
+  ]
+ },
+ {
+  "marker": "bastet",
+  "name": "Bastet",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bastet",
+  "keys": [
+   "wh3_dlc29_lord_abilities_bastet"
+  ]
+ },
+ {
+  "marker": "bitter_sting",
+  "name": "Bitter Sting",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bitter_sting",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_bitter_sting"
+  ]
+ },
+ {
+  "marker": "black_periapt",
+  "name": "Black Periapt",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_black_periapt",
+  "keys": [
+   "wh_main_item_abilities_black_periapt"
+  ]
+ },
+ {
+  "marker": "black_staff",
+  "name": "Black Staff",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_black_staff",
+  "keys": [
+   "wh2_main_spell_bound_black_staff"
+  ]
+ },
+ {
+  "marker": "blade_of_setep",
+  "name": "Blade of Setep",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blade_of_setep",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blade_of_setep"
+  ]
+ },
+ {
+  "marker": "blessed_helm_of_the_oblast",
+  "name": "Blessed Helm of the Oblast",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blessed_helm_of_the_oblast",
+  "keys": [
+   "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast"
+  ]
+ },
+ {
+  "marker": "blight_of_terrors",
+  "name": "Blight of Terrors",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blight_of_terrors",
+  "keys": [
+   "wh2_dlc16_character_abilities_blight_of_terrors"
+  ]
+ },
+ {
+  "marker": "blight_swarm",
+  "name": "Blight Swarm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blight_swarm",
+  "keys": [
+   "wh3_main_lord_abilities_blight_swarm"
+  ]
+ },
+ {
+  "marker": "blood_omens",
+  "name": "Blood Omens",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blood_omens",
+  "keys": [
+   "wh3_dlc29_unit_abilities_blood_omens"
+  ]
+ },
+ {
+  "marker": "bloody_onslaught",
+  "name": "Bloody Onslaught",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_bloody_onslaught",
+  "keys": [
+   "wh3_dlc26_character_abilities_bloody_onslaught"
+  ]
+ },
+ {
+  "marker": "blooood",
+  "name": "Blooood!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_blooood",
+  "keys": [
+   "wh_main_unit_abilities_blooood"
+  ]
+ },
+ {
+  "marker": "book_of_arkhan",
+  "name": "Book of Arkhan",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_book_of_arkhan",
+  "keys": [
+   "wh_main_spell_bound_book_of_arkhan"
+  ]
+ },
+ {
+  "marker": "book_of_hoeth",
+  "name": "Book of Hoeth",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_book_of_hoeth",
+  "keys": [
+   "wh2_main_item_abilities_book_of_hoeth"
+  ]
+ },
+ {
+  "marker": "book_of_secrets",
+  "name": "Book of Secrets",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_book_of_secrets",
+  "keys": [
+   "wh3_dlc24_item_abilities_book_of_secrets"
+  ]
+ },
+ {
+  "marker": "boom",
+  "name": "Boom!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_boom",
+  "keys": [
+   "wh_main_unit_abilities_boom"
+  ]
+ },
+ {
+  "marker": "call_of_violence",
+  "name": "Call of Violence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_call_of_violence",
+  "keys": [
+   "wh_dlc03_character_abilities_call_of_violence"
+  ]
+ },
+ {
+  "marker": "cascading_fire_cloak",
+  "name": "Cascading Fire Cloak",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_cascading_fire_cloak",
+  "keys": [
+   "wh3_main_spell_bound_cascading_fire_cloak"
+  ]
+ },
+ {
+  "marker": "chalice_of_dark_rain",
+  "name": "Chalice of Dark Rain",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_chalice_of_dark_rain",
+  "keys": [
+   "wh_dlc03_item_abilities_chalice_of_dark_rain"
+  ]
+ },
+ {
+  "marker": "channelling_staff",
+  "name": "Channelling Staff",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_channelling_staff",
+  "keys": [
+   "wh_main_item_abilities_channelling_staff"
+  ]
+ },
+ {
+  "marker": "charmed_shield",
+  "name": "Charmed Shield",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_charmed_shield",
+  "keys": [
+   "wh_main_weapon_abilities_charmed_shield"
+  ]
+ },
+ {
+  "marker": "cold_blooded",
+  "name": "Cold-Blooded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_cold_blooded",
+  "keys": [
+   "wh2_main_character_abilities_cold_blooded"
+  ]
+ },
+ {
+  "marker": "crown_of_command",
+  "name": "Crown of Command",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_crown_of_command",
+  "keys": [
+   "wh_main_item_abilities_crown_of_command"
+  ]
+ },
+ {
+  "marker": "cube_of_darkness",
+  "name": "Cube of Darkness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_cube_of_darkness",
+  "keys": [
+   "wh2_main_item_abilities_cube_of_darkness"
+  ]
+ },
+ {
+  "marker": "curse_of_khsar",
+  "name": "Curse of Khsar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_curse_of_khsar",
+  "keys": [
+   "wh2_dlc09_character_abilities_curse_of_khsar"
+  ]
+ },
+ {
+  "marker": "slezuzus_voice",
+  "name": "Daemonic Whispers",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_slezuzus_voice",
+  "keys": [
+   "wh3_dlc27_character_abilities_slezuzus_voice"
+  ]
+ },
+ {
+  "marker": "dark_fortune",
+  "name": "Dark Fortune",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dark_fortune",
+  "keys": [
+   "wh_main_item_abilities_dark_fortune"
+  ]
+ },
+ {
+  "marker": "deranged_munitions",
+  "name": "Deranged Munitions",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_deranged_munitions",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions"
+  ]
+ },
+ {
+  "marker": "deranged_munitions_upgraded",
+  "name": "Deranged Munitions Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_deranged_munitions_upgraded",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions_upgraded"
+  ]
+ },
+ {
+  "marker": "dont_even_try_it",
+  "name": "Don't Even Try It",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dont_even_try_it",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dont_even_try_it"
+  ]
+ },
+ {
+  "marker": "doom_and_darkness_gunnery_school",
+  "name": "Doom & Darkness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_doom_and_darkness_gunnery_school",
+  "keys": [
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+   "wh_dlc08_spell_bound_death_doom_and_darkness"
+  ]
+ },
+ {
+  "marker": "doom_lord",
+  "name": "Doom Lord",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_doom_lord",
+  "keys": [
+   "wh3_dlc29_lord_abilities_doom_lord"
+  ]
+ },
+ {
+  "marker": "earthing_rod",
+  "name": "Earthing Rod",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_earthing_rod",
+  "keys": [
+   "wh_main_item_abilities_earthing_rod"
+  ]
+ },
+ {
+  "marker": "el_syf",
+  "name": "El Syf",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_el_syf",
+  "keys": [
+   "wh_dlc05_weapon_abilities_el_syf"
+  ]
+ },
+ {
+  "marker": "elixir_of_might",
+  "name": "Elixir of Might",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_elixir_of_might",
+  "keys": [
+   "wh2_dlc09_item_abilities_elixir_of_might"
+  ]
+ },
+ {
+  "marker": "embers_of_the_phoenix",
+  "name": "Embers of the Phoenix",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_embers_of_the_phoenix",
+  "keys": [
+   "wh2_main_spell_bound_embers_of_the_phoenix"
+  ]
+ },
+ {
+  "marker": "ballistic_enchantment",
+  "name": "Enchanted Ballistics",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ballistic_enchantment",
+  "keys": [
+   "wh2_dlc11_character_abilities_ballistic_enchantment"
+  ]
+ },
+ {
+  "marker": "enhanced_skavenbrew",
+  "name": "Enhanced Skavenbrew",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_enhanced_skavenbrew",
+  "keys": [
+   "wh3_dlc29_item_abilities_enhanced_skavenbrew"
+  ]
+ },
+ {
+  "marker": "entangle",
+  "name": "Entangle",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_entangle",
+  "keys": [
+   "wh2_dlc10_character_abilities_entangle"
+  ]
+ },
+ {
+  "marker": "entrenchment",
+  "name": "Entrenchment",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_entrenchment",
+  "keys": [
+   "wh_main_unit_abilities_entrenchment"
+  ]
+ },
+ {
+  "marker": "gaze_of_usirian",
+  "name": "Eternal Gaze",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gaze_of_usirian",
+  "keys": [
+   "wh3_dlc29_lord_abilities_gaze_of_usirian"
+  ]
+ },
+ {
+  "marker": "eternal_vigour",
+  "name": "Eternal Vigour",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_eternal_vigour",
+  "keys": [
+   "wh3_dlc29_character_abilities_eternal_vigour"
+  ]
+ },
+ {
+  "marker": "extra_ingredients",
+  "name": "Extra Ingredients",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_extra_ingredients",
+  "keys": [
+   "wh3_main_character_abilities_extra_ingredients"
+  ]
+ },
+ {
+  "marker": "favoured_by_the_matriarch",
+  "name": "Favoured by the Matriarch",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_favoured_by_the_matriarch",
+  "keys": [
+   "wh3_dlc27_hero_abilities_favoured_by_the_matriarch"
+  ]
+ },
+ {
+  "marker": "fear_of_aramar",
+  "name": "Fear of Aramar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fear_of_aramar",
+  "keys": [
+   "wh2_dlc10_item_abilities_fear_of_aramar"
+  ]
+ },
+ {
+  "marker": "fearsome_roar",
+  "name": "Fearsome Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fearsome_roar",
+  "keys": [
+   "wh3_dlc24_unit_abilities_fearsome_roar"
+  ]
+ },
+ {
+  "marker": "mark_of_the_monster",
+  "name": "Fecund Rebirth",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mark_of_the_monster",
+  "keys": [
+   "wh3_dlc29_character_active_mark_of_the_monster"
+  ]
+ },
+ {
+  "marker": "fermented_fungi",
+  "name": "Fermented Fungi",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fermented_fungi",
+  "keys": [
+   "wh2_dlc15_lord_abilities_fermented_fungi"
+  ]
+ },
+ {
+  "marker": "fight_or_die",
+  "name": "Fight or Die!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fight_or_die",
+  "keys": [
+   "wh_dlc08_lord_abilities_fight_or_die"
+  ]
+ },
+ {
+  "marker": "fistful_of_laurels",
+  "name": "Fistful of Laurels",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_fistful_of_laurels",
+  "keys": [
+   "wh3_main_item_abilities_fistful_of_laurels"
+  ]
+ },
+ {
+  "marker": "flesh_to_stone",
+  "name": "Flesh to Stone",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_flesh_to_stone",
+  "keys": [
+   "wh2_dlc16_spell_bound_flesh_to_stone"
+  ]
+ },
+ {
+  "marker": "focus_instincts",
+  "name": "Focus Instincts",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_focus_instincts",
+  "keys": [
+   "wh2_dlc12_lord_abilities_focus_instincts"
+  ]
+ },
+ {
+  "marker": "forbidden_rod",
+  "name": "Forbidden Rod",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_forbidden_rod",
+  "keys": [
+   "wh_main_item_abilities_forbidden_rod"
+  ]
+ },
+ {
+  "marker": "frenzied_challenge",
+  "name": "Frenzied Challenge",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_frenzied_challenge",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge"
+  ]
+ },
+ {
+  "marker": "frost_shard_glaive",
+  "name": "Frost Shard Glaive",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_frost_shard_glaive",
+  "keys": [
+   "wh3_main_weapon_abilities_frost_shard_glaive"
+  ]
+ },
+ {
+  "marker": "funnel_of_flame",
+  "name": "Funnel of Flame",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_funnel_of_flame",
+  "keys": [
+   "wh2_dlc13_lord_abilities_funnel_of_flame"
+  ]
+ },
+ {
+  "marker": "gaze_of_fate",
+  "name": "Gaze of Fate",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gaze_of_fate",
+  "keys": [
+   "wh3_main_lord_abilities_gaze_of_fate"
+  ]
+ },
+ {
+  "marker": "get_em",
+  "name": "Get 'Em!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_get_em",
+  "keys": [
+   "wh3_dlc25_character_abilities_get_em"
+  ]
+ },
+ {
+  "marker": "get_back_ere",
+  "name": "Get Back 'Ere!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_get_back_ere",
+  "keys": [
+   "wh_main_character_abilities_get_back_ere"
+  ]
+ },
+ {
+  "marker": "soulnetter",
+  "name": "Gilellion's Soulnetter",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_soulnetter",
+  "keys": [
+   "wh3_main_weapon_abilities_soulnetter"
+  ]
+ },
+ {
+  "marker": "glacial_defence",
+  "name": "Glacial Defence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_glacial_defence",
+  "keys": [
+   "wh3_twa08_unit_abilities_glacial_defence"
+  ]
+ },
+ {
+  "marker": "glory_seeker",
+  "name": "Glory Seeker",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_glory_seeker",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker"
+  ]
+ },
+ {
+  "marker": "glory_seeker_upgraded",
+  "name": "Glory Seeker Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_glory_seeker_upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker_upgraded"
+  ]
+ },
+ {
+  "marker": "gruts_sickle",
+  "name": "Grut's Sickle",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_gruts_sickle",
+  "keys": [
+   "wh3_main_item_abilities_gruts_sickle"
+  ]
+ },
+ {
+  "marker": "guttural_roar",
+  "name": "Guttural Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_guttural_roar",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_guttural_roar"
+  ]
+ },
+ {
+  "marker": "hagtree_fetish",
+  "name": "Hagtree Fetish",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hagtree_fetish",
+  "keys": [
+   "wh_dlc03_item_abilities_hagtree_fetish"
+  ]
+ },
+ {
+  "marker": "hail_of_fire",
+  "name": "Hail of Fire",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hail_of_fire",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hail_of_fire"
+  ]
+ },
+ {
+  "marker": "harmonic_convergence",
+  "name": "Harmonic Convergence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_harmonic_convergence",
+  "keys": [
+   "wh3_main_spell_bound_harmonic_convergence"
+  ]
+ },
+ {
+  "marker": "headhunt",
+  "name": "Headhunt",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_headhunt",
+  "keys": [
+   "wh3_dlc26_character_abilities_headhunt"
+  ]
+ },
+ {
+  "marker": "hellish_vigour",
+  "name": "Hellish Vigour",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hellish_vigour",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour"
+  ]
+ },
+ {
+  "marker": "hellish_vigour_upgraded",
+  "name": "Hellish Vigour Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hellish_vigour_upgraded",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour_upgraded"
+  ]
+ },
+ {
+  "marker": "hidden_huntress",
+  "name": "Hidden Huntress",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hidden_huntress",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress"
+  ]
+ },
+ {
+  "marker": "hidden_huntress_upgraded",
+  "name": "Hidden Huntress Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hidden_huntress_upgraded",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress_upgraded"
+  ]
+ },
+ {
+  "marker": "horn_of_the_wild_hunt",
+  "name": "Horn of the Wild Hunt",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_horn_of_the_wild_hunt",
+  "keys": [
+   "wh_dlc05_item_abilities_horn_of_the_wild_hunt"
+  ]
+ },
+ {
+  "marker": "horn_of_vaul",
+  "name": "Horn of Vaul",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_horn_of_vaul",
+  "keys": [
+   "wh2_main_item_abilities_dragonhorn"
+  ]
+ },
+ {
+  "marker": "hornswaggle",
+  "name": "Hornswaggle",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hornswaggle",
+  "keys": [
+   "wh2_dlc11_character_abilities_hornswaggle"
+  ]
+ },
+ {
+  "marker": "howl_of_the_great_beast",
+  "name": "Howl of the Great Beast",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_howl_of_the_great_beast",
+  "keys": [
+   "wh3_dlc24_unit_abilities_howl_of_the_great_beast"
+  ]
+ },
+ {
+  "marker": "hunter_of_champions",
+  "name": "Hunter of Champions",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hunter_of_champions",
+  "keys": [
+   "wh_dlc08_character_abilities_hunter_of_champions"
+  ]
+ },
+ {
+  "marker": "hunters_snare",
+  "name": "Hunter's Snare",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hunters_snare",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_snare"
+  ]
+ },
+ {
+  "marker": "hunters_trap",
+  "name": "Hunter's Trap",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_hunters_trap",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_trap"
+  ]
+ },
+ {
+  "marker": "spell_slaanesh_hysterical_frenzy_bound",
+  "name": "Hysterical Frenzy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_spell_slaanesh_hysterical_frenzy_bound",
+  "keys": [
+   "wh3_main_spell_slaanesh_hysterical_frenzy_bound"
+  ]
+ },
+ {
+  "marker": "inspired_marksmanship_i",
+  "name": "Inspired Marksmanship I",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_marksmanship_i",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_i"
+  ]
+ },
+ {
+  "marker": "inspired_marksmanship_ii",
+  "name": "Inspired Marksmanship II",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_marksmanship_ii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_ii"
+  ]
+ },
+ {
+  "marker": "inspired_marksmanship_iii",
+  "name": "Inspired Marksmanship III",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_inspired_marksmanship_iii",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_iii"
+  ]
+ },
+ {
+  "marker": "iron_hand_captain",
+  "name": "Iron-Handed Captain",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_iron_hand_captain",
+  "keys": [
+   "wh3_dlc27_character_abilities_iron_hand_captain"
+  ]
+ },
+ {
+  "marker": "jagged_dagger",
+  "name": "Jagged Dagger",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_jagged_dagger",
+  "keys": [
+   "wh_dlc03_item_abilities_jagged_dagger"
+  ]
+ },
+ {
+  "marker": "locus_of_abjuration",
+  "name": "Locus of Abjuration",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_abjuration",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_abjuration"
+  ]
+ },
+ {
+  "marker": "locus_of_change",
+  "name": "Locus of Change",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_change",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_change"
+  ]
+ },
+ {
+  "marker": "locus_of_conjuration",
+  "name": "Locus of Conjuration",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_conjuration",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_conjuration"
+  ]
+ },
+ {
+  "marker": "looming_dread",
+  "name": "Looming Dread",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_looming_dread",
+  "keys": [
+   "wh2_dlc14_lord_abilities_looming_dread"
+  ]
+ },
+ {
+  "marker": "lord_of_dragons",
+  "name": "Lord of Dragons",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_lord_of_dragons",
+  "keys": [
+   "wh2_dlc15_lord_abilities_lord_of_dragons"
+  ]
+ },
+ {
+  "marker": "magical_animus",
+  "name": "Magical Animus",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_magical_animus",
+  "keys": [
+   "wh_main_character_abilities_magical_animus"
+  ]
+ },
+ {
+  "marker": "mark_of_the_plague_fleet",
+  "name": "Mark of the Plague Fleet",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mark_of_the_plague_fleet",
+  "keys": [
+   "wh3_dlc29_item_active_mark_of_the_plague_fleet"
+  ]
+ },
+ {
+  "marker": "mark_of_yin",
+  "name": "Mark of Yin",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mark_of_yin",
+  "keys": [
+   "wh3_dlc24_unit_abilities_mark_of_yin"
+  ]
+ },
+ {
+  "marker": "marked_by_ulthar",
+  "name": "Marked by Ulthar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_marked_by_ulthar",
+  "keys": [
+   "wh_dlc06_unit_abilities_marked_by_ulthar"
+  ]
+ },
+ {
+  "marker": "marked_for_eatin",
+  "name": "Marked for Eatin'",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_marked_for_eatin",
+  "keys": [
+   "wh3_dlc26_unit_abilities_marked_for_eatin"
+  ]
+ },
+ {
+  "marker": "beguile",
+  "name": "Master of Beguilement",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_beguile",
+  "keys": [
+   "wh_dlc04_lord_abilities_beguile"
+  ]
+ },
+ {
+  "marker": "master_of_the_black_arts",
+  "name": "Master of the Black Arts",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_of_the_black_arts",
+  "keys": [
+   "wh_main_lord_abilities_master_of_the_black_arts"
+  ]
+ },
+ {
+  "marker": "master_predator",
+  "name": "Master Predator",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_predator",
+  "keys": [
+   "wh2_dlc17_lord_abilities_master_predator"
+  ]
+ },
+ {
+  "marker": "master_rune_of_breaking",
+  "name": "Master Rune of Breaking",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_rune_of_breaking",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_breaking"
+  ]
+ },
+ {
+  "marker": "master_rune_of_negation",
+  "name": "Master Rune of Negation",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_rune_of_negation",
+  "keys": [
+   "wh_dlc06_rune_abilities_master_rune_of_negation"
+  ]
+ },
+ {
+  "marker": "master_rune_of_slowness",
+  "name": "Master Rune of Slowness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_master_rune_of_slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_slowness"
+  ]
+ },
+ {
+  "marker": "maw_shard",
+  "name": "Maw Shard",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_maw_shard",
+  "keys": [
+   "wh3_main_item_abilities_maw_shard"
+  ]
+ },
+ {
+  "marker": "merciws_monstrous_regiment",
+  "name": "Merciw's Monstrous Regiment",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_merciws_monstrous_regiment",
+  "keys": [
+   "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
+   "wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment"
+  ]
+ },
+ {
+  "marker": "miasma_of_despair",
+  "name": "Miasma of Despair",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_miasma_of_despair",
+  "keys": [
+   "wh2_dlc13_lord_abilities_miasma_of_despair"
+  ]
+ },
+ {
+  "marker": "mighty_oath_stone",
+  "name": "Mighty Oath Stone",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mighty_oath_stone",
+  "keys": [
+   "wh_dlc06_lord_abilities_mighty_oath_stone"
+  ]
+ },
+ {
+  "marker": "mighty_roar",
+  "name": "Mighty Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mighty_roar",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mighty_roar"
+  ]
+ },
+ {
+  "marker": "mimic_cold_blooded",
+  "name": "Mirror (Cold-Blooded)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mimic_cold_blooded",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_cold_blooded"
+  ]
+ },
+ {
+  "marker": "mimic_feint_and_riposte",
+  "name": "Mirror (Feint & Riposte)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mimic_feint_and_riposte",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_feint_and_riposte"
+  ]
+ },
+ {
+  "marker": "mimic_grand_hammer_of_faith",
+  "name": "Mirror (Grand Hammer of Faith)",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mimic_grand_hammer_of_faith",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith"
+  ]
+ },
+ {
+  "marker": "unit_bound_missile_mirror",
+  "name": "Missile Mirror",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_unit_bound_missile_mirror",
+  "keys": [
+   "wh3_dlc24_unit_bound_missile_mirror"
+  ]
+ },
+ {
+  "marker": "mither",
+  "name": "Mither",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_mither",
+  "keys": [
+   "wh2_dlc15_hero_abilities_mither"
+  ]
+ },
+ {
+  "marker": "moonshine",
+  "name": "Moonshine",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_moonshine",
+  "keys": [
+   "wh2_dlc11_item_abilities_moonshine"
+  ]
+ },
+ {
+  "marker": "morgrims_eye",
+  "name": "Morgrim's Eye",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_morgrims_eye",
+  "keys": [
+   "wh3_dlc23_item_abilities_morgrims_eye"
+  ]
+ },
+ {
+  "marker": "muster_of_malevolents",
+  "name": "Muster of Malevolents",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_muster_of_malevolents",
+  "keys": [
+   "wh2_dlc16_character_abilities_muster_of_malevolents"
+  ]
+ },
+ {
+  "marker": "neferras_scrolls_of_mighty_incantations",
+  "name": "Neferra's Scrolls of Mighty Incantations",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_neferras_scrolls_of_mighty_incantations",
+  "keys": [
+   "wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations"
+  ]
+ },
+ {
+  "marker": "net_dem_up",
+  "name": "Net Dem Up!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_net_dem_up",
+  "keys": [
+   "wh3_dlc26_unit_abilities_net_dem_up"
+  ]
+ },
+ {
+  "marker": "net_of_amyntok",
+  "name": "Net of Amyntok",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_net_of_amyntok",
+  "keys": [
+   "wh_dlc04_spell_bound_net_of_amyntok"
+  ]
+ },
+ {
+  "marker": "null_stone",
+  "name": "Null Stone",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_null_stone",
+  "keys": [
+   "wh3_dlc27_item_abilities_null_stone"
+  ]
+ },
+ {
+  "marker": "oath_of_vengeance",
+  "name": "Oath of Vengeance",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_oath_of_vengeance",
+  "keys": [
+   "wh2_dlc10_lord_abilities_oath_of_vengeance"
+  ]
+ },
+ {
+  "marker": "oil_flask",
+  "name": "Oil Flask",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_oil_flask",
+  "keys": [
+   "wh2_dlc13_lord_abilities_oil_flask"
+  ]
+ },
+ {
+  "marker": "ottos_scythe",
+  "name": "Otto's Scythe",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ottos_scythe",
+  "keys": [
+   "wh3_dlc29_item_active_ottos_scythe"
+  ]
+ },
+ {
+  "marker": "pack_trap",
+  "name": "Pack Trap",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pack_trap",
+  "keys": [
+   "wh3_dlc24_unit_abilities_pack_trap"
+  ]
+ },
+ {
+  "marker": "pageant_of_shrikes",
+  "name": "Pageant of Shrikes",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pageant_of_shrikes",
+  "keys": [
+   "wh2_dlc16_character_abilities_pageant_of_shrikes"
+  ]
+ },
+ {
+  "marker": "pearl_of_infinite_bleakness",
+  "name": "Pearl of Infinite Bleakness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pearl_of_infinite_bleakness",
+  "keys": [
+   "wh2_main_item_abilities_pearl_of_infinite_bleakness"
+  ]
+ },
+ {
+  "marker": "pestilent_potions",
+  "name": "Pestilent Potions",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pestilent_potions",
+  "keys": [
+   "wh3_dlc20_item_abilities_pestilent_potions"
+  ]
+ },
+ {
+  "marker": "phas_protection",
+  "name": "Pha's Protection",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_phas_protection",
+  "keys": [
+   "wh3_main_spell_bound_phas_protection"
+  ]
+ },
+ {
+  "marker": "pilgrimage_of_skulls",
+  "name": "Pilgrimage of Skulls",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_pilgrimage_of_skulls",
+  "keys": [
+   "wh3_dlc26_lord_abilities_pilgrimage_of_skulls"
+  ]
+ },
+ {
+  "marker": "plague_of_rust",
+  "name": "Plague of Rust",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_plague_of_rust",
+  "keys": [
+   "wh3_main_spell_bound_plague_of_rust"
+  ]
+ },
+ {
+  "marker": "plaque_of_dominion",
+  "name": "Plaque of Dominion",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_plaque_of_dominion",
+  "keys": [
+   "wh2_main_item_abilities_plaque_of_dominion"
+  ]
+ },
+ {
+  "marker": "potion_of_farsight",
+  "name": "Potion of Farsight",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_potion_of_farsight",
+  "keys": [
+   "wh3_main_item_abilities_potion_of_farsight"
+  ]
+ },
+ {
+  "marker": "potion_of_foolhardiness",
+  "name": "Potion of Foolhardiness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_potion_of_foolhardiness",
+  "keys": [
+   "wh_main_item_abilities_potion_of_foolhardiness"
+  ]
+ },
+ {
+  "marker": "potion_of_speed",
+  "name": "Potion of Speed",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_potion_of_speed",
+  "keys": [
+   "wh_main_item_abilities_potion_of_speed"
+  ]
+ },
+ {
+  "marker": "power_familiar",
+  "name": "Power Familiar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_power_familiar",
+  "keys": [
+   "wh3_dlc27_item_abilities_power_familiar"
+  ]
+ },
+ {
+  "marker": "power_siphon",
+  "name": "Power Siphon",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_power_siphon",
+  "keys": [
+   "wh2_dlc11_lord_abilities_power_siphon"
+  ]
+ },
+ {
+  "marker": "power_stone",
+  "name": "Power Stone",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_power_stone",
+  "keys": [
+   "wh_main_item_abilities_power_stone"
+  ]
+ },
+ {
+  "marker": "predatory_instincts",
+  "name": "Predatory Instincts",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_predatory_instincts",
+  "keys": [
+   "wh3_cp1_lord_abilities_predatory_instincts"
+  ]
+ },
+ {
+  "marker": "prey_of_anath_raema",
+  "name": "Prey of Anath Raema",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_prey_of_anath_raema",
+  "keys": [
+   "wh_dlc05_character_abilities_prey_of_anath_raema"
+  ]
+ },
+ {
+  "marker": "prey_of_the_blood_god",
+  "name": "Prey of the Blood God",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_prey_of_the_blood_god",
+  "keys": [
+   "wh3_pro12_hero_abilities_prey_of_the_blood_god"
+  ]
+ },
+ {
+  "marker": "prismatic_amplifier",
+  "name": "Prismatic Amplifier",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_prismatic_amplifier",
+  "keys": [
+   "wh3_main_item_abilities_prismatic_amplifier"
+  ]
+ },
+ {
+  "marker": "rally",
+  "name": "Rally!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rally",
+  "keys": [
+   "wh_main_character_abilities_rally"
+  ]
+ },
+ {
+  "marker": "dispatch_the_swarm_attack",
+  "name": "Ravaging Swarm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dispatch_the_swarm_attack",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack"
+  ]
+ },
+ {
+  "marker": "dispatch_the_swarm_attack_upgraded",
+  "name": "Ravaging Swarm Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dispatch_the_swarm_attack_upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded"
+  ]
+ },
+ {
+  "marker": "tomb_king_rally",
+  "name": "Reanimate",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tomb_king_rally",
+  "keys": [
+   "wh2_dlc09_character_abilities_tomb_king_rally"
+  ]
+ },
+ {
+  "marker": "tomb_king_rally_upgraded",
+  "name": "Reanimate Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tomb_king_rally_upgraded",
+  "keys": [
+   "wh2_dlc09_character_abilities_tomb_king_rally_upgraded"
+  ]
+ },
+ {
+  "marker": "red_fury",
+  "name": "Red Fury",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_red_fury",
+  "keys": [
+   "wh_main_character_abilities_red_fury"
+  ]
+ },
+ {
+  "marker": "item_passive_rock_eye",
+  "name": "Rock Eye",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_item_passive_rock_eye",
+  "keys": [
+   "wh3_main_item_passive_rock_eye"
+  ]
+ },
+ {
+  "marker": "rune_of_breaking",
+  "name": "Rune of Breaking",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_breaking",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_breaking"
+  ]
+ },
+ {
+  "marker": "rune_of_negation",
+  "name": "Rune of Negation",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_negation",
+  "keys": [
+   "wh_main_rune_abilities_rune_of_negation"
+  ]
+ },
+ {
+  "marker": "rune_of_slowness",
+  "name": "Rune of Slowness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_slowness"
+  ]
+ },
+ {
+  "marker": "rune_of_thungni",
+  "name": "Rune of Thungni",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_rune_of_thungni",
+  "keys": [
+   "wh3_dlc23_item_abilities_rune_of_thungni"
+  ]
+ },
+ {
+  "marker": "sadistic_snare",
+  "name": "Sadistic Snare",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sadistic_snare",
+  "keys": [
+   "wh3_dlc23_lord_abilities_sadistic_snare"
+  ]
+ },
+ {
+  "marker": "sceptre_of_stability",
+  "name": "Sceptre of Stability",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sceptre_of_stability",
+  "keys": [
+   "wh_main_item_abilities_sceptre_of_stability"
+  ]
+ },
+ {
+  "marker": "scroll_of_destiny",
+  "name": "Scroll of Destiny",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scroll_of_destiny",
+  "keys": [
+   "wh3_main_item_abilities_scroll_of_destiny"
+  ]
+ },
+ {
+  "marker": "scroll_of_leeching",
+  "name": "Scroll of Leeching",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scroll_of_leeching",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_leeching"
+  ]
+ },
+ {
+  "marker": "scroll_of_shielding",
+  "name": "Scroll of Shielding",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_scroll_of_shielding",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_shielding"
+  ]
+ },
+ {
+  "marker": "shield_of_chaqua",
+  "name": "Shield of Chaqua",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shield_of_chaqua",
+  "keys": [
+   "wh2_dlc12_unit_abilities_shield_of_chaqua"
+  ]
+ },
+ {
+  "marker": "dispatch_the_swarm_protect",
+  "name": "Shielding Swarm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dispatch_the_swarm_protect",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_protect"
+  ]
+ },
+ {
+  "marker": "dispatch_the_swarm_protect_upgraded",
+  "name": "Shielding Swarm Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_dispatch_the_swarm_protect_upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded"
+  ]
+ },
+ {
+  "marker": "shock_collar",
+  "name": "Shock Collar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_shock_collar",
+  "keys": [
+   "wh2_dlc16_hero_abilities_shock_collar"
+  ]
+ },
+ {
+  "marker": "silence_the_prey",
+  "name": "Silence the Prey",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_silence_the_prey",
+  "keys": [
+   "wh3_main_character_abilities_silence_the_prey"
+  ]
+ },
+ {
+  "marker": "skavenbrew",
+  "name": "Skavenbrew",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_skavenbrew",
+  "keys": [
+   "wh2_main_item_abilities_skavenbrew"
+  ]
+ },
+ {
+  "marker": "skjalandirs_fall",
+  "name": "Skjalandir's Fall",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_skjalandirs_fall",
+  "keys": [
+   "wh3_dlc23_character_abilities_skjalandirs_fall"
+  ]
+ },
+ {
+  "marker": "skull_of_rarkos",
+  "name": "Skull of Rarkos",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_skull_of_rarkos",
+  "keys": [
+   "wh_dlc03_item_abilities_skull_of_rarkos"
+  ]
+ },
+ {
+  "marker": "snowflake_pendant",
+  "name": "Snowflake Pendant",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_snowflake_pendant",
+  "keys": [
+   "wh3_main_item_abilities_snowflake_pendant"
+  ]
+ },
+ {
+  "marker": "spearfishers_net",
+  "name": "Spearfisher's Net",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_spearfishers_net",
+  "keys": [
+   "wh2_dlc11_lord_abilities_spearfishers_net"
+  ]
+ },
+ {
+  "marker": "spell_wrought_sceptre",
+  "name": "Spell-Wrought Sceptre",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_spell_wrought_sceptre",
+  "keys": [
+   "wh3_dlc23_weapon_abilities_spell_wrought_sceptre"
+  ]
+ },
+ {
+  "marker": "spider_web_attack",
+  "name": "Spiderweb Attack",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_spider_web_attack",
+  "keys": [
+   "wh3_dlc26_character_abilities_spider_web_attack"
+  ]
+ },
+ {
+  "marker": "staff_of_damnation",
+  "name": "Staff of Damnation",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_staff_of_damnation",
+  "keys": [
+   "wh_main_spell_bound_staff_of_damnation"
+  ]
+ },
+ {
+  "marker": "staff_of_nagash",
+  "name": "Staff of Nagash",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_staff_of_nagash",
+  "keys": [
+   "wh2_dlc09_item_abilities_staff_of_nagash"
+  ]
+ },
+ {
+  "marker": "staff_of_tomorrow",
+  "name": "Staff of Tomorrow",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_staff_of_tomorrow",
+  "keys": [
+   "wh3_main_weapon_abilities_staff_of_tomorrow"
+  ]
+ },
+ {
+  "marker": "staff_of_volans",
+  "name": "Staff of Volans",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_staff_of_volans",
+  "keys": [
+   "wh_main_item_abilities_staff_of_volans"
+  ]
+ },
+ {
+  "marker": "staff_of_wu_xing",
+  "name": "Staff of Wu Xing",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_staff_of_wu_xing",
+  "keys": [
+   "wh3_main_item_abilities_staff_of_wu_xing"
+  ]
+ },
+ {
+  "marker": "starwood_staff",
+  "name": "Starwood Staff",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_starwood_staff",
+  "keys": [
+   "wh2_main_item_abilities_starwood_staff"
+  ]
+ },
+ {
+  "marker": "stave_of_avelorn",
+  "name": "Stave of Avelorn",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_stave_of_avelorn",
+  "keys": [
+   "wh2_dlc10_item_abilities_stave_of_avelorn"
+  ]
+ },
+ {
+  "marker": "sword_of_filth",
+  "name": "Sword of Filth",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_sword_of_filth",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_sword_of_filth"
+  ]
+ },
+ {
+  "marker": "tacticians_rally",
+  "name": "Tacticians, Rally!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tacticians_rally",
+  "keys": [
+   "wh3_dlc24_character_abilities_tacticians_rally"
+  ]
+ },
+ {
+  "marker": "taunt",
+  "name": "Taunt",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_taunt",
+  "keys": [
+   "wh2_dlc11_character_abilities_taunt"
+  ]
+ },
+ {
+  "marker": "tendrils_of_the_sea",
+  "name": "Tendrils of the Sea",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tendrils_of_the_sea",
+  "keys": [
+   "wh3_dlc29_hero_active_tendrils_of_the_sea"
+  ]
+ },
+ {
+  "marker": "terrorgheist_skull",
+  "name": "Terrorgheist Skull",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_terrorgheist_skull",
+  "keys": [
+   "wh_dlc08_item_abilities_terrorgheist_skull"
+  ]
+ },
+ {
+  "marker": "averland_runefang",
+  "name": "The Averland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_averland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_averland_runefang"
+  ]
+ },
+ {
+  "marker": "the_bane_shield",
+  "name": "The Bane Shield",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_bane_shield",
+  "keys": [
+   "wh2_main_item_abilities_the_bane_shield"
+  ]
+ },
+ {
+  "marker": "the_black_tongue",
+  "name": "The Black Tongue",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_black_tongue",
+  "keys": [
+   "wh3_dlc27_character_abilities_the_black_tongue"
+  ]
+ },
+ {
+  "marker": "the_chromatic_tome",
+  "name": "The Chromatic Tome",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_chromatic_tome",
+  "keys": [
+   "wh3_main_item_abilities_the_chromatic_tome"
+  ]
+ },
+ {
+  "marker": "the_dark_master",
+  "name": "The Dark Master",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_dark_master",
+  "keys": [
+   "wh3_main_lord_abilities_the_dark_master"
+  ]
+ },
+ {
+  "marker": "enfeebling_foe",
+  "name": "The Enfeebling Foe",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_enfeebling_foe",
+  "keys": [
+   "wh3_dlc23_spell_bound_enfeebling_foe",
+   "wh3_dlc27_spell_bound_enfeebling_foe",
+   "wh3_main_spell_bound_enfeebling_foe",
+   "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror"
+  ]
+ },
+ {
+  "marker": "the_golden_eye_of_tzeentch",
+  "name": "The Golden Eye of Tzeentch",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_golden_eye_of_tzeentch",
+  "keys": [
+   "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch"
+  ]
+ },
+ {
+  "marker": "the_guiding_eye",
+  "name": "The Guiding Eye",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_guiding_eye",
+  "keys": [
+   "wh2_main_item_abilities_the_guiding_eye"
+  ]
+ },
+ {
+  "marker": "the_hammer_of_karak_drazh",
+  "name": "The Hammer of Karak Drazh",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_hammer_of_karak_drazh",
+  "keys": [
+   "wh_main_weapon_abilities_the_hammer_of_karak_drazh"
+  ]
+ },
+ {
+  "marker": "undeath_sulekhim_hand_of_dust",
+  "name": "The Hand of Dust",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_undeath_sulekhim_hand_of_dust",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust"
+  ]
+ },
+ {
+  "marker": "the_liber_noctus",
+  "name": "The Liber Noctus",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_liber_noctus",
+  "keys": [
+   "wh_dlc04_item_abilities_the_liber_noctus"
+  ]
+ },
+ {
+  "marker": "lions_shield",
+  "name": "The Lion's Shield",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_lions_shield",
+  "keys": [
+   "wh_dlc07_lord_abilities_lions_shield"
+  ]
+ },
+ {
+  "marker": "the_praise_of_slaanesh",
+  "name": "The Praise of Slaanesh",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_praise_of_slaanesh",
+  "keys": [
+   "wh3_dlc27_lord_abilities_the_praise_of_slaanesh"
+  ]
+ },
+ {
+  "marker": "the_seerstaff_of_saphery",
+  "name": "The Seerstaff of Saphery",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_seerstaff_of_saphery",
+  "keys": [
+   "wh2_main_spell_bound_the_seerstaff_of_saphery"
+  ]
+ },
+ {
+  "marker": "the_tricksters_pendant",
+  "name": "The Trickster's Pendant",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_tricksters_pendant",
+  "keys": [
+   "wh2_main_item_abilities_the_tricksters_pendant"
+  ]
+ },
+ {
+  "marker": "the_vial_of_hashut",
+  "name": "The Vial of Hashut",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_vial_of_hashut",
+  "keys": [
+   "wh3_dlc23_item_abilities_the_vial_of_hashut"
+  ]
+ },
+ {
+  "marker": "the_vortex_shard",
+  "name": "The Vortex Shard",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_vortex_shard",
+  "keys": [
+   "wh2_main_item_abilities_the_vortex_shard"
+  ]
+ },
+ {
+  "marker": "the_wintertooth_crown",
+  "name": "The Wintertooth Crown",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_wintertooth_crown",
+  "keys": [
+   "wh_dlc08_item_abilities_the_wintertooth_crown"
+  ]
+ },
+ {
+  "marker": "wissenland_runefang",
+  "name": "The Wissenland Runefang",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wissenland_runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_wissenland_runefang"
+  ]
+ },
+ {
+  "marker": "the_withering",
+  "name": "The Withering",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_withering",
+  "keys": [
+   "wh3_dlc23_spell_bound_the_withering",
+   "wh3_twa08_spell_bound_the_withering"
+  ]
+ },
+ {
+  "marker": "they_needs_stabbin",
+  "name": "They Needs Stabbin’",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_they_needs_stabbin",
+  "keys": [
+   "wh2_dlc15_character_abilities_they_needs_stabbin"
+  ]
+ },
+ {
+  "marker": "thorns_aura",
+  "name": "Thorn's Aura",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_thorns_aura",
+  "keys": [
+   "wh3_dlc24_hero_abilities_thorns_aura"
+  ]
+ },
+ {
+  "marker": "thunderburner",
+  "name": "Thunderburner",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_thunderburner",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner"
+  ]
+ },
+ {
+  "marker": "thunderburner_upgraded",
+  "name": "Thunderburner Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_thunderburner_upgraded",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner_upgraded"
+  ]
+ },
+ {
+  "marker": "titan_headsman",
+  "name": "Titan Headsman",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_titan_headsman",
+  "keys": [
+   "wh3_dlc25_hero_abilities_titan_headsman"
+  ]
+ },
+ {
+  "marker": "torment_blade",
+  "name": "Torment Blade",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_torment_blade",
+  "keys": [
+   "wh3_main_weapon_abilities_torment_blade"
+  ]
+ },
+ {
+  "marker": "tricksters_shard",
+  "name": "Trickster's Shard",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_tricksters_shard",
+  "keys": [
+   "wh_main_item_abilities_tricksters_shard"
+  ]
+ },
+ {
+  "marker": "trophy_heads",
+  "name": "Trophy Heads",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_trophy_heads",
+  "keys": [
+   "wh2_main_lord_abilities_trophy_heads",
+   "wh3_main_daemon_wings_abilities_trophy_heads"
+  ]
+ },
+ {
+  "marker": "twilight_horn_i",
+  "name": "Twilight Horn I",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_twilight_horn_i",
+  "keys": [
+   "wh2_dlc16_item_abilities_twilight_horn_i"
+  ]
+ },
+ {
+  "marker": "undeath_resurgent",
+  "name": "Undeath Resurgent",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_undeath_resurgent",
+  "keys": [
+   "wh_main_character_abilities_undeath_resurgent"
+  ]
+ },
+ {
+  "marker": "unholy_clamour",
+  "name": "Unholy Clamour",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_unholy_clamour",
+  "keys": [
+   "wh2_main_mount_abilities_unholy_clamour"
+  ]
+ },
+ {
+  "marker": "unlimited_power",
+  "name": "Unlimited Power!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_unlimited_power",
+  "keys": [
+   "wh2_dlc12_lord_abilities_unlimited_power"
+  ]
+ },
+ {
+  "marker": "ursuns_roar_2",
+  "name": "Ursun's Mighty Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ursuns_roar_2",
+  "keys": [
+   "wh3_main_pro_character_abilities_ursuns_roar_2"
+  ]
+ },
+ {
+  "marker": "ursuns_roar",
+  "name": "Ursun's Roar",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ursuns_roar",
+  "keys": [
+   "wh3_main_character_abilities_ursuns_roar",
+   "wh3_main_pro_character_abilities_ursuns_roar",
+   "wh3_main_pro_character_abilities_ursuns_roar_1",
+   "wh3_main_pro_character_abilities_ursuns_roar_3"
+  ]
+ },
+ {
+  "marker": "van_horstmanns_speculum",
+  "name": "Van Horstmann's Speculum",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_van_horstmanns_speculum",
+  "keys": [
+   "wh_main_item_abilities_van_horstmanns_speculum"
+  ]
+ },
+ {
+  "marker": "verminous_fury",
+  "name": "Verminous Fury",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_verminous_fury",
+  "keys": [
+   "wh3_dlc29_lord_abilities_verminous_fury"
+  ]
+ },
+ {
+  "marker": "virulent_contagion",
+  "name": "Virulent Contagion",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_virulent_contagion",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion"
+  ]
+ },
+ {
+  "marker": "virulent_contagion_upgraded",
+  "name": "Virulent Contagion Upgraded",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_virulent_contagion_upgraded",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion_upgraded"
+  ]
+ },
+ {
+  "marker": "visions_of_madness",
+  "name": "Visions of Madness",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_visions_of_madness",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_visions_of_madness"
+  ]
+ },
+ {
+  "marker": "void_pendulum",
+  "name": "Void Pendulum",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_void_pendulum",
+  "keys": [
+   "wh3_main_item_abilities_void_pendulum"
+  ]
+ },
+ {
+  "marker": "vorozhejas_foresight",
+  "name": "Vorozheja's Foresight",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_vorozhejas_foresight",
+  "keys": [
+   "wh3_dlc24_hero_abilities_vorozhejas_foresight"
+  ]
+ },
+ {
+  "marker": "waaagh_in_combat",
+  "name": "Waaagh!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_waaagh_in_combat",
+  "keys": [
+   "wh3_dlc26_unit_abilities_waaagh_in_combat",
+   "wh_main_character_abilities_waaagh"
+  ]
+ },
+ {
+  "marker": "wand_of_jet",
+  "name": "Wand of Jet",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wand_of_jet",
+  "keys": [
+   "wh_main_item_abilities_wand_of_jet"
+  ]
+ },
+ {
+  "marker": "wardens_cage",
+  "name": "Warden's Cage",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wardens_cage",
+  "keys": [
+   "wh2_dlc15_character_abilities_wardens_cage"
+  ]
+ },
+ {
+  "marker": "warp_gaze",
+  "name": "Warp Gaze",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warp_gaze",
+  "keys": [
+   "wh_pro04_unit_abilities_warp_gaze"
+  ]
+ },
+ {
+  "marker": "warpstiletto",
+  "name": "Warpstiletto",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warpstiletto",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstiletto"
+  ]
+ },
+ {
+  "marker": "warpstone_tokens",
+  "name": "Warpstone Tokens",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_warpstone_tokens",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstone_tokens"
+  ]
+ },
+ {
+  "marker": "watched_by_the_watcher",
+  "name": "Watched by the Watcher",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_watched_by_the_watcher",
+  "keys": [
+   "wh3_dlc24_character_abilities_watched_by_the_watcher"
+  ]
+ },
+ {
+  "marker": "were_you_goin",
+  "name": "Where You Goin!?",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_were_you_goin",
+  "keys": [
+   "wh3_dlc26_character_abilities_were_you_goin"
+  ]
+ },
+ {
+  "marker": "whip_of_agony",
+  "name": "Whip of Agony",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_whip_of_agony",
+  "keys": [
+   "wh2_twa03_weapon_abilities_whip_of_agony"
+  ]
+ },
+ {
+  "marker": "whip_of_misery",
+  "name": "Whip of Misery",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_whip_of_misery",
+  "keys": [
+   "wh2_main_spell_bound_whip_of_agony"
+  ]
+ },
+ {
+  "marker": "whiplash",
+  "name": "Whiplash!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_whiplash",
+  "keys": [
+   "wh2_dlc14_lord_abilities_whiplash"
+  ]
+ },
+ {
+  "marker": "whispering_mist",
+  "name": "Whispering Mist",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_whispering_mist",
+  "keys": [
+   "wh3_dlc29_hero_abilities_whispering_mist"
+  ]
+ },
+ {
+  "marker": "whispering_skull",
+  "name": "Whispering Skull",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_whispering_skull",
+  "keys": [
+   "wh3_dlc29_item_abilities_whispering_skull"
+  ]
+ },
+ {
+  "marker": "wild_abandon",
+  "name": "Wild Abandon",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wild_abandon",
+  "keys": [
+   "wh3_dlc26_lord_abilities_wild_abandon"
+  ]
+ },
+ {
+  "marker": "willing_prey",
+  "name": "Willing Prey",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_willing_prey",
+  "keys": [
+   "wh3_main_lord_abilities_willing_prey"
+  ]
+ },
+ {
+  "marker": "winds_of_change",
+  "name": "Winds of Change",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_winds_of_change",
+  "keys": [
+   "wh3_main_daemon_body_abilities_winds_of_change"
+  ]
+ },
+ {
+  "marker": "word_of_change",
+  "name": "Word of Change",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_word_of_change",
+  "keys": [
+   "wh3_main_daemon_head_abilities_word_of_change"
+  ]
+ },
+ {
+  "marker": "word_of_pain",
+  "name": "Word of Pain",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_word_of_pain",
+  "keys": [
+   "wh2_dlc10_spell_bound_word_of_pain",
+   "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use"
+  ]
+ },
+ {
+  "marker": "woven_mist",
+  "name": "Woven Mist",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_woven_mist",
+  "keys": [
+   "wh_dlc05_unit_abilities_woven_mist"
+  ]
+ },
+ {
+  "marker": "wrath_of_the_storm",
+  "name": "Wrath of the Storm",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wrath_of_the_storm",
+  "keys": [
+   "wh3_main_lord_abilities_wrath_of_the_storm"
+  ]
+ },
+ {
+  "marker": "wrathful_reaper",
+  "name": "Wrathful Reaper",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wrathful_reaper",
+  "keys": [
+   "wh3_main_lord_abilities_wrathful_reaper"
+  ]
+ },
+ {
+  "marker": "wristbands_of_black_gold",
+  "name": "Wristbands of Black Gold",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_wristbands_of_black_gold",
+  "keys": [
+   "wh3_dlc29_item_abilities_wristbands_of_black_gold"
+  ]
+ },
+ {
+  "marker": "youre_next",
+  "name": "You're Next!",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_youre_next",
+  "keys": [
+   "wh2_dlc15_lord_abilities_youre_next"
+  ]
+ },
+ {
+  "marker": "berry_wine",
+  "name": "Berry Wine",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_berry_wine",
+  "keys": [
+   "wh2_dlc16_item_abilities_berry_wine"
+  ]
+ },
+ {
+  "marker": "blood_chalice",
+  "name": "Blood Chalice",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_blood_chalice",
+  "keys": [
+   "wh3_dlc29_hero_abilities_blood_chalice"
+  ]
+ },
+ {
+  "marker": "blood_chalice_of_bathori",
+  "name": "Blood Chalice of Bathori",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_blood_chalice_of_bathori",
+  "keys": [
+   "wh_pro02_item_abilities_blood_chalice_of_bathori"
+  ]
+ },
+ {
+  "marker": "undeath_morkharn_breath_of_darkness",
+  "name": "Breath of Darkness",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_undeath_morkharn_breath_of_darkness",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness"
+  ]
+ },
+ {
+  "marker": "undeath_morkharn_breath_of_darkness_upgraded",
+  "name": "Breath of Darkness Upgraded",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_undeath_morkharn_breath_of_darkness_upgraded",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded"
+  ]
+ },
+ {
+  "marker": "bugmans_xxxxxx",
+  "name": "Bugman's XXXXXX",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_bugmans_xxxxxx",
+  "keys": [
+   "wh3_dlc26_item_abilities_bugmans_xxxxxx"
+  ]
+ },
+ {
+  "marker": "dreaming_ring_i",
+  "name": "Dreaming Ring I",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_dreaming_ring_i",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_i"
+  ]
+ },
+ {
+  "marker": "dreaming_ring_ii",
+  "name": "Dreaming Ring II",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_dreaming_ring_ii",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_ii"
+  ]
+ },
+ {
+  "marker": "dreaming_ring_iii",
+  "name": "Dreaming Ring III",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_dreaming_ring_iii",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_iii"
+  ]
+ },
+ {
+  "marker": "earth_blood",
+  "name": "Earth Blood",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_earth_blood",
+  "keys": [
+   "wh2_dlc16_spell_bound_earth_blood",
+   "wh3_main_spell_bound_earth_blood"
+  ]
+ },
+ {
+  "marker": "elfish_healing_herbs",
+  "name": "Elvish Healing Herbs",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_elfish_healing_herbs",
+  "keys": [
+   "wh3_dlc27_unit_abilities_elfish_healing_herbs"
+  ]
+ },
+ {
+  "marker": "fleshy_abundance",
+  "name": "Fleshy Abundance",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_fleshy_abundance",
+  "keys": [
+   "wh3_dlc20_spell_bound_fleshy_abundance"
+  ]
+ },
+ {
+  "marker": "hieratic_jar",
+  "name": "Hieratic Jar",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_hieratic_jar",
+  "keys": [
+   "wh2_dlc09_item_abilities_hieratic_jar"
+  ]
+ },
+ {
+  "marker": "immortal_will",
+  "name": "Immortal Will",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_immortal_will",
+  "keys": [
+   "wh_main_hero_abilities_immortal_will"
+  ]
+ },
+ {
+  "marker": "invocation_of_nehek",
+  "name": "Invocation of Nehek",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_invocation_of_nehek",
+  "keys": [
+   "wh3_dlc29_spell_bound_invocation_of_nehek"
+  ]
+ },
+ {
+  "marker": "locus_of_fecundity",
+  "name": "Locus of Fecundity",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_locus_of_fecundity",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_fecundity"
+  ]
+ },
+ {
+  "marker": "makaissons_persuader",
+  "name": "Makaisson's Persuader",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_makaissons_persuader",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_makaissons_persuader"
+  ]
+ },
+ {
+  "marker": "neuroparasites",
+  "name": "Necroparasites",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_neuroparasites",
+  "keys": [
+   "wh2_dlc16_unit_abilities_neuroparasites"
+  ]
+ },
+ {
+  "marker": "necrotic_phylactry",
+  "name": "Necrotic Phylactery",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_necrotic_phylactry",
+  "keys": [
+   "wh3_dlc25_item_abilities_necrotic_phylactry"
+  ]
+ },
+ {
+  "marker": "patch_up",
+  "name": "Patch Up",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_patch_up",
+  "keys": [
+   "wh2_dlc13_character_abilities_patch_up"
+  ]
+ },
+ {
+  "marker": "pestilent_regeneration",
+  "name": "Pestilent Regeneration",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_pestilent_regeneration",
+  "keys": [
+   "wh3_main_daemon_head_abilities_pestilent_regeneration"
+  ]
+ },
+ {
+  "marker": "potion_of_charoi",
+  "name": "Potion of Charoi",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_potion_of_charoi",
+  "keys": [
+   "wh2_main_lord_abilities_potion_of_charoi"
+  ]
+ },
+ {
+  "marker": "potion_of_healing",
+  "name": "Potion of Healing",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_potion_of_healing",
+  "keys": [
+   "wh_main_item_abilities_potion_of_healing"
+  ]
+ },
+ {
+  "marker": "radiant_gem_of_hoeth",
+  "name": "Radiant Gem of Hoeth",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_radiant_gem_of_hoeth",
+  "keys": [
+   "wh2_main_spell_bound_radiant_gem_of_hoeth"
+  ]
+ },
+ {
+  "marker": "reforge",
+  "name": "Reforge",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_reforge",
+  "keys": [
+   "wh3_dlc23_character_abilities_reforge"
+  ]
+ },
+ {
+  "marker": "regenerating_flesh",
+  "name": "Regenerating Flesh",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_regenerating_flesh",
+  "keys": [
+   "wh_main_item_abilities_regenerating_flesh"
+  ]
+ },
+ {
+  "marker": "regrowth",
+  "name": "Regrowth",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_regrowth",
+  "keys": [
+   "wh2_dlc16_spell_bound_regrowth"
+  ]
+ },
+ {
+  "marker": "remouldered",
+  "name": "Remouldered",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_remouldered",
+  "keys": [
+   "wh2_dlc16_lord_abilities_remouldered"
+  ]
+ },
+ {
+  "marker": "restore",
+  "name": "Restore",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_restore",
+  "keys": [
+   "wh2_dlc09_character_abilities_restore"
+  ]
+ },
+ {
+  "marker": "revivification_crystal",
+  "name": "Revivification Crystal",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_revivification_crystal",
+  "keys": [
+   "wh2_main_unit_abilities_revivification_crystal"
+  ]
+ },
+ {
+  "marker": "saint_annushkas_finger_bone",
+  "name": "Saint Annushka's Finger Bone",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_saint_annushkas_finger_bone",
+  "keys": [
+   "wh3_main_item_abilities_saint_annushkas_finger_bone"
+  ]
+ },
+ {
+  "marker": "salyaks_lullaby",
+  "name": "Salyak's Lullaby",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_salyaks_lullaby",
+  "keys": [
+   "wh3_main_character_abilities_salyaks_lullaby"
+  ]
+ },
+ {
+  "marker": "scroll_of_power",
+  "name": "Scroll of Power",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_scroll_of_power",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_power"
+  ]
+ },
+ {
+  "marker": "skalm",
+  "name": "Skalm",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_skalm",
+  "keys": [
+   "wh2_main_item_abilities_skalm"
+  ]
+ },
+ {
+  "marker": "skars_kraken_killer",
+  "name": "Skar's Kraken-Killer",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_skars_kraken_killer",
+  "keys": [
+   "wh3_main_weapon_abilities_skars_kraken_killer"
+  ]
+ },
+ {
+  "marker": "trollguts",
+  "name": "Trollguts",
+  "trigger": "ushoran_health",
+  "badge": "zz_auto_badge_trollguts",
+  "keys": [
+   "wh3_dlc26_spell_bound_trollguts"
+  ]
+ },
+ {
+  "marker": "bloodthirst",
+  "name": "Bloodthirst",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_bloodthirst",
+  "keys": [
+   "wh3_main_lord_abilities_bloodthirst"
+  ]
+ },
+ {
+  "marker": "colossal_strike",
+  "name": "Colossal Strike",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_colossal_strike",
+  "keys": [
+   "wh3_dlc24_character_abilities_colossal_strike",
+   "wh3_dlc24_character_abilities_colossal_strike_summoned"
+  ]
+ },
+ {
+  "marker": "crimson_juggernaut",
+  "name": "Crimson Juggernaut",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_crimson_juggernaut",
+  "keys": [
+   "wh3_dlc26_character_abilities_crimson_juggernaut"
+  ]
+ },
+ {
+  "marker": "daemonic_onslaught",
+  "name": "Daemonic Onslaught",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_daemonic_onslaught",
+  "keys": [
+   "wh3_main_daemon_legs_abilities_daemonic_onslaught"
+  ]
+ },
+ {
+  "marker": "deadly_onslaught",
+  "name": "Deadly Onslaught",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_deadly_onslaught",
+  "keys": [
+   "wh_dlc03_character_abilities_deadly_onslaught"
+  ]
+ },
+ {
+  "marker": "full_power",
+  "name": "Full Power!",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_full_power",
+  "keys": [
+   "wh3_dlc25_unit_abilities_full_power"
+  ]
+ },
+ {
+  "marker": "guiding_strike",
+  "name": "Guiding Strike",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_guiding_strike",
+  "keys": [
+   "wh3_cp1_lord_abilities_guiding_strike"
+  ]
+ },
+ {
+  "marker": "locus_of_fury",
+  "name": "Locus of Fury",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_locus_of_fury",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_fury"
+  ]
+ },
+ {
+  "marker": "locus_of_swiftness",
+  "name": "Locus of Swiftness",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_locus_of_swiftness",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_swiftness"
+  ]
+ },
+ {
+  "marker": "mastered_strike",
+  "name": "Masterful Strike",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_mastered_strike",
+  "keys": [
+   "wh3_cp1_lord_abilities_mastered_strike"
+  ]
+ },
+ {
+  "marker": "more_power",
+  "name": "More Power!",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_more_power",
+  "keys": [
+   "wh3_dlc23_unit_abilities_more_power"
+  ]
+ },
+ {
+  "marker": "purge_the_weak",
+  "name": "Purge the Weak!",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_purge_the_weak",
+  "keys": [
+   "wh3_main_daemon_wings_abilities_purge_the_weak"
+  ]
+ },
+ {
+  "marker": "shield_of_thorns",
+  "name": "Shield of Thorns",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_shield_of_thorns",
+  "keys": [
+   "wh2_dlc17_spell_bound_shield_of_thorns",
+   "wh_dlc05_spell_bound_shield_of_thorns"
+  ]
+ },
+ {
+  "marker": "storm_hammer",
+  "name": "Storm Hammer",
+  "trigger": "charge_or_melee",
+  "badge": "zz_auto_badge_storm_hammer",
+  "keys": [
+   "wh3_dlc29_spell_bound_storm_hammer"
+  ]
+ },
+ {
+  "marker": "blood_sacrifice",
+  "name": "Blood Sacrifice",
+  "trigger": "blood_sacrifice",
+  "badge": "zz_auto_badge_blood_sacrifice",
+  "keys": [
+   "wh3_dlc26_lord_abilities_blood_sacrifice"
+  ]
+ },
+ {
+  "marker": "eat_da_runts",
+  "name": "Eat da Runts!",
+  "trigger": "eat_da_runts",
+  "badge": "zz_auto_badge_eat_da_runts",
+  "keys": [
+   "wh3_dlc26_unit_abilities_eat_da_runts"
+  ]
+ },
+ {
+  "marker": "locus_of_virulence",
+  "name": "Locus of Virulence",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_locus_of_virulence",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_virulence"
+  ]
+ },
+ {
+  "marker": "the_dance_of_dreaming",
+  "name": "The Dance of Dreaming",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_dance_of_dreaming",
+  "keys": [
+   "wh3_dlc27_lord_abilities_the_dance_of_dreaming"
+  ]
+ },
+ {
+  "marker": "the_waltz_of_lethargy",
+  "name": "The Waltz of Lethargy",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_the_waltz_of_lethargy",
+  "keys": [
+   "wh3_dlc27_lord_abilities_the_waltz_of_lethargy"
+  ]
+ },
+ {
+  "marker": "ultimate_verdict",
+  "name": "Ultimate Verdict",
+  "trigger": "melee_unwavering",
+  "badge": "zz_auto_badge_ultimate_verdict",
+  "keys": [
+   "wh3_cp1_character_abilities_terrifying_presence"
+  ]
+ }
+]

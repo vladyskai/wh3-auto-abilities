@@ -1,0 +1,109 @@
+# Round 122: ten self-cast melee buffs on melee_unwavering (tuning round)
+
+Date: 2026-10-27. Harness: `harness121.lua`. Release folder:
+`mod_source\releases\20261027_melee_buffs_harness121\`.
+
+## 1. The ruling
+
+The user, verbatim: "Approved as recommended: Group A on melee_unwavering, Group B on
+melee_unwavering. Implement as a tuning round."
+
+The proposal it approved: ten abilities that are in the wheel and not implemented, all
+self-only (no range column, so no 70% range constant), unlimited uses, a timed duration
+(no toggle stances), none in the `army_spec` junction. All ten ride the existing shared
+`melee_unwavering` evaluator: fires when the unit is in melee and not wavering (an
+unreadable morale still fires), cast on the unit itself.
+
+| Group | Ability | Key | Carrier | Effect | Duration / cooldown |
+|---|---|---|---|---|---|
+| A | Call for Power | `wh3_main_daemon_head_abilities_call_for_power` | Daemon Princes (all four) | weapon damage +50%, splash +50%, Rampage | 30 s / 120 s |
+| A | Manus of Ursun | `wh3_main_weapon_abilities_ursuns_claws` | weapon item | weapon damage +12%, Causes Terror, Rampage | 19 s / 60 s |
+| A | Black Hammer of Hashut | `wh3_dlc23_weapon_abilities_black_hammer_of_hashut` | weapon item | weapon damage +50%, armour-piercing +50% | 32 s / 120 s |
+| A | The Graven Sceptre | `wh3_dlc23_weapon_abilities_the_graven_sceptre` | weapon item | melee attack +24, weapon damage +25%, AP +25% | 24 s / 120 s |
+| A | Tyrant's Talon | `wh3_cp1_weapon_abilities_tyrants_talon` | weapon item | melee attack +24, weapon damage +25%, AP +25% | 27 s / 120 s |
+| A | The Crimson Blade | `wh3_dlc29_item_abilities_crimson_blade` | item (3 tiers) | Executioner | 30 s / 120 s |
+| B | Bloodstorm | `wh2_dlc14_lord_abilities_bloodstorm` | Malus Darkblade (Tz'arkan forms) | damage resistance +20 | 9 s / 60 s |
+| B | Crooked Dice | `wh3_dlc23_hero_abilities_crooked_dice` | Gorduz Backstabber | armour +60, physical resistance +40, damage resistance +40 | 30 s / 90 s |
+| B | Temptator | `wh3_dlc20_lord_abilities_temptator` | Azazel | melee reflection +25, damage resistance +20 | 19 s / 120 s |
+| B | All-Consuming Hatred | `wh3_dlc27_unit_abilities_consuming_hatred` | Preyton | melee reflection +40, melee defence -12 | 25 s / 120 s |
+
+What the user sees in battle: each of these ten abilities now carries the M/A badge on its
+own icon. Once switched to A on a unit, the ability fires by itself the moment that unit is
+locked in melee and not wavering, and fires again whenever the cooldown allows while the
+fight goes on.
+
+## 2. The change
+
+Ten new ABILITIES entries, inserted after `ultimate_verdict` in the live source and, with the
+identical text, in the annotated copy (`tools\round122_add_entries.py`, which asserts no
+duplicate key or marker, no `army_spec` key, and exactly +10 entries / +10 `melee_unwavering`).
+No evaluator, gate, badge, click or log code changed.
+
+| Measure | Before | After |
+|---|---:|---:|
+| ABILITIES entries | 687 | 697 |
+| ability keys | 738 | 748 |
+| `melee_unwavering` entries | 360 | 370 |
+| trigger evaluator families | 45 | 45 |
+
+## 3. The proof
+
+| Run | Checks | Failures | File |
+|---|---:|---:|---|
+| new section, GREEN (light, before pin rebase) | 247 in section | 0 in section | (superseded) |
+| RED control, pre-122 snapshot (light) | 1,833 | 74, all in section 121 | `h121_red.txt` |
+| FULL, run 1 | 5,014 | 0 | `h121_run1.txt` |
+| FULL, run 2 | 5,014 | 0, byte-identical to run 1 | `h121_run2.txt` |
+| LIGHT (`H118_LIGHT=1`) | 1,833 | 0 | `h121_light.txt` |
+
+Section 121 per ability: in melee and not wavering FIRES once, cast on the owner, with the
+shared reason `in melee, morale not wavering`; not in melee is SILENT; in melee but wavering
+is SILENT; each on the live source and the annotated copy (60 worlds). Section 0r checks the
+tokens in both files and reads `army_spec.tsv` to confirm no batch key is army-bar.
+
+RED control: `H121_LIVE` / `H121_ANN` pointed at `docs\backups\round122\pre122_*.lua`. The 74
+failures are the 24 token checks and the 50 fire-world checks; the 40 silent worlds pass, as
+designed. No check outside section 121 failed.
+
+Pin rebase (deliberate, by `tools\make_harness121.py`, 55 non-comment lines, each printed in
+`make_harness121_out.txt`): table-size pins 687 -> 697 entries and 738 -> 748 keys,
+`melee_unwavering` 360 -> 370, and the A4 bootstrap iteration pin 1374 -> 1394 (two
+iterations per entry). Why: the table grew by exactly the ten approved entries. The
+RED-snapshot expectation rows (573 entries) were left alone. Before the rebase, the full run
+failed on exactly these pins (18 in the light run, 2 more in the full run) and on nothing else.
+
+Note: the full suite was run even though this is a tuning round, because it takes about
+10 seconds. The bookkeeping half of sign-off was NOT done (see section 5).
+
+## 4. Build and install
+
+Builder: `build_and_install122.py`, generated by `tools\make_builder122.py` from
+`tools\build_and_install121.py`, with only the count pins moved (11 entry-count asserts
+687 -> 697, 4 `melee_unwavering` asserts 360 -> 370). The round-121 army-bar gate is unchanged
+and printed `ARMY-BAR GATE OK: 748 ABILITIES keys, none of them in the 286-key army_spec junction`.
+
+- `MATCHES SOURCE: True` for all five shipped files.
+- Installed pack md5 **`16ee677eb43a67f8a9ed132dab98e829`**, 1,111,673 bytes, `IDENTICAL True`.
+- The live source is embedded byte-for-byte in the installed pack, and each of the ten keys
+  is found in it.
+
+Archived: `archive\packs\zz_test_deadly_onslaught_20261027_round122.pack`,
+`archive\mod_source\round122\` (source md5 `2a802b824e10fae1c176db6a7502d198`, annotated md5
+`f5262fb8d4bf66145a054f748c411090`). Pre-round snapshots: `docs\backups\round122\`.
+
+Archive gap found this round: the round-121 pack binary (md5 `eec8e1e09d7c3106686b478e01e2f771`)
+was never copied to `archive\packs\` (the latest archived pack there is from 2026-10-04), and
+this build overwrote both the installed copy and `mod_source\dist\`. Its source is preserved
+byte-exact as `docs\backups\round122\pre122_zz_test_deadly_onslaught.lua`, so it can be rebuilt.
+
+## 5. Not done (deferred to sign-off)
+
+- The master spreadsheet: no v21. It still shows these ten rows as NOT IMPLEMENTED.
+- The tracker (`docs\WH3_ability_tracker.md`) and the database
+  (`docs\WH3_ability_database_master.md`) are stale for these ten rows. Several still carry
+  out-of-date auto-exclusion text (Tyrant's Talon tagged "vortex", Crooked Dice "no effect
+  text available").
+- `tools\audit_wheel_status.py` and `tools\verify_ability_database.py` were not re-run (no new
+  workbook or database to audit).
+- Not field-tested: the harness proves the trigger logic against mocks, not that each ability
+  behaves well in a real battle.

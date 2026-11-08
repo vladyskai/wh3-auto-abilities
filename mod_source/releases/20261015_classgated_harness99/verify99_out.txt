@@ -1,0 +1,23 @@
+installed md5        : a7313d327f6ee57ebb73b30e048506a0
+installed size       : 881827
+pack main == source  : True 546751 bytes
+source sha256        : 1e7beac9dbcbfed2b202525d2d74c73b0bca1b5dab4f293167a72f263e8cbd6b
+tokens missing       : []
+contains 'unit_in_range(' : False (want False)
+contains 'string.find('   : False (want False)
+trigger counts        : melee_unwavering=363 charge_or_melee=25 ushoran_health=34 melee_health75=1
+ally trigger counts   : melee_buff=14 heal=3 heal_melee=1 wavering=2 | overseer=1 beast=1 broken=1 missile=3 warmachine=1 hellforged=1 monster=1 construct=1 infinite=1 winds=1
+ally_range_real fields: 32 (want 32)
+  class beast          55 (want 55) OK
+  class monster       235 (want 235) OK
+  class warmachine     68 (want 68) OK
+  class construct      29 (want 29) OK
+  class hellforged     13 (want 13) OK
+  class missile       493 (want 493) OK
+  class overseer      918 (want 918) OK
+entries               : 579 | badges: 579
+--- game data dir ---
+  present zz_test_deadly_onslaught.pack    md5 a7313d327f6ee57ebb73b30e048506a0  size 881827
+  present zz_probe_dist.pack               md5 d4e67cfb8bc562c7d6f0ff742909c13d  size 20063
+  absent  zz_probe_step.pack              
+  absent  zz_probe_enemy_target.pack      

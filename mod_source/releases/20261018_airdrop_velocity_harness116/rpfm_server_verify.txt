@@ -1,0 +1,25 @@
+[2m2026-10-18T14:22:47.277512Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Sentry logging support for RPFM SERVER enabled. Starting...
+[2m2026-10-18T14:22:47.281240Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Listening on 127.0.0.1:45127
+[2m2026-10-18T14:22:52.891366Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Created new session with ID: 1
+[2m2026-10-18T14:22:52.891415Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m New WebSocket client connected, created session ID: 1
+[2m2026-10-18T14:22:52.891500Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 background thread starting...
+[2m2026-10-18T14:22:52.891830Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 1]: SetGameSelected("warhammer_3", false)
+[2m2026-10-18T14:22:52.896356Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Background Thread looping around…
+[2m2026-10-18T14:22:52.896383Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Setting game selected.
+[2m2026-10-18T14:22:52.934851Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Branch 2.
+[2m2026-10-18T14:22:52.934866Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Switching game selected done.
+[2m2026-10-18T14:22:52.935101Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 2]: OpenPackFiles(["C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack"])
+[2m2026-10-18T14:22:52.936075Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 3]: GetPackFileDataForTreeView("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack")
+[2m2026-10-18T14:22:52.936314Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 4]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack", "script/battle/mod/zz_test_deadly_onslaught.lua")
+[2m2026-10-18T14:22:52.978075Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 5]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack", "ui/templates/zz_auto_badge.twui.xml")
+[2m2026-10-18T14:22:52.978740Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 6]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack", "ui/zz_auto/blank.png")
+[2m2026-10-18T14:22:52.979076Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 7]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack", "ui/zz_auto/auto_badge.png")
+[2m2026-10-18T14:22:52.979408Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 8]: GetPackedFileRawData("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack", "ui/common ui/special_ability_tooltip.twui.xml")
+[2m2026-10-18T14:22:52.996045Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 9]: ClosePack("C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack")
+[2m2026-10-18T14:22:52.996236Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 10]: ClientDisconnecting
+[2m2026-10-18T14:22:52.996253Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Client requested graceful disconnect, removing session immediately
+[2m2026-10-18T14:22:52.996260Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Removing session 1
+[2m2026-10-18T14:22:52.996263Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 shutting down...
+[2m2026-10-18T14:22:52.996294Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m No more active sessions, shutting down server...
+[2m2026-10-18T14:22:52.996320Z[0m [32m INFO[0m [2mrpfm_telemetry::actions[0m[2m:[0m Flushing action telemetry to PostHog (5 distinct actions)...
+[2m2026-10-18T14:22:53.049352Z[0m [32m INFO[0m [2mrpfm_telemetry::actions[0m[2m:[0m PostHog action telemetry sent.

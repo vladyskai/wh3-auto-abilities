@@ -1,0 +1,32 @@
+# Battle logs: up to 10 GB each, grep/tail only, kept locally
+*_log*.txt
+zz_test_deadly_onslaught_log*
+
+# Built packs (the build makes them; archive\packs keeps the history locally)
+*.pack
+
+# Creative Assembly game data and other modders' files: not ours to publish
+gamedata/
+archive/
+
+# Third-party tool (RPFM): download it separately
+tools/rpfm/
+tools/rpfm.zip
+*.pdb
+
+# Private session notes
+claude_code_export/
+
+# Python and editor clutter
+__pycache__/
+*.pyc
+.vscode/
+Thumbs.db
+desktop.ini
+~$*
+
+# An unchanged copy of the game's own HUD layout (reference only, not shipped)
+**/hud_battle.twui.xml
+
+# Old built release bundles
+mod_source/releases/*.zip

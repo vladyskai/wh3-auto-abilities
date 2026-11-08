@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>WH3 ability dial - measured positions</title>
+<style>
+ body{background:#141414;color:#e8e8e8;font-family:system-ui,Segoe UI,Arial;margin:24px}
+ h1{font-size:18px;font-weight:600} .muted{color:#9a9a9a}
+ table{border-collapse:collapse;margin:10px 0 18px} td,th{border:1px solid #333;padding:4px 10px;font-size:13px}
+ th{background:#1e1e1e;text-align:left} canvas{background:#0d0d0d;border:1px solid #333}
+ .k{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#9ecbff}
+</style></head><body>
+<h1>WH3 battle HUD &mdash; measured ability-dial positions</h1>
+<p class="muted">One sample set (88 dumps, identical): Boris + 4 abilities. Screen assumed 2560&times;1440 (from your screenshots).</p>
+<table>
+<tr><th>slot</th><th>id</th><th>ability key</th><th>position</th><th>&Delta; from parent</th></tr>
+<tr><td>1</td><td class="k">button_order1</td><td class="k">wh_main_character_abilities_deadly_onslaught</td><td>(1130, 1052)</td><td>(+58, 0)</td></tr>
+<tr><td>2</td><td class="k">button_order12</td><td class="k">wh_main_character_abilities_foe_seeker</td><td>(1189, 1052)</td><td>(+117, 0)</td></tr>
+<tr><td>3</td><td class="k">button_order123</td><td class="k">wh3_dlc29_weapon_abilities_legbiter</td><td>(1248, 1052)</td><td>(+176, 0)</td></tr>
+<tr><td>4</td><td class="k">button_order1234</td><td class="k">wh3_dlc29_spell_bound_eye_jabber</td><td>(1307, 1052)</td><td>(+235, 0)</td></tr>
+</table>
+<p><b>The pattern:</b> the icons are a row on one line (y = the dial's y), spaced <b>59 px</b> apart, the first one 58 px right of the dial origin (1072,1052).<br>
+So icon <i>k</i> = slot 1 + 59&middot;(k&minus;1) px. Our badge offset moves 1:1 with the screen (that is what your hand-tuning proved), so once the badge sits on icon 1, each further icon is <b>+59 px</b> in x, same y &mdash; nothing else.</p>
+<canvas id="c" width="1024" height="576"></canvas>
+<p class="muted">Canvas: screen scaled 0.4&times; (2560&times;1440 &rarr; 1024&times;576). Green = dial origin, blue = ability icons, orange = badge's <i>reported</i> position (suspect &mdash; engine misreports created components).</p>
+<script>
+const S=0.4, c=document.getElementById('c'), x=c.getContext('2d');
+function dot(px,py,r,fill,label,color){
+  x.beginPath(); x.arc(px*S,py*S,r,0,7); x.fillStyle=fill; x.fill();
+  x.font='11px ui-monospace,Consolas,monospace'; x.fillStyle=color||'#ddd';
+  x.fillText(label, px*S+8, py*S-8);
+}
+// dial origin and slots (measured)
+dot(1072,1052,4,'#3ddc84','dial/parent (1072,1052)','#3ddc84');
+const slots=[[1130,1052,'1 DOnslaught'],[1189,1052,'2 FoeSeeker'],[1248,1052,'3 Legbiter'],[1307,1052,'4 EyeJabber']];
+for(const [sx,sy,lab] of slots) dot(sx,sy,5,'#4c9aff',lab,'#9ecbff');
+// step ruler
+x.strokeStyle='#4c9aff'; x.setLineDash([3,3]); x.beginPath(); x.moveTo(1130*S,1052*S+14); x.lineTo(1307*S,1052*S+14); x.stroke(); x.setLineDash([]);
+x.fillStyle='#9ecbff'; x.fillText('59 px per slot', (1130+90)*S, 1052*S+30);
+// badge reported position (suspect)
+dot(115,883,5,'#ff9f43','badge reports (115,883) - unreliable','#ff9f43');
+// badge hand-tuned visual target: sits at the first icon after your tuning
+x.strokeStyle='#ff9f43'; x.beginPath(); x.arc(1130*S,1052*S,12,0,7); x.stroke();
+x.fillStyle='#ff9f43'; x.fillText('after your tuning the badge sits here visually (on/over icon 1)', 1130*S-140, 1052*S+46);
+</script></body></html>

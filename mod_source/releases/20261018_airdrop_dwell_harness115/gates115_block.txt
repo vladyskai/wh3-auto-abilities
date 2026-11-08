@@ -1,0 +1,53 @@
+
+# ============================================================================
+# ROUND 115 (2026-10-18): THE TRIGGER WAITS - A 1-SECOND DWELL ON THE PAIR.
+#
+#   UNDER = unit_distance(caster, chosen) < AIR_DROP_EDGE_M (0.10 m)
+#   FIRE  = UNDER continuously for AIR_DROP_DWELL_S (1.0 s) on the poll's clock
+#           (tick_count, 250 ms), OR a separation after at least
+#           AIR_DROP_MIN_CONTACT_S (0.3 s) of contact (short-crossing fallback)
+#
+# ADDED: FOURTH.AIR_DROP_DWELL_S / FOURTH.AIR_DROP_MIN_CONTACT_S, the nested
+# FOURTH.ad_pair state (ad_pair_key / ad_pair_stamp / ad_pair_drop / ad_under),
+# FOURTH.ad_event (the five per-episode lines), FOURTH.ad_purge_unit with its
+# ONE named global hook (the drop routine is declared above the FOURTH bag and
+# the chunk is at its local ceiling), and the dwell verification in the pre-cast
+# re-check. THE FIRST EVALUATION OF A CONTACT CAN NEVER FIRE.
+# UNCHANGED: the candidate filter, the nearest-by-unit_distance pick, the
+# air-only / no-melee holds, the self-centred cast, the fail-closed reads, the
+# 0.2 s fast pass, POLL_MS = 250 and every gate in FOURTH.try_pair.
+# ============================================================================
+for _k, _v in (("DWELL_S", "1.0"), ("MIN_CONTACT_S", "0.3")):
+    _line = "\nFOURTH.AIR_DROP_" + _k + " = " + _v + "\n"
+    assert script_txt.count(_line) == 1, "the round-115 constant is not defined exactly once: " + _k
+assert script_txt.count("FOURTH.ad_pair = {}") == 1, "the pair state table is missing"
+for _fn in ("ad_pair_key", "ad_pair_stamp", "ad_pair_drop", "ad_under",
+            "ad_event", "ad_purge_unit", "ad_contact_clear"):
+    assert script_txt.count("function FOURTH." + _fn + "(") == 1, \
+        "the round-115 helper is missing: " + _fn
+assert "return nil     -- THE FIRST EVALUATION OF A CONTACT NEVER FIRES" in script_txt, \
+    "the first evaluation of a contact can fire - the dwell is not enforced"
+assert 'if dist >= FOURTH.AIR_DROP_EDGE_M then' in script_txt, \
+    "the separation branch lost the edge comparison"
+assert "if under >= FOURTH.AIR_DROP_MIN_CONTACT_S then" in script_txt, \
+    "the short-crossing fallback is missing"
+for _lit in ('"dwell started: under at gap %.2fm, waiting %.2fs (pair ' + "'" + '%s' + "'" + ')"',
+             '"dwell satisfied after %.2fs -> FIRING (gap %.2fm, pair ' + "'" + '%s' + "'" + ')"',
+             '"dwell: under %.2fs of %.2fs (gap %.2fm)"',
+             '"dwell cancelled: separated after %.2fs (gap %.2fm; the dwell is %.2fs"',
+             '"short crossing: under for %.2fs (>= %.2fs) -> FIRING on separation"'):
+    assert _lit in script_txt, "a round-115 log line is missing: " + _lit
+assert "local n = tick_count - st.first" in script_txt, \
+    "the dwell clock is not the poll's tick_count"
+assert "and men_ok and gap_ok and dwell_ok) then" in script_txt, \
+    "the pre-cast re-check does not re-verify the dwell"
+assert "zz_ad_dwell_purge = FOURTH.ad_purge_unit" in script_txt and \
+    "if zz_ad_dwell_purge ~= nil then zz_ad_dwell_purge(id_text) end" in script_txt, \
+    "the pair state is not purged with the unit"
+assert "stays within 0.1 m of this unit's edge for 1 second" in script_txt, \
+    "the tooltip sentence does not state the dwell"
+assert script_txt.count('trigger = "air_drop_on_infantry"') == 12, \
+    "the air-drop family is no longer 12 entries"
+assert script_txt.count("\t{ marker = ") == 689, "the abilities table is not 689 entries"
+assert '.. "|" ..' not in script_txt, "a composite string key is back in the file"
+print("\\n== round 115 content gates                : OK ==")

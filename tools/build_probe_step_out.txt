@@ -1,0 +1,95 @@
+C:\Users\vlady\Desktop\rpfm_tools\build_probe_step.py:90: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=20))))
+== main mod (must stay byte-identical) ==
+   data/zz_test_deadly_onslaught.pack md5 BEFORE : f1b7363e411bfc340423d4ecdc1ea91c
+   script source        md5 BEFORE : 74d6704f9566c8ee24a20830cf5d3b88
+
+== no prior zz_probe_step_log.txt (clean start)
+
+source zz_probe_step.lua                  29029 bytes  sha256 1f07188da14af1151663a5226021f96a
+  hello: {"id": 0, "data": {"SessionConnected": 2}}
+
+== 1 select game
+  <= {"CompressionFormatDependenciesInfo": ["None", null]}
+
+== 2 new pack
+  <= {"String": "new_pack.pack"}
+
+== 3 add the one probe script
+  <= {"VecContainerPathOptionString": [[{"File": "script/battle/mod/zz_probe_step.lua"}], null]}
+
+== 4 type = Movie
+  <= "Success"
+
+== 5 list contents
+  <= {"ContainerInfoVecRFileInfo": [{"file_name": "new_pack.pack", "file_path": "new_pack.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "", "compress": "None", "timestamp": 0}, [{"path
+   container: Movie | files: ['script/battle/mod/zz_probe_step.lua']
+   script/battle/mod/zz_probe_step.lua                29029 bytes  MATCHES SOURCE: True
+
+== 6 the pack must contain the step probe (token checks)
+   zz_probe_step_status                                 present: True
+   get_scriptunits_for_local_players_army               present: True
+   get_scriptunits_for_main_enemy_army_to_local_player  present: True
+   get_first_non_player_army                            present: True
+   perform_special_ability                              present: True
+   register_command_handler_callback                    present: True
+   BEFORE cast=                                         present: True
+   unit_distance=                                       present: True
+   caster_in_melee=                                     present: True
+   target_in_melee=                                     present: True
+   target_under_missile=                                present: True
+   READ                                                 present: True
+    =>                                                  present: True
+   NOT CALLED (write-shaped)                            present: True
+   ordered_position                                     present: True
+   is_moving                                            present: True
+   is_moving_fast                                       present: True
+   is_idle                                              present: True
+   current_target                                       present: True
+   has_moved                                            present: True
+   slow_speed                                           present: True
+   fast_speed                                           present: True
+   CMD tick=                                            present: True
+   name=                                                present: True
+   bool1=                                               present: True
+   str1=                                                present: True
+   CAST-PLAN cast=                                      present: True
+   TRY cast=                                            present: True
+   ACCEPTED cast=                                       present: True
+   POSTPOS cast=                                        present: True
+   SAMPLING cast=                                       present: True
+   SAMPLE cast=                                         present: True
+   delta_from_pre=                                      present: True
+   step_delta=                                          present: True
+   STEP RESULT cast=                                    present: True
+   orders_seen=                                         present: True
+   REFUSED cast=                                        present: True
+   VERDICT cast=                                        present: True
+   moved_total=                                         present: True
+   order_after_attack=                                  present: True
+   order_after_move=                                    present: True
+   already_moving_before=                               present: True
+   refused=                                             present: True
+   GATE conflict phase ENTERED                          present: True
+   conflict=                                            present: True
+   phase=                                               present: True
+
+== 7 save to disk
+  <= {"ContainerInfo": {"file_name": "zz_probe_step.pack", "file_path": "C:/Users/vlady/Desktop/wh3_auto_ability_test/dist/zz_probe_step.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "
+
+== 8 close
+  <= "Success"
+
+================ INSTALL ================
+built probe pack    md5 fab10940b2157a208126dc027b80ef5d
+installed           md5 fab10940b2157a208126dc027b80ef5d
+IDENTICAL           True
+installed to        C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_probe_step.pack
+
+== main mod AFTER ==
+   data/zz_test_deadly_onslaught.pack md5 AFTER  : f1b7363e411bfc340423d4ecdc1ea91c
+   script source        md5 AFTER  : 74d6704f9566c8ee24a20830cf5d3b88
+   main PACK unchanged : True
+   main SOURCE unchanged : True
+
+PROBE BUILD+INSTALL OK

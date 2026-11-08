@@ -1,0 +1,343 @@
+[
+ {
+  "num": 198,
+  "name": "Meat Feast",
+  "keys": [
+   "wh3_main_prisoners_butcher"
+  ],
+  "intercept": null,
+  "army_text": true,
+  "text": "\n- **Key(s):** `wh3_main_prisoners_butcher`\n- **Current logic:** trigger `ushoran_health` - fires when the OWNER's health is at or below 75% (no melee gate) - then casts on self (default `perform_special_ability(key, unit)`; no cast_target is set).\n- **Game declares:** An army-keyed single-target recover: Heals +2.8%/tick, Vigour -3%/s, \"to allies in range\" - target_friends = true, num_effected_friendly_units = 1, affect_self = false, target_self = false; the phase junction targets friends only. The game makes you pick ONE friendly unit; the caster is not among the legal targets and is not affected.\n- **Why it makes no sense:** The effect lands on a friendly unit and never on the caster, yet the mod reads the caster's OWN health and points the cast at the caster - neither the trigger's health basis nor the cast target matches the declared target. A self-cast should be refused by the engine (self is not a legal target) or, if accepted, still applies the wrong way.\n- **Feasibility:** Friendly units are readable - the mod already picks low-health allies (blood_sacrifice / eat_da_runts read `context_value(unit, \"HealthPercent\")` per friendly unit). An ally-heal picker (lowest-health in range) is the matching implementation; as-is the logic does not fit.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 199,
+  "name": "Captain of the Phoenix Guard",
+  "keys": [
+   "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc27_character_abilities_captain_of_the_phoenix_guard`\n- **Current logic:** trigger `melee_health75` - in melee AND the owner at or below 75% health - then casts on self.\n- **Game declares:** A single friendly unit is the only target: Physical Resistance +30 and Heals +0.5%/tick, \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, only_affect_target = true, affect_self = false; the phase junction targets friends only.\n- **Why it makes no sense:** The game declares one friendly unit as the target and applies the effect ONLY to that target, but the mod fires on the caster's own health and casts on the caster - a target the game does not list. The buff is intended for another unit (a hurt ally), not for the caster.\n- **Feasibility:** Friendly health is readable (same reads as the ally-heal pattern already shipped for blood_sacrifice / eat_da_runts); an ally picker fixes the target, and the trigger could then key off the chosen ally's health instead of the caster's.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 204,
+  "name": "Da Boss 'as a Plan!",
+  "keys": [
+   "wh3_dlc26_character_abilities_da_boss_as_a_plan"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc26_character_abilities_da_boss_as_a_plan`\n- **Current logic:** trigger `melee_unwavering` - in melee, not routing or wavering (fail-open morale) - then casts on self.\n- **Game declares:** Single-friendly buff: Melee Defence +24, Leadership +8, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the phase junction targets friends only.\n- **Why it makes no sense:** The declared target is one friendly unit and the buff never includes the caster, yet the mod casts on the caster - a unit the game does not offer as a target (the mod's own tracker row already carries the \"cast on self for now (nearest-ally picker later)\" caveat).\n- **Feasibility:** Friendly units are readable and the ally-picker pattern is already proven in this mod (blood_sacrifice / eat_da_runts / glorious_death pass a chosen friendly unit as the cast target); the fix is a picker, not new reads.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 209,
+  "name": "Favour of the Fay",
+  "keys": [
+   "wh_dlc07_lord_abilities_favour_of_the_fay"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh_dlc07_lord_abilities_favour_of_the_fay`\n- **Current logic:** trigger `melee_unwavering` then casts on self.\n- **Game declares:** Single-friendly buff: Melee Attack +40 - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the game row gives friends as the target class.\n- **Why it makes no sense:** The declared target is one friendly unit; the mod casts on the caster, which is not among the game's legal targets (the tracker row itself says \"cast on self for now (nearest-ally picker later)\").\n- **Feasibility:** Friendly reads available; an ally picker matches the ability. As-is the self-cast does not match the declared target.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 214,
+  "name": "Fury of Khaine",
+  "keys": [
+   "wh2_main_unit_abilities_fury_of_khaine"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_main_unit_abilities_fury_of_khaine`\n- **Current logic:** trigger `charge_or_melee` - charge window OR in melee (not routing) - then casts on self.\n- **Game declares:** Single-friendly buff: Melee Attack +24, Armour-Piercing Weapon Damage +50%, Base Weapon Damage +50%, Rampage! \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the phase junction targets friends only.\n- **Why it makes no sense:** The effect and its single target are an ally's (the wielder fires up another unit - e.g. the cauldron's Death Hags buff a chosen regiment), but the mod casts on the caster. The trigger itself (charge/melee) fits a melee buff, but the cast target does not.\n- **Feasibility:** Ally picker (friendly units readable, pattern already shipped); as-is the self-cast targets the wrong unit.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 220,
+  "name": "Helping Hand",
+  "keys": [
+   "wh2_pro08_character_abilities_helping_hand"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_pro08_character_abilities_helping_hand`\n- **Current logic:** trigger `melee_unwavering` then casts on self.\n- **Game declares:** Ally-anchored buff: Melee Attack +40, Damage Resistance +40 \"to allies in range\" - target_friends = true, target_self = false, affect_self = false, num_fr = -1; the phase junction targets friends only (the caster is never in the effect scope).\n- **Why it makes no sense:** The ability is cast at a friendly unit and buffs the friends around it while excluding the caster - yet the mod self-casts. Self is not a legal target and the caster is not affected, so the cast cannot deliver what the trigger is waiting for (the tracker row: \"cast on self for now (nearest-ally picker later)\").\n- **Feasibility:** Friendly reads available; a nearest-ally picker matches the ability.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 222,
+  "name": "Inspired Assault I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_i"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_assault_i`\n- **Current logic:** trigger `charge_or_melee` then casts on self.\n- **Game declares:** Single-friendly buff: Charge Bonus +20%, Melee Attack +24 \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false.\n- **Why it makes no sense:** The charge bonus is meant for a unit on its way into combat - the game makes you target a friendly unit; the mod casts on the caster, which is not a declared target. (The trigger fits the effect; the cast target does not.)\n- **Feasibility:** Ally picker (friendly units readable; the picker pattern already ships). As-is the self-cast does not match.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 223,
+  "name": "Inspired Assault II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_ii"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_assault_ii`\n- **Current logic:** trigger `charge_or_melee` then casts on self.\n- **Game declares:** Single-friendly buff: Charge Bonus +40%, Melee Attack +24 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.\n- **Why it makes no sense:** Same mismatch as Inspired Assault I: the game's target is one friendly unit, the mod casts on the caster.\n- **Feasibility:** Ally picker; friendly reads available.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 224,
+  "name": "Inspired Assault III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_iii"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_assault_iii`\n- **Current logic:** trigger `charge_or_melee` then casts on self.\n- **Game declares:** Single-friendly buff: Charge Bonus +40%, Melee Attack +40 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.\n- **Why it makes no sense:** Same mismatch: declared target is one friendly unit; the mod self-casts.\n- **Feasibility:** Ally picker; friendly reads available.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 225,
+  "name": "Inspired Defence I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_i"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_defence_i`\n- **Current logic:** trigger `melee_unwavering` then casts on self.\n- **Game declares:** Single-friendly buff: Melee Defence +24, Leadership +16 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.\n- **Why it makes no sense:** Declared target is one friendly unit; the mod casts on the caster (the tracker row: \"cast on self for now (nearest-ally picker later)\").\n- **Feasibility:** Ally picker; friendly reads available.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 226,
+  "name": "Inspired Defence II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_ii"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_defence_ii`\n- **Current logic:** trigger `melee_unwavering` then casts on self.\n- **Game declares:** Single-friendly buff: Melee Defence +24, Leadership +16, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.\n- **Why it makes no sense:** Declared target is one friendly unit; the mod self-casts.\n- **Feasibility:** Ally picker; friendly reads available.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 227,
+  "name": "Inspired Defence III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_iii"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_defence_iii`\n- **Current logic:** trigger `melee_unwavering` then casts on self.\n- **Game declares:** Single-friendly buff: Melee Defence +40, Leadership +16, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.\n- **Why it makes no sense:** Declared target is one friendly unit; the mod self-casts.\n- **Feasibility:** Ally picker; friendly reads available.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 238,
+  "name": "Orcs are da Best!",
+  "keys": [
+   "wh3_dlc26_character_abilities_orcs_are_da_best"
+  ],
+  "intercept": 150.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc26_character_abilities_orcs_are_da_best`\n- **Current logic:** trigger `melee_unwavering` (in melee, not routing, not wavering) → plain self-cast (`perform_special_ability(key, unit)`; no cast_target is set).\n- **Game declares:** a single-FRIENDLY-unit augment — `target_friends = true`, `num_effected_friendly_units = 1`, `target_self = false`, `affect_self = false` (intercept 150 m; +24 melee attack, ×1.5 damage for 27 s); its phase is friends-only (`self = false`).\n- **Why it makes no sense:** the cast lands on the owner, which the data excludes both as a target and as an affected unit — the buff never reaches the friendly unit, and the questionnaire's own note (\"cast on self for now, nearest-ally picker later\") confirms the ally is the intended recipient.\n- **Feasibility:** not implementable as written (self-cast cannot deliver it), but implementable overall — friendly units are fully readable and the ally-target cast pattern already exists (FOURTH.cast_target + drift re-check, the blood-sacrifice shape); it needs an ally picker.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 239,
+  "name": "Overseer of the Unseen",
+  "keys": [
+   "wh3_dlc29_hero_active_overseer_of_the_unseen"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc29_hero_active_overseer_of_the_unseen`\n- **Current logic:** trigger `melee_unwavering` → self-cast.\n- **Game declares:** one friendly unit (`target_friends = true`, `num_effected_friendly_units = 1`, `target_self = false`), `only_affect_target = true`; invalid targets `unit_is_commander_class` and `unit_is_large` (+40 melee attack, cannot die, unbreakable for 44 s). In other words: cast on a non-commander, non-large friendly unit.\n- **Why it makes no sense:** the owner is a hero (commander class) — as the cast target it is an INVALID target under the db's own invalid-target flags, so the intended foot-unit recipient never gets the effect and the self-cast has no declared target.\n- **Feasibility:** implementable via an ally picker over readable friendly units, filtering by `unit:type()` (the land-units key the mod already reads) for the commander/large exclusions; not as currently written.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 250,
+  "name": "\"Stay Here, I'll Get Help!\"",
+  "keys": [
+   "wh2_dlc09_character_abilities_stay_here_ill_get_help"
+  ],
+  "intercept": 60.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc09_character_abilities_stay_here_ill_get_help`\n- **Current logic:** trigger `wavering_ally_range` — picks the closest wavering, non-routing ally within the conservative 25 m and re-checks the gap before firing — but the cast itself stays ON SELF (its own log line reads \"self-cast\"); the picked ally is never passed as the cast target.\n- **Game declares:** friend/ground/self targeting (intercept 60 m); its morale phase affects FRIENDS only (`self = false`, +16 morale, 35 m) while a second phase grants the caster stalk/unspottable; and `invalid_usage: engaged_in_melee` (it cannot be used while the caster is engaged in melee).\n- **Why it makes no sense:** the user-approved criterion and the tracker row say \"cast on that ally\" — the ally is selected, yet the cast does not use it; the self-anchor only reaches the ally through the friends-phase area, which is not the declared ally-targeted cast, and the evaluator never gates on the engaged-in-melee usage restriction.\n- **Feasibility:** the ally is already picked and range-checked (FOURTH.wa_ally); passing it as the cast target is the existing blood-sacrifice pattern — implementable. Attempts while the caster is in melee will be engine-refused and simply feed the cooldown hold.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 305,
+  "name": "Daemonic Whispers",
+  "keys": [
+   "wh3_dlc27_character_abilities_slezuzus_voice"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc27_character_abilities_slezuzus_voice`\n- **Current logic:** trigger `melee_unwavering` — fires when the owner is in melee, cast on self.\n- **Game declares:** an Augment that may target only a friendly unit (`target_friends=true`, `target_self=false`, `affect_self=false`, one unit, 200 m) — +16 Leadership to the chosen ally.\n- **Why it makes no sense:** the game offers no self target for it (self is not in the target set), so the self-cast cannot deliver the declared buff to a friendly unit — the mod casts it on the one unit the ability does not accept.\n- **Feasibility:** friendly units are readable and the mod already ships ally-targeting evaluators, so an ally picker could carry it — but as written the self-cast is the wrong target; flag for the user.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 343,
+  "name": "Grut's Sickle",
+  "keys": [
+   "wh3_main_item_abilities_gruts_sickle"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_item_abilities_gruts_sickle`\n- **Current logic:** trigger `melee_unwavering` — fires when the owner is in melee, cast on self.\n- **Game declares:** an Augment of the Winds that may target only a friendly unit (`target_friends=true`, `target_self=false`, `affect_self=false`, one unit, 100 m) — Power Recharge +80% and Reserves +0.4/s to the chosen ally, at a health cost, ×3 uses.\n- **Why it makes no sense:** the ability's target set is a friendly unit, and the caster is not among the legal targets (self-targeting is off) — so the self-cast cannot deliver the winds buff it declares.\n- **Feasibility:** friendly units are readable and an ally picker could carry it; as written the self-cast is the wrong target; flag for the user.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 349,
+  "name": "Hellish Vigour",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour"
+  ],
+  "intercept": 75.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc29_lord_abilities_hellish_vigour`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** A single FRIENDLY-unit augment (`target_friends=true`, `num_effected_friendly_units=1`, cast range 75 m): +20 damage reflection and reduced fatigue for 25 s. The caster is NOT among the affected: `affect_self=false`, `target_self=false`, and the phase targets friends only.\n- **Why it makes no sense:** Casting it on the owner applies the augment to nobody - the caster is excluded from its own effect. It is a targeted hand-out to another friendly unit ('drives his host onward'), and a self-cast cannot deliver it.\n- **Feasibility:** Fixable without enemy reads: friendly units are readable and the mod already ships ally-targeted casts (Glorious Death / Blood Sacrifice pattern); the tracker itself notes 'nearest-ally picker later'. Needs an ally picker, not enemy reads.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 361,
+  "name": "Inspired Marksmanship I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_i"
+  ],
+  "intercept": 100.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_marksmanship_i`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** A single-friendly augment that may only be placed on a unit that can perform missile attacks (invalid-target flag `cannot_perform_missile_attack`): +30 accuracy, +20 reloading for 29 s, range 100 m; the caster is not affected (`affect_self=false`).\n- **Why it makes no sense:** The self-cast can receive nothing (ally-only, caster unaffected), and firing a shooting buff while the owner is stuck in melee is mistimed on both counts - the effect wants an ally that is actually shooting.\n- **Feasibility:** Feasible in principle with the friendly reads the mod already has (plus a static missile-capability gate, which the mod's own API notes record as available); no enemy reads needed. The ally picker does not exist yet.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 362,
+  "name": "Inspired Marksmanship II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_ii"
+  ],
+  "intercept": 100.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_marksmanship_ii`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** Same as I but +60 accuracy, +20 reloading for 44 s, range 100 m; same `cannot_perform_missile_attack` invalid-target flag.\n- **Why it makes no sense:** Same mismatch: single-ally missile buff cast on the owner, who is not affected and is in melee when the trigger fires.\n- **Feasibility:** Same as I: ally picker feasible (friendly reads exist); not enemy-limited.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 363,
+  "name": "Inspired Marksmanship III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_iii"
+  ],
+  "intercept": 100.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_main_lord_abilities_inspired_marksmanship_iii`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** Same as II with +40 reloading, 44 s, range 100 m; same `cannot_perform_missile_attack` invalid-target flag.\n- **Why it makes no sense:** Same mismatch as I/II.\n- **Feasibility:** Same as I/II: ally picker feasible; not enemy-limited.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 364,
+  "name": "Iron-Handed Captain",
+  "keys": [
+   "wh3_dlc27_character_abilities_iron_hand_captain"
+  ],
+  "intercept": 200.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc27_character_abilities_iron_hand_captain`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** A rally for a broken ally: single friendly target (`only_affect_target=true`, range 200 m) that the game only allows on a unit whose morale is at or below 'broken' (invalid-target flag `morale_is_higher_than_broken`); grants +100 morale and the `force_rally` attribute for 42 s. Caster not affected (`affect_self=false`, phase friends-only).\n- **Why it makes no sense:** Target and premise are both inverted: the mod fires it when the CASTER is in melee and specifically NOT wavering, and casts it on the caster - who is neither a valid target (`target_self=false`) nor broken. The ally it exists to rally is never involved.\n- **Feasibility:** A fleeing-ally pick is conceivable in principle (friendly routing state is readable - `unit_is_routing` is already used on allies); the current self-cast cannot work. Not enemy-limited.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 383,
+  "name": "Merciw's Monstrous Regiment",
+  "keys": [
+   "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
+   "wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment`, `wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment`\n- **Current logic:** Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).\n- **Game declares:** A single chosen ALLY receives +40 Melee Attack, +50% melee damage and +20 physical resistance for 120 s (`target_friends=true`, `num_effected_friendly_units=1`, `affect_self=false`; both bound keys - `wh3_dlc20_...` and `wh3_dlc27_...` - share the same phase). Caster not affected.\n- **Why it makes no sense:** Ally-only single-target buff cast on the owner: the caster gains nothing from its own cast, and no ally is selected. ('Bestows it upon his chosen allies' - the chosen ally is the whole point.)\n- **Feasibility:** Ally picker feasible with the friendly reads already in use (Glorious Death / Blood Sacrifice pattern); no enemy reads needed.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 439,
+  "name": "Shock Collar",
+  "keys": [
+   "wh2_dlc16_hero_abilities_shock_collar"
+  ],
+  "intercept": 100.0,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc16_hero_abilities_shock_collar`\n- **Current logic:** trigger `melee_unwavering`; in-melee self-cast.\n- **Game declares:** an Augment for one friendly unit (`target_friends=true`, `target_self=false`, `num_effected_friendly_units=1`, cast at a friendly unit within 100 m): +24 melee attack, +16 leadership, immune to psychology for 24 s; 60 s recharge. The tracker's own proposal: \"When morale falls to wavering: cast on the wavering friendly unit.\"\n- **Why it makes no sense:** the effect is single-unit and aimed at another friendly unit; self is not a declared target for the cast, so casting it on the caster buffs the wrong unit (or is refused) — the intended buff never lands where the tracker's plan puts it.\n- **Feasibility:** feasible with existing reads — the mod already ships this exact ally-picker pattern for other triggers (`blood_sacrifice`: lowest-health in-range ally, conservative range, pre-cast range re-check) and uses a 25 m trigger radius against the game's 100 m cast range; no enemy reads involved.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 495,
+  "name": "Verminous Fury",
+  "keys": [
+   "wh3_dlc29_lord_abilities_verminous_fury"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc29_lord_abilities_verminous_fury`\n- **Current logic:** `melee_unwavering` — in melee (not wavering): cast on self.\n- **Game declares:** an augment cast on a friendly unit — the caster itself is not a valid target (target_friends = true, target_self = false, affect_self = false); 60 s: Rampage, Unbreakable, Unyielding Assault — a buff meant for a follower, not the Warbringer.\n- **Why it makes no sense:** cast target — an ally-targeted effect cast on self; the engine offers self as no target for this ability, so the buff cannot land on the caster as intended here.\n- **Feasibility:** fixable in principle but not built — the mod already reads friendly units and passes an ally target for other abilities (the ally-picker pattern); this entry has no picker and self-casts.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 508,
+  "name": "Where You Goin!?",
+  "keys": [
+   "wh3_dlc26_character_abilities_were_you_goin"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc26_character_abilities_were_you_goin`\n- **Current logic:** `melee_unwavering` — in melee (not wavering): cast on self.\n- **Game declares:** an augment cast on a friendly unit — self is not a valid target (target_friends = true, target_self = false, affect_self = false); 25 s: Unbreakable — the Bruiser flings a fleeing ally back into the fight.\n- **Why it makes no sense:** cast target — an ally-targeted effect cast on self; the recipient is meant to be another unit, and the game does not offer the caster as one.\n- **Feasibility:** fixable in principle but not built — the mod can read friendly units and already passes an ally target elsewhere (ally-picker pattern); this entry has none.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 511,
+  "name": "Whiplash!",
+  "keys": [
+   "wh2_dlc14_lord_abilities_whiplash"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc14_lord_abilities_whiplash`\n- **Current logic:** `melee_unwavering` — in melee (not wavering): cast on self.\n- **Game declares:** an augment cast on a friendly unit — and commander-class units are invalid targets (`unit_is_commander_class`; the Beastmaster whips the *beasts*); 21 s: Charge Speed ×1.25, Charge Bonus ×1.2, Weapon Damage ×1.5.\n- **Why it makes no sense:** cast target — an ally-targeted effect cast on self, and the caster (a commander-class character) is precisely the kind of unit the game forbids as a recipient; the buff can never apply to the caster.\n- **Feasibility:** fixable in principle but not built — needs the ally-picker pattern (the mod already casts on friendly units elsewhere), plus the beast/non-commander recipient choice.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 534,
+  "name": "Elvish Healing Herbs",
+  "keys": [
+   "wh3_dlc27_unit_abilities_elfish_healing_herbs"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc27_unit_abilities_elfish_healing_herbs`\n- **Current logic:** trigger `ushoran_health` — fires when the unit's own health ≤75% and casts on itself.\n- **Game declares:** single-target friendly heal (27 s regen at ~0.6%/s, −1% fatigue); `target_friends = true`, `only_affect_target = true`, and NO `target_self` / `affect_self` / `always_affect_self` — the target must be ANOTHER friendly unit.\n- **Why it makes no sense:** self is not a legal target for this ability, so the mod's self-cast cannot heal anything (the tracker's intended rule was \"cast on the hurt friendly unit\").\n- **Feasibility:** an ally-targeted version is buildable (friendly units/health/distance are readable — the `blood_sacrifice` pattern), but as wired on the self-health trigger the cast targets the caster.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 540,
+  "name": "Makaisson's Persuader",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_makaissons_persuader"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc25_weapon_abilities_makaissons_persuader`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** single-target repair — \"a damaged War Machine can be returned to working order\", effect HP regen + `replenish_ammo = 0.3` (ammo exists only on war machines), and its invalid-target gate `unit_is_not_artillery_or_war_machine` (the same gate carried by Malakai's/Chaos Dwarf war-machine passives) restricts the legal target to an artillery/war-machine friendly unit.\n- **Why it makes no sense:** the carrier is a character (the ability is granted by the Makaisson's Persuader weapon), not a war machine — the self-cast points the repair at a unit the ability's own gate excludes and that has no ammo to replenish.\n- **Feasibility:** a friendly-target version is buildable (friendly reads exist; the war-machine class could be derived from the game's data like the Slayer list), but the current self-cast cannot land.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 543,
+  "name": "Patch Up",
+  "keys": [
+   "wh2_dlc13_character_abilities_patch_up"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc13_character_abilities_patch_up`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** single-target friendly heal (7 s regen at 1.6%/s) — \"swiftly dress the wounds of targeted friendly units\"; `target_friends = true` with no self target and no self effect (no `target_self`/`affect_self`/`always_affect_self`).\n- **Why it makes no sense:** the ability can only be pointed at another friendly unit; a self-cast targets the caster, which the ability cannot affect, so the heal can never land.\n- **Feasibility:** ally-targeting is buildable (readable friendlies), but not as wired on this self-cast trigger.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 548,
+  "name": "Reforge",
+  "keys": [
+   "wh3_dlc23_character_abilities_reforge"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh3_dlc23_character_abilities_reforge`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** restores the hitpoints of \"units with the Hell-Forged attribute\" (UiEffect bullet verbatim: \"Restores the hitpoints of units with the Hell-Forged attribute\"); its invalid-target gate `unit_is_not_hellforged` encodes the same restriction, and the ability's owners are Daemonsmith Sorcerers — flesh-and-blood casters, not Hell-Forged units.\n- **Why it makes no sense:** the Daemonsmith is not Hell-Forged, so a self-cast targets a unit the ability's own gate excludes (the row's `target_self = true` is contradicted by the effect bullet and the gate that CA ships for this key); no healing happens.\n- **Feasibility:** could be re-scoped to target a friendly Hell-Forged unit (friendly reads exist; attribute keys derivable from game data), but the current self-cast cannot land.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 551,
+  "name": "Remouldered",
+  "keys": [
+   "wh2_dlc16_lord_abilities_remouldered"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc16_lord_abilities_remouldered`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** single-target friendly heal plus a 24 s combat buff (+24 melee attack, +8 morale) for a wounded MONSTER (\"keep wounded monsters alive and keen\"); `target_friends = true` with NO `target_self` — the exact target shape of Throt's Shock Collar, which is cast on his beasts, not himself.\n- **Why it makes no sense:** the caster (Throt) is not the declared target of this ability; casting it at itself hands the engine a target the data does not declare (the tracker's intended rule was \"cast on the hurt friendly unit\"), so the heal/buff does not land where the ability is designed to go.\n- **Feasibility:** an ally-targeted version is buildable (friendly reads exist; the monster-class gate could be derived from game data), but the current self-cast is wrong.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 552,
+  "name": "Restore",
+  "keys": [
+   "wh2_dlc09_character_abilities_restore"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_dlc09_character_abilities_restore`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** single-target friendly heal (24 s regen) whose invalid-target gate `unit_is_not_construct` restricts the target to a Tomb Kings CONSTRUCT; `target_friends = true` with no self target or self effect; the owner is a Necrotect.\n- **Why it makes no sense:** the Necrotect is not a construct and self is not a declared target — the mod's self-cast can never apply the heal.\n- **Feasibility:** a friendly-construct target is in principle selectable (readable friendlies; construct keys derivable), but not as wired.\n\n**Your ruling:** ______________________________________________________________________________\n\n"
+ },
+ {
+  "num": 553,
+  "name": "Revivification Crystal",
+  "keys": [
+   "wh2_main_unit_abilities_revivification_crystal"
+  ],
+  "intercept": null,
+  "army_text": false,
+  "text": "\n- **Key(s):** `wh2_main_unit_abilities_revivification_crystal`\n- **Current logic:** trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.\n- **Game declares:** single-target friendly heal plus resurrect (20 s, 0.5%/s); `target_friends = true` with no self target and no self effect; the owner is a Bastiladon whose crystal restores \"supplicants\" — other units — from the point of death.\n- **Why it makes no sense:** the caster cannot be the target of its own crystal; the self-cast heals/resurrects nothing.\n- **Feasibility:** ally-targeting is buildable (readable friendlies), but not as wired.\n\n**Your ruling:** ______________________________________________________________________________\n\n\n---\n"
+ }
+]

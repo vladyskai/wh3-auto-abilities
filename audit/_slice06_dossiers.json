@@ -1,0 +1,3998 @@
+[
+ {
+  "n": 291,
+  "marker": "blooood",
+  "name": "Blooood!",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_unit_abilities_blooood": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "18.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_unit_abilities_blooood",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_unit_abilities_blooood",
+      "effect_type": "positive",
+      "duration": "18.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "-0.0200",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Acceleration: 1.1800 (mult) [phase wh_main_unit_abilities_blooood]",
+     "Speed: 1.2500 (mult) [phase wh_main_unit_abilities_blooood]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Blooood!",
+    "tooltip": "The Hellcannon breaks its chains and rushes forwards. Increased movement speed.",
+    "invalid_target": [],
+    "invalid_usage": [
+     "cannot_perform_missile_attack"
+    ],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 292,
+  "marker": "book_of_arkhan",
+  "name": "Book of Arkhan",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_spell_bound_book_of_arkhan": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "bound",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "25.0000",
+    "num_uses": "4",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_bound_book_of_arkhan",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_bound_book_of_arkhan",
+      "effect_type": "positive",
+      "duration": "25.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 1.2500 (mult) [phase wh_main_spell_bound_book_of_arkhan]",
+     "Melee Attack: 24.0000 (add) [phase wh_main_spell_bound_book_of_arkhan]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Book of Arkhan",
+    "tooltip": "Friendly units targeted by the caster are filled with magical energy, making them even more aggressive!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 293,
+  "marker": "book_of_hoeth",
+  "name": "Book of Hoeth",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_main_item_abilities_book_of_hoeth": {
+    "type": "wh_type_augment_of_the_winds",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "36.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_main_item_abilities_book_of_hoeth",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_main_item_abilities_book_of_hoeth",
+      "effect_type": "positive",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Book of Hoeth",
+    "tooltip": "This tome has been studied throughout the ages, yet its covers remain as blue and pristine as the day it was bound.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 294,
+  "marker": "book_of_secrets",
+  "name": "Book of Secrets",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc24_item_abilities_book_of_secrets": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "20.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_death",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     },
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_fire",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     },
+     {
+      "phase": "wh3_dlc24_item_abilities_book_of_secrets_shadows",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc24_item_abilities_book_of_secrets_death",
+      "effect_type": "negative",
+      "duration": "20.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "10",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     },
+     {
+      "id": "wh3_dlc24_item_abilities_book_of_secrets_fire",
+      "effect_type": "negative",
+      "duration": "20.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     },
+     {
+      "id": "wh3_dlc24_item_abilities_book_of_secrets_shadows",
+      "effect_type": "negative",
+      "duration": "20.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 0.7500 (mult) [phase wh3_dlc24_item_abilities_book_of_secrets_fire]",
+     "Weakness to Fire Damage: -20.0000 (add) [phase wh3_dlc24_item_abilities_book_of_secrets_fire]",
+     "Melee Attack: -24.0000 (add) [phase wh3_dlc24_item_abilities_book_of_secrets_shadows]",
+     "Melee Defence: -24.0000 (add) [phase wh3_dlc24_item_abilities_book_of_secrets_shadows]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Book of Secrets",
+    "tooltip": "Fire, Death and Shadow; all parts of a balanced, nutritious breakfast. Mmmm…",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 295,
+  "marker": "boom",
+  "name": "Boom!",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_unit_abilities_boom": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "15.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_unit_abilities_boom",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_unit_abilities_boom",
+      "effect_type": "positive",
+      "duration": "15.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour-Piercing Explosive Damage: 1.2000 (mult) [phase wh_main_unit_abilities_boom]",
+     "Base Explosive Damage: 1.2500 (mult) [phase wh_main_unit_abilities_boom]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Boom!",
+    "tooltip": "The Hellcannon's blasts are devastating!",
+    "invalid_target": [],
+    "invalid_usage": [
+     "cannot_perform_missile_attack"
+    ],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 296,
+  "marker": "call_of_violence",
+  "name": "Call of Violence",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_dlc03_character_abilities_call_of_violence": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "60.0000",
+    "active_time": "14.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc03_character_abilities_call_of_violence",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc03_character_abilities_call_of_violence",
+      "effect_type": "positive",
+      "duration": "14.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: 16.0000 (add) [phase wh_dlc03_character_abilities_call_of_violence]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Call of Violence",
+    "tooltip": "We feel it. We all feel it. The pull to war. The tug of battle. The NEED to kill.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 297,
+  "marker": "cascading_fire_cloak",
+  "name": "Cascading Fire Cloak",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_spell_bound_cascading_fire_cloak": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "bound",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "19.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "1.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_fire_cascading_fire_cloak",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_fire_cascading_fire_cloak",
+      "effect_type": "positive",
+      "duration": "19.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour-Piercing Weapon Damage: 1.2500 (mult) [phase wh_main_spell_fire_cascading_fire_cloak]",
+     "Melee Defence: 24.0000 (add) [phase wh_main_spell_fire_cascading_fire_cloak]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:unit_abilities_onscreen_name_wh_main_spell_fire_cascading_fire_cloak}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_main_spell_fire_cascading_fire_cloak}}",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 298,
+  "marker": "chalice_of_dark_rain",
+  "name": "Chalice of Dark Rain",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_dlc03_item_abilities_chalice_of_dark_rain": {
+    "type": "wh_type_area_of_hexes",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "true",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "89.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc03_item_abilities_chalice_of_dark_rain",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc03_item_abilities_chalice_of_dark_rain",
+      "effect_type": "negative",
+      "duration": "89.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Accuracy: -30.0000 (add) [phase wh_dlc03_item_abilities_chalice_of_dark_rain]"
+    ],
+    "ui_bullets": [
+     "Reduced accuracy for affected combatants"
+    ],
+    "onscreen_name": "Chalice of Dark Rain",
+    "tooltip": "Made from the skull of a geomancer - when filled with soil, the chalice can summon a deluge of blood-soaked mud.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 299,
+  "marker": "channelling_staff",
+  "name": "Channelling Staff",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_item_abilities_channelling_staff": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "29.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_item_abilities_channelling_staff",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_item_abilities_channelling_staff",
+      "effect_type": "positive",
+      "duration": "29.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Channelling Staff",
+    "tooltip": "A staff of pure silver etched with all eight runes from the magic wheel. Such an item can only enhance a Wizard's ability to channel.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 300,
+  "marker": "charmed_shield",
+  "name": "Charmed Shield",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_weapon_abilities_charmed_shield": {
+    "type": "wh_type_ward_save",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "17.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_weapon_abilities_charmed_shield",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_weapon_abilities_charmed_shield",
+      "effect_type": "positive",
+      "duration": "17.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Missile Block Chance: 25.0000 (add) [phase wh_main_weapon_abilities_charmed_shield]",
+     "Damage Resistance: 20.0000 (add) [phase wh_main_weapon_abilities_charmed_shield]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Charmed Shield",
+    "tooltip": "The front of this shield depicts a warrior being blessed by a nameless lady. Its wielder gains protection from the sigil, especially against foes armed with missiles.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 301,
+  "marker": "cold_blooded",
+  "name": "Cold-Blooded",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_main_character_abilities_cold_blooded": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "40.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_main_character_abilities_cold_blooded",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_main_character_abilities_cold_blooded",
+      "effect_type": "positive",
+      "duration": "40.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: 16.0000 (add) [phase wh2_main_character_abilities_cold_blooded]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Cold-Blooded",
+    "tooltip": "While Lizardmen may be slow to react due to their cold-blooded nature, this also makes them stoic in battle.",
+    "invalid_target": [
+     "unit_is_not_a_lizard_unit"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 302,
+  "marker": "crown_of_command",
+  "name": "Crown of Command",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_item_abilities_crown_of_command": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "30.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_item_abilities_crown_of_command",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_item_abilities_crown_of_command",
+      "effect_type": "positive",
+      "duration": "30.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Crown of Command",
+    "tooltip": "The Crown of Command has been worn in countless battles. Its wearer is given great authority, instilling in his subjects an unbreakable courage.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 303,
+  "marker": "cube_of_darkness",
+  "name": "Cube of Darkness",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_main_item_abilities_cube_of_darkness": {
+    "type": "wh_type_hex_of_the_winds",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "18.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_main_item_abilities_cube_of_darkness",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_main_item_abilities_cube_of_darkness",
+      "effect_type": "negative",
+      "duration": "18.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Cube of Darkness",
+    "tooltip": "This small black cube contains millions of tiny pin-pricks of light circling around a sphere of pure darkness.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 304,
+  "marker": "curse_of_khsar",
+  "name": "Curse of Khsar",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc09_character_abilities_curse_of_khsar": {
+    "type": "wh_type_area_of_hexes",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "true",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "35.0000",
+    "recharge_time": "0.0000",
+    "active_time": "25.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc09_character_abilities_curse_of_khsar",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc09_character_abilities_curse_of_khsar",
+      "effect_type": "negative",
+      "duration": "25.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour: -60.0000 (add) [phase wh2_dlc09_character_abilities_curse_of_khsar]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Curse of Khsar",
+    "tooltip": "The harsh, howling desert winds cut through everything, be it armour or clothing or raw flesh.",
+    "invalid_target": [],
+    "invalid_usage": [
+     "health_above_50%"
+    ],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 305,
+  "marker": "slezuzus_voice",
+  "name": "Daemonic Whispers",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc27_character_abilities_slezuzus_voice": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "character",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "26.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc27_character_abilities_slezuzus_voice",
+      "t_self": "false",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc27_character_abilities_slezuzus_voice",
+      "effect_type": "negative",
+      "duration": "26.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: 16.0000 (add) [phase wh3_dlc27_character_abilities_slezuzus_voice]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Daemonic Whispers",
+    "tooltip": "A Daemonic presence seems to influence Styrkaar and those around him, bending their will to give him thanks and praise even as he disembowels them.",
+    "invalid_target": [
+     "hasnt_slaanesh_mark"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 306,
+  "marker": "dark_fortune",
+  "name": "Dark Fortune",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_item_abilities_dark_fortune": {
+    "type": "wh_type_ward_save",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "57.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_item_abilities_dark_fortune",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_item_abilities_dark_fortune",
+      "effect_type": "positive",
+      "duration": "57.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Damage Resistance: 20.0000 (add) [phase wh_main_item_abilities_dark_fortune]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Dark Fortune",
+    "tooltip": "Asavar Kul, the Butcher of Praag, demanded his Champions sup boiled Daemon blood from the Chalice of Chaos, imbuing them with strength and vigour.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 307,
+  "marker": "deranged_munitions",
+  "name": "Deranged Munitions",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc25_lord_abilities_deranged_munitions": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "30.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "effect_type": "positive",
+      "duration": "30.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "true",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour-Piercing Missile Damage: 1.5000 (mult) [phase wh3_dlc25_lord_abilities_deranged_munitions]",
+     "Base Missile Damage: 1.5000 (mult) [phase wh3_dlc25_lord_abilities_deranged_munitions]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Deranged Munitions",
+    "tooltip": "The experiments might look like madness, but the results unleash devastating firepower.",
+    "invalid_target": [
+     "cannot_perform_missile_attack"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 308,
+  "marker": "deranged_munitions_upgraded",
+  "name": "Deranged Munitions Upgraded",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc25_lord_abilities_deranged_munitions_upgraded": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "30.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc25_lord_abilities_deranged_munitions",
+      "effect_type": "positive",
+      "duration": "30.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "true",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour-Piercing Missile Damage: 1.5000 (mult) [phase wh3_dlc25_lord_abilities_deranged_munitions]",
+     "Base Missile Damage: 1.5000 (mult) [phase wh3_dlc25_lord_abilities_deranged_munitions]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:unit_abilities_onscreen_name_wh3_dlc25_lord_abilities_deranged_munitions}} Upgraded",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh3_dlc25_lord_abilities_deranged_munitions}}",
+    "invalid_target": [
+     "cannot_perform_missile_attack"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 309,
+  "marker": "dont_even_try_it",
+  "name": "Don't Even Try It",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc15_lord_abilities_dont_even_try_it": {
+    "type": "wh_type_direct_damage",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "18.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc15_lord_abilities_dont_even_try_it",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc15_lord_abilities_dont_even_try_it",
+      "effect_type": "negative",
+      "duration": "18.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "144",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [
+     "Strong vs characters",
+     "Causes damage to combatants",
+     "Strong vs a single combatant",
+     "Weak vs multiple combatants"
+    ],
+    "onscreen_name": "Don't Even Try It",
+    "tooltip": "Goblins, in general, are a little twitchy to say the least. If you’ve flinched too soon, you’re probably already dead.",
+    "invalid_target": [],
+    "invalid_usage": [
+     "climbing"
+    ],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 310,
+  "marker": "doom_and_darkness_gunnery_school",
+  "name": "Doom & Darkness",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "bound",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "36.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_death_doom_and_darkness",
+      "effect_type": "negative",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: -16.0000 (add) [phase wh_main_spell_death_doom_and_darkness]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:unit_abilities_onscreen_name_wh_dlc08_spell_bound_death_doom_and_darkness}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_dlc08_spell_bound_death_doom_and_darkness}}",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   },
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "bound",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "36.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "1.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_death_doom_and_darkness",
+      "effect_type": "negative",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: -16.0000 (add) [phase wh_main_spell_death_doom_and_darkness]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Doom & Darkness",
+    "tooltip": "Spirits of the departed assail the Wizard’s foes, sapping their resolve and causing dread among their numbers.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   },
+   "wh_dlc08_spell_bound_death_doom_and_darkness": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "bound",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "36.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_death_doom_and_darkness",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_death_doom_and_darkness",
+      "effect_type": "negative",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: -16.0000 (add) [phase wh_main_spell_death_doom_and_darkness]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Doom & Darkness",
+    "tooltip": "Spirits of the departed assail the Wizard’s foes, sapping their resolve and causing dread among their numbers.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 311,
+  "marker": "doom_lord",
+  "name": "Doom Lord",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_lord_abilities_doom_lord": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "40.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "1.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_lord_abilities_doom_lord",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_lord_abilities_doom_lord",
+      "effect_type": "positive",
+      "duration": "40.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Doom Lord",
+    "tooltip": "I do not fear death, for it answers to me!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 312,
+  "marker": "earthing_rod",
+  "name": "Earthing Rod",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_item_abilities_earthing_rod": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "36.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_item_abilities_earthing_rod",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_item_abilities_earthing_rod",
+      "effect_type": "positive",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Miscast Chance: 0.0000 (mult) [phase wh_main_item_abilities_earthing_rod]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Earthing Rod",
+    "tooltip": "When planted in the ground this obsidian rod becalms the arcane winds for the briefest moment, allowing the Wizard to cast one of his powerful enchantments unopposed.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 313,
+  "marker": "el_syf",
+  "name": "El Syf",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_dlc05_weapon_abilities_el_syf": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "24.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc05_weapon_abilities_el_syf",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc05_weapon_abilities_el_syf",
+      "effect_type": "negative",
+      "duration": "24.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 0.5500 (mult) [phase wh_dlc05_weapon_abilities_el_syf]",
+     "Melee Defence: -40.0000 (add) [phase wh_dlc05_weapon_abilities_el_syf]",
+     "Physical Resistance: -20.0000 (add) [phase wh_dlc05_weapon_abilities_el_syf]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "El Syf",
+    "tooltip": "The so-called 'Northern Sword' fears no duel; anyone who dares confront him will surely meet their death!",
+    "invalid_target": [
+     "unit_is_not_commander_class"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 314,
+  "marker": "elixir_of_might",
+  "name": "Elixir of Might",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc09_item_abilities_elixir_of_might": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "36.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc09_item_abilities_elixir_of_might",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc09_item_abilities_elixir_of_might",
+      "effect_type": "positive",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: 24.0000 (add) [phase wh2_dlc09_item_abilities_elixir_of_might]",
+     "Base Weapon Damage: 1.6000 (mult) [phase wh2_dlc09_item_abilities_elixir_of_might]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Elixir of Might",
+    "tooltip": "One sip of the elixir fills the body of its drinker with the strength of many powerful, elite warriors.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 315,
+  "marker": "embers_of_the_phoenix",
+  "name": "Embers of the Phoenix",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_main_spell_bound_embers_of_the_phoenix": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "bound",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "true",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "28.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_main_spell_bound_embers_of_the_phoenix",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_main_spell_bound_embers_of_the_phoenix",
+      "effect_type": "positive",
+      "duration": "28.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "true",
+      "imbue_ignition": "10",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Base Missile Damage: 1.2500 (mult) [phase wh2_main_spell_bound_embers_of_the_phoenix]",
+     "Base Weapon Damage: 1.3000 (mult) [phase wh2_main_spell_bound_embers_of_the_phoenix]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Embers of the Phoenix",
+    "tooltip": "The Wizard ensorcels allied weapons, making them burn with a savage fire. Friendly targets are augmented with superior flaming blades.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 316,
+  "marker": "ballistic_enchantment",
+  "name": "Enchanted Ballistics",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc11_character_abilities_ballistic_enchantment": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "55.0000",
+    "recharge_time": "90.0000",
+    "active_time": "32.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc11_character_abilities_ballistic_enchantment",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc11_character_abilities_ballistic_enchantment",
+      "effect_type": "positive",
+      "duration": "32.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Accuracy: 60.0000 (add) [phase wh2_dlc11_character_abilities_ballistic_enchantment]",
+     "Reload Skill: 20.0000 (add) [phase wh2_dlc11_character_abilities_ballistic_enchantment]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Enchanted Ballistics",
+    "tooltip": "These particular balls give the shooter a magical advantage over their targets.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 317,
+  "marker": "enhanced_skavenbrew",
+  "name": "Enhanced Skavenbrew",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_item_abilities_enhanced_skavenbrew": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_unique",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "60.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_item_abilities_enhanced_skavenbrew",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_item_abilities_enhanced_skavenbrew",
+      "effect_type": "positive",
+      "duration": "60.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Armour: -40.0000 (add) [phase wh3_dlc29_item_abilities_enhanced_skavenbrew]",
+     "Mass: 1.2500 (mult) [phase wh3_dlc29_item_abilities_enhanced_skavenbrew]",
+     "Melee Attack: 50.0000 (add) [phase wh3_dlc29_item_abilities_enhanced_skavenbrew]",
+     "Base Weapon Damage: 1.5000 (mult) [phase wh3_dlc29_item_abilities_enhanced_skavenbrew]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Enhanced Skavenbrew",
+    "tooltip": "This concoction is made of Warpstone and the blood of many different creatures, making its effects even more devastating.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 318,
+  "marker": "entangle",
+  "name": "Entangle",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc10_character_abilities_entangle": {
+    "type": "wh_type_area_of_hexes",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "true",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "15.0000",
+    "recharge_time": "120.0000",
+    "active_time": "15.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc10_character_abilities_entangle",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc10_character_abilities_entangle",
+      "effect_type": "negative",
+      "duration": "15.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [
+     "Weakness to Fire Damage: -20.0000 (add) [phase wh2_dlc10_character_abilities_entangle]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Entangle",
+    "tooltip": "A thicket of briars will entangle the enemy, covering them in dry, flammable foliage.",
+    "invalid_target": [
+     "flying_currently"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 319,
+  "marker": "entrenchment",
+  "name": "Entrenchment",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_unit_abilities_entrenchment": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "44.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_unit_abilities_entrenchment",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_unit_abilities_entrenchment",
+      "effect_type": "positive",
+      "duration": "44.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [
+     "Armour-Piercing Missile Damage: 1.4000 (mult) [phase wh_main_unit_abilities_entrenchment]",
+     "Physical Resistance: 20.0000 (add) [phase wh_main_unit_abilities_entrenchment]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Entrenchment",
+    "tooltip": "All the sons of Grungni can dig-in, enabling them to better resist physical attacks from the foe. Any missile attacks they can make are also improved.",
+    "invalid_target": [
+     "climbing",
+     "flying_currently",
+     "manning_equipment"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 320,
+  "marker": "gaze_of_usirian",
+  "name": "Eternal Gaze",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_lord_abilities_gaze_of_usirian": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "15.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "3.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_lord_abilities_gaze_of_usirian",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_lord_abilities_gaze_of_usirian",
+      "effect_type": "negative",
+      "duration": "15.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0200",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [
+     "Does not affect units with immunity to Terror.",
+     "Inflicts Terror on the target."
+    ],
+    "onscreen_name": "Eternal Gaze",
+    "tooltip": "To a mighty Liche, death is never the end. It is a terrifying, debilitating prospect held entire in a Liche's hollow gaze.",
+    "invalid_target": [
+     "undead_unit"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 321,
+  "marker": "eternal_vigour",
+  "name": "Eternal Vigour",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_character_abilities_eternal_vigour": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_unique",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "-1.0000",
+    "recharge_time": "120.0000",
+    "active_time": "26.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_character_abilities_eternal_vigour",
+      "t_self": "false",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_character_abilities_eternal_vigour",
+      "effect_type": "positive",
+      "duration": "26.0000",
+      "affects_allies": "true",
+      "affects_enemies": "false",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Defence: 24.0000 (add) [phase wh3_dlc29_character_abilities_eternal_vigour]",
+     "Physical Resistance: 20.0000 (add) [phase wh3_dlc29_character_abilities_eternal_vigour]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Eternal Vigour",
+    "tooltip": "It is hard to strike one whose cloak carries them through the veil between worlds.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 322,
+  "marker": "extra_ingredients",
+  "name": "Extra Ingredients",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_character_abilities_extra_ingredients": {
+    "type": "wh_type_augment_of_the_winds",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "31.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_character_abilities_extra_ingredients",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_character_abilities_extra_ingredients",
+      "effect_type": "positive",
+      "duration": "31.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Extra Ingredients",
+    "tooltip": "A little bit of this, a pinch of that, and a touch of the other and... stand well back!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 323,
+  "marker": "favoured_by_the_matriarch",
+  "name": "Favoured by the Matriarch",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc27_hero_abilities_favoured_by_the_matriarch": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "true",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "55.0000",
+    "recharge_time": "90.0000",
+    "active_time": "26.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc27_hero_abilities_favoured_by_the_matriarch",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc27_hero_abilities_favoured_by_the_matriarch",
+      "effect_type": "positive",
+      "duration": "26.0000",
+      "affects_allies": "true",
+      "affects_enemies": "false",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: 24.0000 (add) [phase wh3_dlc27_hero_abilities_favoured_by_the_matriarch]",
+     "Leadership: 8.0000 (add) [phase wh3_dlc27_hero_abilities_favoured_by_the_matriarch]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:character_skills_localised_name_wh3_dlc27_skill_nor_fimir_noble_unique_1}}",
+    "tooltip": "{{tr:character_skills_localised_description_wh3_dlc27_skill_nor_fimir_noble_unique_1}}",
+    "invalid_target": [],
+    "invalid_usage": [
+     "health_below_25%"
+    ],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 324,
+  "marker": "fear_of_aramar",
+  "name": "Fear of Aramar",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc10_item_abilities_fear_of_aramar": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "47.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc10_item_abilities_fear_of_aramar",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc10_item_abilities_fear_of_aramar",
+      "effect_type": "negative",
+      "duration": "47.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0100",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: -24.0000 (add) [phase wh2_dlc10_item_abilities_fear_of_aramar]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Fear of Aramar",
+    "tooltip": "A scroll describing a dread spell that fills the foes' minds with images from their own worst nightmares!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 325,
+  "marker": "fearsome_roar",
+  "name": "Fearsome Roar",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc24_unit_abilities_fearsome_roar": {
+    "type": "wh_type_area_of_hexes",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "25.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc24_unit_abilities_fearsome_roar",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc24_unit_abilities_fearsome_roar",
+      "effect_type": "negative",
+      "duration": "25.0000",
+      "affects_allies": "false",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: -8.0000 (add) [phase wh3_dlc24_unit_abilities_fearsome_roar]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Fearsome Roar",
+    "tooltip": "This one's bark is at least as bad as their bite…",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 326,
+  "marker": "mark_of_the_monster",
+  "name": "Fecund Rebirth",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_character_active_mark_of_the_monster": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_unique",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "32.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "1.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_character_active_mark_of_the_monster",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_character_active_mark_of_the_monster",
+      "effect_type": "negative",
+      "duration": "32.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "38",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Charge Speed: 0.5000 (mult) [phase wh3_dlc29_character_active_mark_of_the_monster]",
+     "Speed: 0.5000 (mult) [phase wh3_dlc29_character_active_mark_of_the_monster]",
+     "Incoming Healing Modifier: 0.0000 (mult) [phase wh3_dlc29_character_active_mark_of_the_monster]"
+    ],
+    "ui_bullets": [
+     "Causes damage to combatants",
+     "Strong vs a single combatant"
+    ],
+    "onscreen_name": "Fecund Rebirth",
+    "tooltip": "A host of Daemon Flies plunges down the ailing beast's throat, laying a thousand eggs. The wriggling larvae nestle among the lungs, guts, and heart – chewing the three-pocked mark through their innards, heralding the agonised birth of a creature darker still.",
+    "invalid_target": [
+     "unit_is_not_large",
+     "unit_is_not_single_entity"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 327,
+  "marker": "fermented_fungi",
+  "name": "Fermented Fungi",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc15_lord_abilities_fermented_fungi": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "15.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc15_abilities_fermented_fungi",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc15_abilities_fermented_fungi",
+      "effect_type": "negative",
+      "duration": "15.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Defence: -24.0000 (add) [phase wh2_dlc15_abilities_fermented_fungi]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Fermented Fungi",
+    "tooltip": "Rotten mushroom gas wafted towards the enemy can cause them to lose their mind at the worst possible moment in battle.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 328,
+  "marker": "fight_or_die",
+  "name": "Fight or Die!",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_dlc08_lord_abilities_fight_or_die": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "18.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc08_unit_abilities_fight_or_die",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc08_unit_abilities_fight_or_die",
+      "effect_type": "positive",
+      "duration": "18.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: 24.0000 (add) [phase wh_dlc08_unit_abilities_fight_or_die]",
+     "Leadership: 16.0000 (add) [phase wh_dlc08_unit_abilities_fight_or_die]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Fight or Die!",
+    "tooltip": "There is no other choice. There never was.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 329,
+  "marker": "fistful_of_laurels",
+  "name": "Fistful of Laurels",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_item_abilities_fistful_of_laurels": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "120.0000",
+    "active_time": "50.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_item_abilities_fistful_of_laurels",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_item_abilities_fistful_of_laurels",
+      "effect_type": "positive",
+      "duration": "50.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: 40.0000 (add) [phase wh3_main_item_abilities_fistful_of_laurels]",
+     "Leadership: 16.0000 (add) [phase wh3_main_item_abilities_fistful_of_laurels]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Fistful of Laurels",
+    "tooltip": "Ogres don't believe in declaring their leadership qualities via trinkets, but that doesn't mean they're above robbing the dead if it inspires their forces to push even harder.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 330,
+  "marker": "flesh_to_stone",
+  "name": "Flesh to Stone",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc16_spell_bound_flesh_to_stone": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "bound",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "19.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc05_spell_life_flesh_to_stone",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc05_spell_life_flesh_to_stone",
+      "effect_type": "positive",
+      "duration": "19.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Physical Resistance: 60.0000 (add) [phase wh_dlc05_spell_life_flesh_to_stone]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Flesh to Stone",
+    "tooltip": "This spell temporarily transforms allies' mortal flesh into unbreakable rock, increasing tenfold their resistance to attack.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 331,
+  "marker": "focus_instincts",
+  "name": "Focus Instincts",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc12_lord_abilities_focus_instincts": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "40.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc12_lord_abilities_focus_instincts",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc12_lord_abilities_focus_instincts",
+      "effect_type": "positive",
+      "duration": "40.0000",
+      "affects_allies": "true",
+      "affects_enemies": "false",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Focus Instincts",
+    "tooltip": "By which the mind is concentrated on the task at hand, allowing it to be carried out effectively whilst keeping passion and abandon firmly in check.",
+    "invalid_target": [
+     "unit_is_not_a_lizard_unit"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 332,
+  "marker": "forbidden_rod",
+  "name": "Forbidden Rod",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_item_abilities_forbidden_rod": {
+    "type": "wh_type_augment_of_the_winds",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "23.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_item_abilities_forbidden_rod",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_item_abilities_forbidden_rod",
+      "effect_type": "positive",
+      "duration": "23.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "33",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [
+     "Causes damage to self"
+    ],
+    "onscreen_name": "Forbidden Rod",
+    "tooltip": "This marble and golden-laced artefact can summon the Winds of Magic, but at a cost to the user.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 333,
+  "marker": "frenzied_challenge",
+  "name": "Frenzied Challenge",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "15.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc27_qb_unit_abilities_frenzied_challenge",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc27_qb_unit_abilities_frenzied_challenge",
+      "effect_type": "negative",
+      "duration": "15.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 1.2500 (mult) [phase wh3_dlc27_qb_unit_abilities_frenzied_challenge]",
+     "Melee Defence: -24.0000 (add) [phase wh3_dlc27_qb_unit_abilities_frenzied_challenge]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Frenzied Challenge",
+    "tooltip": "Faced with this creature's challenge, one either fights or flees. Yet who would flee and doom themselves to nightmares of becoming its meal? Fight it is.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 334,
+  "marker": "frost_shard_glaive",
+  "name": "Frost Shard Glaive",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_weapon_abilities_frost_shard_glaive": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "30.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_item_abilities_frost_shard_glaive",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_item_abilities_frost_shard_glaive",
+      "effect_type": "negative",
+      "duration": "30.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 0.5500 (mult) [phase wh3_main_item_abilities_frost_shard_glaive]",
+     "Melee Defence: -40.0000 (add) [phase wh3_main_item_abilities_frost_shard_glaive]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Frost Shard Glaive",
+    "tooltip": "The frost shard blade of this revered weapon sparkles with the cold, hard promise of sharp slaughter.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 335,
+  "marker": "funnel_of_flame",
+  "name": "Funnel of Flame",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc13_lord_abilities_funnel_of_flame": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "55.0000",
+    "recharge_time": "90.0000",
+    "active_time": "33.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc13_lord_abilities_funnel_of_flame",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc13_lord_abilities_funnel_of_flame",
+      "effect_type": "positive",
+      "duration": "33.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "10",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Reload Skill: 30.0000 (add) [phase wh2_dlc13_lord_abilities_funnel_of_flame]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Funnel of Flame",
+    "tooltip": "As they careen and stagger about, their flesh irreparably charred beyond recognition, perhaps the foe will rue the day they made war on the Empire?",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 336,
+  "marker": "gaze_of_fate",
+  "name": "Gaze of Fate",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_lord_abilities_gaze_of_fate": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "14.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_lord_abilities_gaze_of_fate",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_lord_abilities_gaze_of_fate",
+      "effect_type": "negative",
+      "duration": "14.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: -40.0000 (add) [phase wh3_main_lord_abilities_gaze_of_fate]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Gaze of Fate",
+    "tooltip": "Sometimes, the abyss stares right back at you, and true perspective is revealed. The shock freezes the foe where they stand.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 337,
+  "marker": "get_em",
+  "name": "Get 'Em!",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc25_character_abilities_get_em": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "true",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "35.0000",
+    "recharge_time": "90.0000",
+    "active_time": "11.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc25_character_abilities_get_em",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc25_character_abilities_get_em",
+      "effect_type": "negative",
+      "duration": "11.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Get 'Em!",
+    "tooltip": "Don't just stand there like a pig-kissa! Get 'Em!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 338,
+  "marker": "get_back_ere",
+  "name": "Get Back 'Ere!",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_main_character_abilities_get_back_ere": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "35.0000",
+    "recharge_time": "60.0000",
+    "active_time": "14.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_character_abilities_get_back_ere",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_character_abilities_get_back_ere",
+      "effect_type": "positive",
+      "duration": "14.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Leadership: 16.0000 (add) [phase wh_main_character_abilities_get_back_ere]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Get Back 'Ere!",
+    "tooltip": "Da Boss ain't ready to run an' so expects da boyz to stay put too!",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 339,
+  "marker": "soulnetter",
+  "name": "Gilellion's Soulnetter",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_weapon_abilities_soulnetter": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_unique",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "26.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_weapon_abilities_soulnetter",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_weapon_abilities_soulnetter",
+      "effect_type": "negative",
+      "duration": "26.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [],
+    "onscreen_name": "Gilellion's Soulnetter",
+    "tooltip": "This blade of Gilellion the Lewd, champion of Slaanesh, traps its victims in immortal servitude to its bearer.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 340,
+  "marker": "glacial_defence",
+  "name": "Glacial Defence",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_twa08_unit_abilities_glacial_defence": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "21.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_twa08_unit_abilities_glacial_defence",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_twa08_unit_abilities_glacial_defence",
+      "effect_type": "positive",
+      "duration": "21.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Speed: 0.7500 (mult) [phase wh3_twa08_unit_abilities_glacial_defence]",
+     "Armour: 60.0000 (add) [phase wh3_twa08_unit_abilities_glacial_defence]",
+     "Missile Resistance: 20.0000 (add) [phase wh3_twa08_unit_abilities_glacial_defence]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Glacial Defence",
+    "tooltip": "An icy carapace surrounds the Stonehorn, slowing the lumbering beast down further while adding a layer of natural armour to their defences.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 341,
+  "marker": "glory_seeker",
+  "name": "Glory Seeker",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_hero_active_glory_seeker": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "24.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_hero_active_glory_seeker",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_hero_active_glory_seeker",
+      "effect_type": "negative",
+      "duration": "24.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [
+     "Incoming Healing Modifier: 0.0000 (mult) [phase wh3_dlc29_hero_active_glory_seeker]",
+     "Melee Defence: -24.0000 (add) [phase wh3_dlc29_hero_active_glory_seeker]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Glory Seeker",
+    "tooltip": "Meeting the gaze of Orghotts Daemonspew is enough to render a creature numb, such is the malice behind his eyes",
+    "invalid_target": [
+     "unit_is_not_commander_class"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 342,
+  "marker": "glory_seeker_upgraded",
+  "name": "Glory Seeker Upgraded",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc29_hero_active_glory_seeker_upgraded": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "120.0000",
+    "active_time": "36.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc29_hero_active_glory_seeker_upgraded",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc29_hero_active_glory_seeker_upgraded",
+      "effect_type": "negative",
+      "duration": "36.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "true"
+     }
+    ],
+    "stat_effects": [
+     "Incoming Healing Modifier: 0.0000 (mult) [phase wh3_dlc29_hero_active_glory_seeker_upgraded]",
+     "Melee Defence: -36.0000 (add) [phase wh3_dlc29_hero_active_glory_seeker_upgraded]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:unit_abilities_onscreen_name_wh3_dlc29_hero_active_glory_seeker}} Upgraded",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh3_dlc29_hero_active_glory_seeker}}",
+    "invalid_target": [
+     "unit_is_not_commander_class"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 343,
+  "marker": "gruts_sickle",
+  "name": "Grut's Sickle",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_item_abilities_gruts_sickle": {
+    "type": "wh_type_augment_of_the_winds",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "20.0000",
+    "num_uses": "3",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_main_item_abilities_gruts_sickle",
+      "t_self": "false",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_main_item_abilities_gruts_sickle",
+      "effect_type": "positive",
+      "duration": "20.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "33",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [],
+    "ui_bullets": [
+     "Causes damage to self"
+    ],
+    "onscreen_name": "Grut's Sickle",
+    "tooltip": "Grut the Bloodthirsty's culinary malevolence seems to live on in his rusty sickle, which gives the Butcher greater command over the Winds, but at a cost to his own health.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 344,
+  "marker": "guttural_roar",
+  "name": "Guttural Roar",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc27_qb_unit_abilities_guttural_roar": {
+    "type": "wh_type_area_of_hexes",
+    "uniqueness": "wh_main_anc_group_rare",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "-1",
+    "effect_range": "90.0000",
+    "recharge_time": "90.0000",
+    "active_time": "25.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc27_qb_unit_abilities_guttural_roar",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc27_qb_unit_abilities_guttural_roar",
+      "effect_type": "negative",
+      "duration": "25.0000",
+      "affects_allies": "false",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Base Weapon Damage: 0.8500 (mult) [phase wh3_dlc27_qb_unit_abilities_guttural_roar]",
+     "Melee Defence: -16.0000 (add) [phase wh3_dlc27_qb_unit_abilities_guttural_roar]",
+     "Leadership: -24.0000 (add) [phase wh3_dlc27_qb_unit_abilities_guttural_roar]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Guttural Roar",
+    "tooltip": "This is not a warning for evildoers to go. It is a promise of what is to come.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 345,
+  "marker": "hagtree_fetish",
+  "name": "Hagtree Fetish",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh_dlc03_item_abilities_hagtree_fetish": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "29.0000",
+    "num_uses": "1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_dlc03_item_abilities_hagtree_fetish",
+      "t_self": "true",
+      "t_friends": "false",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_dlc03_item_abilities_hagtree_fetish",
+      "effect_type": "positive",
+      "duration": "29.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Miscast Chance: 0.2500 (mult) [phase wh_dlc03_item_abilities_hagtree_fetish]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Hagtree Fetish",
+    "tooltip": "A crude effigy and shamanic heirloom from one of the hag trees that grow deep in the forest.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 346,
+  "marker": "hail_of_fire",
+  "name": "Hail of Fire",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh2_dlc13_lord_abilities_hail_of_fire": {
+    "type": "wh_type_area_of_augments",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "-1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "55.0000",
+    "recharge_time": "90.0000",
+    "active_time": "22.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh2_dlc13_lord_abilities_hail_of_fire",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh2_dlc13_lord_abilities_hail_of_fire",
+      "effect_type": "positive",
+      "duration": "22.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "10",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Reload Skill: 30.0000 (add) [phase wh2_dlc13_lord_abilities_hail_of_fire]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Hail of Fire",
+    "tooltip": "It may be cruel, but the power to burn the foe to ash is extremely useful when you want to be sure of winning.",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 347,
+  "marker": "harmonic_convergence",
+  "name": "Harmonic Convergence",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_main_spell_bound_harmonic_convergence": {
+    "type": "wh_type_augment",
+    "uniqueness": "wh_main_anc_group_common",
+    "source_type": "bound",
+    "target_friends": "true",
+    "target_enemies": "false",
+    "target_ground": "false",
+    "affect_self": "true",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "1",
+    "num_effected_enemy_units": "0",
+    "effect_range": "0.0000",
+    "recharge_time": "60.0000",
+    "active_time": "27.0000",
+    "num_uses": "2",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "1.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh_main_spell_heavens_harmonic_convergence",
+      "t_self": "true",
+      "t_friends": "true",
+      "t_enemies": "false"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh_main_spell_heavens_harmonic_convergence",
+      "effect_type": "positive",
+      "duration": "27.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Attack: 24.0000 (add) [phase wh_main_spell_heavens_harmonic_convergence]",
+     "Melee Defence: 24.0000 (add) [phase wh_main_spell_heavens_harmonic_convergence]",
+     "Reload Skill: 20.0000 (add) [phase wh_main_spell_heavens_harmonic_convergence]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "{{tr:unit_abilities_onscreen_name_wh_main_spell_heavens_harmonic_convergence}}",
+    "tooltip": "{{tr:unit_abilities_tooltip_text_wh_main_spell_heavens_harmonic_convergence}}",
+    "invalid_target": [],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ },
+ {
+  "n": 348,
+  "marker": "headhunt",
+  "name": "Headhunt",
+  "trigger": "melee_unwavering",
+  "keys": {
+   "wh3_dlc26_character_abilities_headhunt": {
+    "type": "wh_type_hex",
+    "uniqueness": "wh_main_anc_group_uncommon",
+    "source_type": "active",
+    "target_friends": "false",
+    "target_enemies": "true",
+    "target_ground": "false",
+    "affect_self": "false",
+    "always_affect_self": "false",
+    "only_affect_target": "false",
+    "num_effected_friendly_units": "0",
+    "num_effected_enemy_units": "1",
+    "effect_range": "0.0000",
+    "recharge_time": "90.0000",
+    "active_time": "31.0000",
+    "num_uses": "-1",
+    "bombardment": "",
+    "passive": "false",
+    "wind_up_time": "0.0000",
+    "activated_projectile": "",
+    "phase_junc": [
+     {
+      "phase": "wh3_dlc26_character_abilities_headhunt",
+      "t_self": "false",
+      "t_friends": "false",
+      "t_enemies": "true"
+     }
+    ],
+    "phases": [
+     {
+      "id": "wh3_dlc26_character_abilities_headhunt",
+      "effect_type": "negative",
+      "duration": "31.0000",
+      "affects_allies": "true",
+      "affects_enemies": "true",
+      "damage_amount": "0",
+      "heal_amount": "0.0000",
+      "heal_barrier": "0.0000",
+      "fatigue": "0.0000",
+      "resurrect": "false",
+      "imbue_magical": "false",
+      "imbue_ignition": "0",
+      "imbue_contact": "",
+      "requested_stance": "",
+      "cant_move": "false"
+     }
+    ],
+    "stat_effects": [
+     "Melee Defence: -40.0000 (add) [phase wh3_dlc26_character_abilities_headhunt]",
+     "Missile Resistance: -20.0000 (add) [phase wh3_dlc26_character_abilities_headhunt]"
+    ],
+    "ui_bullets": [],
+    "onscreen_name": "Headhunt",
+    "tooltip": "Promising a bonus for each and every skull detached, whether or not its owner objects, has proved to be something of a motivator among Ogre mercenaries.",
+    "invalid_target": [
+     "unit_is_not_commander_class"
+    ],
+    "invalid_usage": [],
+    "auto_deactivate": []
+   }
+  }
+ }
+]

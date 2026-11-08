@@ -1,0 +1,1221 @@
+[
+ {
+  "key": "wh2_dlc09_unit_abilities_death_from_above",
+  "name": "Death from Above",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh2_dlc09_tmb_mon_carrion_ror",
+    "The Flock of Djaf (Carrion)",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc10_item_abilities_sceptre_of_stone",
+  "name": "Sceptre of Stone",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "5.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_dlc10_item_bound_assault_of_stone",
+  "name": "Assault of Stone",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "1",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_dlc10_spell_bound_lesser_doombolt",
+  "name": "Lesser Doombolt",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh2_dlc10_def_cav_doomfire_warlocks_0",
+    "Doomfire Warlocks",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc11_lord_abilities_wraith_storm",
+  "name": "Wraith Storm",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh2_dlc11_cst_inf_count_noctilus_0",
+    "Count Noctilus",
+    false
+   ],
+   [
+    "wh2_dlc11_cst_inf_count_noctilus_1",
+    "Count Noctilus",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc12_lord_abilities_drop_sphere_of_tepok",
+  "name": "Drop Sphere of Tepok",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": [
+   [
+    "wh2_dlc12_lzd_cha_tiktaqto_0",
+    "Tiktaq'to",
+    false
+   ],
+   [
+    "wh2_dlc12_lzd_cha_tiktaqto_1",
+    "Tiktaq'to",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc12_lord_abilities_drop_sphere_of_tepok_upgraded",
+  "name": "Drop Sphere of Tepok Upgraded",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "2",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_dlc12_unit_abilities_drop_rocks_character",
+  "name": "Drop Rocks",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": [
+   [
+    "wh2_main_lzd_cha_skink_chief_1",
+    "Skink Chief",
+    true
+   ],
+   [
+    "wh2_main_lzd_cha_skink_priest_beasts_1",
+    "Skink Priest (Beasts)",
+    true
+   ],
+   [
+    "wh2_main_lzd_cha_skink_priest_heavens_1",
+    "Skink Priest (Heavens)",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc12_unit_abilities_drop_rocks_of_chotec",
+  "name": "Drop Rocks of Chotec",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": [
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_1_tlaqua",
+    "Terradon Riders (Fireleech Bolas)",
+    true
+   ],
+   [
+    "lzd_terradon_riders_1",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc12_unit_abilities_drop_rocks_of_sundering",
+  "name": "Drop Rocks of Sundering",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": [
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_0_tlaqua",
+    "Terradon Riders",
+    true
+   ],
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_ror_0",
+    "Pahaux Sentinels (Terradon Riders)",
+    true
+   ],
+   [
+    "lzd_terradon_riders_0",
+    []
+   ],
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_ror_0",
+    [
+     [
+      "wh2_dlc12_lzd_cav_terradon_riders_ror_0",
+      "Pahaux Sentinels (Terradon Riders)",
+      true
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc13_character_ability_ishas_rain",
+  "name": "Isha's Rain",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "120.0000",
+  "grants": [
+   [
+    "wh2_dlc13_emp_cha_hunter_kalara_of_wydrioth_0",
+    "Kalara",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc15_unit_abilities_arachneruption",
+  "name": "Arachneruption",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "0.0000",
+  "uses": "3",
+  "wu": "0.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh2_dlc15_grn_mon_arachnarok_spider_waaagh_0",
+    "Lava Arachnarok Spider",
+    false
+   ],
+   [
+    "wh3_dlc25_grn_mon_arachnarok_spider_boss",
+    "Brood Mother",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc16_unit_abilities_warp_lightning_rod",
+  "name": "Warp Lightning Rod",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "0.0000",
+  "uses": "3",
+  "wu": "1.0000",
+  "cd": "60.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_dlc17_spell_bound_urannons_thunderbolt",
+  "name": "Urannon's Thunderbolt",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "300.0000",
+  "uses": "2",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh2_dlc17_lzd_mon_coatl_0",
+    "Coatl",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh2_dlc17_spell_bound_urannons_thunderbolt_upgraded",
+  "name": "Klad Brakak",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "30.0000",
+  "uses": "-1",
+  "wu": "3.0000",
+  "cd": "30.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_main_spell_bound_rod_of_the_storm",
+  "name": "Rod of the Storm",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "300.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_main_spell_bound_tome_of_furion",
+  "name": "Tome of Furion",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "4",
+  "wu": "5.0000",
+  "cd": "60.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_main_spell_bound_wand_of_the_kharaidon",
+  "name": "Wand of the Kharaidon",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "5.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh2_main_unit_abilities_drop_rocks",
+  "name": "Drop Rocks",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "5.0000",
+  "grants": [
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_0_tlaqua",
+    "Terradon Riders",
+    true
+   ],
+   [
+    "wh2_dlc12_lzd_cav_terradon_riders_1_tlaqua",
+    "Terradon Riders (Fireleech Bolas)",
+    true
+   ],
+   [
+    "wh2_main_lzd_cav_terradon_riders_0_blessed",
+    "Blessed Terradon Riders",
+    true
+   ],
+   [
+    "wh2_main_lzd_cav_terradon_riders_0",
+    "Terradon Riders",
+    true
+   ],
+   [
+    "wh2_main_lzd_cav_terradon_riders_1",
+    "Terradon Riders (Fireleech Bolas)",
+    true
+   ],
+   [
+    "wh2_main_lzd_cav_terradon_riders_blessed_1",
+    "Blessed Terradon Riders (Fireleech Bolas)",
+    true
+   ],
+   [
+    "wh2_dlc11_cst_deck_droppers",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh2_main_unit_abilities_wake_of_fire",
+  "name": "Wake of Fire",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "10",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh2_main_hef_mon_phoenix_flamespyre",
+    "Flamespyre Phoenix",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc20_cataclysm_bound_thorsens_thunderstorm",
+  "name": "Thorsen's Thunderstorm",
+  "source_type": "bound",
+  "f": "false",
+  "e": "false",
+  "g": "true",
+  "s": "false",
+  "range": "-1.0000",
+  "uses": "1",
+  "wu": "5.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc20_item_abilities_rod_of_torment",
+  "name": "Rod of Torment",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc20_spell_bound_slicing_shards",
+  "name": "Slicing Shards",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "1",
+  "wu": "5.0000",
+  "cd": "48.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc23_lord_abilities_flame_and_shadow",
+  "name": "Flame & Shadow",
+  "source_type": "lord",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "100.0000",
+  "uses": "2",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc24_unit_abilities_nan_gau_grenades",
+  "name": "Nan-Gau Grenades",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "2",
+  "wu": "0.0000",
+  "cd": "60.0000",
+  "grants": [
+   [
+    "wh3_dlc24_cth_inf_onyx_crowmen_ror",
+    "Empress Crowmen (Onyx Crowmen)",
+    true
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc25_character_abilities_pigeon_bomb",
+  "name": "Pigeon Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "0.0000",
+  "cd": "120.0000",
+  "grants": [
+   [
+    "wh3_dlc25_emp_cha_master_engineer_mechanical_steed",
+    "Master Engineer",
+    false
+   ],
+   [
+    "wh3_dlc25_emp_cha_master_engineer_steam_tank",
+    "Master Engineer",
+    false
+   ],
+   [
+    "wh3_dlc25_emp_cha_master_engineer_warhorse",
+    "Master Engineer",
+    false
+   ],
+   [
+    "wh3_dlc25_emp_cha_master_engineer",
+    "Master Engineer",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc25_lord_abilities_nemesis_crown",
+  "name": "Nemesis Crown",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "100.0000",
+  "uses": "-1",
+  "wu": "6.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc25_unit_abilities_gyrobomber_fire_bomb",
+  "name": "Fire Bombs",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "3",
+  "wu": "0.0000",
+  "cd": "3.0000",
+  "grants": [
+   [
+    "dwf_gyrobombers_no_ror",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc25_unit_abilities_gyrocopter_bomb_anti_large",
+  "name": "Gyrocopter Bomb (Trollhammer)",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "2",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh3_dlc25_dwf_veh_gyrocopter_1_grudge_unit",
+    "Gyrocopters (Trollhammers \u2013 Grudge Settlers)",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc25_unit_abilities_thunderbarge_fire_bomb",
+  "name": "Fire Bombs",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "3",
+  "wu": "0.0000",
+  "cd": "3.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc27_cataclysm_bound_thorsens_thunderstorm",
+  "name": "{{tr:unit_abilities_onscreen_name_wh3_main_cataclysm_heavens_thorsens_thunderstorm}}",
+  "source_type": "bound",
+  "f": "false",
+  "e": "false",
+  "g": "true",
+  "s": "false",
+  "range": "-1.0000",
+  "uses": "3",
+  "wu": "5.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc29_army_abilities_pestilential_bombardment",
+  "name": "Bubonic Broadside",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "true",
+  "s": "false",
+  "range": "-1.0000",
+  "uses": "2",
+  "wu": "5.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc29_spell_bound_warp_lightning",
+  "name": "Master of Lightning",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "1.0000",
+  "cd": "30.0000",
+  "grants": [
+   [
+    "wh3_dlc29_skv_cha_verminlord_warpseer",
+    "Verminlord Warpseer",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc29_unit_abilities_lightning_strike",
+  "name": "Lightning Strike",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "300.0000",
+  "uses": "2",
+  "wu": "3.0000",
+  "cd": "42.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_dlc29_unit_abilities_meteor_strike",
+  "name": "Meteor Strike",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "5.0000",
+  "cd": "49.0000",
+  "grants": [
+   [
+    "wh3_dlc29_emp_veh_celestial_hurricanum_0",
+    "Celestial Hurricanum",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_dlc29_unit_abilities_undeath_from_above",
+  "name": "Undeath from Above",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "1",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh2_dlc11_cst_deck_droppers",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh3_main_mount_bound_celestial_comet",
+  "name": "Celestial Comet",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "5.0000",
+  "cd": "49.0000",
+  "grants": [
+   [
+    "wh3_main_cth_cha_astromancer_2",
+    "Astromancer",
+    false
+   ],
+   [
+    "wh3_main_cth_veh_war_compass_0",
+    "Wu Xing War Compass",
+    false
+   ],
+   [
+    "wh3_cp1_cth_veh_war_compass_rank7",
+    []
+   ],
+   [
+    "wh3_main_cth_veh_war_compass_0",
+    [
+     [
+      "wh3_main_cth_veh_war_compass_0",
+      "Wu Xing War Compass",
+      false
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "key": "wh3_main_mount_bound_celestial_lightning",
+  "name": "Celestial Lightning",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "300.0000",
+  "uses": "2",
+  "wu": "3.0000",
+  "cd": "42.0000",
+  "grants": [
+   [
+    "wh3_main_cth_cha_astromancer_2",
+    "Astromancer",
+    false
+   ],
+   [
+    "wh3_main_cth_veh_war_compass_0",
+    "Wu Xing War Compass",
+    false
+   ],
+   [
+    "wh3_cp1_cth_veh_war_compass_rank7",
+    []
+   ],
+   [
+    "wh3_main_cth_veh_war_compass_0",
+    [
+     [
+      "wh3_main_cth_veh_war_compass_0",
+      "Wu Xing War Compass",
+      false
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "key": "wh3_main_spell_bound_comet_of_casandora",
+  "name": "Comet of Casandora",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "1",
+  "wu": "5.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_main_spell_slaanesh_slicing_shards_bound",
+  "name": "Slicing Shards",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "1",
+  "wu": "5.0000",
+  "cd": "-1.0000",
+  "grants": [
+   [
+    "wh3_main_sla_mon_keeper_of_secrets_0",
+    [
+     [
+      "wh3_main_sla_mon_keeper_of_secrets_0",
+      "Keeper of Secrets",
+      false
+     ]
+    ]
+   ]
+  ]
+ },
+ {
+  "key": "wh3_main_unit_abilities_sky_junk_bomb",
+  "name": "Sky-Junk Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "3",
+  "wu": "1.0000",
+  "cd": "30.0000",
+  "grants": [
+   [
+    "wh3_main_cth_veh_sky_junk_0",
+    "Sky-junk",
+    false
+   ],
+   [
+    "wh3_cp1_cth_veh_sky_junk_rank7",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh3_main_weapon_abilities_axe_of_tor",
+  "name": "Axe of Tor",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_main_weapon_abilities_the_traitors_sword",
+  "name": "Wolf's Howl",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "false",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "0.0000",
+  "cd": "90.0000",
+  "grants": []
+ },
+ {
+  "key": "wh3_twa07_spell_bound_call_of_tor",
+  "name": "Call of Tor",
+  "source_type": "bound",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "0.0000",
+  "uses": "-1",
+  "wu": "1.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh3_twa07_ksl_cav_war_bear_riders_ror_0",
+    "Oath-Brothers of Tor (War Bear Riders)",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_twa07_unit_abilities_searing_torrent",
+  "name": "Searing Torrent",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "5",
+  "wu": "0.0000",
+  "cd": "60.0000",
+  "grants": [
+   [
+    "wh3_twa07_tze_cav_doom_knights_ror_0",
+    "Knights of Immolation (Doom Knights of Tzeentch)",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh3_twa08_spell_bound_searing_doom",
+  "name": "Searing Doom",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "1.0000",
+  "cd": "60.0000",
+  "grants": [
+   [
+    "wh3_twa08_tze_mon_lord_of_change_0_ror",
+    "The Golden Griffin of Theurgy (Lord of Change)",
+    true
+   ],
+   [
+    "mp_cap_unit_tze_mon_lord_of_change_0_ror",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh_dlc04_spell_bound_soulfire_upgraded",
+  "name": "Grand Soulfire",
+  "source_type": "bound",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "0.0000",
+  "uses": "-1",
+  "wu": "1.0000",
+  "cd": "120.0000",
+  "grants": [
+   [
+    "wh_dlc04_emp_cha_arch_lector_0",
+    "Arch Lector",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_arch_lector_1",
+    "Arch Lector",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_arch_lector_2",
+    "Arch Lector",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_volkmar_the_grim_0",
+    "Volkmar the Grim",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_volkmar_the_grim_1",
+    "Volkmar the Grim",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_volkmar_the_grim_2",
+    "Volkmar the Grim",
+    false
+   ],
+   [
+    "wh_dlc04_emp_cha_volkmar_the_grim_3",
+    "Volkmar the Grim",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh_dlc05_weapon_abilities_hawks_talon",
+  "name": "Hawk's Talon",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "3.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh_dlc05_wef_cha_orion_0",
+    "Orion",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh_dlc05_weapon_abilities_the_bow_of_loren",
+  "name": "The Bow of Loren",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "-1",
+  "wu": "3.0000",
+  "cd": "60.0000",
+  "grants": []
+ },
+ {
+  "key": "wh_dlc06_unit_abilities_skyhammer_bomb",
+  "name": "Skyhammer Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "5",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh_dlc06_dwf_veh_skyhammer_0",
+    "Skyhammer Squadron (Gyrobombers)",
+    true
+   ],
+   [
+    "dwf_skyhammer_gyrobomber_only",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh_dlc06_unit_abilities_skyhammer_fire_bomb",
+  "name": "Skyhammer Fire Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "5",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "dwf_skyhammer_gyrobomber_only",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh_dlc07_item_abilities_chalice_of_potions",
+  "name": "Chalice of Potions",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "5.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh_dlc08_item_abilities_great_horn_of_dragon_ogre",
+  "name": "Dragon Ogre's Great Horn",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "2",
+  "wu": "0.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh_main_lord_abilities_lord_of_the_storm",
+  "name": "Lord of the Storm",
+  "source_type": "active",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "3",
+  "wu": "1.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh_dlc01_chs_cha_kholek",
+    "Kholek Suneater",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh_main_spell_bound_piercing_bolts_of_burning",
+  "name": "Piercing Bolts of Burning",
+  "source_type": "bound",
+  "f": "false",
+  "e": "true",
+  "g": "true",
+  "s": "false",
+  "range": "200.0000",
+  "uses": "4",
+  "wu": "0.0000",
+  "cd": "120.0000",
+  "grants": []
+ },
+ {
+  "key": "wh_main_spell_bound_soulfire",
+  "name": "Soulfire",
+  "source_type": "bound",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "0.0000",
+  "uses": "-1",
+  "wu": "1.0000",
+  "cd": "90.0000",
+  "grants": [
+   [
+    "wh_main_emp_cha_warrior_priest_0",
+    "Warrior Priest",
+    false
+   ],
+   [
+    "wh_main_emp_cha_warrior_priest_1",
+    "Warrior Priest",
+    false
+   ],
+   [
+    "wh_main_emp_cha_warrior_priest_2",
+    "Warrior Priest",
+    false
+   ]
+  ]
+ },
+ {
+  "key": "wh_main_unit_abilities_gyrobomber_bomb",
+  "name": "Gyrobomber Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "11",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh_main_dwf_veh_gyrobomber",
+    "Gyrobombers",
+    true
+   ],
+   [
+    "dwf_gyrobombers_no_ror",
+    []
+   ]
+  ]
+ },
+ {
+  "key": "wh_main_unit_abilities_gyrocopter_bomb",
+  "name": "Gyrocopter Bomb",
+  "source_type": "active",
+  "f": "false",
+  "e": "false",
+  "g": "false",
+  "s": "false",
+  "range": "10.0000",
+  "uses": "2",
+  "wu": "0.0000",
+  "cd": "0.1000",
+  "grants": [
+   [
+    "wh2_dlc13_huntmarshall_veh_obsinite_gyrocopter_0",
+    "Obsinite Gyrocopters",
+    true
+   ],
+   [
+    "wh3_dlc25_dwf_veh_gyrocopter_summoned_0",
+    "Gyrocopters",
+    true
+   ],
+   [
+    "wh_main_dwf_veh_gyrocopter_0",
+    "Gyrocopters",
+    true
+   ],
+   [
+    "wh_main_dwf_veh_gyrocopter_1",
+    "Gyrocopters (Brimstone Guns)",
+    true
+   ]
+  ]
+ }
+]

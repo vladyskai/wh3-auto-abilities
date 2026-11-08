@@ -1,0 +1,3455 @@
+[
+ {
+  "name": "Accusation",
+  "marker": "accusation",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_hero_abilities_accusation"
+  ],
+  "rows": [
+   4540
+  ]
+ },
+ {
+  "name": "Acquiescence",
+  "marker": "acquiescence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_spell_bound_acquiescence"
+  ],
+  "rows": [
+   4542
+  ]
+ },
+ {
+  "name": "Aken-seth, the Staff of Pain",
+  "marker": "aken_seth_the_staff_of_pain",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain"
+  ],
+  "rows": [
+   4860
+  ]
+ },
+ {
+  "name": "Alchemist's Elixir of Iron Skin",
+  "marker": "alchemists_elixir_of_iron_skin",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_iron_skin"
+  ],
+  "rows": [
+   4120
+  ]
+ },
+ {
+  "name": "Alchemist's Elixir of Puissance",
+  "marker": "alchemists_elixir_of_puissance",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_puissance"
+  ],
+  "rows": [
+   4121
+  ]
+ },
+ {
+  "name": "Alchemist's Elixir of Venom",
+  "marker": "alchemists_elixir_of_venom",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_alchemists_elixir_of_venom"
+  ],
+  "rows": [
+   4122
+  ]
+ },
+ {
+  "name": "All Hands Hoay!",
+  "marker": "all_hands_hoay",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_character_abilities_all_hands_hoay"
+  ],
+  "rows": [
+   4666
+  ]
+ },
+ {
+  "name": "Amulet of Itzl",
+  "marker": "amulet_of_itzl",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_amulet_of_itzl"
+  ],
+  "rows": [
+   4123
+  ]
+ },
+ {
+  "name": "Amulet of Pha-Stah",
+  "marker": "amulet_of_phastah",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_item_abilities_amulet_of_phastah"
+  ],
+  "rows": [
+   4862
+  ]
+ },
+ {
+  "name": "Apocalyptic Charge",
+  "marker": "apocalyptic_charge",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_pro04_unit_abilities_apocalyptic_charge"
+  ],
+  "rows": [
+   4125
+  ]
+ },
+ {
+  "name": "Arcane Hymn",
+  "marker": "magic_prayer",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_cp1_character_abilities_magic_prayer"
+  ],
+  "rows": [
+   4127
+  ]
+ },
+ {
+  "name": "Armour of Caledor",
+  "marker": "armour_of_caledor",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_item_abilities_armour_of_caledor"
+  ],
+  "rows": [
+   4748
+  ]
+ },
+ {
+  "name": "Armour of the Barrows",
+  "marker": "armour_of_the_burrows",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_armour_of_the_burrows"
+  ],
+  "rows": [
+   4545
+  ]
+ },
+ {
+  "name": "Assassin's Trophy",
+  "marker": "assassins_trophy",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_character_abilities_assassins_trophy"
+  ],
+  "rows": [
+   4546
+  ]
+ },
+ {
+  "name": "Aura of Inertia",
+  "marker": "aura_of_inertia",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_aura_of_inertia"
+  ],
+  "rows": [
+   4871
+  ]
+ },
+ {
+  "name": "Avast Ye!",
+  "marker": "avast_ye",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_character_abilities_avast_ye"
+  ],
+  "rows": [
+   4667
+  ]
+ },
+ {
+  "name": "Axe of Men",
+  "marker": "axe_of_men",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_weapon_abilities_axe_of_men"
+  ],
+  "rows": [
+   4668
+  ]
+ },
+ {
+  "name": "Barbed-Knuckle Boxing",
+  "marker": "barbed_knuckle_boxing",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_lord_abilities_barbed_knuckle_boxing"
+  ],
+  "rows": [
+   4139
+  ]
+ },
+ {
+  "name": "Bastet",
+  "marker": "bastet",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_bastet"
+  ],
+  "rows": [
+   4547
+  ]
+ },
+ {
+  "name": "Berry Wine",
+  "marker": "berry_wine",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_item_abilities_berry_wine"
+  ],
+  "rows": [
+   4699
+  ]
+ },
+ {
+  "name": "Bitter Sting",
+  "marker": "bitter_sting",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_bitter_sting"
+  ],
+  "rows": [
+   4548
+  ]
+ },
+ {
+  "name": "Black Periapt",
+  "marker": "black_periapt",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_black_periapt"
+  ],
+  "rows": [
+   4753
+  ]
+ },
+ {
+  "name": "Black Staff",
+  "marker": "black_staff",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_spell_bound_black_staff"
+  ],
+  "rows": [
+   4754
+  ]
+ },
+ {
+  "name": "Blade of Setep",
+  "marker": "blade_of_setep",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blade_of_setep"
+  ],
+  "rows": [
+   4549
+  ]
+ },
+ {
+  "name": "Blessed Helm of the Oblast",
+  "marker": "blessed_helm_of_the_oblast",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast"
+  ],
+  "rows": [
+   4755
+  ]
+ },
+ {
+  "name": "Blight Swarm",
+  "marker": "blight_swarm",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_blight_swarm"
+  ],
+  "rows": [
+   4550
+  ]
+ },
+ {
+  "name": "Blight of Terrors",
+  "marker": "blight_of_terrors",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_character_abilities_blight_of_terrors"
+  ],
+  "rows": [
+   4883
+  ]
+ },
+ {
+  "name": "Blood Chalice",
+  "marker": "blood_chalice",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc29_hero_abilities_blood_chalice"
+  ],
+  "rows": [
+   4700
+  ]
+ },
+ {
+  "name": "Blood Chalice of Bathori",
+  "marker": "blood_chalice_of_bathori",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh_pro02_item_abilities_blood_chalice_of_bathori"
+  ],
+  "rows": [
+   4701
+  ]
+ },
+ {
+  "name": "Blood Omens",
+  "marker": "blood_omens",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_unit_abilities_blood_omens"
+  ],
+  "rows": [
+   4885
+  ]
+ },
+ {
+  "name": "Bloodthirst",
+  "marker": "bloodthirst",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_main_lord_abilities_bloodthirst"
+  ],
+  "rows": [
+   4647
+  ]
+ },
+ {
+  "name": "Bloody Onslaught",
+  "marker": "bloody_onslaught",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_character_abilities_bloody_onslaught"
+  ],
+  "rows": [
+   4888
+  ]
+ },
+ {
+  "name": "Blooood!",
+  "marker": "blooood",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_unit_abilities_blooood"
+  ],
+  "rows": [
+   4157
+  ]
+ },
+ {
+  "name": "Book of Arkhan",
+  "marker": "book_of_arkhan",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_spell_bound_book_of_arkhan"
+  ],
+  "rows": [
+   4158
+  ]
+ },
+ {
+  "name": "Book of Hoeth",
+  "marker": "book_of_hoeth",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_book_of_hoeth"
+  ],
+  "rows": [
+   4756
+  ]
+ },
+ {
+  "name": "Book of Secrets",
+  "marker": "book_of_secrets",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_item_abilities_book_of_secrets"
+  ],
+  "rows": [
+   4553
+  ]
+ },
+ {
+  "name": "Boom!",
+  "marker": "boom",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_unit_abilities_boom"
+  ],
+  "rows": [
+   4757
+  ]
+ },
+ {
+  "name": "Breath of Darkness",
+  "marker": "undeath_morkharn_breath_of_darkness",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness"
+  ],
+  "rows": [
+   4703
+  ]
+ },
+ {
+  "name": "Breath of Darkness Upgraded",
+  "marker": "undeath_morkharn_breath_of_darkness_upgraded",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded"
+  ],
+  "rows": [
+   4704
+  ]
+ },
+ {
+  "name": "Bugman's XXXXXX",
+  "marker": "bugmans_xxxxxx",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc26_item_abilities_bugmans_xxxxxx"
+  ],
+  "rows": [
+   4705
+  ]
+ },
+ {
+  "name": "Call of Violence",
+  "marker": "call_of_violence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_character_abilities_call_of_violence"
+  ],
+  "rows": [
+   4669
+  ]
+ },
+ {
+  "name": "Cascading Fire Cloak",
+  "marker": "cascading_fire_cloak",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_spell_bound_cascading_fire_cloak"
+  ],
+  "rows": [
+   4169
+  ]
+ },
+ {
+  "name": "Chalice of Dark Rain",
+  "marker": "chalice_of_dark_rain",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_item_abilities_chalice_of_dark_rain"
+  ],
+  "rows": [
+   4905
+  ]
+ },
+ {
+  "name": "Channelling Staff",
+  "marker": "channelling_staff",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_channelling_staff"
+  ],
+  "rows": [
+   4759
+  ]
+ },
+ {
+  "name": "Charmed Shield",
+  "marker": "charmed_shield",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_weapon_abilities_charmed_shield"
+  ],
+  "rows": [
+   4760
+  ]
+ },
+ {
+  "name": "Cold-Blooded",
+  "marker": "cold_blooded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_character_abilities_cold_blooded"
+  ],
+  "rows": [
+   4670
+  ]
+ },
+ {
+  "name": "Colossal Strike",
+  "marker": "colossal_strike",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_dlc24_character_abilities_colossal_strike",
+   "wh3_dlc24_character_abilities_colossal_strike_summoned"
+  ],
+  "rows": [
+   4648,
+   4649
+  ]
+ },
+ {
+  "name": "Crimson Juggernaut",
+  "marker": "crimson_juggernaut",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_dlc26_character_abilities_crimson_juggernaut"
+  ],
+  "rows": [
+   4650
+  ]
+ },
+ {
+  "name": "Crown of Command",
+  "marker": "crown_of_command",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_crown_of_command"
+  ],
+  "rows": [
+   4671
+  ]
+ },
+ {
+  "name": "Cube of Darkness",
+  "marker": "cube_of_darkness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_cube_of_darkness"
+  ],
+  "rows": [
+   4914
+  ]
+ },
+ {
+  "name": "Curse of Khsar",
+  "marker": "curse_of_khsar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_character_abilities_curse_of_khsar"
+  ],
+  "rows": [
+   4915
+  ]
+ },
+ {
+  "name": "Daemonic Onslaught",
+  "marker": "daemonic_onslaught",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_main_daemon_legs_abilities_daemonic_onslaught"
+  ],
+  "rows": [
+   4651
+  ]
+ },
+ {
+  "name": "Daemonic Whispers",
+  "marker": "slezuzus_voice",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_character_abilities_slezuzus_voice"
+  ],
+  "rows": [
+   4672
+  ]
+ },
+ {
+  "name": "Dark Fortune",
+  "marker": "dark_fortune",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_dark_fortune"
+  ],
+  "rows": [
+   4191
+  ]
+ },
+ {
+  "name": "Deadly Onslaught",
+  "marker": "deadly_onslaught",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh_dlc03_character_abilities_deadly_onslaught"
+  ],
+  "rows": [
+   4652
+  ]
+ },
+ {
+  "name": "Deranged Munitions",
+  "marker": "deranged_munitions",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions"
+  ],
+  "rows": [
+   4765
+  ]
+ },
+ {
+  "name": "Deranged Munitions Upgraded",
+  "marker": "deranged_munitions_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions_upgraded"
+  ],
+  "rows": [
+   4766
+  ]
+ },
+ {
+  "name": "Don't Even Try It",
+  "marker": "dont_even_try_it",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dont_even_try_it"
+  ],
+  "rows": [
+   4558
+  ]
+ },
+ {
+  "name": "Doom & Darkness",
+  "marker": "doom_and_darkness_gunnery_school",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+   "wh_dlc08_spell_bound_death_doom_and_darkness"
+  ],
+  "rows": [
+   4934,
+   4935,
+   4936
+  ]
+ },
+ {
+  "name": "Doom Lord",
+  "marker": "doom_lord",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_doom_lord"
+  ],
+  "rows": [
+   4207
+  ]
+ },
+ {
+  "name": "Dreaming Ring I",
+  "marker": "dreaming_ring_i",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_i"
+  ],
+  "rows": [
+   4706
+  ]
+ },
+ {
+  "name": "Dreaming Ring II",
+  "marker": "dreaming_ring_ii",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_ii"
+  ],
+  "rows": [
+   4707
+  ]
+ },
+ {
+  "name": "Dreaming Ring III",
+  "marker": "dreaming_ring_iii",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_item_abilities_dreaming_ring_iii"
+  ],
+  "rows": [
+   4708
+  ]
+ },
+ {
+  "name": "Earth Blood",
+  "marker": "earth_blood",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_spell_bound_earth_blood",
+   "wh3_main_spell_bound_earth_blood"
+  ],
+  "rows": [
+   4709,
+   4710
+  ]
+ },
+ {
+  "name": "Earthing Rod",
+  "marker": "earthing_rod",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_earthing_rod"
+  ],
+  "rows": [
+   4768
+  ]
+ },
+ {
+  "name": "El Syf",
+  "marker": "el_syf",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc05_weapon_abilities_el_syf"
+  ],
+  "rows": [
+   4559
+  ]
+ },
+ {
+  "name": "Elixir of Might",
+  "marker": "elixir_of_might",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_item_abilities_elixir_of_might"
+  ],
+  "rows": [
+   4214
+  ]
+ },
+ {
+  "name": "Elvish Healing Herbs",
+  "marker": "elfish_healing_herbs",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc27_unit_abilities_elfish_healing_herbs"
+  ],
+  "rows": [
+   4712
+  ]
+ },
+ {
+  "name": "Embers of the Phoenix",
+  "marker": "embers_of_the_phoenix",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_spell_bound_embers_of_the_phoenix"
+  ],
+  "rows": [
+   4769
+  ]
+ },
+ {
+  "name": "Enchanted Ballistics",
+  "marker": "ballistic_enchantment",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_character_abilities_ballistic_enchantment"
+  ],
+  "rows": [
+   4770
+  ]
+ },
+ {
+  "name": "Enhanced Skavenbrew",
+  "marker": "enhanced_skavenbrew",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_enhanced_skavenbrew"
+  ],
+  "rows": [
+   4222
+  ]
+ },
+ {
+  "name": "Entangle",
+  "marker": "entangle",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc10_character_abilities_entangle"
+  ],
+  "rows": [
+   4955
+  ]
+ },
+ {
+  "name": "Entrenchment",
+  "marker": "entrenchment",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_unit_abilities_entrenchment"
+  ],
+  "rows": [
+   4771
+  ]
+ },
+ {
+  "name": "Eternal Gaze",
+  "marker": "gaze_of_usirian",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_gaze_of_usirian"
+  ],
+  "rows": [
+   4957
+  ]
+ },
+ {
+  "name": "Eternal Vigour",
+  "marker": "eternal_vigour",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_character_abilities_eternal_vigour"
+  ],
+  "rows": [
+   4229
+  ]
+ },
+ {
+  "name": "Extra Ingredients",
+  "marker": "extra_ingredients",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_extra_ingredients"
+  ],
+  "rows": [
+   4774
+  ]
+ },
+ {
+  "name": "Favoured by the Matriarch",
+  "marker": "favoured_by_the_matriarch",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_hero_abilities_favoured_by_the_matriarch"
+  ],
+  "rows": [
+   4775
+  ]
+ },
+ {
+  "name": "Fear of Aramar",
+  "marker": "fear_of_aramar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc10_item_abilities_fear_of_aramar"
+  ],
+  "rows": [
+   4962
+  ]
+ },
+ {
+  "name": "Fearsome Roar",
+  "marker": "fearsome_roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_unit_abilities_fearsome_roar"
+  ],
+  "rows": [
+   4963
+  ]
+ },
+ {
+  "name": "Fecund Rebirth",
+  "marker": "mark_of_the_monster",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_character_active_mark_of_the_monster"
+  ],
+  "rows": [
+   4562
+  ]
+ },
+ {
+  "name": "Fermented Fungi",
+  "marker": "fermented_fungi",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_lord_abilities_fermented_fungi"
+  ],
+  "rows": [
+   4563
+  ]
+ },
+ {
+  "name": "Fight or Die!",
+  "marker": "fight_or_die",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc08_lord_abilities_fight_or_die"
+  ],
+  "rows": [
+   4673
+  ]
+ },
+ {
+  "name": "Fistful of Laurels",
+  "marker": "fistful_of_laurels",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_fistful_of_laurels"
+  ],
+  "rows": [
+   4244
+  ]
+ },
+ {
+  "name": "Flesh to Stone",
+  "marker": "flesh_to_stone",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_spell_bound_flesh_to_stone"
+  ],
+  "rows": [
+   4246
+  ]
+ },
+ {
+  "name": "Fleshy Abundance",
+  "marker": "fleshy_abundance",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc20_spell_bound_fleshy_abundance"
+  ],
+  "rows": [
+   4714
+  ]
+ },
+ {
+  "name": "Focus Instincts",
+  "marker": "focus_instincts",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc12_lord_abilities_focus_instincts"
+  ],
+  "rows": [
+   4674
+  ]
+ },
+ {
+  "name": "Forbidden Rod",
+  "marker": "forbidden_rod",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_forbidden_rod"
+  ],
+  "rows": [
+   4776
+  ]
+ },
+ {
+  "name": "Frenzied Challenge",
+  "marker": "frenzied_challenge",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge"
+  ],
+  "rows": [
+   4566
+  ]
+ },
+ {
+  "name": "Frost Shard Glaive",
+  "marker": "frost_shard_glaive",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_weapon_abilities_frost_shard_glaive"
+  ],
+  "rows": [
+   4252
+  ]
+ },
+ {
+  "name": "Full Power!",
+  "marker": "full_power",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_dlc25_unit_abilities_full_power"
+  ],
+  "rows": [
+   4654
+  ]
+ },
+ {
+  "name": "Funnel of Flame",
+  "marker": "funnel_of_flame",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_funnel_of_flame"
+  ],
+  "rows": [
+   4778
+  ]
+ },
+ {
+  "name": "Gaze of Fate",
+  "marker": "gaze_of_fate",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_gaze_of_fate"
+  ],
+  "rows": [
+   4571
+  ]
+ },
+ {
+  "name": "Get 'Em!",
+  "marker": "get_em",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_character_abilities_get_em"
+  ],
+  "rows": [
+   4988
+  ]
+ },
+ {
+  "name": "Get Back 'Ere!",
+  "marker": "get_back_ere",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_character_abilities_get_back_ere"
+  ],
+  "rows": [
+   4675
+  ]
+ },
+ {
+  "name": "Gilellion's Soulnetter",
+  "marker": "soulnetter",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_weapon_abilities_soulnetter"
+  ],
+  "rows": [
+   4572
+  ]
+ },
+ {
+  "name": "Glacial Defence",
+  "marker": "glacial_defence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_twa08_unit_abilities_glacial_defence"
+  ],
+  "rows": [
+   4779
+  ]
+ },
+ {
+  "name": "Glory Seeker",
+  "marker": "glory_seeker",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker"
+  ],
+  "rows": [
+   4573
+  ]
+ },
+ {
+  "name": "Glory Seeker Upgraded",
+  "marker": "glory_seeker_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker_upgraded"
+  ],
+  "rows": [
+   4574
+  ]
+ },
+ {
+  "name": "Grut's Sickle",
+  "marker": "gruts_sickle",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_gruts_sickle"
+  ],
+  "rows": [
+   4780
+  ]
+ },
+ {
+  "name": "Guiding Strike",
+  "marker": "guiding_strike",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_cp1_lord_abilities_guiding_strike"
+  ],
+  "rows": [
+   4655
+  ]
+ },
+ {
+  "name": "Guttural Roar",
+  "marker": "guttural_roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_guttural_roar"
+  ],
+  "rows": [
+   5003
+  ]
+ },
+ {
+  "name": "Hagtree Fetish",
+  "marker": "hagtree_fetish",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_item_abilities_hagtree_fetish"
+  ],
+  "rows": [
+   4782
+  ]
+ },
+ {
+  "name": "Hail of Fire",
+  "marker": "hail_of_fire",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hail_of_fire"
+  ],
+  "rows": [
+   4783
+  ]
+ },
+ {
+  "name": "Harmonic Convergence",
+  "marker": "harmonic_convergence",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_spell_bound_harmonic_convergence"
+  ],
+  "rows": [
+   4276
+  ]
+ },
+ {
+  "name": "Headhunt",
+  "marker": "headhunt",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_character_abilities_headhunt"
+  ],
+  "rows": [
+   4580
+  ]
+ },
+ {
+  "name": "Hellish Vigour",
+  "marker": "hellish_vigour",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour"
+  ],
+  "rows": [
+   4281
+  ]
+ },
+ {
+  "name": "Hellish Vigour Upgraded",
+  "marker": "hellish_vigour_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour_upgraded"
+  ],
+  "rows": [
+   4282
+  ]
+ },
+ {
+  "name": "Hidden Huntress",
+  "marker": "hidden_huntress",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress"
+  ],
+  "rows": [
+   5009
+  ]
+ },
+ {
+  "name": "Hidden Huntress Upgraded",
+  "marker": "hidden_huntress_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress_upgraded"
+  ],
+  "rows": [
+   5010
+  ]
+ },
+ {
+  "name": "Hieratic Jar",
+  "marker": "hieratic_jar",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc09_item_abilities_hieratic_jar"
+  ],
+  "rows": [
+   4716
+  ]
+ },
+ {
+  "name": "Horn of Vaul",
+  "marker": "horn_of_vaul",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_dragonhorn"
+  ],
+  "rows": [
+   4786
+  ]
+ },
+ {
+  "name": "Horn of the Wild Hunt",
+  "marker": "horn_of_the_wild_hunt",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc05_item_abilities_horn_of_the_wild_hunt"
+  ],
+  "rows": [
+   4291
+  ]
+ },
+ {
+  "name": "Hornswaggle",
+  "marker": "hornswaggle",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_character_abilities_hornswaggle"
+  ],
+  "rows": [
+   4582
+  ]
+ },
+ {
+  "name": "Howl of the Great Beast",
+  "marker": "howl_of_the_great_beast",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_unit_abilities_howl_of_the_great_beast"
+  ],
+  "rows": [
+   5013
+  ]
+ },
+ {
+  "name": "Hunter of Champions",
+  "marker": "hunter_of_champions",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc08_character_abilities_hunter_of_champions"
+  ],
+  "rows": [
+   4583
+  ]
+ },
+ {
+  "name": "Hunter's Snare",
+  "marker": "hunters_snare",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_snare"
+  ],
+  "rows": [
+   5016
+  ]
+ },
+ {
+  "name": "Hunter's Trap",
+  "marker": "hunters_trap",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_trap"
+  ],
+  "rows": [
+   5017
+  ]
+ },
+ {
+  "name": "Hysterical Frenzy",
+  "marker": "spell_slaanesh_hysterical_frenzy_bound",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_spell_slaanesh_hysterical_frenzy_bound"
+  ],
+  "rows": [
+   4294
+  ]
+ },
+ {
+  "name": "Immortal Will",
+  "marker": "immortal_will",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh_main_hero_abilities_immortal_will"
+  ],
+  "rows": [
+   4718
+  ]
+ },
+ {
+  "name": "Inspired Marksmanship I",
+  "marker": "inspired_marksmanship_i",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_i"
+  ],
+  "rows": [
+   4788
+  ]
+ },
+ {
+  "name": "Inspired Marksmanship II",
+  "marker": "inspired_marksmanship_ii",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_ii"
+  ],
+  "rows": [
+   4789
+  ]
+ },
+ {
+  "name": "Inspired Marksmanship III",
+  "marker": "inspired_marksmanship_iii",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_iii"
+  ],
+  "rows": [
+   4790
+  ]
+ },
+ {
+  "name": "Invocation of Nehek",
+  "marker": "invocation_of_nehek",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc29_spell_bound_invocation_of_nehek"
+  ],
+  "rows": [
+   4719
+  ]
+ },
+ {
+  "name": "Iron-Handed Captain",
+  "marker": "iron_hand_captain",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_character_abilities_iron_hand_captain"
+  ],
+  "rows": [
+   4676
+  ]
+ },
+ {
+  "name": "Jagged Dagger",
+  "marker": "jagged_dagger",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_item_abilities_jagged_dagger"
+  ],
+  "rows": [
+   4791
+  ]
+ },
+ {
+  "name": "Locus of Abjuration",
+  "marker": "locus_of_abjuration",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_abjuration"
+  ],
+  "rows": [
+   4792
+  ]
+ },
+ {
+  "name": "Locus of Change",
+  "marker": "locus_of_change",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_change"
+  ],
+  "rows": [
+   4793
+  ]
+ },
+ {
+  "name": "Locus of Conjuration",
+  "marker": "locus_of_conjuration",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_conjuration"
+  ],
+  "rows": [
+   4794
+  ]
+ },
+ {
+  "name": "Locus of Fecundity",
+  "marker": "locus_of_fecundity",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_fecundity"
+  ],
+  "rows": [
+   4720
+  ]
+ },
+ {
+  "name": "Locus of Fury",
+  "marker": "locus_of_fury",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_fury"
+  ],
+  "rows": [
+   4657
+  ]
+ },
+ {
+  "name": "Locus of Swiftness",
+  "marker": "locus_of_swiftness",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_main_character_abilities_locus_of_swiftness"
+  ],
+  "rows": [
+   4658
+  ]
+ },
+ {
+  "name": "Looming Dread",
+  "marker": "looming_dread",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc14_lord_abilities_looming_dread"
+  ],
+  "rows": [
+   4586
+  ]
+ },
+ {
+  "name": "Lord of Dragons",
+  "marker": "lord_of_dragons",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_lord_abilities_lord_of_dragons"
+  ],
+  "rows": [
+   4587
+  ]
+ },
+ {
+  "name": "Magical Animus",
+  "marker": "magical_animus",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_character_abilities_magical_animus"
+  ],
+  "rows": [
+   4677
+  ]
+ },
+ {
+  "name": "Makaisson's Persuader",
+  "marker": "makaissons_persuader",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_makaissons_persuader"
+  ],
+  "rows": [
+   4721
+  ]
+ },
+ {
+  "name": "Mark of Yin",
+  "marker": "mark_of_yin",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_unit_abilities_mark_of_yin"
+  ],
+  "rows": [
+   5045
+  ]
+ },
+ {
+  "name": "Mark of the Plague Fleet",
+  "marker": "mark_of_the_plague_fleet",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_active_mark_of_the_plague_fleet"
+  ],
+  "rows": [
+   4588
+  ]
+ },
+ {
+  "name": "Marked by Ulthar",
+  "marker": "marked_by_ulthar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc06_unit_abilities_marked_by_ulthar"
+  ],
+  "rows": [
+   5046
+  ]
+ },
+ {
+  "name": "Marked for Eatin'",
+  "marker": "marked_for_eatin",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_unit_abilities_marked_for_eatin"
+  ],
+  "rows": [
+   4589
+  ]
+ },
+ {
+  "name": "Master Predator",
+  "marker": "master_predator",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_lord_abilities_master_predator"
+  ],
+  "rows": [
+   4800
+  ]
+ },
+ {
+  "name": "Master Rune of Breaking",
+  "marker": "master_rune_of_breaking",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_breaking"
+  ],
+  "rows": [
+   4328
+  ]
+ },
+ {
+  "name": "Master Rune of Negation",
+  "marker": "master_rune_of_negation",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc06_rune_abilities_master_rune_of_negation"
+  ],
+  "rows": [
+   4329
+  ]
+ },
+ {
+  "name": "Master Rune of Slowness",
+  "marker": "master_rune_of_slowness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_slowness"
+  ],
+  "rows": [
+   5050
+  ]
+ },
+ {
+  "name": "Master of Beguilement",
+  "marker": "beguile",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc04_lord_abilities_beguile"
+  ],
+  "rows": [
+   4590
+  ]
+ },
+ {
+  "name": "Master of the Black Arts",
+  "marker": "master_of_the_black_arts",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_lord_abilities_master_of_the_black_arts"
+  ],
+  "rows": [
+   4799
+  ]
+ },
+ {
+  "name": "Masterful Strike",
+  "marker": "mastered_strike",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_cp1_lord_abilities_mastered_strike"
+  ],
+  "rows": [
+   4659
+  ]
+ },
+ {
+  "name": "Maw Shard",
+  "marker": "maw_shard",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_maw_shard"
+  ],
+  "rows": [
+   4801
+  ]
+ },
+ {
+  "name": "Merciw's Monstrous Regiment",
+  "marker": "merciws_monstrous_regiment",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
+   "wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment"
+  ],
+  "rows": [
+   4333,
+   4334
+  ]
+ },
+ {
+  "name": "Miasma of Despair",
+  "marker": "miasma_of_despair",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_miasma_of_despair"
+  ],
+  "rows": [
+   5053
+  ]
+ },
+ {
+  "name": "Mighty Oath Stone",
+  "marker": "mighty_oath_stone",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc06_lord_abilities_mighty_oath_stone"
+  ],
+  "rows": [
+   4678
+  ]
+ },
+ {
+  "name": "Mighty Roar",
+  "marker": "mighty_roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mighty_roar"
+  ],
+  "rows": [
+   5054
+  ]
+ },
+ {
+  "name": "Mirror (Cold-Blooded)",
+  "marker": "mimic_cold_blooded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_cold_blooded"
+  ],
+  "rows": [
+   4679
+  ]
+ },
+ {
+  "name": "Mirror (Feint & Riposte)",
+  "marker": "mimic_feint_and_riposte",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_feint_and_riposte"
+  ],
+  "rows": [
+   4335
+  ]
+ },
+ {
+  "name": "Mirror (Grand Hammer of Faith)",
+  "marker": "mimic_grand_hammer_of_faith",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith"
+  ],
+  "rows": [
+   4336
+  ]
+ },
+ {
+  "name": "Missile Mirror",
+  "marker": "unit_bound_missile_mirror",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_unit_bound_missile_mirror"
+  ],
+  "rows": [
+   5057
+  ]
+ },
+ {
+  "name": "Mither",
+  "marker": "mither",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_hero_abilities_mither"
+  ],
+  "rows": [
+   5059
+  ]
+ },
+ {
+  "name": "Moonshine",
+  "marker": "moonshine",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_item_abilities_moonshine"
+  ],
+  "rows": [
+   4680
+  ]
+ },
+ {
+  "name": "More Power!",
+  "marker": "more_power",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_dlc23_unit_abilities_more_power"
+  ],
+  "rows": [
+   4660
+  ]
+ },
+ {
+  "name": "Morgrim's Eye",
+  "marker": "morgrims_eye",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_item_abilities_morgrims_eye"
+  ],
+  "rows": [
+   4804
+  ]
+ },
+ {
+  "name": "Muster of Malevolents",
+  "marker": "muster_of_malevolents",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_character_abilities_muster_of_malevolents"
+  ],
+  "rows": [
+   4592
+  ]
+ },
+ {
+  "name": "Necroparasites",
+  "marker": "neuroparasites",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_unit_abilities_neuroparasites"
+  ],
+  "rows": [
+   4723
+  ]
+ },
+ {
+  "name": "Necrotic Phylactery",
+  "marker": "necrotic_phylactry",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc25_item_abilities_necrotic_phylactry"
+  ],
+  "rows": [
+   4724
+  ]
+ },
+ {
+  "name": "Neferra's Scrolls of Mighty Incantations",
+  "marker": "neferras_scrolls_of_mighty_incantations",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations"
+  ],
+  "rows": [
+   4805
+  ]
+ },
+ {
+  "name": "Net Dem Up!",
+  "marker": "net_dem_up",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_unit_abilities_net_dem_up"
+  ],
+  "rows": [
+   4593
+  ]
+ },
+ {
+  "name": "Net of Amyntok",
+  "marker": "net_of_amyntok",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc04_spell_bound_net_of_amyntok"
+  ],
+  "rows": [
+   5066
+  ]
+ },
+ {
+  "name": "Null Stone",
+  "marker": "null_stone",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_item_abilities_null_stone"
+  ],
+  "rows": [
+   5068
+  ]
+ },
+ {
+  "name": "Oath of Vengeance",
+  "marker": "oath_of_vengeance",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc10_lord_abilities_oath_of_vengeance"
+  ],
+  "rows": [
+   4595
+  ]
+ },
+ {
+  "name": "Oil Flask",
+  "marker": "oil_flask",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_lord_abilities_oil_flask"
+  ],
+  "rows": [
+   5073
+  ]
+ },
+ {
+  "name": "Otto's Scythe",
+  "marker": "ottos_scythe",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_active_ottos_scythe"
+  ],
+  "rows": [
+   4596
+  ]
+ },
+ {
+  "name": "Pack Trap",
+  "marker": "pack_trap",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_unit_abilities_pack_trap"
+  ],
+  "rows": [
+   4597
+  ]
+ },
+ {
+  "name": "Pageant of Shrikes",
+  "marker": "pageant_of_shrikes",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_character_abilities_pageant_of_shrikes"
+  ],
+  "rows": [
+   5075
+  ]
+ },
+ {
+  "name": "Patch Up",
+  "marker": "patch_up",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc13_character_abilities_patch_up"
+  ],
+  "rows": [
+   4725
+  ]
+ },
+ {
+  "name": "Pearl of Infinite Bleakness",
+  "marker": "pearl_of_infinite_bleakness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_pearl_of_infinite_bleakness"
+  ],
+  "rows": [
+   4681
+  ]
+ },
+ {
+  "name": "Pestilent Potions",
+  "marker": "pestilent_potions",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc20_item_abilities_pestilent_potions"
+  ],
+  "rows": [
+   4598
+  ]
+ },
+ {
+  "name": "Pestilent Regeneration",
+  "marker": "pestilent_regeneration",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_main_daemon_head_abilities_pestilent_regeneration"
+  ],
+  "rows": [
+   4726
+  ]
+ },
+ {
+  "name": "Pha's Protection",
+  "marker": "phas_protection",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_spell_bound_phas_protection"
+  ],
+  "rows": [
+   4359
+  ]
+ },
+ {
+  "name": "Pilgrimage of Skulls",
+  "marker": "pilgrimage_of_skulls",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_lord_abilities_pilgrimage_of_skulls"
+  ],
+  "rows": [
+   4360
+  ]
+ },
+ {
+  "name": "Plague of Rust",
+  "marker": "plague_of_rust",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_spell_bound_plague_of_rust"
+  ],
+  "rows": [
+   5082
+  ]
+ },
+ {
+  "name": "Plaque of Dominion",
+  "marker": "plaque_of_dominion",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_plaque_of_dominion"
+  ],
+  "rows": [
+   5084
+  ]
+ },
+ {
+  "name": "Potion of Charoi",
+  "marker": "potion_of_charoi",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_main_lord_abilities_potion_of_charoi"
+  ],
+  "rows": [
+   4727
+  ]
+ },
+ {
+  "name": "Potion of Farsight",
+  "marker": "potion_of_farsight",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_potion_of_farsight"
+  ],
+  "rows": [
+   4809
+  ]
+ },
+ {
+  "name": "Potion of Foolhardiness",
+  "marker": "potion_of_foolhardiness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_potion_of_foolhardiness"
+  ],
+  "rows": [
+   4682
+  ]
+ },
+ {
+  "name": "Potion of Healing",
+  "marker": "potion_of_healing",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh_main_item_abilities_potion_of_healing"
+  ],
+  "rows": [
+   4728
+  ]
+ },
+ {
+  "name": "Potion of Speed",
+  "marker": "potion_of_speed",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_potion_of_speed"
+  ],
+  "rows": [
+   4810
+  ]
+ },
+ {
+  "name": "Power Familiar",
+  "marker": "power_familiar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_item_abilities_power_familiar"
+  ],
+  "rows": [
+   4811
+  ]
+ },
+ {
+  "name": "Power Siphon",
+  "marker": "power_siphon",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_lord_abilities_power_siphon"
+  ],
+  "rows": [
+   5085
+  ]
+ },
+ {
+  "name": "Power Stone",
+  "marker": "power_stone",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_power_stone"
+  ],
+  "rows": [
+   4812
+  ]
+ },
+ {
+  "name": "Predatory Instincts",
+  "marker": "predatory_instincts",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_cp1_lord_abilities_predatory_instincts"
+  ],
+  "rows": [
+   4364
+  ]
+ },
+ {
+  "name": "Prey of Anath Raema",
+  "marker": "prey_of_anath_raema",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc05_character_abilities_prey_of_anath_raema"
+  ],
+  "rows": [
+   4599
+  ]
+ },
+ {
+  "name": "Prey of the Blood God",
+  "marker": "prey_of_the_blood_god",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_pro12_hero_abilities_prey_of_the_blood_god"
+  ],
+  "rows": [
+   4600
+  ]
+ },
+ {
+  "name": "Prismatic Amplifier",
+  "marker": "prismatic_amplifier",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_prismatic_amplifier"
+  ],
+  "rows": [
+   4813
+  ]
+ },
+ {
+  "name": "Purge the Weak!",
+  "marker": "purge_the_weak",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_main_daemon_wings_abilities_purge_the_weak"
+  ],
+  "rows": [
+   4661
+  ]
+ },
+ {
+  "name": "Radiant Gem of Hoeth",
+  "marker": "radiant_gem_of_hoeth",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_main_spell_bound_radiant_gem_of_hoeth"
+  ],
+  "rows": [
+   4729
+  ]
+ },
+ {
+  "name": "Rally!",
+  "marker": "rally",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_character_abilities_rally"
+  ],
+  "rows": [
+   4684
+  ]
+ },
+ {
+  "name": "Ravaging Swarm",
+  "marker": "dispatch_the_swarm_attack",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack"
+  ],
+  "rows": [
+   4601
+  ]
+ },
+ {
+  "name": "Ravaging Swarm Upgraded",
+  "marker": "dispatch_the_swarm_attack_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded"
+  ],
+  "rows": [
+   4602
+  ]
+ },
+ {
+  "name": "Reanimate",
+  "marker": "tomb_king_rally",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_character_abilities_tomb_king_rally"
+  ],
+  "rows": [
+   4685
+  ]
+ },
+ {
+  "name": "Reanimate Upgraded",
+  "marker": "tomb_king_rally_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_character_abilities_tomb_king_rally_upgraded"
+  ],
+  "rows": [
+   4686
+  ]
+ },
+ {
+  "name": "Red Fury",
+  "marker": "red_fury",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_character_abilities_red_fury"
+  ],
+  "rows": [
+   4375
+  ]
+ },
+ {
+  "name": "Reforge",
+  "marker": "reforge",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc23_character_abilities_reforge"
+  ],
+  "rows": [
+   4730
+  ]
+ },
+ {
+  "name": "Regenerating Flesh",
+  "marker": "regenerating_flesh",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh_main_item_abilities_regenerating_flesh"
+  ],
+  "rows": [
+   4731
+  ]
+ },
+ {
+  "name": "Regrowth",
+  "marker": "regrowth",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_spell_bound_regrowth"
+  ],
+  "rows": [
+   4732
+  ]
+ },
+ {
+  "name": "Remouldered",
+  "marker": "remouldered",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc16_lord_abilities_remouldered"
+  ],
+  "rows": [
+   4733
+  ]
+ },
+ {
+  "name": "Restore",
+  "marker": "restore",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_dlc09_character_abilities_restore"
+  ],
+  "rows": [
+   4734
+  ]
+ },
+ {
+  "name": "Revivification Crystal",
+  "marker": "revivification_crystal",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_main_unit_abilities_revivification_crystal"
+  ],
+  "rows": [
+   4735
+  ]
+ },
+ {
+  "name": "Rock Eye",
+  "marker": "item_passive_rock_eye",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_passive_rock_eye"
+  ],
+  "rows": [
+   5097
+  ]
+ },
+ {
+  "name": "Rune of Breaking",
+  "marker": "rune_of_breaking",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_breaking"
+  ],
+  "rows": [
+   4388
+  ]
+ },
+ {
+  "name": "Rune of Negation",
+  "marker": "rune_of_negation",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_rune_abilities_rune_of_negation"
+  ],
+  "rows": [
+   4390
+  ]
+ },
+ {
+  "name": "Rune of Slowness",
+  "marker": "rune_of_slowness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_slowness"
+  ],
+  "rows": [
+   5102
+  ]
+ },
+ {
+  "name": "Rune of Thungni",
+  "marker": "rune_of_thungni",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_item_abilities_rune_of_thungni"
+  ],
+  "rows": [
+   4393
+  ]
+ },
+ {
+  "name": "Sadistic Snare",
+  "marker": "sadistic_snare",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_lord_abilities_sadistic_snare"
+  ],
+  "rows": [
+   4603
+  ]
+ },
+ {
+  "name": "Saint Annushka's Finger Bone",
+  "marker": "saint_annushkas_finger_bone",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_main_item_abilities_saint_annushkas_finger_bone"
+  ],
+  "rows": [
+   4736
+  ]
+ },
+ {
+  "name": "Salyak's Lullaby",
+  "marker": "salyaks_lullaby",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_main_character_abilities_salyaks_lullaby"
+  ],
+  "rows": [
+   4737
+  ]
+ },
+ {
+  "name": "Sceptre of Stability",
+  "marker": "sceptre_of_stability",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_sceptre_of_stability"
+  ],
+  "rows": [
+   4819
+  ]
+ },
+ {
+  "name": "Scroll of Destiny",
+  "marker": "scroll_of_destiny",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_scroll_of_destiny"
+  ],
+  "rows": [
+   4820
+  ]
+ },
+ {
+  "name": "Scroll of Leeching",
+  "marker": "scroll_of_leeching",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_leeching"
+  ],
+  "rows": [
+   5122
+  ]
+ },
+ {
+  "name": "Scroll of Power",
+  "marker": "scroll_of_power",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_power"
+  ],
+  "rows": [
+   4738
+  ]
+ },
+ {
+  "name": "Scroll of Shielding",
+  "marker": "scroll_of_shielding",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_shielding"
+  ],
+  "rows": [
+   4400
+  ]
+ },
+ {
+  "name": "Shield of Chaqua",
+  "marker": "shield_of_chaqua",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc12_unit_abilities_shield_of_chaqua"
+  ],
+  "rows": [
+   4822
+  ]
+ },
+ {
+  "name": "Shield of Thorns",
+  "marker": "shield_of_thorns",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh2_dlc17_spell_bound_shield_of_thorns",
+   "wh_dlc05_spell_bound_shield_of_thorns"
+  ],
+  "rows": [
+   4662,
+   4663
+  ]
+ },
+ {
+  "name": "Shielding Swarm",
+  "marker": "dispatch_the_swarm_protect",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_protect"
+  ],
+  "rows": [
+   4416
+  ]
+ },
+ {
+  "name": "Shielding Swarm Upgraded",
+  "marker": "dispatch_the_swarm_protect_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded"
+  ],
+  "rows": [
+   4417
+  ]
+ },
+ {
+  "name": "Shock Collar",
+  "marker": "shock_collar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_hero_abilities_shock_collar"
+  ],
+  "rows": [
+   4687
+  ]
+ },
+ {
+  "name": "Silence the Prey",
+  "marker": "silence_the_prey",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_silence_the_prey"
+  ],
+  "rows": [
+   5134
+  ]
+ },
+ {
+  "name": "Skalm",
+  "marker": "skalm",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh2_main_item_abilities_skalm"
+  ],
+  "rows": [
+   4739
+  ]
+ },
+ {
+  "name": "Skar's Kraken-Killer",
+  "marker": "skars_kraken_killer",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_main_weapon_abilities_skars_kraken_killer"
+  ],
+  "rows": [
+   4740
+  ]
+ },
+ {
+  "name": "Skavenbrew",
+  "marker": "skavenbrew",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_skavenbrew"
+  ],
+  "rows": [
+   4420
+  ]
+ },
+ {
+  "name": "Skjalandir's Fall",
+  "marker": "skjalandirs_fall",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_character_abilities_skjalandirs_fall"
+  ],
+  "rows": [
+   4826
+  ]
+ },
+ {
+  "name": "Skull of Rarkos",
+  "marker": "skull_of_rarkos",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc03_item_abilities_skull_of_rarkos"
+  ],
+  "rows": [
+   4827
+  ]
+ },
+ {
+  "name": "Snowflake Pendant",
+  "marker": "snowflake_pendant",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_snowflake_pendant"
+  ],
+  "rows": [
+   4828
+  ]
+ },
+ {
+  "name": "Spearfisher's Net",
+  "marker": "spearfishers_net",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_lord_abilities_spearfishers_net"
+  ],
+  "rows": [
+   4605
+  ]
+ },
+ {
+  "name": "Spell-Wrought Sceptre",
+  "marker": "spell_wrought_sceptre",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_weapon_abilities_spell_wrought_sceptre"
+  ],
+  "rows": [
+   4830
+  ]
+ },
+ {
+  "name": "Spiderweb Attack",
+  "marker": "spider_web_attack",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_character_abilities_spider_web_attack"
+  ],
+  "rows": [
+   4606
+  ]
+ },
+ {
+  "name": "Staff of Damnation",
+  "marker": "staff_of_damnation",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_spell_bound_staff_of_damnation"
+  ],
+  "rows": [
+   4433
+  ]
+ },
+ {
+  "name": "Staff of Nagash",
+  "marker": "staff_of_nagash",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc09_item_abilities_staff_of_nagash"
+  ],
+  "rows": [
+   4831
+  ]
+ },
+ {
+  "name": "Staff of Tomorrow",
+  "marker": "staff_of_tomorrow",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_weapon_abilities_staff_of_tomorrow"
+  ],
+  "rows": [
+   4832
+  ]
+ },
+ {
+  "name": "Staff of Volans",
+  "marker": "staff_of_volans",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_staff_of_volans"
+  ],
+  "rows": [
+   4833
+  ]
+ },
+ {
+  "name": "Staff of Wu Xing",
+  "marker": "staff_of_wu_xing",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_staff_of_wu_xing"
+  ],
+  "rows": [
+   4834
+  ]
+ },
+ {
+  "name": "Starwood Staff",
+  "marker": "starwood_staff",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_starwood_staff"
+  ],
+  "rows": [
+   4835
+  ]
+ },
+ {
+  "name": "Stave of Avelorn",
+  "marker": "stave_of_avelorn",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc10_item_abilities_stave_of_avelorn"
+  ],
+  "rows": [
+   4836
+  ]
+ },
+ {
+  "name": "Storm Hammer",
+  "marker": "storm_hammer",
+  "trigger": "charge_or_melee",
+  "keys": [
+   "wh3_dlc29_spell_bound_storm_hammer"
+  ],
+  "rows": [
+   4665
+  ]
+ },
+ {
+  "name": "Sword of Filth",
+  "marker": "sword_of_filth",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_sword_of_filth"
+  ],
+  "rows": [
+   5176
+  ]
+ },
+ {
+  "name": "Tacticians, Rally!",
+  "marker": "tacticians_rally",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_character_abilities_tacticians_rally"
+  ],
+  "rows": [
+   4688
+  ]
+ },
+ {
+  "name": "Taunt",
+  "marker": "taunt",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc11_character_abilities_taunt"
+  ],
+  "rows": [
+   4607
+  ]
+ },
+ {
+  "name": "Tendrils of the Sea",
+  "marker": "tendrils_of_the_sea",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_active_tendrils_of_the_sea"
+  ],
+  "rows": [
+   4608
+  ]
+ },
+ {
+  "name": "Terrorgheist Skull",
+  "marker": "terrorgheist_skull",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc08_item_abilities_terrorgheist_skull"
+  ],
+  "rows": [
+   4839
+  ]
+ },
+ {
+  "name": "The Averland Runefang",
+  "marker": "averland_runefang",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_averland_runefang"
+  ],
+  "rows": [
+   4609
+  ]
+ },
+ {
+  "name": "The Bane Shield",
+  "marker": "the_bane_shield",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_the_bane_shield"
+  ],
+  "rows": [
+   4840
+  ]
+ },
+ {
+  "name": "The Black Tongue",
+  "marker": "the_black_tongue",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_character_abilities_the_black_tongue"
+  ],
+  "rows": [
+   4610
+  ]
+ },
+ {
+  "name": "The Chromatic Tome",
+  "marker": "the_chromatic_tome",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_the_chromatic_tome"
+  ],
+  "rows": [
+   4841
+  ]
+ },
+ {
+  "name": "The Dark Master",
+  "marker": "the_dark_master",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_the_dark_master"
+  ],
+  "rows": [
+   4614
+  ]
+ },
+ {
+  "name": "The Enfeebling Foe",
+  "marker": "enfeebling_foe",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_spell_bound_enfeebling_foe",
+   "wh3_dlc27_spell_bound_enfeebling_foe",
+   "wh3_main_spell_bound_enfeebling_foe",
+   "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror"
+  ],
+  "rows": [
+   4615,
+   4616,
+   4617,
+   4618
+  ]
+ },
+ {
+  "name": "The Golden Eye of Tzeentch",
+  "marker": "the_golden_eye_of_tzeentch",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch"
+  ],
+  "rows": [
+   4844
+  ]
+ },
+ {
+  "name": "The Guiding Eye",
+  "marker": "the_guiding_eye",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_the_guiding_eye"
+  ],
+  "rows": [
+   4846
+  ]
+ },
+ {
+  "name": "The Hammer of Karak Drazh",
+  "marker": "the_hammer_of_karak_drazh",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_weapon_abilities_the_hammer_of_karak_drazh"
+  ],
+  "rows": [
+   4619
+  ]
+ },
+ {
+  "name": "The Hand of Dust",
+  "marker": "undeath_sulekhim_hand_of_dust",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust"
+  ],
+  "rows": [
+   4469
+  ]
+ },
+ {
+  "name": "The Liber Noctus",
+  "marker": "the_liber_noctus",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc04_item_abilities_the_liber_noctus"
+  ],
+  "rows": [
+   4847
+  ]
+ },
+ {
+  "name": "The Lion's Shield",
+  "marker": "lions_shield",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc07_lord_abilities_lions_shield"
+  ],
+  "rows": [
+   4848
+  ]
+ },
+ {
+  "name": "The Praise of Slaanesh",
+  "marker": "the_praise_of_slaanesh",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_lord_abilities_the_praise_of_slaanesh"
+  ],
+  "rows": [
+   4479
+  ]
+ },
+ {
+  "name": "The Seerstaff of Saphery",
+  "marker": "the_seerstaff_of_saphery",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_spell_bound_the_seerstaff_of_saphery"
+  ],
+  "rows": [
+   4849
+  ]
+ },
+ {
+  "name": "The Trickster's Pendant",
+  "marker": "the_tricksters_pendant",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_the_tricksters_pendant"
+  ],
+  "rows": [
+   5201
+  ]
+ },
+ {
+  "name": "The Vial of Hashut",
+  "marker": "the_vial_of_hashut",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_item_abilities_the_vial_of_hashut"
+  ],
+  "rows": [
+   5203
+  ]
+ },
+ {
+  "name": "The Vortex Shard",
+  "marker": "the_vortex_shard",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_item_abilities_the_vortex_shard"
+  ],
+  "rows": [
+   5204
+  ]
+ },
+ {
+  "name": "The Wintertooth Crown",
+  "marker": "the_wintertooth_crown",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc08_item_abilities_the_wintertooth_crown"
+  ],
+  "rows": [
+   4689
+  ]
+ },
+ {
+  "name": "The Wissenland Runefang",
+  "marker": "wissenland_runefang",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_wissenland_runefang"
+  ],
+  "rows": [
+   4491
+  ]
+ },
+ {
+  "name": "The Withering",
+  "marker": "the_withering",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc23_spell_bound_the_withering",
+   "wh3_twa08_spell_bound_the_withering"
+  ],
+  "rows": [
+   5206,
+   5207
+  ]
+ },
+ {
+  "name": "They Needs Stabbin’",
+  "marker": "they_needs_stabbin",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_character_abilities_they_needs_stabbin"
+  ],
+  "rows": [
+   4624
+  ]
+ },
+ {
+  "name": "Thorn's Aura",
+  "marker": "thorns_aura",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_hero_abilities_thorns_aura"
+  ],
+  "rows": [
+   5208
+  ]
+ },
+ {
+  "name": "Thunderburner",
+  "marker": "thunderburner",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner"
+  ],
+  "rows": [
+   5209
+  ]
+ },
+ {
+  "name": "Thunderburner Upgraded",
+  "marker": "thunderburner_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner_upgraded"
+  ],
+  "rows": [
+   5210
+  ]
+ },
+ {
+  "name": "Titan Headsman",
+  "marker": "titan_headsman",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc25_hero_abilities_titan_headsman"
+  ],
+  "rows": [
+   4625
+  ]
+ },
+ {
+  "name": "Torment Blade",
+  "marker": "torment_blade",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_weapon_abilities_torment_blade"
+  ],
+  "rows": [
+   4626
+  ]
+ },
+ {
+  "name": "Trickster's Shard",
+  "marker": "tricksters_shard",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_tricksters_shard"
+  ],
+  "rows": [
+   5220
+  ]
+ },
+ {
+  "name": "Trollguts",
+  "marker": "trollguts",
+  "trigger": "ushoran_health",
+  "keys": [
+   "wh3_dlc26_spell_bound_trollguts"
+  ],
+  "rows": [
+   4745
+  ]
+ },
+ {
+  "name": "Trophy Heads",
+  "marker": "trophy_heads",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_lord_abilities_trophy_heads",
+   "wh3_main_daemon_wings_abilities_trophy_heads"
+  ],
+  "rows": [
+   4629,
+   4630
+  ]
+ },
+ {
+  "name": "Twilight Horn I",
+  "marker": "twilight_horn_i",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc16_item_abilities_twilight_horn_i"
+  ],
+  "rows": [
+   4503
+  ]
+ },
+ {
+  "name": "Undeath Resurgent",
+  "marker": "undeath_resurgent",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_character_abilities_undeath_resurgent"
+  ],
+  "rows": [
+   4506
+  ]
+ },
+ {
+  "name": "Unholy Clamour",
+  "marker": "unholy_clamour",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_mount_abilities_unholy_clamour"
+  ],
+  "rows": [
+   4690
+  ]
+ },
+ {
+  "name": "Unlimited Power!",
+  "marker": "unlimited_power",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc12_lord_abilities_unlimited_power"
+  ],
+  "rows": [
+   4851
+  ]
+ },
+ {
+  "name": "Ursun's Mighty Roar",
+  "marker": "ursuns_roar_2",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_pro_character_abilities_ursuns_roar_2"
+  ],
+  "rows": [
+   4691
+  ]
+ },
+ {
+  "name": "Ursun's Roar",
+  "marker": "ursuns_roar",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_character_abilities_ursuns_roar",
+   "wh3_main_pro_character_abilities_ursuns_roar",
+   "wh3_main_pro_character_abilities_ursuns_roar_1",
+   "wh3_main_pro_character_abilities_ursuns_roar_3"
+  ],
+  "rows": [
+   4692,
+   4693,
+   4694,
+   4695
+  ]
+ },
+ {
+  "name": "Van Horstmann's Speculum",
+  "marker": "van_horstmanns_speculum",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_van_horstmanns_speculum"
+  ],
+  "rows": [
+   4631
+  ]
+ },
+ {
+  "name": "Verminous Fury",
+  "marker": "verminous_fury",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_lord_abilities_verminous_fury"
+  ],
+  "rows": [
+   4511
+  ]
+ },
+ {
+  "name": "Virulent Contagion",
+  "marker": "virulent_contagion",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion"
+  ],
+  "rows": [
+   4632
+  ]
+ },
+ {
+  "name": "Virulent Contagion Upgraded",
+  "marker": "virulent_contagion_upgraded",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion_upgraded"
+  ],
+  "rows": [
+   4633
+  ]
+ },
+ {
+  "name": "Visions of Madness",
+  "marker": "visions_of_madness",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_visions_of_madness"
+  ],
+  "rows": [
+   4634
+  ]
+ },
+ {
+  "name": "Void Pendulum",
+  "marker": "void_pendulum",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_item_abilities_void_pendulum"
+  ],
+  "rows": [
+   5236
+  ]
+ },
+ {
+  "name": "Vorozheja's Foresight",
+  "marker": "vorozhejas_foresight",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_hero_abilities_vorozhejas_foresight"
+  ],
+  "rows": [
+   5240
+  ]
+ },
+ {
+  "name": "Waaagh!",
+  "marker": "waaagh_in_combat",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_unit_abilities_waaagh_in_combat",
+   "wh_main_character_abilities_waaagh"
+  ],
+  "rows": [
+   4515,
+   4516
+  ]
+ },
+ {
+  "name": "Wand of Jet",
+  "marker": "wand_of_jet",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_main_item_abilities_wand_of_jet"
+  ],
+  "rows": [
+   4852
+  ]
+ },
+ {
+  "name": "Warden's Cage",
+  "marker": "wardens_cage",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_character_abilities_wardens_cage"
+  ],
+  "rows": [
+   4635
+  ]
+ },
+ {
+  "name": "Warp Gaze",
+  "marker": "warp_gaze",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_pro04_unit_abilities_warp_gaze"
+  ],
+  "rows": [
+   5244
+  ]
+ },
+ {
+  "name": "Warpstiletto",
+  "marker": "warpstiletto",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstiletto"
+  ],
+  "rows": [
+   5247
+  ]
+ },
+ {
+  "name": "Warpstone Tokens",
+  "marker": "warpstone_tokens",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstone_tokens"
+  ],
+  "rows": [
+   4854
+  ]
+ },
+ {
+  "name": "Watched by the Watcher",
+  "marker": "watched_by_the_watcher",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc24_character_abilities_watched_by_the_watcher"
+  ],
+  "rows": [
+   5249
+  ]
+ },
+ {
+  "name": "Where You Goin!?",
+  "marker": "were_you_goin",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_character_abilities_were_you_goin"
+  ],
+  "rows": [
+   4522
+  ]
+ },
+ {
+  "name": "Whip of Agony",
+  "marker": "whip_of_agony",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_twa03_weapon_abilities_whip_of_agony"
+  ],
+  "rows": [
+   4636
+  ]
+ },
+ {
+  "name": "Whip of Misery",
+  "marker": "whip_of_misery",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_main_spell_bound_whip_of_agony"
+  ],
+  "rows": [
+   4637
+  ]
+ },
+ {
+  "name": "Whiplash!",
+  "marker": "whiplash",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc14_lord_abilities_whiplash"
+  ],
+  "rows": [
+   4523
+  ]
+ },
+ {
+  "name": "Whispering Mist",
+  "marker": "whispering_mist",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_hero_abilities_whispering_mist"
+  ],
+  "rows": [
+   4638
+  ]
+ },
+ {
+  "name": "Whispering Skull",
+  "marker": "whispering_skull",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_whispering_skull"
+  ],
+  "rows": [
+   4856
+  ]
+ },
+ {
+  "name": "Wild Abandon",
+  "marker": "wild_abandon",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc26_lord_abilities_wild_abandon"
+  ],
+  "rows": [
+   4528
+  ]
+ },
+ {
+  "name": "Willing Prey",
+  "marker": "willing_prey",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_willing_prey"
+  ],
+  "rows": [
+   4639
+  ]
+ },
+ {
+  "name": "Winds of Change",
+  "marker": "winds_of_change",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_daemon_body_abilities_winds_of_change"
+  ],
+  "rows": [
+   4857
+  ]
+ },
+ {
+  "name": "Word of Change",
+  "marker": "word_of_change",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_daemon_head_abilities_word_of_change"
+  ],
+  "rows": [
+   4642
+  ]
+ },
+ {
+  "name": "Word of Pain",
+  "marker": "word_of_pain",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc10_spell_bound_word_of_pain",
+   "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use"
+  ],
+  "rows": [
+   4643,
+   4644
+  ]
+ },
+ {
+  "name": "Woven Mist",
+  "marker": "woven_mist",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh_dlc05_unit_abilities_woven_mist"
+  ],
+  "rows": [
+   4858
+  ]
+ },
+ {
+  "name": "Wrath of the Storm",
+  "marker": "wrath_of_the_storm",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_wrath_of_the_storm"
+  ],
+  "rows": [
+   4536
+  ]
+ },
+ {
+  "name": "Wrathful Reaper",
+  "marker": "wrathful_reaper",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_main_lord_abilities_wrathful_reaper"
+  ],
+  "rows": [
+   4537
+  ]
+ },
+ {
+  "name": "Wristbands of Black Gold",
+  "marker": "wristbands_of_black_gold",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh3_dlc29_item_abilities_wristbands_of_black_gold"
+  ],
+  "rows": [
+   4538
+  ]
+ },
+ {
+  "name": "You're Next!",
+  "marker": "youre_next",
+  "trigger": "melee_unwavering",
+  "keys": [
+   "wh2_dlc15_lord_abilities_youre_next"
+  ],
+  "rows": [
+   4645
+  ]
+ }
+]

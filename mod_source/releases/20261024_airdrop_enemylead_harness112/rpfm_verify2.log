@@ -1,0 +1,4 @@
+[2m2026-10-18T11:19:42.294655Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Sentry logging support for RPFM SERVER enabled. Starting...
+[2m2026-10-18T11:19:42.298270Z[0m [33m WARN[0m [2mrpfm_server[0m[2m:[0m Failed to bind to address 127.0.0.1:45127: Only one usage of each socket address (protocol/network address/port) is normally permitted. (os error 10048)
+
+This usually means you got another copy of the server running. Either use that one, or stop it and try again.

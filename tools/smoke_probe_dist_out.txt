@@ -1,0 +1,55 @@
+  [PASS] probe captured the poll callback (timer registered)
+== drive 100 ticks (2 Deployment, then conflict; enemy approaches 3 m/poll)
+  [PASS] probe wrote its own log file
+== gate + polling
+  [PASS] GATE waiting for conflict logged (Deployment phase)
+  [PASS] gate-wait line carries phase=Deployment conflict=false
+  [PASS] GATE conflict phase ENTERED logged
+  [PASS] gate-enter line carries phase=Deployed conflict=true
+  [PASS] exactly 90 OBS polls ran (cap 90)
+  [PASS] NO POLL ERROR
+  [PASS] poll cap logged
+== the one-time OWNER line
+  [PASS] OWNER chosen logged exactly once
+  [PASS] OWNER line names the observed key
+  [PASS] OWNER line carries type + ui_id + pos
+== (a) OBS: caster position + movement + is_moving/is_idle
+  [PASS] caster_moved_since_last present
+  [PASS] caster_moved exactly 0.0m on stationary polls
+  [PASS] caster_moved 0.5m on the drift poll
+  [PASS] caster_is_moving=t on the moving poll
+  [PASS] caster_is_idle=f on the moving poll
+  [PASS] caster_is_moving=f on stationary polls
+  [PASS] OBS carries caster_pos
+== (b) CAND lines: engine unit_in_range beside our 52 m / 75 m tests
+  [PASS] 3 candidates logged every conflict poll (270)
+  [PASS] CAND carries dist
+  [PASS] CAND carries in_melee
+  [PASS] CAND carries under_fire
+  [PASS] CAND carries engine_unit_in_range
+  [PASS] CAND carries our_52_test
+  [PASS] CAND carries our_75_test
+  [PASS] our_52_test=t appears once the enemy is inside 52 m
+  [PASS] our_75_test=t appears once the enemy is inside 75 m
+  [PASS] engine_unit_in_range=t appears once inside the engine's 60 m
+  [PASS] all three false at the far start
+== (c) CAND-FIRST: the exact first crossing
+  [PASS] CAND-FIRST logged exactly once
+      CAND-FIRST tick=16 idx=1 type=wh_main_vmp_inf_zombie dist=75.0m first_passing_test=75 mode=first engine_unit_in_range=f our_52_test=f our_75_test=t (the exact crossing distance)
+  [PASS] CAND-FIRST crossing distance is exactly 75.0m (the first test passed)
+  [PASS] CAND-FIRST first_passing_test=75
+  [PASS] CAND-FIRST carries the raw engine/52/75 flags
+  [PASS] CAND-FIRST not latched during Deployment (first OBS tick is a conflict tick)
+  [PASS] CAND-FIRST tick is 16 (the 16th conflict poll = dist 75.0)
+== (d) CANPERF corroboration each poll
+  [PASS] CANPERF logged every conflict poll (90)
+  [PASS] CANPERF carries key + can
+== safety: no writes, no casts
+  [PASS] zero cast attempts (perf_trap=0)
+  [PASS] zero forbidden writes (trips=0: )
+  [PASS] the write trip counter stayed at zero (status hook)
+  [PASS] source contains NO perform_special_ability( call
+  [PASS] source contains NO ground-cast call
+  [PASS] status hook exists
+
+SMOKE TEST PASSED - gate, OWNER, OBS, CAND (engine+52+75), the single CAND-FIRST at 75.0m, CANPERF and the poll cap all recorded; zero writes, zero casts.

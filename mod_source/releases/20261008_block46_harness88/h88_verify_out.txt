@@ -1,0 +1,58 @@
+========================================================================
+INSTALLED PACK: C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack
+size  : 625924
+md5   : 5d7f78de9e2e15db058a2ec648e09678
+sha256: 9ee7ec38a9da2aec6e6a1f8659edc4a35549a820a9de4dd3c06903f0233d2edb
+dist/ identical to installed: True
+========================================================================
+index entries: 8   real files: 5   rpfm metadata: 3
+  [metadata]         2  flag=0  @      325  dependencies_manager_v2.rpfm_reserved
+  [metadata]        42  flag=0  @      327  notes.rpfm_reserved
+  [FILE    ]    290794  flag=0  @      369  script/battle/mod/zz_test_deadly_onslaught.lua
+  [metadata]       287  flag=0  @   291163  settings.rpfm_reserved
+  [FILE    ]    331289  flag=0  @   291450  ui/common ui/special_ability_tooltip.twui.xml
+  [FILE    ]      2864  flag=0  @   622739  ui/templates/zz_auto_badge.twui.xml
+  [FILE    ]       252  flag=0  @   625603  ui/zz_auto/auto_badge.png
+  [FILE    ]        69  flag=0  @   625855  ui/zz_auto/blank.png
+
+real entry set == expected 5 files: True
+
+per-file byte-identity (data slice vs source):
+  script/battle/mod/zz_test_deadly_onslaught.lua
+    slice  290794 bytes sha256 9557d945e1f5b6fad4ee7daa7605e19a3a5854b76ae117f1ef8b2e7cead8babc
+    src    290794 bytes sha256 9557d945e1f5b6fad4ee7daa7605e19a3a5854b76ae117f1ef8b2e7cead8babc
+    IDENTICAL: True
+  ui/common ui/special_ability_tooltip.twui.xml
+    slice  331289 bytes sha256 ad8d7070623398cadae51200ff940c65d0781a8f493042da3ecaab3489159502
+    src    331289 bytes sha256 ad8d7070623398cadae51200ff940c65d0781a8f493042da3ecaab3489159502
+    IDENTICAL: True
+  ui/templates/zz_auto_badge.twui.xml
+    slice    2864 bytes sha256 d95f04610529c2dd90f6ad3ac0b964341dcb97f2ba3f78961d7e4d1d25e54bf0
+    src      2864 bytes sha256 d95f04610529c2dd90f6ad3ac0b964341dcb97f2ba3f78961d7e4d1d25e54bf0
+    IDENTICAL: True
+  ui/zz_auto/auto_badge.png
+    slice     252 bytes sha256 31e69b91d59795f90c7920091729f23c2bb47e80ebf4d0b0b8ae77bd37ff485d
+    src       252 bytes sha256 31e69b91d59795f90c7920091729f23c2bb47e80ebf4d0b0b8ae77bd37ff485d
+    IDENTICAL: True
+  ui/zz_auto/blank.png
+    slice      69 bytes sha256 f164334dc3985e3b8d95b71e59462c9c4f6d80c7ede23238c8759d9c4495a6db
+    src        69 bytes sha256 f164334dc3985e3b8d95b71e59462c9c4f6d80c7ede23238c8759d9c4495a6db
+    IDENTICAL: True
+
+probe absence (raw byte scan of the whole installed pack):
+  b'[zz_probe_ui_text]'                      count=0
+  b'zz_probe_ui_text_log.txt'                count=0
+  b'[zz_probe_unit_reads]'                   count=0
+  b'zz_probe_unit_reads_log.txt'             count=0
+  b'zz_probe_ui('                            count=0
+  b'zz_probe_'                               count=0
+  b'zz_probe_ui_text.lua'                    count=0
+  b'zz_probe_unit_reads.lua'                 count=0
+all probe fragments absent: True
+
+sanity: the shipped content IS present (counts > 0):
+  b'zz_test_deadly_onslaught'      count=7
+  b'foe_seeker'                    count=11
+  b'zz_auto_badge'                 count=201
+
+RESULT: PASS

@@ -1,0 +1,194 @@
+"""Build the mod pack, verify it, install it. One WebSocket session, then done.
+
+Pack contents (housekeeping 20261004 - the two experiment probes are RETIRED):
+  script/battle/mod/zz_test_deadly_onslaught.lua   the main mod (trigger + right-click toggle)
+  ui/templates/zz_auto_badge.twui.xml              the auto badge template
+  ui/zz_auto/auto_badge.png  ui/zz_auto/blank.png  the badge art
+  ui/common ui/special_ability_tooltip.twui.xml    the tooltip's right-click line, filled in
+
+The throwaway probes (zz_probe_unit_reads.lua, zz_probe_ui_text.lua) shipped until
+2026-10-04; their sources are preserved in releases/20261004_probe_sources_retired/
+and must NOT ship again (the pack-contents check below fails if a zz_probe_ path returns)
+
+No HUD button, no icon files, no localisation file: the control is a right-click on the
+ability's own icon, and the hint is a plain line in the tooltip layout.
+"""
+import hashlib
+import json
+import shutil
+import os
+from websockets.sync.client import connect
+
+WS_URL = "ws://127.0.0.1:45127/ws"
+SRC_ROOT = r"C:/Users/vlady/Desktop/WH3_mod/mod_source"
+
+FILES = [
+    (SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+     "script/battle/mod/zz_test_deadly_onslaught.lua"),
+    (SRC_ROOT + "/ui/templates/zz_auto_badge.twui.xml",
+     "ui/templates/zz_auto_badge.twui.xml"),
+    (SRC_ROOT + "/ui/zz_auto/blank.png", "ui/zz_auto/blank.png"),
+    (SRC_ROOT + "/ui/zz_auto/auto_badge.png",
+     "ui/zz_auto/auto_badge.png"),
+    (SRC_ROOT + "/ui/common ui/special_ability_tooltip.twui.xml",
+     "ui/common ui/special_ability_tooltip.twui.xml"),
+]
+
+OUT_PACK = SRC_ROOT + "/dist/zz_test_deadly_onslaught.pack"
+GAME_PACK = r"C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack"
+
+HINT = "Automatic: this ability fires by itself while the unit charges"
+
+
+class Client:
+    def __init__(self, url):
+        self.ws = connect(url, max_size=None, open_timeout=15)
+        self.next_id = 1
+        print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+
+    def send(self, command):
+        req_id = self.next_id
+        self.next_id += 1
+        self.ws.send(json.dumps({"id": req_id, "data": command}))
+        while True:
+            msg = json.loads(self.ws.recv(timeout=180))
+            if msg.get("id") == req_id:
+                return msg.get("data")
+            print("  (unsolicited)", json.dumps(msg)[:160])
+
+
+def step(label, command):
+    print(f"\n== {label}")
+    resp = c.send(command)
+    print(f"  <= {json.dumps(resp)[:200]}")
+    return resp
+
+
+for p in (OUT_PACK, GAME_PACK):
+    if os.path.exists(p):
+        os.remove(p)
+        print("removed stale:", p)
+
+hashes = {}
+for _src, _in_pack in FILES:
+    _data = open(_src, "rb").read()
+    hashes[_in_pack] = (len(_data), hashlib.sha256(_data).hexdigest())
+    print(f"source {_src.split('/')[-1]:34s} {len(_data):>8d} bytes  sha256 {hashes[_in_pack][1][:32]}")
+
+c = Client(WS_URL)
+step("1 select game", {"SetGameSelected": ["warhammer_3", False]})
+key = step("2 new pack", "NewPack")["String"]
+step("3 add the main script and the four ui files",
+     {"AddPackedFiles": [key, [f[0] for f in FILES], [{"File": f[1]} for f in FILES], None]})
+step("4 type = Movie", {"SetPackFileType": [key, "Movie"]})
+
+info = step("5 list contents", {"GetPackFileDataForTreeView": key})
+container, files = info["ContainerInfoVecRFileInfo"]
+in_pack_paths = sorted(f["path"] for f in files)
+expected = sorted(_in_pack for _src, _in_pack in FILES)
+print("   container:", container["pfh_file_type"], "| files:", in_pack_paths)
+assert in_pack_paths == expected, f"pack contents wrong: {in_pack_paths} != {expected}"
+
+ok_all = True
+for _src, in_pack in FILES:
+    raw = c.send({"GetPackedFileRawData": [key, in_pack]})
+    packed = bytes(raw["VecU8"])
+    got = hashlib.sha256(packed).hexdigest()
+    want_len, want = hashes[in_pack]
+    ok = (got == want and len(packed) == want_len)
+    ok_all = ok_all and ok
+    print(f"   {in_pack:48s} {len(packed):>8d} bytes  MATCHES SOURCE: {ok}")
+assert ok_all, "content mismatch - refusing to install"
+
+# what we shipped must contain what we expect
+t_raw = bytes(c.send({"GetPackedFileRawData": [key, "ui/common ui/special_ability_tooltip.twui.xml"]})["VecU8"])
+t_txt = t_raw.decode("utf-8", "replace")
+print("\n== 6 what the pack must contain")
+script_txt = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+                  encoding="utf-8", errors="replace").read()
+print(f"   tooltip hint line present                 : {HINT in t_txt}")
+print(f"   the double-click toggles are gone         : "
+      f"{'Double Click Unit Card' not in script_txt}"
+      f" and {'ComponentLDBLClickUp' not in script_txt}")
+dead = sum(script_txt.count(t) for t in ('zz_rclick', 'check_rclick_property'))
+print(f"   dead property-route code left behind      : {dead} (want 0)")
+assert HINT in t_txt, "tooltip hint missing"
+assert "Double Click Unit Card" not in script_txt, "the double-click command handler should be gone"
+assert "ComponentLDBLClickUp" not in script_txt, "the double-click component listener should be gone"
+# the claim path copies the engine's key value before ANY string operation
+# (as_plain_string) and the scan probe reports keytype/copyok/lenok; the old
+# AddScriptEventReporter gate died with the call itself.
+assert "badge creation deferred to the tick" in script_txt, "the deferred badge creation line is missing"
+assert "as_plain_string" in script_txt, "the engine-key copy helper is missing from the claim path"
+assert "scan probe: keytype=" in script_txt, "the scan probe keytype line is missing"
+# round 7: the bounded re-scan loop (the brisk window; the dead local-ceiling
+# slot stays freed so the chunk compiles under Lua's 200-local limit).
+assert "local brisk_walk_until = -1" in script_txt, "the round-7 window local is missing"
+assert "brisk_walk_until = ui_ticks + 48" in script_txt, "the fresh-window open is missing"
+assert "CHARGE_ORDER_TOLERANCE_M" not in script_txt, "the freed local-ceiling slot came back"
+assert "zz_auto_" in script_txt, "the badge component is missing from the script"
+assert "onslaught" in script_txt, "the ability marker is missing from the script"
+assert "SetText" in script_txt, "the badge letter switch (SetText) is missing"
+for tok in ("zz_rclick", "check_rclick_property"):
+    assert tok not in script_txt, f"dead right-click code left in the script: {tok}"
+
+# round 35 (extensions - nothing above is loosened): the second ability
+# (Foe-Seeker) must ship, driven by the ABILITIES table, and the 60/90 s
+# timers must NOT come back.
+assert "foe_seeker" in script_txt, "the foe_seeker ability is missing from the script"
+assert "wh_main_character_abilities_foe_seeker" in script_txt, "the foe_seeker key is missing"
+assert "wh_dlc03_character_abilities_foe_seeker" in script_txt, "the foe_seeker dlc key variant is missing"
+assert "zz_auto_badge_fs" in script_txt, "the Foe-Seeker badge id is missing from the script"
+# ROUND v81 (the three approved trigger changes - nothing above is loosened):
+#   * Deadly Onslaught fires on the charge window OR in melee (both arms on);
+#   * Foe-Seeker's trigger is "tired" - read via battle_unit:fatigue_state(),
+#     exact matching only, a one-time notice when unreadable;
+#   * the "running" trigger is DELETED - it must never come back.
+assert "elseif ability.trigger == \"running\" then" not in script_txt, "the deleted running trigger is back in the script"
+assert "reason = \"running\"" not in script_txt, "the old running reason text is back in the script"
+assert "fast = unit:is_moving_fast()," in script_txt, "the charge detector's fast read is missing"
+assert "melee = unit:is_in_melee()," in script_txt, "the charge detector's melee read is missing"
+assert "local FIRE_ON_MELEE  = true" in script_txt, "the approved in-melee arm is not switched on"
+assert 'marker = "foe_seeker", name = "Foe-Seeker", trigger = "tired"' in script_txt, "the fatigue trigger is missing from the script"
+assert "FOURTH.fatigue_states = {" in script_txt, "the exact-match fatigue state map is missing"
+assert "FOURTH.fatigue_fire = {" in script_txt, "the tired-or-worse fire set is missing"
+assert "function FOURTH.fatigue_state(unit)" in script_txt, "the fatigue reader is missing"
+assert "return unit:fatigue_state() end" in script_txt, "the plain fatigue getter read is missing"
+assert "foe_seeker fatigue: read UNAVAILABLE" in script_txt, "the one-time unreadable notice is missing"
+assert "foe_seeker fatigue: UNRECOGNISED value" in script_txt, "the unrecognised-state notice is missing"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "check_readiness" in script_txt, "the readiness gate is missing from the script"
+assert "GUARD_SECONDS = 2" in script_txt, "the short 2 s guard is missing from the script"
+for tok in ("ABILITY_RECHARGE_SECONDS", "ACTIVATION_BRAKE_TICKS", "MIN_SECONDS_BETWEEN_FIRES"):
+    assert tok not in script_txt, f"a 60/90 s timer token is back in the script: {tok}"
+
+# HOUSEKEEPING 20261004: the two throwaway experiment probes were RETIRED from the
+# pack (zz_probe_unit_reads.lua and zz_probe_ui_text.lua - their experiments are
+# finished and their findings are recorded). Their sources are preserved in
+# releases/20261004_probe_sources_retired/ and must NOT ship again:
+assert not any("zz_probe_" in p for p in in_pack_paths), "a retired probe is back in the pack"
+for _retired in ("zz_probe_ui_text.lua", "zz_probe_unit_reads.lua"):
+    _retired_path = SRC_ROOT + "/releases/20261004_probe_sources_retired/" + _retired
+    assert os.path.exists(_retired_path), f"the preserved retired probe source is missing: {_retired_path}"
+
+# the main mod must be byte-identical (untouched by this work)
+main_src = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua", "rb").read()
+main_raw = bytes(c.send({"GetPackedFileRawData": [key, "script/battle/mod/zz_test_deadly_onslaught.lua"]})["VecU8"])
+print(f"\n== 6d main mod untouched (byte-identical)     : {main_raw == main_src}")
+assert main_raw == main_src, "the main mod changed - it must not"
+
+step("7 save to disk", {"SavePackAs": [key, OUT_PACK]})
+step("8 close", {"ClosePack": key})
+try:
+    c.send("ClientDisconnecting")
+except Exception:
+    pass  # the server shuts down as soon as the last session leaves
+
+print("\n================ INSTALL ================")
+shutil.copy2(OUT_PACK, GAME_PACK)
+a = hashlib.md5(open(OUT_PACK, "rb").read()).hexdigest()
+b = hashlib.md5(open(GAME_PACK, "rb").read()).hexdigest()
+print(f"built pack   md5 {a}")
+print(f"installed    md5 {b}")
+print(f"IDENTICAL    {a == b}")
+print(f"installed to {GAME_PACK}")

@@ -1,0 +1,425 @@
+"""Build the mod pack, verify it, install it. One WebSocket session, then done.
+
+Round 19 pack contents:
+  script/battle/mod/zz_test_deadly_onslaught.lua   the trigger + the right-click toggle
+  ui/battle ui/hud_battle.twui.xml                 rclick broadcast (4 ability components)
+  ui/common ui/land_unit_card.twui.xml             rclick broadcast (the card's ability icon)
+  ui/common ui/special_ability_tooltip.twui.xml    the tooltip's right-click line, filled in
+
+No HUD button, no icon files, no localisation file: the control is a right-click on the
+ability's own icon, and the hint is a plain line in the tooltip layout.
+"""
+import hashlib
+import json
+import shutil
+import os
+from websockets.sync.client import connect
+
+WS_URL = "ws://127.0.0.1:45127/ws"
+SRC_ROOT = r"C:/Users/vlady/Desktop/WH3_mod/mod_source"
+
+FILES = [
+    (SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+     "script/battle/mod/zz_test_deadly_onslaught.lua"),
+    (SRC_ROOT + "/script/battle/mod/zz_probe_unit_reads.lua",
+     "script/battle/mod/zz_probe_unit_reads.lua"),
+    (SRC_ROOT + "/script/battle/mod/zz_probe_ui_text.lua",
+     "script/battle/mod/zz_probe_ui_text.lua"),
+    (SRC_ROOT + "/ui/templates/zz_auto_badge.twui.xml",
+     "ui/templates/zz_auto_badge.twui.xml"),
+    (SRC_ROOT + "/ui/zz_auto/blank.png", "ui/zz_auto/blank.png"),
+    (SRC_ROOT + "/ui/zz_auto/auto_badge.png",
+     "ui/zz_auto/auto_badge.png"),
+    (SRC_ROOT + "/ui/common ui/special_ability_tooltip.twui.xml",
+     "ui/common ui/special_ability_tooltip.twui.xml"),
+]
+
+OUT_PACK = SRC_ROOT + "/dist/zz_test_deadly_onslaught.pack"
+GAME_PACK = r"C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack"
+
+HINT = "Automatic: this ability fires by itself while the unit charges"
+PROBE_LOG = "zz_probe_unit_reads_log.txt"
+
+
+class Client:
+    def __init__(self, url):
+        self.ws = connect(url, max_size=None, open_timeout=15)
+        self.next_id = 1
+        print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+
+    def send(self, command):
+        req_id = self.next_id
+        self.next_id += 1
+        self.ws.send(json.dumps({"id": req_id, "data": command}))
+        while True:
+            msg = json.loads(self.ws.recv(timeout=180))
+            if msg.get("id") == req_id:
+                return msg.get("data")
+            print("  (unsolicited)", json.dumps(msg)[:160])
+
+
+def step(label, command):
+    print(f"\n== {label}")
+    resp = c.send(command)
+    print(f"  <= {json.dumps(resp)[:200]}")
+    return resp
+
+
+for p in (OUT_PACK, GAME_PACK):
+    if os.path.exists(p):
+        os.remove(p)
+        print("removed stale:", p)
+
+hashes = {}
+for _src, _in_pack in FILES:
+    _data = open(_src, "rb").read()
+    hashes[_in_pack] = (len(_data), hashlib.sha256(_data).hexdigest())
+    print(f"source {_src.split('/')[-1]:34s} {len(_data):>8d} bytes  sha256 {hashes[_in_pack][1][:32]}")
+
+c = Client(WS_URL)
+step("1 select game", {"SetGameSelected": ["warhammer_3", False]})
+key = step("2 new pack", "NewPack")["String"]
+step("3 add the script and the three layouts",
+     {"AddPackedFiles": [key, [f[0] for f in FILES], [{"File": f[1]} for f in FILES], None]})
+step("4 type = Movie", {"SetPackFileType": [key, "Movie"]})
+
+info = step("5 list contents", {"GetPackFileDataForTreeView": key})
+container, files = info["ContainerInfoVecRFileInfo"]
+in_pack_paths = sorted(f["path"] for f in files)
+expected = sorted(_in_pack for _src, _in_pack in FILES)
+print("   container:", container["pfh_file_type"], "| files:", in_pack_paths)
+assert in_pack_paths == expected, f"pack contents wrong: {in_pack_paths} != {expected}"
+
+ok_all = True
+for _src, in_pack in FILES:
+    raw = c.send({"GetPackedFileRawData": [key, in_pack]})
+    packed = bytes(raw["VecU8"])
+    got = hashlib.sha256(packed).hexdigest()
+    want_len, want = hashes[in_pack]
+    ok = (got == want and len(packed) == want_len)
+    ok_all = ok_all and ok
+    print(f"   {in_pack:48s} {len(packed):>8d} bytes  MATCHES SOURCE: {ok}")
+assert ok_all, "content mismatch - refusing to install"
+
+# what we shipped must contain what we expect
+t_raw = bytes(c.send({"GetPackedFileRawData": [key, "ui/common ui/special_ability_tooltip.twui.xml"]})["VecU8"])
+t_txt = t_raw.decode("utf-8", "replace")
+print("\n== 6 what the pack must contain")
+script_txt = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+                  encoding="utf-8", errors="replace").read()
+print(f"   tooltip hint line present                 : {HINT in t_txt}")
+print(f"   the double-click toggles are gone         : "
+      f"{'Double Click Unit Card' not in script_txt}"
+      f" and {'ComponentLDBLClickUp' not in script_txt}")
+dead = sum(script_txt.count(t) for t in ('zz_rclick', 'check_rclick_property'))
+print(f"   dead property-route code left behind      : {dead} (want 0)")
+assert HINT in t_txt, "tooltip hint missing"
+assert "Double Click Unit Card" not in script_txt, "the double-click command handler should be gone"
+assert "ComponentLDBLClickUp" not in script_txt, "the double-click component listener should be gone"
+# the claim path copies the engine's key value before ANY string operation
+# (as_plain_string) and the scan probe reports keytype/copyok/lenok; the old
+# AddScriptEventReporter gate died with the call itself.
+assert "badge creation deferred to the tick" in script_txt, "the deferred badge creation line is missing"
+assert "as_plain_string" in script_txt, "the engine-key copy helper is missing from the claim path"
+assert "scan probe: keytype=" in script_txt, "the scan probe keytype line is missing"
+# round 7: the bounded re-scan loop (the brisk window; the dead local-ceiling
+# slot stays freed so the chunk compiles under Lua's 200-local limit).
+assert "local brisk_walk_until = -1" in script_txt, "the round-7 window local is missing"
+assert "brisk_walk_until = ui_ticks + 48" in script_txt, "the fresh-window open is missing"
+assert "CHARGE_ORDER_TOLERANCE_M" not in script_txt, "the freed local-ceiling slot came back"
+assert "zz_auto_" in script_txt, "the badge component is missing from the script"
+assert "onslaught" in script_txt, "the ability marker is missing from the script"
+assert "SetText" in script_txt, "the badge letter switch (SetText) is missing"
+for tok in ("zz_rclick", "check_rclick_property"):
+    assert tok not in script_txt, f"dead right-click code left in the script: {tok}"
+
+# round 35 (extensions - nothing above is loosened): the second ability
+# (Foe-Seeker) must ship, driven by the ABILITIES table, and the 60/90 s
+# timers must NOT come back.
+assert "foe_seeker" in script_txt, "the foe_seeker ability is missing from the script"
+assert "wh_main_character_abilities_foe_seeker" in script_txt, "the foe_seeker key is missing"
+assert "wh_dlc03_character_abilities_foe_seeker" in script_txt, "the foe_seeker dlc key variant is missing"
+assert "zz_auto_badge_fs" in script_txt, "the Foe-Seeker badge id is missing from the script"
+assert "is_moving_fast" in script_txt, "the running trigger is missing from the script"
+assert "check_readiness" in script_txt, "the readiness gate is missing from the script"
+assert "GUARD_SECONDS = 2" in script_txt, "the short 2 s guard is missing from the script"
+for tok in ("ABILITY_RECHARGE_SECONDS", "ACTIVATION_BRAKE_TICKS", "MIN_SECONDS_BETWEEN_FIRES"):
+    assert tok not in script_txt, f"a 60/90 s timer token is back in the script: {tok}"
+
+# the runtime probe ships too (one throwaway file; the main mod is untouched).
+probe_src_path = SRC_ROOT + "/script/battle/mod/zz_probe_unit_reads.lua"
+probe_txt = open(probe_src_path, encoding="utf-8", errors="replace").read()
+p_raw = bytes(c.send({"GetPackedFileRawData": [key, "script/battle/mod/zz_probe_unit_reads.lua"]})["VecU8"])
+p_ok = (p_raw == probe_txt.encode("utf-8"))
+print("\n== 6b the runtime probe file")
+print(f"   probe packed and byte-identical to source : {p_ok}")
+print(f"   probe tag present in the pack             : {'[zz_probe_unit_reads]' in probe_txt}")
+print(f"   probe writes its own log file             : {PROBE_LOG in probe_txt}")
+print(f"   probe aborts no reads on a bad read       : {'EXISTS-BUT-ERRORS' in probe_txt}")
+assert p_ok, "the probe file did not ship byte-identical"
+assert "[zz_probe_unit_reads]" in probe_txt, "the probe tag is missing"
+assert PROBE_LOG in probe_txt, "the probe's own log name is missing"
+assert "EXISTS-BUT-ERRORS" in probe_txt, "the probe verdict vocabulary is missing"
+
+# the UI-TEXT probe ships too (its own file, its own log; the main mod is
+# untouched). It is the probe that answers whether a unit's stat VALUES can be
+# read back through the UI component layer.
+UI_PROBE_IN_PACK = "script/battle/mod/zz_probe_ui_text.lua"
+UI_PROBE_LOG = "zz_probe_ui_text_log.txt"
+ui_probe_txt = open(SRC_ROOT + "/" + UI_PROBE_IN_PACK, encoding="utf-8", errors="replace").read()
+ui_raw = bytes(c.send({"GetPackedFileRawData": [key, UI_PROBE_IN_PACK]})["VecU8"])
+ui_ok = (ui_raw == ui_probe_txt.encode("utf-8"))
+print("\n== 6c the UI-text probe file")
+print(f"   UI probe packed and byte-identical to source : {ui_ok}")
+print(f"   UI probe tag present                        : {'[zz_probe_ui_text]' in ui_probe_txt}")
+print(f"   UI probe writes its own log file            : {UI_PROBE_LOG in ui_probe_txt}")
+print(f"   UI probe console hook present               : {'function zz_probe_ui(' in ui_probe_txt}")
+# round 3: the probe is MOUSE-ARMED - the tokens below are the ones the CURRENT
+# probe actually carries (round 2 redesigned it to continuous capture; round 3
+# added the ComponentMouseOn/Off listeners and the reporter subscription).
+for tok in ("GetStateText", "GetTooltipText", "CurrentState",
+            "VisibleFromRoot", "***STAT-LIKE***", "zz_probe_ui(",
+            "POLL_MS", "MAX_VISITS", "zz_probe_ui_arm",
+            "ComponentMouseOn", "ComponentMouseOff",
+            "MOUSE_SECONDS", "MAX_MOUSE_CAPTURES", "AddScriptEventReporter"):
+    assert tok in ui_probe_txt, f"the UI probe is missing {tok}"
+# round 7: the ZERO-WRITE read experiment (both cards' CcoBattleUnit fields
+# via common.get_context_value, the label_compare hover comparison) and the
+# slimmed walks / removed safety windows. NO write may ship.
+for tok in ("ROUND 7 - ZERO-WRITE READ EXPERIMENT", "zz_probe_r7", "zz_probe_r7_status",
+            "zz_probe_r7_help", "common.get_context_value", "ComparisonValue",
+            "label_compare", "R7-SKIP", "r7_skip_write",
+            "STAT_MAX_DEPTH    = 12", "STAT_MAX_VISITS   = 200",
+            "STAT_WATCH_VISITS = 250"):
+    assert tok in ui_probe_txt, f"the R7 UI probe is missing {tok}"
+for tok in ("MAX_SAFETY_WINDOWS", "pcall(function() r5.panel:SetContextObject",
+            "pcall(function() e.unit:select_in_ui() end)",
+            "pcall(function() c.uic:SimulateMouseOn() end)",
+            "pcall(function() r5.sim_card.uic:SimulateMouseOff() end)",
+            "pcall(function() bits.ds:SetContextObject(obj) end)"):
+    assert tok not in ui_probe_txt, f"a removed round-7 token is back: {tok}"
+# round 8: THE DECISIVE EXPERIMENT - the ground-truth table (PART 1), the
+# simulated-hover ladder (PART 2: SimulateMouseOn/Off at 50/150/300/1500 ms,
+# every On paired with an Off), the invisibility research (PART 3) and the
+# manual-only select test (PART 4). ZERO SetContextObject calls may ship.
+for tok in ("ROUND 8 - THE DECISIVE EXPERIMENT", "zz_probe_r8",
+            "zz_probe_r8_status", "zz_probe_r8_toggle_select_test",
+            "zz_probe_r8_help", "R8_POLL_NAME", "zz_probe_r8_poll",
+            "SIMHOVER", "TRUTH ", "DESELECT-TEST",
+            "r8_sim_on", "r8_sim_off",
+            "holds = { 50, 150, 300, 1500 }",
+            "persisted_ms=", "comparison_seen=", "invisible=",
+            "logged BEFORE the call", "ZERO SetContextObject",
+            # GATE OBSERVABILITY + FORCE PATH (this build): the ~1 Hz gate line
+            # runs even when the gate is closed and names the firing condition;
+            # zz_probe_r8() forces the ladder and logs R8 FORCE.
+            "GATE panel_seen=", "FORCE zz_probe_r8() called",
+            "gate_every", "r8_log_gate", "r8_gate_probe",
+            "GATE OPENED by ", "no stat rows visible"):
+    assert tok in ui_probe_txt, f"the R8 UI probe is missing {tok}"
+assert "function zz_probe_r8(" in ui_probe_txt, "the R8 start hook is missing"
+assert "function zz_probe_r8_toggle_select_test(" in ui_probe_txt, "the R8 select-test toggle is missing"
+# round 9: resolve the stat panel BY NAME first (find_uicomponent -> root:Find ->
+# FindByScriptTag -> SequentialFind), a bounded 2000-visit / depth-20 walk ONLY for a
+# name that fails, the REAL component-id logging under the panel, the context reads
+# (GetContextObjectId / GetContextObject) on the components FOUND, and the decisive
+# common.get_context_value queries (selected + NON-selected). ZERO writes; the
+# round-8 simulated-hover ladder is DISARMED by default.
+for tok in ("ROUND 9", "zz_probe_r9", "zz_probe_r9_status", "zz_probe_r9_help",
+            "R9 LOOKUP ", "WALK started because",
+            "WALK stopped for ", "reason=", "R9 CTX ", "R9 CTXOBJ ",
+            "QUERY selected=", "QUERY nonsel=", "PANEL row ",
+            "common.get_context_value", "StatList.Size", "ComparisonValue",
+            "id_hints", "value_holder", "bar_base", "bar_mod", "label_compare",
+            "sim_armed = false", "simhover DISARMED",
+            "walk_visits = 2000", "walk_depth  = 20"):
+    assert tok in ui_probe_txt, f"the R9 UI probe is missing {tok}"
+assert "function zz_probe_r9(" in ui_probe_txt, "the R9 start hook is missing"
+assert "function zz_probe_r8_toggle_sim(" in ui_probe_txt, "the R8 sim toggle is missing"
+# round 11: the round-10 post-mortem build. The engine's name-lookup helper
+# killed the game on round 10's step 3, so it is BANNED from the probe entirely -
+# the token must NOT appear anywhere in the shipped file (build gate asserts it).
+# Step 1-2 fully enumerate the UI root (proven safe); step 3 descends two levels
+# below hint-tagged nodes to locate the stat panel; step 4 reads the stat rows +
+# the context ids; step 5 asks ONE decisive common.get_context_value.
+assert "find_uicomponent" not in ui_probe_txt, "the banned name-lookup helper is back in the probe"
+for tok in ("ROUND 11", "zz_probe_r11", "zz_probe_r11_step", "zz_probe_r11_auto",
+            "zz_probe_r11_status", "zz_probe_r11_help",
+            "ROOTCOUNT", "ROOTCHILD", "DESCEND", "LOCATED ",
+            "PANEL n=", "CTXID ", "QUERY selected", "QUERY nonsel",
+            "descend_visits", "descend_depth", "hint_of",
+            "root_max", "child_max", "stat_ids",
+            "common.get_context_value", "GetContextObjectId", "StatList.Size"):
+    assert tok in ui_probe_txt, f"the R11 UI probe is missing {tok}"
+assert "function zz_probe_r11_step(" in ui_probe_txt, "the R11 step hook is missing"
+assert "function zz_probe_r11(" in ui_probe_txt, "the R11 start hook is missing"
+# round 12: the round-11 depth-cap post-mortem build. Round 11 stopped the descent at
+# depth 4 (the cap, not the budget); round 12 SEEDS the descent on the NUMERIC unit-id
+# nodes under unit_id_holder, descends to DEPTH 8 with an 800-visit budget, logs every
+# node (R12 DOWN), locates + pairs the stat rows (R12 LOCATED / R12 PANEL row=), reads
+# GetContextObjectId (R12 CTXID) and runs EXACTLY TWO common.get_context_value calls
+# (R12 QUERY sel= / R12 QUERY nonsel=). SIX steps total, one per armed console call.
+assert "find_uicomponent" not in ui_probe_txt, "the banned name-lookup helper is back in the probe"
+for tok in ("ROUND 12", "zz_probe_r12", "zz_probe_r12_step", "zz_probe_r12_auto",
+            "zz_probe_r12_status", "zz_probe_r12_help",
+            "ROOTCOUNT", "UNITIDCHILD", "DOWN ", "LOCATED ",
+            "PANEL row=", "CTXID ", "QUERY sel=", "QUERY nonsel=",
+            "R12 TOTAL STEPS 6", "descend_visits", "descend_depth",
+            "unit_id_holder", "is_numeric", "locate_names", "total_steps",
+            "common.get_context_value", "GetContextObjectId", "StatList.Size"):
+    assert tok in ui_probe_txt, f"the R12 UI probe is missing {tok}"
+assert "function zz_probe_r12(" in ui_probe_txt, "the R12 start hook is missing"
+assert "function zz_probe_r12_step(" in ui_probe_txt, "the R12 step hook is missing"
+assert "descend_visits  = 800" in ui_probe_txt, "the R12 visit budget is not 800"
+assert "descend_depth   = 8" in ui_probe_txt, "the R12 depth cap is not 8"
+assert "total_steps     = 6" in ui_probe_txt, "the R12 total-step count is not 6"
+# round 13: the all-roots descent. Round 12 seeded the descent on the NUMERIC unit-id
+# nodes under unit_id_holder and walked into the ON-FIELD UNIT CARD (LOCATED: 0); the
+# stat components answer to a STABLE id PREFIX (CcoUnitStat*) the hint-substring hunt
+# never tested. Round 13 descends EVERY top-level root that has children (priority
+# hud_battle, panel_manager, under_advisor_docker, left, right, tactical_hud, menu_bar,
+# then the rest) to DEPTH 8 with a 1200-visit budget, matching the CcoUnitStat* PREFIX
+# (case-insensitive) AND the structural names; pairs the rows (R13 PANEL row=), reads
+# GetContextObjectId (R13 CTXID) and runs EXACTLY TWO common.get_context_value calls
+# (R13 QUERY sel= / nonsel=). SEVEN steps total, one per armed console call.
+assert "find_uicomponent" not in ui_probe_txt, "the banned name-lookup helper is back in the probe"
+for tok in ("ROUND 13", "zz_probe_r13", "zz_probe_r13_step", "zz_probe_r13_auto",
+            "zz_probe_r13_status", "zz_probe_r13_help",
+            "ROOTCOUNT", "DESCEND PLAN", "DOWN path=", "R13 HIT", "LOCATED ",
+            "PANEL row=", "ROWCTX ", "CTXID ", "QUERY sel=", "QUERY nonsel=",
+            "R13 TOTAL STEPS 7", "descend_visits", "descend_depth",
+            "stat_prefix", "ccounitstat", "locate_names", "priority",
+            "hud_battle", "panel_manager", "under_advisor_docker", "tactical_hud", "menu_bar",
+            "is_prefix_id", "is_hit_id", "total_steps", "GetTooltipText",
+            "common.get_context_value", "GetContextObjectId", "StatList.Size", "DisplayedValue"):
+    assert tok in ui_probe_txt, f"the R13 UI probe is missing {tok}"
+assert "function zz_probe_r13(" in ui_probe_txt, "the R13 start hook is missing"
+assert "function zz_probe_r13_step(" in ui_probe_txt, "the R13 step hook is missing"
+assert "descend_visits  = 1200" in ui_probe_txt, "the R13 visit budget is not 1200"
+assert "descend_depth   = 8" in ui_probe_txt, "the R13 depth cap is not 8"
+assert "total_steps     = 7" in ui_probe_txt, "the R13 total-step count is not 7"
+assert 'stat_prefix     = "ccounitstat"' in ui_probe_txt, "the R13 stable prefix is not ccounitstat"
+# round 14: the round-13 DISCOVERY build. Round 13 found the panel's real path
+# (unit_information lives UNDER info_panel_parent inside hud_battle) and the context-id
+# format (GetContextObjectId("CcoUnitDetails") on info_panel/list -> "BattleUnit_1001"),
+# but its 1200-visit descent ran out of budget before the stat ROWS (PANEL rows: 0), so
+# both value queries returned <ERR>. Round 14 SEEDS the descent on the discovered path
+# (each link = the direct child whose Id matches), walks DOWN from `list` (depth 6, budget
+# 300), pairs the rows (R14 PANEL row=), then runs a FIXED ladder of common.get_context_value
+# calls - a control, CcoUnitDetails/"BattleUnit_1001" (Name/StatList/StatList.Size),
+# CcoUnitStat/"BattleUnit_1001" (DisplayedValue/Name), then the SAME shape for the
+# NON-selected unit ("BattleUnit_1002" and bare "1002") - logged before AND after, stopping
+# at the first success, with a loud R14 *** WIN *** on any non-selected success. EIGHT steps.
+assert "find_uicomponent" not in ui_probe_txt, "the banned name-lookup helper is back in the probe"
+for tok in ("ROUND 14", "zz_probe_r14", "zz_probe_r14_step", "zz_probe_r14_auto",
+            "zz_probe_r14_status", "zz_probe_r14_help",
+            "R14 TOTAL STEPS 8", "SEED link ", "SEED resolved the FULL chain",
+            "DOWN path=", "PANEL row=", "ROWHEADER ", "R14 GCV n=", "R14 CALL ",
+            "*** WIN: non-selected unit stat field readable ***",
+            "info_panel_parent", "info_panel_background", "unit_information",
+            "info_parent", "info_panel", "row_header_stats", "template_stat",
+            "value_holder", "dy_value", "stat_name", "resolve_chain",
+            "walk_visits", "walk_depth", "total_steps",
+            "common.get_context_value", "CcoBattleUnit", "CcoUnitDetails", "CcoUnitStat",
+            "BattleUnit_1001", "BattleUnit_1002", "StatList", "StatList.Size", "DisplayedValue"):
+    assert tok in ui_probe_txt, f"the R14 UI probe is missing {tok}"
+assert "function zz_probe_r14(" in ui_probe_txt, "the R14 start hook is missing"
+assert "function zz_probe_r14_step(" in ui_probe_txt, "the R14 step hook is missing"
+assert "walk_visits         = 300" in ui_probe_txt, "the R14 walk budget is not 300"
+assert "walk_depth          = 6" in ui_probe_txt, "the R14 walk depth is not 6"
+assert "total_steps         = 8" in ui_probe_txt, "the R14 total-step count is not 8"
+# round 15: THE FINAL EXPERIMENT (user-designed) - the invisible/control simulated-hover
+# passes. Step A dumps every stat row's comparison components + context ids (read-only
+# baseline); three INVISIBLE SimulateMouseOn/Off passes over ONE non-selected card
+# (holds 100/150/250 ms - all below the 250 ms tooltip draw delay) poll every 25 ms for
+# changes in label_compare text, comparison-named component text and the row's
+# CcoUnitStat context id (before/after logged); then the 1500 ms CONTROL pass (the
+# tooltip WILL draw - expected) and the verdict. Every SimulateMouseOn is paired with
+# its Off. SEVEN steps, one per console call. ZERO context writes.
+assert "find_uicomponent" not in ui_probe_txt, "the banned name-lookup helper is back in the probe"
+for tok in ("ROUND 15", "zz_probe_r15", "zz_probe_r15_step", "zz_probe_r15_status",
+            "zz_probe_r15_help", "zz_probe_r15_poll",
+            "R15 TOTAL STEPS 7", "CMP row=", "CMPB", "CMPG",
+            "CTXROW row=", "CTXID row=", "TRACK row=", "TARGET card=",
+            "BASELINE rows=", "HOVER pass=", "PASS n=", "PAIRS sim_on=",
+            "VERDICT pass1_changed=", "DELTA pass=",
+            "*** WIN: hover exposes non-selected stats INVISIBLY ***",
+            "no invisible exposure; control_changed=",
+            "SIMHOVER SimulateMouseOn pass=", "SIMHOVER SimulateMouseOff pass=",
+            "label_compare", "comparison-named", "rowctx", "first_text",
+            "GetContextObjectId", "GetStateText", "SimulateMouseOn", "SimulateMouseOff",
+            "tooltip draw delay", "hovered_expected", "settle_ms", "visible_ms"):
+    assert tok in ui_probe_txt, f"the R15 UI probe is missing {tok}"
+assert "function zz_probe_r15(" in ui_probe_txt, "the R15 start hook is missing"
+assert "function zz_probe_r15_step(" in ui_probe_txt, "the R15 step hook is missing"
+assert "function zz_probe_r15_poll(" in ui_probe_txt, "the R15 poll function is missing"
+assert "holds               = { 100, 150, 250, 1500 }" in ui_probe_txt, "the R15 holds are not 100/150/250/1500"
+assert "total_steps         = 7," in ui_probe_txt, "the R15 total-step count is not 7"
+assert "poll_ms             = 25," in ui_probe_txt, "the R15 poll cadence is not 25 ms"
+assert "visible_ms          = 250," in ui_probe_txt, "the R15 tooltip-delay constant is not 250"
+assert "bm:repeat_callback(zz_probe_r15_poll, R15.poll_ms, R15.poll_name)" in ui_probe_txt, "the R15 poll registration is missing"
+# the round-9 defect fix: the name-lookup helper returned FALSE on a miss and a
+# bare `raw ~= nil` wrapped the boolean -> a hard crash. The truthiness guard
+# must ship; the unproven fallbacks must stay gone.
+assert "if raw == nil or raw == false then return nil end" in ui_probe_txt, "the wrap() truthiness guard is missing"
+assert 'how = "FindByScriptTag"' not in ui_probe_txt, "the unproven FindByScriptTag fallback is back in R9"
+assert 'how = "SequentialFind"' not in ui_probe_txt, "the unproven SequentialFind fallback is back in R9"
+# the R9 auto-run must stay disarmed
+assert "auto_enabled = false" in ui_probe_txt, "the R9 auto-run is not disarmed"
+assert "if R9.auto_enabled and (not R9.ran)" in ui_probe_txt, "the R9 auto-run is not gated"
+# the simulated-hover ladder must be DISARMED at load (default false)
+assert "sim_armed = false, sim_wait_spoken = false" in ui_probe_txt, "the simhover ladder is not disarmed at load"
+assert "(not r8.sim_armed)" in ui_probe_txt, "the auto-ladder is not gated on sim_armed"
+# the R9 lookup tries find_uicomponent BEFORE the probe's own finders
+assert "root:Find" in ui_probe_txt, "the R9 name lookup (root:Find) is missing"
+# the ONLY SetContextObject mentions are the two comment lines - no call site
+assert ui_probe_txt.count(":SetContextObject(") == 2, "a SetContextObject call site is back"
+# the sim helpers log BEFORE they call (a crash names its last write)
+assert ui_probe_txt.index("SIMHOVER SimulateMouseOn") < ui_probe_txt.index("uic:SimulateMouseOn()"), "sim_on must log before the call"
+assert ui_probe_txt.index("SIMHOVER SimulateMouseOff") < ui_probe_txt.index("uic:SimulateMouseOff()"), "sim_off must log before the call"
+# round 4 (the targeted stat dump - where the value lives) and round 5 (the
+# cross-unit experiment: context objects, select_in_ui, SimulateMouseOn).
+for tok in ("zz_probe_stat_dump", "dynamic_stats", "template_stat", "dy_value",
+            "GetContextObject", "GetContextObjectId", "SetContextObject",
+            "select_in_ui", "SimulateMouseOn", "SimulateMouseOff",
+            "review_DY", "CcoUnitDetails", "CcoUnitStat",
+            "zz_probe_r5", "zz_probe_r5_setctx", "zz_probe_r5_select", "zz_probe_r5_hover",
+            "R5.2 set cap reached", "R5.3 select cap reached", "R5.4 simulation cap reached"):
+    assert tok in ui_probe_txt, f"the UI probe is missing {tok}"
+# round 6: the one-write-per-pass context ladder (R5's auto ladder is disarmed
+# inside the probe; its manual hooks stay). The cco( ) build re-checks the global
+# at use time, then core.cco / core:cco, then a live GetContextObject read.
+for tok in ("zz_probe_r6_next", "zz_probe_r6_status", "zz_probe_r6_help",
+            "R6 PASS ", "THE ONE WRITE OF THIS PASS", "core:cco",
+            "r5.auto_done = true", "CcoBattleUnit", "live-read", "round 6"):
+    assert tok in ui_probe_txt, f"the UI probe is missing {tok}"
+assert "function zz_probe_r6_next(" in ui_probe_txt, "the R6 advance hook is missing"
+assert ui_ok, "the UI-text probe did not ship byte-identical"
+assert "[zz_probe_ui_text]" in ui_probe_txt, "the UI probe tag is missing"
+assert UI_PROBE_LOG in ui_probe_txt, "the UI probe's own log name is missing"
+assert "function zz_probe_ui(" in ui_probe_txt, "the UI probe one-shot hook is missing"
+assert "function zz_probe_ui_arm(" in ui_probe_txt, "the UI probe manual arm hook is missing"
+assert "function zz_probe_r5(" in ui_probe_txt, "the R5 full-run hook is missing"
+assert "function zz_probe_r5_setctx(" in ui_probe_txt, "the R5 SetContextObject hook is missing"
+
+# the main mod must be byte-identical (untouched by this work)
+main_src = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua", "rb").read()
+main_raw = bytes(c.send({"GetPackedFileRawData": [key, "script/battle/mod/zz_test_deadly_onslaught.lua"]})["VecU8"])
+print(f"\n== 6d main mod untouched (byte-identical)     : {main_raw == main_src}")
+assert main_raw == main_src, "the main mod changed - it must not"
+
+step("7 save to disk", {"SavePackAs": [key, OUT_PACK]})
+step("8 close", {"ClosePack": key})
+try:
+    c.send("ClientDisconnecting")
+except Exception:
+    pass  # the server shuts down as soon as the last session leaves
+
+print("\n================ INSTALL ================")
+shutil.copy2(OUT_PACK, GAME_PACK)
+a = hashlib.md5(open(OUT_PACK, "rb").read()).hexdigest()
+b = hashlib.md5(open(GAME_PACK, "rb").read()).hexdigest()
+print(f"built pack   md5 {a}")
+print(f"installed    md5 {b}")
+print(f"IDENTICAL    {a == b}")
+print(f"installed to {GAME_PACK}")

@@ -1,0 +1,119 @@
+C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261018_airdrop_edgesimple_harness114\build_diag114.py:317: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+source zz_test_deadly_onslaught.lua         766246 bytes  sha256 aa30afe87ecd8db3d9ee9636e160cf0b
+source zz_auto_badge.twui.xml                 2864 bytes  sha256 d95f04610529c2dd90f6ad3ac0b96434
+source blank.png                                69 bytes  sha256 f164334dc3985e3b8d95b71e59462c9c
+source auto_badge.png                          252 bytes  sha256 31e69b91d59795f90c7920091729f23c
+source special_ability_tooltip.twui.xml     331235 bytes  sha256 3b39112c1f3675b96a3803023ed3a82d
+  hello: {"id": 0, "data": {"SessionConnected": 3}}
+
+== 1 select game
+  <= {"CompressionFormatDependenciesInfo": ["None", null]}
+
+== 2 new pack
+  <= {"String": "new_pack.pack"}
+
+== 3 add the main script and the four ui files
+  <= {"VecContainerPathOptionString": [[{"File": "script/battle/mod/zz_test_deadly_onslaught.lua"}, {"File": "ui/templates/zz_auto_badge.twui.xml"}, {"File": "ui/zz_auto/blank.png"}, {"File": "ui/zz_auto/a
+
+== 4 type = Movie
+  <= "Success"
+
+== 5 list contents
+  <= {"ContainerInfoVecRFileInfo": [{"file_name": "new_pack.pack", "file_path": "new_pack.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "", "compress": "None", "timestamp": 0}, [{"path
+   container: Movie | files: ['script/battle/mod/zz_test_deadly_onslaught.lua', 'ui/common ui/special_ability_tooltip.twui.xml', 'ui/templates/zz_auto_badge.twui.xml', 'ui/zz_auto/auto_badge.png', 'ui/zz_auto/blank.png']
+   script/battle/mod/zz_test_deadly_onslaught.lua     766246 bytes  MATCHES SOURCE: True
+   ui/templates/zz_auto_badge.twui.xml                  2864 bytes  MATCHES SOURCE: True
+   ui/zz_auto/blank.png                                   69 bytes  MATCHES SOURCE: True
+   ui/zz_auto/auto_badge.png                             252 bytes  MATCHES SOURCE: True
+   ui/common ui/special_ability_tooltip.twui.xml      331235 bytes  MATCHES SOURCE: True
+
+== 6 what the pack must contain
+   tooltip hint line present                 : True
+   the double-click toggles are gone         : True and True
+   dead property-route code left behind      : 0 (want 0)
+
+== 6d main mod untouched (byte-identical)     : True
+\n== round 114 content gates                : OK ==
+
+== 7 save to disk
+  <= {"ContainerInfo": {"file_name": "zz_test_deadly_onslaught.pack", "file_path": "C:/Users/vlady/Desktop/WH3_mod/mod_source/dist/zz_test_deadly_onslaught.pack", "pfh_version": "PFH5", "pfh_file_type": "M
+
+== 8 close
+  <= "Success"
+
+================ STALE ASSERTS (diagnostic) ================
+  STALE: the source does not state that 6 m is the user's own test value
+  STALE: the source does not explain the edge-to-edge failure (boxes near, CENTRES far)
+  STALE: the helper does not read the ground-plane x/z
+  STALE: the helper does not use distance_xz with an x/z fallback
+  STALE: the target line does not say UNDER
+  STALE: the target line does not name the per-model radius constant
+  STALE: the velocity helper does not read is_moving()
+  STALE: the velocity helper does not read is_moving_fast()
+  STALE: the velocity helper does not read slow_speed()
+  STALE: the velocity helper does not read fast_speed()
+  STALE: the velocity helper does not read ordered_position()
+  STALE: the velocity helper does not read bearing()
+  STALE: a unit that is not moving does not get a ZERO velocity
+  STALE: an unreadable velocity source is not named: "moving-unreadable"
+  STALE: an unreadable velocity source is not named: "no-speed"
+  STALE: an unreadable velocity source is not named: "no-heading"
+  STALE: the degenerate-ordered-point gate is missing
+  STALE: the bearing fallback is not caster-gated
+  STALE: the projection does not add v*t on both axes
+  STALE: the no-momentum assumption is not documented once, in the rule comment
+  STALE: the single-flag escape hatch is not documented
+  STALE: the 1.5 s delay is not documented as a tunable constant (not a game value)
+  STALE: the caster-position fail-closed branch is missing
+  STALE: the target line does not announce the projection
+  STALE: the target line does not print the projected separation
+  STALE: the target line does not print the instant separation
+  STALE: the watch line does not print EXACT metres below 15 m (and a band above it)
+  STALE: the target line does not name the momentum mode
+  STALE: the round-111 constant comment is missing
+  STALE: the tuning guide does not state the 0.5 -> 0.3 -> 0.0 order for an early release
+  STALE: the three-symptom tuning guide is not in the source
+  STALE: the source does not say to change one dial per test
+  STALE: the projection helper is missing
+  STALE: the caster's lead time/factor locals are missing
+  STALE: the caster is not projected as position + v * caster_delay * lead (x axis)
+  STALE: the caster is not projected as position + v * caster_delay * lead (z axis)
+  STALE: the ENEMY projection is no longer the shared v*t on both axes
+  STALE: the dials are not applied to the caster alone
+  STALE: an unreadable caster delay does not fall back to the shared delay
+  STALE: an unreadable caster lead does not fall back to full lead (never to a guess)
+  STALE: the moving-caster log fragment is missing
+  STALE: the projection helper is missing
+  STALE: the enemy lead is not read on the enemy arm
+  STALE: the enemy is not projected as position + v * delay * enemy_lead
+  STALE: an unreadable enemy lead does not fall back to the full carry (never to a guess)
+  STALE: the caster's lead locals are missing
+  STALE: the caster is no longer projected by its own delay x lead (x axis)
+  STALE: the caster is no longer projected by its own delay x lead (z axis)
+  STALE: the dial text does not name the enemy lead and the shared delay
+  STALE: the dial text does not name both caster dials
+  STALE: the moving-caster log fragment is missing
+  STALE: the watch line does not print the EXACT projected distance below 15 m
+  STALE: the watch line does not print the EXACT instant distance below 15 m
+  STALE: the 5 m band above 15 m is gone (the log must not grow per 0.1 m there)
+  STALE: the four-dial tuning table is not in the source
+  STALE: the source does not say to change one dial per test
+  STALE: the caster-lead tuning order is gone
+  STALE: the symptom tuning guide is not in the source
+  STALE: the clamp branch is missing
+  STALE: the point-to-segment helper is missing
+  STALE: the segment helper does not project the point onto the segment
+  STALE: the segment parameter is not clamped to 0..1 (an END-point miss would read as a hit)
+  STALE: the formation assumption / the radius evidence is not documented in the source
+  STALE: the clamp is not documented in the source
+  STALE: the source does not state that the commander key set is not consulted
+  STALE: the once-per-episode single-entity skip line is missing
+  STALE: the once-per-episode skip bookkeeping is missing
+total stale: 67
+
+================ INSTALL ================
+built pack   md5 a3a553e9453285af6e88ced1c41f75b7
+installed    md5 a3a553e9453285af6e88ced1c41f75b7
+IDENTICAL    True
+installed to C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack

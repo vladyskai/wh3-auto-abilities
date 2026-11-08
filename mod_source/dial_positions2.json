@@ -1,0 +1,847 @@
+[
+ {
+  "t": 5.0,
+  "hdr": "[zz_test_deadly_onslaught] INVENTORY sweep t=5.0s found=23/25",
+  "items": {
+   "SA_dial": {
+    "visible": "false",
+    "pos": [
+     1072,
+     1052
+    ],
+    "relpos": [
+     530,
+     153
+    ],
+    "dock": [
+     530,
+     -5
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "dial_frame": {
+    "visible": "?",
+    "pos": [
+     null,
+     null
+    ],
+    "relpos": [
+     null,
+     null
+    ],
+    "dock": [
+     null,
+     null
+    ],
+    "state": "?",
+    "key": "?"
+   },
+   "button_parent": {
+    "visible": "false",
+    "pos": [
+     1072,
+     1052
+    ],
+    "relpos": [
+     0,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_order1": {
+    "visible": "false",
+    "pos": [
+     1130,
+     1052
+    ],
+    "relpos": [
+     58,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_character_abilities_deadly_onslaught"
+   },
+   "button_order12": {
+    "visible": "false",
+    "pos": [
+     1189,
+     1052
+    ],
+    "relpos": [
+     117,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_character_abilities_foe_seeker"
+   },
+   "button_order123": {
+    "visible": "false",
+    "pos": [
+     1248,
+     1052
+    ],
+    "relpos": [
+     176,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_dlc29_spell_bound_eye_jabber"
+   },
+   "button_order1234": {
+    "visible": "false",
+    "pos": [
+     1307,
+     1052
+    ],
+    "relpos": [
+     235,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_dlc29_weapon_abilities_legbiter"
+   },
+   "button_ability": {
+    "visible": "true",
+    "pos": [
+     96,
+     845
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_character_abilities_deadly_onslaught"
+   },
+   "button_ability1": {
+    "visible": "?",
+    "pos": [
+     null,
+     null
+    ],
+    "relpos": [
+     null,
+     null
+    ],
+    "dock": [
+     null,
+     null
+    ],
+    "state": "?",
+    "key": "?"
+   },
+   "button_ability2": {
+    "visible": "true",
+    "pos": [
+     166,
+     875
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_character_abilities_foe_seeker"
+   },
+   "button_ability3": {
+    "visible": "true",
+    "pos": [
+     194,
+     947
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_dlc29_spell_bound_eye_jabber"
+   },
+   "button_ability4": {
+    "visible": "true",
+    "pos": [
+     162,
+     1017
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_dlc29_weapon_abilities_legbiter"
+   },
+   "button_ability5": {
+    "visible": "false",
+    "pos": [
+     28,
+     877
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "-"
+   },
+   "button_ability6": {
+    "visible": "false",
+    "pos": [
+     2,
+     949
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "-"
+   },
+   "button_slot1": {
+    "visible": "false",
+    "pos": [
+     1021,
+     1055
+    ],
+    "relpos": [
+     0,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot2": {
+    "visible": "false",
+    "pos": [
+     1076,
+     1055
+    ],
+    "relpos": [
+     55,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot3": {
+    "visible": "false",
+    "pos": [
+     1131,
+     1055
+    ],
+    "relpos": [
+     110,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot4": {
+    "visible": "true",
+    "pos": [
+     156,
+     1011
+    ],
+    "relpos": [
+     114,
+     118
+    ],
+    "dock": [
+     22,
+     26
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot5": {
+    "visible": "false",
+    "pos": [
+     22,
+     871
+    ],
+    "relpos": [
+     -20,
+     -22
+    ],
+    "dock": [
+     -20,
+     -22
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot6": {
+    "visible": "false",
+    "pos": [
+     -4,
+     943
+    ],
+    "relpos": [
+     -46,
+     50
+    ],
+    "dock": [
+     -46,
+     4
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "behaviour_parent": {
+    "visible": "true",
+    "pos": [
+     1021,
+     1055
+    ],
+    "relpos": [
+     330,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "orders_parent": {
+    "visible": "true",
+    "pos": [
+     691,
+     1055
+    ],
+    "relpos": [
+     149,
+     156
+    ],
+    "dock": [
+     2,
+     -2
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "army_ability_parent": {
+    "visible": "false",
+    "pos": [
+     1904,
+     866
+    ],
+    "relpos": [
+     -40,
+     39
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "ability_parent": {
+    "visible": "true",
+    "pos": [
+     42,
+     893
+    ],
+    "relpos": [
+     32,
+     35
+    ],
+    "dock": [
+     -10,
+     -12
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "zz_auto_badge": {
+    "visible": "true",
+    "pos": [
+     115,
+     883
+    ],
+    "relpos": [
+     115,
+     883
+    ],
+    "dock": [
+     -865,
+     -209
+    ],
+    "state": "NewState",
+    "key": "-"
+   }
+  }
+ },
+ {
+  "t": 4.0,
+  "hdr": "[zz_test_deadly_onslaught] INVENTORY sweep t=4.0s found=21/24",
+  "items": {
+   "SA_dial": {
+    "visible": "false",
+    "pos": [
+     1072,
+     1052
+    ],
+    "relpos": [
+     530,
+     153
+    ],
+    "dock": [
+     530,
+     -5
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "dial_frame": {
+    "visible": "?",
+    "pos": [
+     null,
+     null
+    ],
+    "relpos": [
+     null,
+     null
+    ],
+    "dock": [
+     null,
+     null
+    ],
+    "state": "?",
+    "key": "?"
+   },
+   "button_parent": {
+    "visible": "false",
+    "pos": [
+     1072,
+     1052
+    ],
+    "relpos": [
+     0,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_order1": {
+    "visible": "false",
+    "pos": [
+     1130,
+     1052
+    ],
+    "relpos": [
+     58,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_item_abilities_opal_amulet"
+   },
+   "button_order12": {
+    "visible": "false",
+    "pos": [
+     1189,
+     1052
+    ],
+    "relpos": [
+     117,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_main_item_abilities_the_chromatic_tome"
+   },
+   "button_order123": {
+    "visible": "false",
+    "pos": [
+     1248,
+     1052
+    ],
+    "relpos": [
+     176,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_main_character_abilities_locus_of_conjuration"
+   },
+   "button_ability": {
+    "visible": "true",
+    "pos": [
+     96,
+     845
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh_main_item_abilities_opal_amulet"
+   },
+   "button_ability1": {
+    "visible": "?",
+    "pos": [
+     null,
+     null
+    ],
+    "relpos": [
+     null,
+     null
+    ],
+    "dock": [
+     null,
+     null
+    ],
+    "state": "?",
+    "key": "?"
+   },
+   "button_ability2": {
+    "visible": "true",
+    "pos": [
+     166,
+     875
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_main_item_abilities_the_chromatic_tome"
+   },
+   "button_ability3": {
+    "visible": "true",
+    "pos": [
+     194,
+     947
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "wh3_main_character_abilities_locus_of_conjuration"
+   },
+   "button_ability4": {
+    "visible": "false",
+    "pos": [
+     162,
+     1017
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "-"
+   },
+   "button_ability5": {
+    "visible": "false",
+    "pos": [
+     28,
+     877
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "-"
+   },
+   "button_ability6": {
+    "visible": "false",
+    "pos": [
+     2,
+     949
+    ],
+    "relpos": [
+     6,
+     6
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "active",
+    "key": "-"
+   },
+   "button_slot1": {
+    "visible": "true",
+    "pos": [
+     1021,
+     1055
+    ],
+    "relpos": [
+     0,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot2": {
+    "visible": "false",
+    "pos": [
+     1076,
+     1055
+    ],
+    "relpos": [
+     55,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot3": {
+    "visible": "false",
+    "pos": [
+     1131,
+     1055
+    ],
+    "relpos": [
+     110,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot4": {
+    "visible": "false",
+    "pos": [
+     156,
+     1011
+    ],
+    "relpos": [
+     114,
+     118
+    ],
+    "dock": [
+     22,
+     26
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot5": {
+    "visible": "false",
+    "pos": [
+     22,
+     871
+    ],
+    "relpos": [
+     -20,
+     -22
+    ],
+    "dock": [
+     -20,
+     -22
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "button_slot6": {
+    "visible": "false",
+    "pos": [
+     -4,
+     943
+    ],
+    "relpos": [
+     -46,
+     50
+    ],
+    "dock": [
+     -46,
+     4
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "behaviour_parent": {
+    "visible": "true",
+    "pos": [
+     1021,
+     1055
+    ],
+    "relpos": [
+     330,
+     0
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "orders_parent": {
+    "visible": "true",
+    "pos": [
+     691,
+     1055
+    ],
+    "relpos": [
+     149,
+     156
+    ],
+    "dock": [
+     2,
+     -2
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "army_ability_parent": {
+    "visible": "true",
+    "pos": [
+     1904,
+     639
+    ],
+    "relpos": [
+     -40,
+     -188
+    ],
+    "dock": [
+     0,
+     0
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "ability_parent": {
+    "visible": "true",
+    "pos": [
+     42,
+     893
+    ],
+    "relpos": [
+     32,
+     35
+    ],
+    "dock": [
+     -10,
+     -12
+    ],
+    "state": "NewState",
+    "key": "-"
+   },
+   "zz_auto_badge": {
+    "visible": "?",
+    "pos": [
+     null,
+     null
+    ],
+    "relpos": [
+     null,
+     null
+    ],
+    "dock": [
+     null,
+     null
+    ],
+    "state": "?",
+    "key": "?"
+   }
+  }
+ }
+]

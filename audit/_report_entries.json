@@ -1,0 +1,2106 @@
+[
+ {
+  "slice": 3,
+  "entry": 118,
+  "name": "Potion of Toughness",
+  "keys": [
+   "wh_main_item_abilities_potion_of_toughness"
+  ],
+  "logic": "trigger `melee_health75` — fires only when the unit is in melee AND its own health is at or below 75% (and not routing); cast on self via the default self-target call. The mod's own comment calls it \"a ONE-TIME activation treated as a HEAL\".",
+  "declares": "an active, self-targeted augment (`unit_abilities.type` = wh_type_augment; `unit_special_abilities` affect_self = true, all unit-target flags false, `ai_usage` = augment_melee_self) that for 21 s grants +30 armour, +24 melee defence and a small HP regeneration (heal_amount 0.0080); one use, 60 s recharge. Its game text: *\"Those that consume a Potion of Toughness find their skin hardening as swords and arrows glance off their body…\"* — i.e. protection that explicitly includes missile fire.",
+  "why": "the mod treats the potion as a heal, yet gates it behind melee contact, so the defensive consumable can never fire before contact or while taking missile/artillery damage — exactly the \"arrows\" case its own text advertises (\"a heal should not need melee\"). The ≤75%-health arm alone already provides the \"when hurt\" condition; the extra melee requirement is not implied by the effect.",
+  "feas": "both reads exist (is_in_melee and the proven HealthPercent read), and a health-only evaluator already ships (`ushoran_health` — the Ghoul King of Ushoran / Star of Avelorn \"health ≤75%, no melee gate\" pattern), so removing the melee arm needs no new reads or engine support. Note the tracker records the melee gate as a deliberate choice (armour/defence rationale), so this is flagged as a game-logic mismatch, not an engine limit.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 198,
+  "name": "Meat Feast",
+  "keys": [
+   "wh3_main_prisoners_butcher"
+  ],
+  "logic": "trigger `ushoran_health` - fires when the OWNER's health is at or below 75% (no melee gate) - then casts on self (default `perform_special_ability(key, unit)`; no cast_target is set).",
+  "declares": "An army-keyed single-target recover: Heals +2.8%/tick, Vigour -3%/s, \"to allies in range\" - target_friends = true, num_effected_friendly_units = 1, affect_self = false, target_self = false; the phase junction targets friends only. The game makes you pick ONE friendly unit; the caster is not among the legal targets and is not affected.",
+  "why": "The effect lands on a friendly unit and never on the caster, yet the mod reads the caster's OWN health and points the cast at the caster - neither the trigger's health basis nor the cast target matches the declared target. A self-cast should be refused by the engine (self is not a legal target) or, if accepted, still applies the wrong way.",
+  "feas": "Friendly units are readable - the mod already picks low-health allies (blood_sacrifice / eat_da_runts read `context_value(unit, \"HealthPercent\")` per friendly unit). An ally-heal picker (lowest-health in range) is the matching implementation; as-is the logic does not fit.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 199,
+  "name": "Captain of the Phoenix Guard",
+  "keys": [
+   "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard"
+  ],
+  "logic": "trigger `melee_health75` - in melee AND the owner at or below 75% health - then casts on self.",
+  "declares": "A single friendly unit is the only target: Physical Resistance +30 and Heals +0.5%/tick, \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, only_affect_target = true, affect_self = false; the phase junction targets friends only.",
+  "why": "The game declares one friendly unit as the target and applies the effect ONLY to that target, but the mod fires on the caster's own health and casts on the caster - a target the game does not list. The buff is intended for another unit (a hurt ally), not for the caster.",
+  "feas": "Friendly health is readable (same reads as the ally-heal pattern already shipped for blood_sacrifice / eat_da_runts); an ally picker fixes the target, and the trigger could then key off the chosen ally's health instead of the caster's.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 200,
+  "name": "Cash Cascade",
+  "keys": [
+   "wh3_dlc26_character_abilities_cash_cascade"
+  ],
+  "logic": "trigger `charge_or_melee` - charge window OR in melee (not routing) - then casts on self.",
+  "declares": "Area augment: Charge Bonus +25%, Melee Attack +24, Leadership +8 \"to self and allies\". The game declares friends AND ground as the selectable targets: target_friends = true, target_ground = true, target_self = false, num_fr = -1, range 35 m, target_intercept_range 200 m.",
+  "why": "Self is not a declared cast target - the game makes you aim this at a friendly unit or a ground point. The mod passes the caster as the unit target, which the engine may reject or re-interpret; the cast shape does not match the declared targeting.",
+  "feas": "The class is exactly what the mod's own ground-cast doctrine describes (\"the correct call for a key whose db row has target_ground = true\"): the same tagging (friends + ground) is why Tactician's Stand Your Ground got the ground form. FOURTH.ground_cast exists and the own position is readable - one line in ground_keys (or an ally pick) applies.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 204,
+  "name": "Da Boss 'as a Plan!",
+  "keys": [
+   "wh3_dlc26_character_abilities_da_boss_as_a_plan"
+  ],
+  "logic": "trigger `melee_unwavering` - in melee, not routing or wavering (fail-open morale) - then casts on self.",
+  "declares": "Single-friendly buff: Melee Defence +24, Leadership +8, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the phase junction targets friends only.",
+  "why": "The declared target is one friendly unit and the buff never includes the caster, yet the mod casts on the caster - a unit the game does not offer as a target (the mod's own tracker row already carries the \"cast on self for now (nearest-ally picker later)\" caveat).",
+  "feas": "Friendly units are readable and the ally-picker pattern is already proven in this mod (blood_sacrifice / eat_da_runts / glorious_death pass a chosen friendly unit as the cast target); the fix is a picker, not new reads.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 208,
+  "name": "Empowering Shrooms",
+  "keys": [
+   "wh3_dlc26_character_abilities_empowering_shrooms"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Ally area augment: Melee Attack +24, Leadership +16, Stops Rampage! \"to allies in range\" - target_friends = true, target_ground = true, target_self = false, num_fr = -1, range 35 m, intercept 100 m.",
+  "why": "Self is not a declared target; the game asks for a friendly unit or a ground point (the area then covers the friends around it). The mod self-casts, so the cast shape contradicts the declared targeting.",
+  "feas": "Ground form (cast at own feet via FOURTH.ground_cast) or an ally pick both match this class; the helper and the position read already exist.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 209,
+  "name": "Favour of the Fay",
+  "keys": [
+   "wh_dlc07_lord_abilities_favour_of_the_fay"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Single-friendly buff: Melee Attack +40 - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the game row gives friends as the target class.",
+  "why": "The declared target is one friendly unit; the mod casts on the caster, which is not among the game's legal targets (the tracker row itself says \"cast on self for now (nearest-ally picker later)\").",
+  "feas": "Friendly reads available; an ally picker matches the ability. As-is the self-cast does not match the declared target.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 214,
+  "name": "Fury of Khaine",
+  "keys": [
+   "wh2_main_unit_abilities_fury_of_khaine"
+  ],
+  "logic": "trigger `charge_or_melee` - charge window OR in melee (not routing) - then casts on self.",
+  "declares": "Single-friendly buff: Melee Attack +24, Armour-Piercing Weapon Damage +50%, Base Weapon Damage +50%, Rampage! \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false; the phase junction targets friends only.",
+  "why": "The effect and its single target are an ally's (the wielder fires up another unit - e.g. the cauldron's Death Hags buff a chosen regiment), but the mod casts on the caster. The trigger itself (charge/melee) fits a melee buff, but the cast target does not.",
+  "feas": "Ally picker (friendly units readable, pattern already shipped); as-is the self-cast targets the wrong unit.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 216,
+  "name": "Gaze of Khaine",
+  "keys": [
+   "wh2_dlc10_lord_abilities_gaze_of_khaine"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Area augment to self and allies: Melee Attack +24, AP +25%, Base +25%, Leadership +8 - but the ONLY declared target is the ground: target_ground = true, target_friends = false, target_self = false, num_fr = -1, range 35 m, intercept 100 m.",
+  "why": "The game declares a ground-targeted cast (the area is placed at a point), and even the project's own approved activation for this key says \"cast at own feet (existing ground-cast path)\" - yet the shipped entry passes the unit target instead of the ground form.",
+  "feas": "Own position is readable and FOURTH.ground_cast already exists for exactly this call shape; adding the key to ground_keys (cast at own feet) matches both the game data and the tracker's approved plan.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 218,
+  "name": "Gulyas",
+  "keys": [
+   "wh3_dlc24_lord_abilities_gulyas"
+  ],
+  "logic": "trigger `ushoran_health` - owner at or below 75% health, no melee gate - then casts on self.",
+  "declares": "Area regeneration placed at a ground point: Heals +0.08%/tick, Leadership +4, Vigour -1%/s \"to self and allies\" (up to 5 friendly units) - target_ground = true, target_self = false, target_friends = false, num_fr = 5, range 35 m.",
+  "why": "The only declared target is the ground; the mod passes the unit target. The project itself planned \"cast at own feet (existing ground-cast path)\" for this key, but the shipped entry is a plain self-cast.",
+  "feas": "Ground form via FOURTH.ground_cast (own position readable) implements the approved plan; the trigger (own health <= 75%, health-only) fits the self+allies heal once the cast shape is right.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 220,
+  "name": "Helping Hand",
+  "keys": [
+   "wh2_pro08_character_abilities_helping_hand"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Ally-anchored buff: Melee Attack +40, Damage Resistance +40 \"to allies in range\" - target_friends = true, target_self = false, affect_self = false, num_fr = -1; the phase junction targets friends only (the caster is never in the effect scope).",
+  "why": "The ability is cast at a friendly unit and buffs the friends around it while excluding the caster - yet the mod self-casts. Self is not a legal target and the caster is not affected, so the cast cannot deliver what the trigger is waiting for (the tracker row: \"cast on self for now (nearest-ally picker later)\").",
+  "feas": "Friendly reads available; a nearest-ally picker matches the ability.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 222,
+  "name": "Inspired Assault I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_i"
+  ],
+  "logic": "trigger `charge_or_melee` then casts on self.",
+  "declares": "Single-friendly buff: Charge Bonus +20%, Melee Attack +24 \"to allies in range\" - target_friends = true, target_self = false, num_effected_friendly_units = 1, affect_self = false.",
+  "why": "The charge bonus is meant for a unit on its way into combat - the game makes you target a friendly unit; the mod casts on the caster, which is not a declared target. (The trigger fits the effect; the cast target does not.)",
+  "feas": "Ally picker (friendly units readable; the picker pattern already ships). As-is the self-cast does not match.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 223,
+  "name": "Inspired Assault II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_ii"
+  ],
+  "logic": "trigger `charge_or_melee` then casts on self.",
+  "declares": "Single-friendly buff: Charge Bonus +40%, Melee Attack +24 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.",
+  "why": "Same mismatch as Inspired Assault I: the game's target is one friendly unit, the mod casts on the caster.",
+  "feas": "Ally picker; friendly reads available.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 224,
+  "name": "Inspired Assault III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_assault_iii"
+  ],
+  "logic": "trigger `charge_or_melee` then casts on self.",
+  "declares": "Single-friendly buff: Charge Bonus +40%, Melee Attack +40 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.",
+  "why": "Same mismatch: declared target is one friendly unit; the mod self-casts.",
+  "feas": "Ally picker; friendly reads available.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 225,
+  "name": "Inspired Defence I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_i"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Single-friendly buff: Melee Defence +24, Leadership +16 \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.",
+  "why": "Declared target is one friendly unit; the mod casts on the caster (the tracker row: \"cast on self for now (nearest-ally picker later)\").",
+  "feas": "Ally picker; friendly reads available.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 226,
+  "name": "Inspired Defence II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_ii"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Single-friendly buff: Melee Defence +24, Leadership +16, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.",
+  "why": "Declared target is one friendly unit; the mod self-casts.",
+  "feas": "Ally picker; friendly reads available.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 227,
+  "name": "Inspired Defence III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_defence_iii"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Single-friendly buff: Melee Defence +40, Leadership +16, Expert Charge Defence \"to allies in range\" - target_friends = true, target_self = false, num_fr = 1, affect_self = false.",
+  "why": "Declared target is one friendly unit; the mod self-casts.",
+  "feas": "Ally picker; friendly reads available.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 229,
+  "name": "Massacre",
+  "keys": [
+   "wh3_main_prisoners_massacre"
+  ],
+  "logic": "trigger `melee_unwavering` then casts on self.",
+  "declares": "Ally area augment: Melee Attack +24, AP +25%, Base +25% \"to allies in range\" - target_friends = true, target_ground = true, target_self = false, num_fr = -1, range 35 m.",
+  "why": "Self is not a declared target; the game asks for a friendly unit or a ground point. The mod self-casts, so the cast shape contradicts the declared targeting.",
+  "feas": "Ground form (FOURTH.ground_cast) or an ally pick matches the class; the helper and position read exist.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 230,
+  "name": "Master of Alchemy",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy"
+  ],
+  "logic": "trigger `metallurgy_melee` - owner in melee OR an in-melee ally within 25 m - casts on the OWNER (self).",
+  "declares": "Area augment: Base Missile Damage +25%, Base Weapon Damage +30%, Magical Attacks \"to self and allies\" - target_friends = true, target_ground = true, target_self = FALSE, num_fr = -1, range 35 m. (Its sibling keys Enchanted Metallurgy DO declare target_self = true; these Alchemy keys do not.)",
+  "why": "The shared metallurgy evaluator always self-casts - legal for Enchanted Metallurgy (target_self = true) but not for this row, where self is not a declared target and the game asks for a friendly unit or a ground point.",
+  "feas": "The evaluator already knows a qualifying in-melee ally (FOURTH.mtl_ally) and could pass it as the cast target, or the ground form could place the aura at the caster's feet; both reads exist.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 231,
+  "name": "Master of Alchemy: Flaming",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy_flaming"
+  ],
+  "logic": "trigger `metallurgy_melee` then casts on the owner (self).",
+  "declares": "Area augment: Base Missile Damage +50%, Base Weapon Damage +60%, Magical Attacks, Flaming Attacks \"to self and allies\" - target_friends = true, target_ground = true, target_self = false, num_fr = -1, range 35 m.",
+  "why": "Same class as Master of Alchemy: self is not a declared target; the shared evaluator self-casts anyway.",
+  "feas": "Ally pick (mtl_ally) or ground form at own feet; both supported by existing reads.",
+  "notes": []
+ },
+ {
+  "slice": 4,
+  "entry": 232,
+  "name": "Master of Alchemy: Piercing",
+  "keys": [
+   "wh3_main_lord_abilities_master_of_alchemy_piercing"
+  ],
+  "logic": "trigger `metallurgy_melee` then casts on the owner (self).",
+  "declares": "Area augment: AP Missile +25%, Base Missile +25%, AP Weapon +25%, Base Weapon +25%, Magical Attacks \"to self and allies\" - target_friends = true, target_ground = true, target_self = false, num_fr = -1, range 35 m.",
+  "why": "Same class: self not a declared target; the evaluator self-casts.",
+  "feas": "Ally pick or ground form; reads available.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 238,
+  "name": "Orcs are da Best!",
+  "keys": [
+   "wh3_dlc26_character_abilities_orcs_are_da_best"
+  ],
+  "logic": "trigger `melee_unwavering` (in melee, not routing, not wavering) → plain self-cast (`perform_special_ability(key, unit)`; no cast_target is set).",
+  "declares": "a single-FRIENDLY-unit augment — `target_friends = true`, `num_effected_friendly_units = 1`, `target_self = false`, `affect_self = false` (intercept 150 m; +24 melee attack, ×1.5 damage for 27 s); its phase is friends-only (`self = false`).",
+  "why": "the cast lands on the owner, which the data excludes both as a target and as an affected unit — the buff never reaches the friendly unit, and the questionnaire's own note (\"cast on self for now, nearest-ally picker later\") confirms the ally is the intended recipient.",
+  "feas": "not implementable as written (self-cast cannot deliver it), but implementable overall — friendly units are fully readable and the ally-target cast pattern already exists (FOURTH.cast_target + drift re-check, the blood-sacrifice shape); it needs an ally picker.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 239,
+  "name": "Overseer of the Unseen",
+  "keys": [
+   "wh3_dlc29_hero_active_overseer_of_the_unseen"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "one friendly unit (`target_friends = true`, `num_effected_friendly_units = 1`, `target_self = false`), `only_affect_target = true`; invalid targets `unit_is_commander_class` and `unit_is_large` (+40 melee attack, cannot die, unbreakable for 44 s). In other words: cast on a non-commander, non-large friendly unit.",
+  "why": "the owner is a hero (commander class) — as the cast target it is an INVALID target under the db's own invalid-target flags, so the intended foot-unit recipient never gets the effect and the self-cast has no declared target.",
+  "feas": "implementable via an ally picker over readable friendly units, filtering by `unit:type()` (the land-units key the mod already reads) for the commander/large exclusions; not as currently written.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 249,
+  "name": "Star of Avelorn",
+  "keys": [
+   "wh2_dlc10_item_abilities_star_of_avelorn"
+  ],
+  "logic": "trigger `ushoran_health` (own health ≤ 75%) → self-cast through the ordinary unit form.",
+  "declares": "a GROUND-targeted group heal — `target_ground = true`, `target_ground_under_allies = true`, `target_self = false` (heals up to 3 friendly units in a 15 m area, 27 s, ×2 uses); the project's own record for it says \"cast at own feet (existing ground-cast path)\".",
+  "why": "the db gives this ability no self target — the cast shape the game declares is the position form, not a unit target; the mod's `ground_keys` list omits this key, so what actually fires is the unit-target self-cast, which is not this ability's declared cast mode.",
+  "feas": "the ground path already exists (`perform_special_ability_ground` at the caster's own position — tacticians_stand_your_ground rides it); adding this key is the concrete fix. The health-gated heal trigger itself is fine.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 250,
+  "name": "\"Stay Here, I'll Get Help!\"",
+  "keys": [
+   "wh2_dlc09_character_abilities_stay_here_ill_get_help"
+  ],
+  "logic": "trigger `wavering_ally_range` — picks the closest wavering, non-routing ally within the conservative 25 m and re-checks the gap before firing — but the cast itself stays ON SELF (its own log line reads \"self-cast\"); the picked ally is never passed as the cast target.",
+  "declares": "friend/ground/self targeting (intercept 60 m); its morale phase affects FRIENDS only (`self = false`, +16 morale, 35 m) while a second phase grants the caster stalk/unspottable; and `invalid_usage: engaged_in_melee` (it cannot be used while the caster is engaged in melee).",
+  "why": "the user-approved criterion and the tracker row say \"cast on that ally\" — the ally is selected, yet the cast does not use it; the self-anchor only reaches the ally through the friends-phase area, which is not the declared ally-targeted cast, and the evaluator never gates on the engaged-in-melee usage restriction.",
+  "feas": "the ally is already picked and range-checked (FOURTH.wa_ally); passing it as the cast target is the existing blood-sacrifice pattern — implementable. Attempts while the caster is in melee will be engine-refused and simply feed the cooldown hold.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 263,
+  "name": "Accusation",
+  "keys": [
+   "wh_main_hero_abilities_accusation"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at ONE ENEMY UNIT — `target_enemies = true`, `num_effected_enemy_units = 1`, intercept 75 m (negative phase: −30 armour, −24 melee defence, −20 missile/physical resist, 35 s).",
+  "why": "the debuff's target is an enemy unit; a self-cast cannot deliver it — the mod casts at the only unit it can reach (its own), which is not a target of this ability.",
+  "feas": "NOT implementable as-is — there is no enemy unit read (no card, no id, no health) and enemy-targeted casts cannot be aimed by the mod; the \"cast at the enemy it is fighting\" idea recorded for it cannot be built with the available reads.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 264,
+  "name": "Acquiescence",
+  "keys": [
+   "wh3_dlc27_spell_bound_acquiescence"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, `num_effected_enemy_units = 1`, intercept 200 m (×0.75 speed, −24 melee defence, 25 s, ×2 uses, wind-up 1 s, spell-bound).",
+  "why": "enemy-targeted hex cast on self — wrong target class on every axis.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 271,
+  "name": "Amulet of Pha-Stah",
+  "keys": [
+   "wh2_dlc09_item_abilities_amulet_of_phastah"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "an area hex aimed at ENEMY GROUND — `target_enemies = true` AND `target_ground = true`, `num_effected_enemy_units = -1`, intercept 100 m, 55 m area (−30 armour, −48% missile block, 22 s).",
+  "why": "the cast is at the owner, not at enemy ground; nothing in the mod places it where the db says it must go.",
+  "feas": "NOT implementable as-is — no enemy reads and no enemy-position ground target; even the mod's ground path (own position only) is not what this ability declares.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 272,
+  "name": "Apocalyptic Charge",
+  "keys": [
+   "wh_pro04_unit_abilities_apocalyptic_charge"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a charge effect — self-centred 35 m area with ×1.1 charge speed and ×1.2 charge bonus for 30 s (`ai_usage = aoe_centred_on_self`, `affect_self = true`). The cast target (self) is correct; the TRIGGER is the problem.",
+  "why": "a charge effect should involve charging — the trigger only fires once the unit is already in melee, after the charge bonus has been spent; the charge window is deliberately excluded even though the mod carries charge detectors.",
+  "feas": "implementable — ride `charge_or_melee` (or `charge_only`), which uses the existing `measure_charge` detector; no new reads needed.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 274,
+  "name": "Armour of Caledor",
+  "keys": [
+   "wh2_dlc15_item_abilities_armour_of_caledor"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a self regeneration — heals 1.6%/s for 20 s (≈32% max) with `cant_move = true`, ×3 uses (augment_spellcasting).",
+  "why": "a heal should not need melee — the regeneration is gated behind being in melee, so it only ever fires after the unit is already engaged; a heal of this kind is usable before/during trouble regardless of engagement.",
+  "feas": "implementable — self-cast target is fine; the `HealthPercent` read (already used by the ushoran_health family) would fit a regeneration item if a health gate is wanted.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 276,
+  "name": "Assassin's Trophy",
+  "keys": [
+   "wh2_main_character_abilities_assassins_trophy"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, intercept 150 m, `invalid_target: unit_is_not_commander_class` (i.e. the target must be an enemy commander/character-class unit; −24 melee attack and defence, 29 s).",
+  "why": "enemy-targeted hex (and specifically an enemy-character hex) cast on self.",
+  "feas": "NOT implementable as-is — no enemy unit reads; an ability that must be aimed at a specific enemy is not buildable with the available reads.",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 281,
+  "name": "Bastet",
+  "keys": [
+   "wh3_dlc29_lord_abilities_bastet"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, intercept 100 m (−60 armour, −40 melee defence, 19 s).",
+  "why": "enemy-targeted hex cast on self; the intended \"cast at the enemy it is fighting\" is neither implemented nor implementable.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 282,
+  "name": "Bitter Sting",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_bitter_sting"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, intercept 30 m (−24 melee attack and defence; `cant_run` and `flying` negative attributes; 30 s).",
+  "why": "enemy-targeted hex cast on self.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 285,
+  "name": "Blade of Setep",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blade_of_setep"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, intercept 100 m (−30 armour, −20 physical resist, 44 s).",
+  "why": "enemy-targeted hex cast on self.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 288,
+  "name": "Blight Swarm",
+  "keys": [
+   "wh3_main_lord_abilities_blight_swarm"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a chain hex — `target_enemies = true`, `num_effected_enemy_units = 5`, intercept 200 m, spreads to enemies within the spread range of affected units, −20 melee defence, 20 s, ×4 uses.",
+  "why": "it must be aimed at enemy units (up to five, chained); a self-cast cannot start the chain.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 5,
+  "entry": 290,
+  "name": "Bloody Onslaught",
+  "keys": [
+   "wh3_dlc26_character_abilities_bloody_onslaught"
+  ],
+  "logic": "trigger `melee_unwavering` → self-cast.",
+  "declares": "a hex aimed at one enemy unit — `target_enemies = true`, intercept 75 m (−30 armour, −24 melee defence, 38 s; its text: \"towards the heart of every army: its leader\").",
+  "why": "enemy-targeted hex cast on self.",
+  "feas": "NOT implementable as-is (no enemy reads; enemy casts cannot be aimed by the mod).",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 291,
+  "name": "Blooood!",
+  "keys": [
+   "wh_main_unit_abilities_blooood"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the Hellcannon is in melee (not routing/wavering), cast on itself.",
+  "declares": "a self augment (`wh_type_augment`, `affect_self=true`) — Speed +25%, Acceleration +18%, Vigour −2%/s for 18 s, 60 s recharge — with a hard usage gate: `cannot_perform_missile_attack` (the game's own wording: \"Can use if: Missile attack possible\"). Its text: *\"The Hellcannon breaks its chains and rushes forwards.\"*",
+  "why": "it is a rush-forward movement buff meant to be pressed while the Hellcannon can still fire, and the game refuses it the moment the unit cannot perform a missile attack — exactly the \"in melee\" state the mod fires it in. The trigger selects the one state where the cast is invalid and the speed effect has nothing left to close.",
+  "feas": "not a read problem — the ability needs a moment *before* contact, so the in-melee trigger itself is wrong; as written every attempt is refused by the engine's own gate.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 294,
+  "name": "Book of Secrets",
+  "keys": [
+   "wh3_dlc24_item_abilities_book_of_secrets"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex (`wh_type_hex`) aimed at one enemy unit (`target_enemies=true`, `target_self=false`, `num_effected_enemy_units=1`, 100 m intercept) with three negative 20 s phases (Damage 10/s; −25% Speed + Fire Weakness; −24 Melee Attack/Defence), ×3 uses.",
+  "why": "the cast must be aimed at an enemy and the mod cannot aim enemy-targeted casts (no enemy-unit read); a self-cast is not even a legal target for it, so the entry cannot deliver its declared debuff.",
+  "feas": "not implementable as-is — enemy-targeting needs an enemy read/selection the mod does not have; flag for the user (leave to the player or exclude).",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 295,
+  "name": "Boom!",
+  "keys": [
+   "wh_main_unit_abilities_boom"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the Hellcannon is in melee, cast on itself.",
+  "declares": "a self augment for its own shots — +20% Armour-Piercing / +25% Base Explosive Damage for 15 s, 90 s recharge — gated by `cannot_perform_missile_attack` (\"Enabled if: Missile attack possible\").",
+  "why": "the buff only means anything while the Hellcannon is shooting, and the game's own gate forbids it while the unit cannot perform a missile attack — which is precisely the in-melee state the trigger fires in. It cannot fire where it would matter, and would be pointless if it did.",
+  "feas": "trigger problem, not a read problem — should fire before contact (while the guns still work); as written the in-melee cast is refused.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 298,
+  "name": "Chalice of Dark Rain",
+  "keys": [
+   "wh_dlc03_item_abilities_chalice_of_dark_rain"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an area Hex placed on enemy ground (`target_enemies=true`, `target_ground=true`, 35 m area, 200 m range) — Accuracy −30 for 89 s to affected combatants.",
+  "why": "it is a ground-placed enemy-area hex that must be aimed at a spot under the enemy; the mod cannot aim it (no enemy read, and it never fires targeted casts with a guessed target) and self is not a legal target.",
+  "feas": "not implementable as-is — needs enemy/ground aiming the mod does not have; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 303,
+  "name": "Cube of Darkness",
+  "keys": [
+   "wh2_main_item_abilities_cube_of_darkness"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex of the Winds aimed at one enemy unit (100 m intercept) — Power Recharge −40% for 18 s (it drains the targeted enemy spellcaster's winds).",
+  "why": "an aimed single-enemy hex; casting it on the owner is not a legal target and the mod cannot aim at the enemy caster it is designed to drain.",
+  "feas": "not implementable as-is (no enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 304,
+  "name": "Curse of Khsar",
+  "keys": [
+   "wh2_dlc09_character_abilities_curse_of_khsar"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an area Hex on enemy ground (`target_ground=true`, 35 m area at up to 100 m) — Armour −60 for 25 s; one use; and its own usage condition `health_above_50%` marks it usable only at ≤50% caster health.",
+  "why": "it must be aimed at ground under the enemy (not aimable, self not a legal target), and the mod's trigger ignores the ability's own ≤50%-health usage condition entirely.",
+  "feas": "not implementable as-is — enemy-ground aiming does not exist in the mod; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 305,
+  "name": "Daemonic Whispers",
+  "keys": [
+   "wh3_dlc27_character_abilities_slezuzus_voice"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an Augment that may target only a friendly unit (`target_friends=true`, `target_self=false`, `affect_self=false`, one unit, 200 m) — +16 Leadership to the chosen ally.",
+  "why": "the game offers no self target for it (self is not in the target set), so the self-cast cannot deliver the declared buff to a friendly unit — the mod casts it on the one unit the ability does not accept.",
+  "feas": "friendly units are readable and the mod already ships ally-targeting evaluators, so an ally picker could carry it — but as written the self-cast is the wrong target; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 307,
+  "name": "Deranged Munitions",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a missile augment: +50% Armour-Piercing and +50% Base Missile Damage (+ Magical Attacks) for 30 s, with the game's own target restriction `cannot_perform_missile_attack` (targets that cannot perform a missile attack are invalid).",
+  "why": "the trigger fires exactly while the owner cannot perform a missile attack (locked in melee), the state the game's target gate rejects; and even where it were legal, a missile-damage buff does nothing for a unit that cannot fire.",
+  "feas": "needs a different condition/target (e.g. a friendly-unit picker outside the melee lock) — no new reads required for a friendly picker, but the in-melee self-cast is the one combination the game's data rejects.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 308,
+  "name": "Deranged Munitions Upgraded",
+  "keys": [
+   "wh3_dlc25_lord_abilities_deranged_munitions_upgraded"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "the area version of the same missile augment (+50% missile damage, 35 m ally aura, 30 s) with the same `cannot_perform_missile_attack` target restriction.",
+  "why": "same contradiction as the base key — the in-melee state is exactly when the owner (and any melee-locked ally) is an invalid target for a missile-damage buff.",
+  "feas": "same as the base key — a different trigger/target is needed; the in-melee self-cast cannot work as declared.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 309,
+  "name": "Don't Even Try It",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dont_even_try_it"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a direct-damage Hex at one enemy unit (100 m intercept) — 144 Damage every 2 s for 18 s, +15 s ability recharge on the victim, ×2 uses (\"Strong vs a single combatant\").",
+  "why": "its entire payload is aimed at a single enemy; the mod cannot aim it and self is not a legal target, so the cast cannot land the damage it exists for.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 310,
+  "name": "Doom & Darkness",
+  "keys": [
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+   "wh_dlc08_spell_bound_death_doom_and_darkness"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a morale Hex aimed at one enemy unit (200 m intercept) — Leadership −16 for 36 s; ×2/×3 uses across the three keys.",
+  "why": "an aimed single-enemy leadership debuff; the mod cannot aim enemy casts and self is not a legal target, so the entry cannot debuff the enemy it is designed for.",
+  "feas": "not implementable as-is (no enemy targeting); flag for the user.",
+  "notes": [
+   "Key-claim defect (extra): the first key contains an uppercase `B` (`spell_Bound…`, the game's own spelling), but the mod's button-claim match lower-cases the engine key before comparing — the lowered copy can never equal that listed key, so this variant can never claim its dial button/badge (the other two keys are lowercase and unaffected)."
+  ]
+ },
+ {
+  "slice": 6,
+  "entry": 313,
+  "name": "El Syf",
+  "keys": [
+   "wh_dlc05_weapon_abilities_el_syf"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit within 200 m, restricted to commander-class targets (`unit_is_not_commander_class` invalid-target flag) — Speed −45%, Melee Defence −40, Physical Resistance −20 for 24 s.",
+  "why": "it must be aimed at an enemy character; the mod cannot aim it and self is not a legal target (and would not be commander-class either).",
+  "feas": "not implementable as-is — enemy targeting does not exist in the mod; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 318,
+  "name": "Entangle",
+  "keys": [
+   "wh2_dlc10_character_abilities_entangle"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an area Hex placed on enemy ground (`target_ground=true`, 15 m area at up to 100 m; flying units invalid targets) — Cannot Move + Fire Weakness for 15 s, ×2 uses.",
+  "why": "it must be aimed at a spot of ground under the enemy; the mod cannot place it and self is not a legal target — the snare can never catch the enemy it is aimed at.",
+  "feas": "not implementable as-is (enemy-ground aiming); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 320,
+  "name": "Eternal Gaze",
+  "keys": [
+   "wh3_dlc29_lord_abilities_gaze_of_usirian"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a morale Hex aimed at one enemy unit (100 m intercept; undead invalid targets) — inflicts Terror and drains vigour for 15 s.",
+  "why": "a targeted enemy terror hex; the mod cannot aim it and self is not a legal target, so the declared effect cannot be delivered.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 324,
+  "name": "Fear of Aramar",
+  "keys": [
+   "wh2_dlc10_item_abilities_fear_of_aramar"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a morale Hex aimed at one enemy unit (200 m intercept) — Leadership −24 for 47 s; one use.",
+  "why": "an aimed enemy leadership debuff; self-casting it is not a legal target and the mod cannot aim at the enemy.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 326,
+  "name": "Fecund Rebirth",
+  "keys": [
+   "wh3_dlc29_character_active_mark_of_the_monster"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one large single-entity enemy (`unit_is_not_large` / `unit_is_not_single_entity` invalid-target flags; 200 m intercept) — 38 Damage/s, −50% Speed/Charge Speed, blocks healing, 32 s.",
+  "why": "it must be aimed at an enemy monster; the mod cannot aim it and self is not a legal target (nor a valid one — the owner need not be a large single entity).",
+  "feas": "not implementable as-is — enemy targeting does not exist in the mod; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 327,
+  "name": "Fermented Fungi",
+  "keys": [
+   "wh2_dlc15_lord_abilities_fermented_fungi"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit (75 m intercept) — Melee Defence −24 and Rampage! for 15 s, ×3 uses.",
+  "why": "an aimed single-enemy debuff (the gas is \"wafted towards the enemy\"); the mod cannot aim it and self is not a legal target.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 333,
+  "name": "Frenzied Challenge",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit (150 m intercept) — Speed +25%, Melee Defence −24 and Rampage! for 15 s.",
+  "why": "a targeted enemy challenge-hex; self is not a legal target and the mod cannot aim it.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 334,
+  "name": "Frost Shard Glaive",
+  "keys": [
+   "wh3_main_weapon_abilities_frost_shard_glaive"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit (50 m intercept; `range=0` with a single-target count — the specs describe a picked enemy, not a self-centred area) — Speed −45%, Melee Defence −40 for 30 s.",
+  "why": "it must be aimed at an enemy; the mod cannot aim it and self is not a legal target — the \"cold, hard promise of sharp slaughter\" never reaches a victim.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 336,
+  "name": "Gaze of Fate",
+  "keys": [
+   "wh3_main_lord_abilities_gaze_of_fate"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit (100 m intercept) — Melee Attack −40 and Cannot Move (\"freezes the foe where they stand\") for 14 s, ×3 uses.",
+  "why": "a targeted enemy freeze hex; the mod cannot aim it and self is not a legal target.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 337,
+  "name": "Get 'Em!",
+  "keys": [
+   "wh3_dlc25_character_abilities_get_em"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an area Hex placed on enemy ground (`target_ground=true`, 35 m area at up to 100 m) — Cannot Move for 11 s.",
+  "why": "a ground-placed enemy hex; the mod cannot aim or place it and self is not a legal target — the \"Get 'Em!\" order is issued against the wrong side.",
+  "feas": "not implementable as-is (enemy-ground aiming); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 339,
+  "name": "Gilellion's Soulnetter",
+  "keys": [
+   "wh3_main_weapon_abilities_soulnetter"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit (50 m intercept) — Cannot Move for 26 s (\"traps its victims in immortal servitude\").",
+  "why": "a targeted single-enemy binding hex; the mod cannot aim it and self is not a legal target.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 341,
+  "name": "Glory Seeker",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit within 100 m, restricted to commander-class targets (`unit_is_not_commander_class` invalid-target flag) — Melee Defence −24, healing blocked, Cannot Move for 24 s.",
+  "why": "it must be aimed at an enemy character; the mod cannot aim it and self is not a legal (or commander-class) target.",
+  "feas": "not implementable as-is — enemy targeting does not exist in the mod; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 342,
+  "name": "Glory Seeker Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker_upgraded"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "the upgraded version of the same Hex at one enemy commander-class unit (100 m intercept) — Melee Defence −36, healing blocked, Cannot Move for 36 s.",
+  "why": "same target mismatch as the base key — a targeted enemy-character hex under a self-cast trigger.",
+  "feas": "not implementable as-is (enemy targeting); flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 343,
+  "name": "Grut's Sickle",
+  "keys": [
+   "wh3_main_item_abilities_gruts_sickle"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "an Augment of the Winds that may target only a friendly unit (`target_friends=true`, `target_self=false`, `affect_self=false`, one unit, 100 m) — Power Recharge +80% and Reserves +0.4/s to the chosen ally, at a health cost, ×3 uses.",
+  "why": "the ability's target set is a friendly unit, and the caster is not among the legal targets (self-targeting is off) — so the self-cast cannot deliver the winds buff it declares.",
+  "feas": "friendly units are readable and an ally picker could carry it; as written the self-cast is the wrong target; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 6,
+  "entry": 348,
+  "name": "Headhunt",
+  "keys": [
+   "wh3_dlc26_character_abilities_headhunt"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the owner is in melee, cast on self.",
+  "declares": "a Hex aimed at one enemy unit within 150 m, restricted to commander-class targets (`unit_is_not_commander_class` invalid-target flag) — Melee Defence −40 and Missile Resistance −20 for 31 s.",
+  "why": "it must be aimed at an enemy character; the mod cannot aim it and self is not a legal (or commander-class) target.",
+  "feas": "not implementable as-is — enemy targeting does not exist in the mod; flag for the user.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 349,
+  "name": "Hellish Vigour",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single FRIENDLY-unit augment (`target_friends=true`, `num_effected_friendly_units=1`, cast range 75 m): +20 damage reflection and reduced fatigue for 25 s. The caster is NOT among the affected: `affect_self=false`, `target_self=false`, and the phase targets friends only.",
+  "why": "Casting it on the owner applies the augment to nobody - the caster is excluded from its own effect. It is a targeted hand-out to another friendly unit ('drives his host onward'), and a self-cast cannot deliver it.",
+  "feas": "Fixable without enemy reads: friendly units are readable and the mod already ships ally-targeted casts (Glorious Death / Blood Sacrifice pattern); the tracker itself notes 'nearest-ally picker later'. Needs an ally picker, not enemy reads.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 350,
+  "name": "Hellish Vigour Upgraded",
+  "keys": [
+   "wh3_dlc29_lord_abilities_hellish_vigour_upgraded"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "The area version of the same augment: 35 m radius, all friendly units in range (`num_effected_friendly_units=-1`), caster still excluded (`affect_self=false`); valid target forms are a friendly UNIT or the GROUND (`target_friends=true`, `target_ground=true`, range 75 m).",
+  "why": "Same mismatch as the base key: the self-cast matches neither declared target form and still cannot include the caster; the unit-target call passes the owner where the game expects a friendly unit or a ground point.",
+  "feas": "Fixable without enemy reads: an ally pick, or the mod's existing own-position ground form (friends within 35 m of the caster would be covered; the caster correctly is not).",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 351,
+  "name": "Hidden Huntress",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY armour hex (`target_enemies=true`, `num_effected_enemy_units=1`, range 75 m): -25% speed, -24 Melee Defence for 20 s.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 352,
+  "name": "Hidden Huntress Upgraded",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress_upgraded"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex, upgraded: -25% speed, -30 armour, -40 Melee Defence for 20 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 353,
+  "name": "Horn of the Wild Hunt",
+  "keys": [
+   "wh_dlc05_item_abilities_horn_of_the_wild_hunt"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "An army-wide +60% charge bonus to all friendly units for 24 s (`stat_charge_bonus` x1.6, radius -1 = unrestricted) - 'all Elven forces are driven to the Hunt'. A charge-window effect.",
+  "why": "The trigger fires only once the unit is ALREADY in melee, i.e. after its own charge is spent - the one moment the wearer's charge bonus is definitionally wasted (other units' later charges could still benefit, but the item is a charge tool fired at the wrong phase). The tracker first set this key aside as 'charge-only' and its own rule maps charge effects to the charge-and-in-melee trigger the mod already runs for Fangspike/Onslaught.",
+  "feas": "Cast-on-self is fine; the fix is trigger-side and uses proven machinery (the `measure_charge` detector / `charge_or_melee` trigger). Not enemy-limited.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 355,
+  "name": "Hornswaggle",
+  "keys": [
+   "wh2_dlc11_character_abilities_hornswaggle"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -25% speed, -30 armour, -24 Melee Defence for 32 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 357,
+  "name": "Hunter of Champions",
+  "keys": [
+   "wh_dlc08_character_abilities_hunter_of_champions"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex that the game only allows on a commander-class target (invalid-target flag `unit_is_not_commander_class`): -45% speed, -60 armour, -40 Melee Defence for 24 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 358,
+  "name": "Hunter's Snare",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_snare"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "An ENEMY- or GROUND-targeted 35 m net (cant_move) for 11 s, placed up to 100 m away, 3 uses (`target_enemies=true`, `target_ground=true`).",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 359,
+  "name": "Hunter's Trap",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_trap"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "An ENEMY- or GROUND-targeted 35 m net (cant_move) for 22 s, placed up to 100 m away, 3 uses.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 361,
+  "name": "Inspired Marksmanship I",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_i"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-friendly augment that may only be placed on a unit that can perform missile attacks (invalid-target flag `cannot_perform_missile_attack`): +30 accuracy, +20 reloading for 29 s, range 100 m; the caster is not affected (`affect_self=false`).",
+  "why": "The self-cast can receive nothing (ally-only, caster unaffected), and firing a shooting buff while the owner is stuck in melee is mistimed on both counts - the effect wants an ally that is actually shooting.",
+  "feas": "Feasible in principle with the friendly reads the mod already has (plus a static missile-capability gate, which the mod's own API notes record as available); no enemy reads needed. The ally picker does not exist yet.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 362,
+  "name": "Inspired Marksmanship II",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_ii"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "Same as I but +60 accuracy, +20 reloading for 44 s, range 100 m; same `cannot_perform_missile_attack` invalid-target flag.",
+  "why": "Same mismatch: single-ally missile buff cast on the owner, who is not affected and is in melee when the trigger fires.",
+  "feas": "Same as I: ally picker feasible (friendly reads exist); not enemy-limited.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 363,
+  "name": "Inspired Marksmanship III",
+  "keys": [
+   "wh3_main_lord_abilities_inspired_marksmanship_iii"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "Same as II with +40 reloading, 44 s, range 100 m; same `cannot_perform_missile_attack` invalid-target flag.",
+  "why": "Same mismatch as I/II.",
+  "feas": "Same as I/II: ally picker feasible; not enemy-limited.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 364,
+  "name": "Iron-Handed Captain",
+  "keys": [
+   "wh3_dlc27_character_abilities_iron_hand_captain"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A rally for a broken ally: single friendly target (`only_affect_target=true`, range 200 m) that the game only allows on a unit whose morale is at or below 'broken' (invalid-target flag `morale_is_higher_than_broken`); grants +100 morale and the `force_rally` attribute for 42 s. Caster not affected (`affect_self=false`, phase friends-only).",
+  "why": "Target and premise are both inverted: the mod fires it when the CASTER is in melee and specifically NOT wavering, and casts it on the caster - who is neither a valid target (`target_self=false`) nor broken. The ally it exists to rally is never involved.",
+  "feas": "A fleeing-ally pick is conceivable in principle (friendly routing state is readable - `unit_is_routing` is already used on allies); the current self-cast cannot work. Not enemy-limited.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 369,
+  "name": "Looming Dread",
+  "keys": [
+   "wh2_dlc14_lord_abilities_looming_dread"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex restricted to commander-class targets (invalid-target flag `unit_is_not_commander_class`): -45% speed, -24 Melee Defence, -20 missile resistance for 31 s, range 150 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 370,
+  "name": "Lord of Dragons",
+  "keys": [
+   "wh2_dlc15_lord_abilities_lord_of_dragons"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -40 Melee Attack, -24 Melee Defence for 22 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 372,
+  "name": "Mark of the Plague Fleet",
+  "keys": [
+   "wh3_dlc29_item_active_mark_of_the_plague_fleet"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "An ENEMY hex affecting up to three units (spreads to enemies): -50% healing power, -20 all/magic/physical resistances for 30 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 373,
+  "name": "Mark of Yin",
+  "keys": [
+   "wh3_dlc24_unit_abilities_mark_of_yin"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -30 armour, -25 missile block chance, -20 missile resistance for 28 s, range 180 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 374,
+  "name": "Marked by Ulthar",
+  "keys": [
+   "wh_dlc06_unit_abilities_marked_by_ulthar"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -30 armour, -25 missile block chance, -20 missile resistance for 28 s, range 150 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 375,
+  "name": "Marked for Eatin'",
+  "keys": [
+   "wh3_dlc26_unit_abilities_marked_for_eatin"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -25% speed, -30 armour, -40 Melee Defence for 29 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 376,
+  "name": "Master of Beguilement",
+  "keys": [
+   "wh_dlc04_lord_abilities_beguile"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -40 Melee Attack for 44 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 378,
+  "name": "Master Predator",
+  "keys": [
+   "wh2_dlc17_lord_abilities_master_predator"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A TOGGLE-able self stance (1 s recharge, duration until toggled off): +20% missile range, Snipe and Unspottable, -25% speed and charge speed - a stealth/sniper mode Oxyotl switches on to stalk from range.",
+  "why": "Firing it when the unit is in melee is backwards: stealth, sniping and extra range do nothing once the unit is spotted and engaged, and the -25% speed hurts exactly when disengaging; worse, it is a toggle - a condition that simply re-checks 'in melee' on every guard cycle can flip the stance on/off repeatedly instead of enabling it once.",
+  "feas": "No enemy read involved, but the ability needs toggle-aware handling (fire once to enable; never re-fire per guard cycle as a condition) that the current per-condition batch machinery does not have - not operable as-is.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 381,
+  "name": "Master Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_slowness"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY rune hex: -60% speed and charge speed, -40% charge bonus for 45 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 383,
+  "name": "Merciw's Monstrous Regiment",
+  "keys": [
+   "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
+   "wh3_dlc27_cataclysm_bound_merciws_monstrous_regiment"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single chosen ALLY receives +40 Melee Attack, +50% melee damage and +20 physical resistance for 120 s (`target_friends=true`, `num_effected_friendly_units=1`, `affect_self=false`; both bound keys - `wh3_dlc20_...` and `wh3_dlc27_...` - share the same phase). Caster not affected.",
+  "why": "Ally-only single-target buff cast on the owner: the caster gains nothing from its own cast, and no ally is selected. ('Bestows it upon his chosen allies' - the chosen ally is the whole point.)",
+  "feas": "Ally picker feasible with the friendly reads already in use (Glorious Death / Blood Sacrifice pattern); no enemy reads needed.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 390,
+  "name": "Missile Mirror",
+  "keys": [
+   "wh3_dlc24_unit_bound_missile_mirror"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY bound spell that must target an enemy missile unit (invalid-target flag `is_not_missile_unit`) to redirect its projectiles for 18 s, range 200 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 391,
+  "name": "Mither",
+  "keys": [
+   "wh2_dlc15_hero_abilities_mither"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY morale/speed hex: -60% speed and charge speed for 15 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 392,
+  "name": "Moonshine",
+  "keys": [
+   "wh2_dlc11_item_abilities_moonshine"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-use courage draught granting Unbreakable (plus +25% melee damage and a small heal; -40% flame resistance as the cost), self-targeted, 15 s.",
+  "why": "It is a last-stand item: the mod's standing rule maps the Unbreakable family to the wavering-self trigger and the mod's own items of this family (Helm of Yvresse, Vial of Troll Blood) fire on wavering - yet this rides `melee_unwavering`, which REQUIRES the unit not to be wavering, so the potion can never fire in the very state it is drunk for (about to break).",
+  "feas": "Trigger-side fix only: the wavering read (`is_wavering`) and the wavering evaluators already exist; cast-on-self is correct. Not enemy-limited.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 394,
+  "name": "Muster of Malevolents",
+  "keys": [
+   "wh2_dlc16_character_abilities_muster_of_malevolents"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY direct-damage effect: 144 damage over 15 s (max 1 entity damaged), range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 396,
+  "name": "Net Dem Up!",
+  "keys": [
+   "wh3_dlc26_unit_abilities_net_dem_up"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY net (cant_move, -50 missile block chance) for 18 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 397,
+  "name": "Net of Amyntok",
+  "keys": [
+   "wh_dlc04_spell_bound_net_of_amyntok"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY bound net (cant_move) for 20 s, range 100 m, 3 uses.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 398,
+  "name": "Null Stone",
+  "keys": [
+   "wh3_dlc27_item_abilities_null_stone"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A self-activation field with NO target flags (not an aimed hex): 35 s of `silenced` + remove-magical over an unrestricted radius, applied to FRIENDS AND ENEMIES alike (num_effected_friendly_units = -1, num_effected_enemy_units = -1) - a global magic shutdown that also hits the bearer's own wizards.",
+  "why": "The field has no connection to melee contact - it neither needs nor uses an engaged enemy - so the in-melee trigger is an arbitrary moment that silences the caster's own side for 35 s as a side effect; the tracker's own class for this key is the enemy-in-sight trigger, which is exactly what the mod cannot read.",
+  "feas": "The enemy-in-sight condition is impossible (no enemy unit read exists); of the honest options, a readiness/no-condition activation would at least match the effect's untargeted, global nature. Not implementable as the tracker intended.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 399,
+  "name": "Oath of Vengeance",
+  "keys": [
+   "wh2_dlc10_lord_abilities_oath_of_vengeance"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -24 Melee Defence for 44 s, range 200 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 400,
+  "name": "Oil Flask",
+  "keys": [
+   "wh2_dlc13_lord_abilities_oil_flask"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A thrown PROJECTILE fired at an enemy unit (`activated_projectile`): -48% speed and +50% flame weakness on contact, requires line of sight, range 70 m, 3 uses.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 401,
+  "name": "Otto's Scythe",
+  "keys": [
+   "wh3_dlc29_item_active_ottos_scythe"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -40 Melee Attack, -24 morale, and negative charge-defence/reflection attributes for 28 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 402,
+  "name": "Pack Trap",
+  "keys": [
+   "wh3_dlc24_unit_abilities_pack_trap"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY net (cant_move, +fatigue) for 10 s, range 100 m, 3 uses.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 403,
+  "name": "Pageant of Shrikes",
+  "keys": [
+   "wh2_dlc16_character_abilities_pageant_of_shrikes"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "A single-ENEMY hex: -60% ammunition replenishment, -20 reloading, -20% missile range for 20 s, range 75 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 7,
+  "entry": 405,
+  "name": "Pestilent Potions",
+  "keys": [
+   "wh3_dlc20_item_abilities_pestilent_potions"
+  ],
+  "logic": "Rides `melee_unwavering` - fires when the unit is in melee, not routing and not wavering; the cast passes the owner itself as the target (`perform_special_ability(key, owner)`).",
+  "declares": "An ENEMY hex affecting up to five units (spreads between enemies): -24 Melee Attack, -25% melee damage for 25 s, range 100 m.",
+  "why": "The effect applies only to the chosen ENEMY (and the game requires that choice - single/limited targets, some restricted to commander or missile units). The mod's cast passes the owner as the target, so nothing lands on any enemy; with no enemy-unit read (no card, id or health) the cast can neither be aimed nor gated.",
+  "feas": "Not implementable as-is: the engine exposes no enemy unit read and enemy-targeted casts cannot be aimed by the mod - firing it blindly on self cannot deliver an enemy-targeted effect.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 408,
+  "name": "Plague of Rust",
+  "keys": [
+   "wh3_main_spell_bound_plague_of_rust"
+  ],
+  "logic": "trigger `melee_unwavering`; fires while in melee and casts on self (default self-target call).",
+  "declares": "a Hex (`wh_type_hex`) aimed at one enemy unit (`target_enemies=true`, `num_effected_enemy_units=1`, cast range 200 m): −30 armour for 44 s; 2 uses, 60 s recharge. The tracker's own proposal for this row: \"While the unit has an enemy in its sights: fire at it.\"",
+  "why": "the cast must be aimed at an enemy unit and the mod aims it at the caster; the −30 armour hex can never land on an enemy (if the engine accepted the self-target, it would debuff the caster's own unit).",
+  "feas": "not implementable as-is — there is no enemy-unit read and enemy-targeted casts cannot be aimed (established engine limit); the tracker marks comparable rows `excluded (impossible: no enemy-unit read)`.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 414,
+  "name": "Power Siphon",
+  "keys": [
+   "wh2_dlc11_lord_abilities_power_siphon"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m) — a caster-debuff that raises the target's ability recharge (+15 s) and fatigues it, for 30 s; ×4 uses, 60 s recharge.",
+  "why": "it is a hex that must be aimed at an enemy caster, and the mod casts it on itself; the drain/slow effect can never be delivered to the intended target.",
+  "feas": "not implementable as-is — no enemy-unit read exists and enemy-targeted casts cannot be aimed; comparable rows are tracked as `excluded (impossible: no enemy-unit read)`.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 417,
+  "name": "Prey of Anath Raema",
+  "keys": [
+   "wh_dlc05_character_abilities_prey_of_anath_raema"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −20 missile resistance and held in place (`cant_move`) for 16 s; ×3 uses, 90 s recharge. The tracker's proposal: \"When in melee with a current target: cast at the enemy it is fighting.\"",
+  "why": "the debuff must be aimed at the enemy being fought, and the mod casts it on the caster; the −20 missile resistance never reaches an enemy.",
+  "feas": "not implementable as-is — the enemy-unit read needed to aim the cast does not exist (established engine limit).",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 418,
+  "name": "Prey of the Blood God",
+  "keys": [
+   "wh3_pro12_hero_abilities_prey_of_the_blood_god"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): 33 damage/s to one entity plus `cant_move` for 22 s; ×3 uses, 120 s recharge. The tracker's proposal: \"cast at the enemy it is fighting.\"",
+  "why": "it is a targeted enemy damage/hold hex and the mod casts it on its own caster — the effect can never hit the intended victim.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 421,
+  "name": "Ravaging Swarm",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a chain Hex on one enemy unit (`target_enemies=true`, up to five units affected, 30 m spread range, cast range 100 m): −24 melee defence for 24 s; 120 s recharge. The tracker's proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the chain must start from an enemy unit; cast on the caster it cannot start, so neither the primary debuff nor the spread can occur.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 422,
+  "name": "Ravaging Swarm Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a chain Hex on one enemy unit (`target_enemies=true`, up to five, 30 m spread, cast range 100 m): −40 melee defence plus 4 damage/s to up to 10 entities for 24 s; 60 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "same as its base key — the chain hex needs an enemy starting unit and the mod casts it on itself.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 424,
+  "name": "Reanimate Upgraded",
+  "keys": [
+   "wh2_dlc09_character_abilities_tomb_king_rally_upgraded"
+  ],
+  "logic": "trigger `melee_unwavering`; fires only while in melee and only while the unit is not wavering; self-cast (self-centred aura).",
+  "declares": "a self-centred area Augment (`area_of_augments`, range 35 m, affects self and allies) that for 10 s grants +16 leadership and replenishes hit points (\"Replenishes hit points of combatants\", `heal_amount=0.008`, `hp_change_frequency=1`); 90 s recharge. The tracker's proposal: \"When morale falls to wavering: cast.\"",
+  "why": "the hit-point replenish is a heal component gated behind melee contact (and suppressed while the unit is wavering), so it cannot respond when the unit or its friends are hurt outside melee — \"a heal should not need melee\". The project's own heal/replenish batch (36 entries) rides the ≤75%-health trigger with no melee gate; this row kept the melee gate.",
+  "feas": "the health read and the `ushoran_health` evaluator already ship (`HealthPercent`, ≤75%, no melee gate), so no new reads are needed; the morale part could stay melee-gated if a split is preferred.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 429,
+  "name": "Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_slowness"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −45% speed and charge speed, −40% charge bonus for 30 s; 120 s recharge. Tracker proposal: \"fire at it (enemy in sights).\"",
+  "why": "the slow must be aimed at an enemy unit and the mod casts it on the caster; an enemy is never slowed.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 431,
+  "name": "Sadistic Snare",
+  "keys": [
+   "wh3_dlc23_lord_abilities_sadistic_snare"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit within 20 m (`target_enemies=true`, cast range 20 m): −24 melee defence and `cant_move` for 33 s; ×2 uses, 120 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the snare must catch an enemy unit (the game itself limits the cast range to 20 m) and the mod aims it at the caster.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 434,
+  "name": "Scroll of Leeching",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_leeching"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex of the Winds aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −0.4 Winds of Magic regen on the target for 44 s; ×1 use, 60 s recharge. Tracker proposal: \"fire at it.\"",
+  "why": "it must be aimed at an enemy (a caster to drain); cast on the caster it can never sap the intended target.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 439,
+  "name": "Shock Collar",
+  "keys": [
+   "wh2_dlc16_hero_abilities_shock_collar"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "an Augment for one friendly unit (`target_friends=true`, `target_self=false`, `num_effected_friendly_units=1`, cast at a friendly unit within 100 m): +24 melee attack, +16 leadership, immune to psychology for 24 s; 60 s recharge. The tracker's own proposal: \"When morale falls to wavering: cast on the wavering friendly unit.\"",
+  "why": "the effect is single-unit and aimed at another friendly unit; self is not a declared target for the cast, so casting it on the caster buffs the wrong unit (or is refused) — the intended buff never lands where the tracker's plan puts it.",
+  "feas": "feasible with existing reads — the mod already ships this exact ally-picker pattern for other triggers (`blood_sacrifice`: lowest-health in-range ally, conservative range, pre-cast range re-check) and uses a 25 m trigger radius against the game's 100 m cast range; no enemy reads involved.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 440,
+  "name": "Silence the Prey",
+  "keys": [
+   "wh3_main_character_abilities_silence_the_prey"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): raises the target's ability recharge by +30 s (a caster silence) for 30 s; ×4 uses, 60 s recharge. Tracker proposal: \"fire at it.\"",
+  "why": "the silence must be aimed at an enemy; the mod casts it on itself, where it can never suppress an enemy caster.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 445,
+  "name": "Spearfisher's Net",
+  "keys": [
+   "wh2_dlc11_lord_abilities_spearfishers_net"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −24 melee defence and `cant_move` for 18 s; ×3 uses, 90 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the net must catch an enemy unit; cast on the caster the hold/debuff never lands on an enemy.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 447,
+  "name": "Spiderweb Attack",
+  "keys": [
+   "wh3_dlc26_character_abilities_spider_web_attack"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit within 50 m (`target_enemies=true`, cast range 50 m): immobilises the target (`cant_move`) for 18 s; ×2 uses, 120 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the web must be aimed at an enemy unit; cast on the caster it can never immobilise an enemy.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 455,
+  "name": "Sword of Filth",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_sword_of_filth"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a chain Hex on one enemy unit (`target_enemies=true`, up to five units, cast range 35 m): −30 armour and −24 melee defence for 20 s; 120 s recharge. Tracker proposal: \"fire at it.\"",
+  "why": "the chain must start from an enemy unit; cast on the caster neither the primary debuff nor the chain can occur.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 456,
+  "name": "Tacticians, Rally!",
+  "keys": [
+   "wh3_dlc24_character_abilities_tacticians_rally"
+  ],
+  "logic": "trigger `melee_unwavering`; casts on self through the normal unit-target call — the key is not in `FOURTH.ground_keys`.",
+  "declares": "a friend- and ground-targeted area Augment (`target_friends=true`, `target_ground=true`, 35 m aura affecting self+allies, cast range 100 m): +16 leadership for 14 s; 60 s recharge. Its targeting shape is identical to `wh3_dlc24_character_abilities_tacticians_stand_your_ground`, which the mod routes through the ground form (`perform_special_ability_ground`) via `FOURTH.ground_keys`. Tracker proposal: \"cast on the wavering friendly unit.\"",
+  "why": "the game declares ground targeting, and the mod's own convention (the `ground_keys` map, built for exactly this friend+ground shape) sends the identically-shaped SYG key through the ground form while this key fires the unit-target form on self — the two can't both be right; the declared friend/ground target is ignored either way.",
+  "feas": "aligning it is a one-line addition to `FOURTH.ground_keys` (the ground-cast helper already ships), but the project's own comment says the ground path is API-documentation-backed rather than battle-proven — confirm in a live battle before trusting it.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 457,
+  "name": "Taunt",
+  "keys": [
+   "wh2_dlc11_character_abilities_taunt"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −30 armour, −24 melee defence, −25% speed for 17 s; 60 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the hex must be aimed at an enemy unit; casting it on the caster never taunts/debuffs the enemy it is meant for.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 458,
+  "name": "Tendrils of the Sea",
+  "keys": [
+   "wh3_dlc29_hero_active_tendrils_of_the_sea"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 200 m): −60% speed, −20% mass and −40 melee attack for 24 s; 120 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the slowing hex must be aimed at an enemy unit; the mod casts it on the caster.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 460,
+  "name": "The Averland Runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_averland_runefang"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −40 melee attack and ×0.4 base weapon damage for 33 s; 120 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the weapon's hex must be aimed at an enemy unit; casting it on the caster leaves the intended enemy untouched (and may weaken the caster if the engine accepts the self-target).",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 462,
+  "name": "The Black Tongue",
+  "keys": [
+   "wh3_dlc27_character_abilities_the_black_tongue"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 200 m): silences the target for 21 s; ×2 uses, 120 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the silence must be aimed at an enemy unit; cast on the caster it cannot silence the enemy it is meant for.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 8,
+  "entry": 464,
+  "name": "The Dark Master",
+  "keys": [
+   "wh3_main_lord_abilities_the_dark_master"
+  ],
+  "logic": "trigger `melee_unwavering`; in-melee self-cast.",
+  "declares": "a Hex aimed at one enemy unit (`target_enemies=true`, cast range 100 m): −40 melee attack for 33 s; 90 s recharge. Tracker proposal: \"cast at the enemy it is fighting.\"",
+  "why": "the −40 melee attack hex must be aimed at an enemy unit; the mod casts it on the caster.",
+  "feas": "not implementable as-is — no enemy-unit read; enemy casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 465,
+  "name": "The Enfeebling Foe",
+  "keys": [
+   "wh3_dlc23_spell_bound_enfeebling_foe",
+   "wh3_dlc27_spell_bound_enfeebling_foe",
+   "wh3_main_spell_bound_enfeebling_foe",
+   "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a bound Shadow hex aimed at ONE enemy unit (target_enemies = true, 200 m intercept, wind-up 1 s); 17 s: −24 Melee Attack, −24 Melee Defence.",
+  "why": "cast target — the mod passes the caster itself as the target, but the ability must be aimed at the enemy it is meant to enfeeble; a debuff cast on self is a wrong target.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod (no readable enemy unit, and no proven current-target plumbing). The trigger is achievable; the target is not.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 468,
+  "name": "The Hammer of Karak Drazh",
+  "keys": [
+   "wh_main_weapon_abilities_the_hammer_of_karak_drazh"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a weapon hex aimed at ONE enemy unit (target_enemies = true); 50 s: −40 Melee Attack, ×0.7 Base Weapon Damage.",
+  "why": "cast target — self-cast leaves the enemy untouched; the debuff belongs on the enemy unit being fought.",
+  "feas": "not implementable as-is — the mod cannot aim at an enemy (no enemy reads / no current-target plumbing).",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 474,
+  "name": "The Trickster's Pendant",
+  "keys": [
+   "wh2_main_item_abilities_the_tricksters_pendant"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "an area-of-hexes cast on enemy ground under the target (target_enemies = true, target_ground = true, 100 m intercept, 35 m area); 16 s: enemy Miscast Chance ×2.",
+  "why": "cast target — the mod self-casts, so the hex lands at the caster, not under the enemy; a misplaced cast cannot hit the enemy spellcasters it punishes.",
+  "feas": "not implementable as-is — the mod has no readable enemy to pick and no target-ground point under an enemy; only a key in the ground-key list with a readable position is cast ground-wise, and that path only uses the caster's own feet.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 475,
+  "name": "The Vial of Hashut",
+  "keys": [
+   "wh3_dlc23_item_abilities_the_vial_of_hashut"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (target_enemies = true, only_affect_target = true); 60 s: −60 Armour, −20 Weakness to Fire.",
+  "why": "cast target — the vial's debuff is designed to be applied to the enemy; self-cast addresses the caster.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 476,
+  "name": "The Vortex Shard",
+  "keys": [
+   "wh2_main_item_abilities_the_vortex_shard"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex of the winds aimed at ONE enemy unit (target_enemies = true); 31 s (becalms the enemy's magic).",
+  "why": "cast target — the mod self-casts an ability that exists to be thrown at the enemy.",
+  "feas": "not implementable as-is — no enemy targeting available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 479,
+  "name": "The Withering",
+  "keys": [
+   "wh3_dlc23_spell_bound_the_withering",
+   "wh3_twa08_spell_bound_the_withering"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a bound Shadow hex aimed at ONE enemy unit (target_enemies = true); 40 s: −30 Armour, −8 Leadership.",
+  "why": "cast target — a debuff cast on self; the enemy never receives it.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 480,
+  "name": "They Needs Stabbin'",
+  "keys": [
+   "wh2_dlc15_character_abilities_they_needs_stabbin"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (target_enemies = true; the game even restricts the victim to commander-class units); 29 s: −30 Armour, −24 Melee Defence.",
+  "why": "cast target — the gobbos are told to stab a chosen enemy; the mod aims the cast at its own caster.",
+  "feas": "not implementable as-is — the mod cannot pick or aim at an enemy unit.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 482,
+  "name": "Thunderburner",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a self toggle for the flying Thunderbarge (cd 30 s): Speed ×2.5, Turn Speed ×0.3, with continuous self-damage (30 damage per hp tick) — a straight-line steam dash whose game text says it \"soars forward at speed\" and whose AI family is `hex_speed_under_fire` (a reaction to being under fire, not melee).",
+  "why": "trigger fit — the ability's whole value is a long, pre-aimed dash across the field; firing it once the ship is already locked in melee spends the dash in the one state where its direction cannot be planned, while the self-damage cost still starts ticking.",
+  "feas": "trigger-choice problem, not an engine limit — a different trigger moment (e.g. a movement/under-fire arm) uses reads the mod already has; no enemy targeting is involved.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 483,
+  "name": "Thunderburner Upgraded",
+  "keys": [
+   "wh3_dlc25_unit_abilities_thunderburner_upgraded"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "same self toggle as 482, stronger: Speed ×3, Turn Speed ×0.3, continuous self-damage (10 per tick), `hex_speed_under_fire`.",
+  "why": "trigger fit — same mismatch as Thunderburner: a planned dash fired from a melee scrum, where the movement cannot be directed and the damage cost applies anyway.",
+  "feas": "trigger-choice problem, not an engine limit.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 484,
+  "name": "Titan Headsman",
+  "keys": [
+   "wh3_dlc25_hero_abilities_titan_headsman"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (target_enemies = true); 29 s: Speed ×0.55, −24 Melee Defence.",
+  "why": "cast target — the crippling debuff must land on the enemy being finished off; the mod self-casts it.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 485,
+  "name": "Torment Blade",
+  "keys": [
+   "wh3_main_weapon_abilities_torment_blade"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a weapon hex aimed at ONE enemy unit (target_enemies = true); 18 s: −24 Melee Attack, ×0.75 Base and AP Weapon Damage.",
+  "why": "cast target — the paralysing venom is for the victim, not the wielder; self-cast is a wrong target.",
+  "feas": "not implementable as-is — no enemy aiming available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 486,
+  "name": "Trickster's Shard",
+  "keys": [
+   "wh_main_item_abilities_tricksters_shard"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "an area-of-hexes cast on enemy ground (target_enemies = true, target_ground = true, 500 m intercept, 35 m area); 16 s: enemy Miscast Chance ×2.",
+  "why": "cast target — the shard's curse must be placed among the enemy; the mod's self-cast puts (at best) the area on the caster.",
+  "feas": "not implementable as-is — no readable enemy and no enemy-ground placement path in the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 487,
+  "name": "Trophy Heads",
+  "keys": [
+   "wh2_main_lord_abilities_trophy_heads",
+   "wh3_main_daemon_wings_abilities_trophy_heads"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "hexes aimed at ONE enemy unit (target_enemies = true; commander-class targets only); 36 s: −24 Melee Attack / −40 Melee Defence (base), −30 / −30 (daemon wings).",
+  "why": "cast target — the terror debuff belongs on the enemy; the mod aims it at the caster.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 488,
+  "name": "Twilight Horn I",
+  "keys": [
+   "wh2_dlc16_item_abilities_twilight_horn_i"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self (self is a legal target for this item).",
+  "declares": "an item augment on self or one friendly unit; 33 s: Charge Speed ×1.25, Speed ×1.25, Charge Bonus ×1.2 — a pure charge/movement effect.",
+  "why": "trigger fit — the buff is spent on the next charge, but the trigger fires after contact, when the charge bonus can no longer apply; the project itself skipped the stronger twin (Twilight Horn II) as \"unsuitable: movement\" for exactly this reason.",
+  "feas": "trigger-choice problem — the mod already ships a charge-window trigger for other charge-family abilities, so involving a charge needs no new reads.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 495,
+  "name": "Verminous Fury",
+  "keys": [
+   "wh3_dlc29_lord_abilities_verminous_fury"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "an augment cast on a friendly unit — the caster itself is not a valid target (target_friends = true, target_self = false, affect_self = false); 60 s: Rampage, Unbreakable, Unyielding Assault — a buff meant for a follower, not the Warbringer.",
+  "why": "cast target — an ally-targeted effect cast on self; the engine offers self as no target for this ability, so the buff cannot land on the caster as intended here.",
+  "feas": "fixable in principle but not built — the mod already reads friendly units and passes an ally target for other abilities (the ally-picker pattern); this entry has no picker and self-casts.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 496,
+  "name": "Virulent Contagion",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a chain hex aimed at ONE enemy unit (spreads to up to 5 enemies); 30 s: −40 Melee Defence.",
+  "why": "cast target — the plague is for the enemy formation; self-cast means the chain never starts.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 497,
+  "name": "Virulent Contagion Upgraded",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion_upgraded"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "chain hex aimed at ONE enemy unit (up to 5 affected); 30 s: −50 Melee Defence.",
+  "why": "cast target — same mismatch as base Virulent Contagion: an enemy chain hex cast on the caster.",
+  "feas": "not implementable as-is — no enemy aiming available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 498,
+  "name": "Visions of Madness",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_visions_of_madness"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (up to 5 affected, 30 m intercept); 10 s: −16 Leadership, Rampage.",
+  "why": "cast target — the madness is inflicted on the enemy; the mod aims the cast at itself.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 499,
+  "name": "Void Pendulum",
+  "keys": [
+   "wh3_main_item_abilities_void_pendulum"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex of the winds aimed at ONE enemy unit (casting units only — invalid target flag `hasnt_casting_ability`); 25 s: shuts down the enemy spellcaster.",
+  "why": "cast target — a targeted spellcaster hex cast on the caster; the caster is not the intended victim (and may not even be a legal one).",
+  "feas": "not implementable as-is — no enemy targeting/selection path exists in the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 500,
+  "name": "Vorozheja's Foresight",
+  "keys": [
+   "wh3_dlc24_hero_abilities_vorozhejas_foresight"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (wind-up 3 s); 25 s: −12 Armour, −12 Missile Block Chance, −10 Missile Resistance.",
+  "why": "cast target — the curse binds the enemy; the mod self-casts it.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 503,
+  "name": "Warden's Cage",
+  "keys": [
+   "wh2_dlc15_character_abilities_wardens_cage"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "direct damage aimed at ONE enemy unit (characters; strongly vs characters); 25 s: 20 damage per second, Can't Move, −60 Armour, −48 Melee Defence.",
+  "why": "cast target — the cage must trap an enemy character; the mod casts it on the Warden itself (self-cast cannot cage the target).",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 504,
+  "name": "Warp Gaze",
+  "keys": [
+   "wh_pro04_unit_abilities_warp_gaze"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (100 m intercept, ×3 uses); 12 s: the target Can't Move (the gaze pins the enemy).",
+  "why": "cast target — an enemy-pinning hex cast on the caster; the enemy never gets pinned.",
+  "feas": "not implementable as-is — no enemy aiming available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 505,
+  "name": "Warpstiletto",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstiletto"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (100 m intercept, ×2 uses); 20 s: the target Can't Move.",
+  "why": "cast target — the stiletto's effect must land on the enemy; the mod addresses the cast to the caster.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 508,
+  "name": "Where You Goin!?",
+  "keys": [
+   "wh3_dlc26_character_abilities_were_you_goin"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "an augment cast on a friendly unit — self is not a valid target (target_friends = true, target_self = false, affect_self = false); 25 s: Unbreakable — the Bruiser flings a fleeing ally back into the fight.",
+  "why": "cast target — an ally-targeted effect cast on self; the recipient is meant to be another unit, and the game does not offer the caster as one.",
+  "feas": "fixable in principle but not built — the mod can read friendly units and already passes an ally target elsewhere (ally-picker pattern); this entry has none.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 509,
+  "name": "Whip of Agony",
+  "keys": [
+   "wh2_twa03_weapon_abilities_whip_of_agony"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (75 m intercept); 29 s: −24 Melee Defence, Causes Fear, Causes Terror.",
+  "why": "cast target — the pain is for the foe; self-cast is a wrong target.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 510,
+  "name": "Whip of Misery",
+  "keys": [
+   "wh2_main_spell_bound_whip_of_agony"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (large units only — invalid target flag `unit_is_not_large`, ×3 uses); 31 s: −30 Accuracy, −24 Melee Attack.",
+  "why": "cast target — the misery is inflicted on the enemy; the mod self-casts it.",
+  "feas": "not implementable as-is — no enemy aiming available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 511,
+  "name": "Whiplash!",
+  "keys": [
+   "wh2_dlc14_lord_abilities_whiplash"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "an augment cast on a friendly unit — and commander-class units are invalid targets (`unit_is_commander_class`; the Beastmaster whips the *beasts*); 21 s: Charge Speed ×1.25, Charge Bonus ×1.2, Weapon Damage ×1.5.",
+  "why": "cast target — an ally-targeted effect cast on self, and the caster (a commander-class character) is precisely the kind of unit the game forbids as a recipient; the buff can never apply to the caster.",
+  "feas": "fixable in principle but not built — needs the ally-picker pattern (the mod already casts on friendly units elsewhere), plus the beast/non-commander recipient choice.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 512,
+  "name": "Whispering Mist",
+  "keys": [
+   "wh3_dlc29_hero_abilities_whispering_mist"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit (wind-up 1 s); 32 s: Speed ×0.55, Charge Speed ×0.55.",
+  "why": "cast target — the slowing mist must be placed on the enemy; the mod self-casts it.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 515,
+  "name": "Willing Prey",
+  "keys": [
+   "wh3_main_lord_abilities_willing_prey"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex aimed at ONE enemy unit; 15 s: −24 Melee Attack, −40 Melee Defence.",
+  "why": "cast target — the debuff is for the enemy; the mod aims the cast at the caster.",
+  "feas": "not implementable as-is — no enemy aiming available.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 517,
+  "name": "Word of Change",
+  "keys": [
+   "wh3_main_daemon_head_abilities_word_of_change"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a hex of the winds aimed at ONE enemy unit (casting units only — `hasnt_casting_ability`); 42 s: enemy Miscast Chance ×2.",
+  "why": "cast target — the word is spoken at an enemy spellcaster; the mod self-casts it.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 518,
+  "name": "Word of Pain",
+  "keys": [
+   "wh2_dlc10_spell_bound_word_of_pain",
+   "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a bound Dark Magic hex aimed at ONE enemy unit; 40 s: −30 Accuracy, −40 Melee Attack.",
+  "why": "cast target — the agony is for the enemy; self-cast is a wrong target.",
+  "feas": "not implementable as-is — enemy-targeted casts cannot be aimed by the mod.",
+  "notes": []
+ },
+ {
+  "slice": 9,
+  "entry": 519,
+  "name": "Woven Mist",
+  "keys": [
+   "wh_dlc05_unit_abilities_woven_mist"
+  ],
+  "logic": "`melee_unwavering` — in melee (not wavering): cast on self.",
+  "declares": "a self toggle (permanent until disabled, 1 s recharge): −24 Melee Defence, +40 Missile Resistance — an anti-missile dance that pays for the protection with melee defence.",
+  "why": "trigger fit — the toggle is fired exactly when the unit is in melee, i.e. when the melee-defence penalty bites and the missile protection is only partially relevant; the ability is built to be raised under missile fire, not in a melee.",
+  "feas": "trigger-choice problem, not an engine limit — the mismatch is when it fires, not what it can read; the cast target (self) is correct.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 523,
+  "name": "You're Next!",
+  "keys": [
+   "wh2_dlc15_lord_abilities_youre_next"
+  ],
+  "logic": "trigger `melee_unwavering` — fires when the unit is in melee and not wavering, then casts on itself (`perform_special_ability(key, unit)`; the badge tooltip reads \"fires when this unit is in melee\").",
+  "declares": "`wh_type_hex`, `target_enemies = true` only, `num_effected_enemy_units = 1` — a single-unit ENEMY hex: −24 melee attack, −40 melee defence, speed ×0.55 for 24 s; its invalid-target gate `unit_is_not_commander_class` further restricts the target to a commander-class enemy character.",
+  "why": "the game's target is an enemy unit (a character), never the caster — a self-cast hands the engine a target the ability rejects and, even if accepted, would debuff the wrong side; the tracker's own intended rule was \"cast at the enemy it is fighting\".",
+  "feas": "NOT implementable as-is — there is no enemy-unit read (no card, no id, no health) and enemy-targeted casts cannot be aimed by the mod; the engine form the mod uses cannot auto-pick the unit's current enemy either.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 534,
+  "name": "Elvish Healing Herbs",
+  "keys": [
+   "wh3_dlc27_unit_abilities_elfish_healing_herbs"
+  ],
+  "logic": "trigger `ushoran_health` — fires when the unit's own health ≤75% and casts on itself.",
+  "declares": "single-target friendly heal (27 s regen at ~0.6%/s, −1% fatigue); `target_friends = true`, `only_affect_target = true`, and NO `target_self` / `affect_self` / `always_affect_self` — the target must be ANOTHER friendly unit.",
+  "why": "self is not a legal target for this ability, so the mod's self-cast cannot heal anything (the tracker's intended rule was \"cast on the hurt friendly unit\").",
+  "feas": "an ally-targeted version is buildable (friendly units/health/distance are readable — the `blood_sacrifice` pattern), but as wired on the self-health trigger the cast targets the caster.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 540,
+  "name": "Makaisson's Persuader",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_makaissons_persuader"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "single-target repair — \"a damaged War Machine can be returned to working order\", effect HP regen + `replenish_ammo = 0.3` (ammo exists only on war machines), and its invalid-target gate `unit_is_not_artillery_or_war_machine` (the same gate carried by Malakai's/Chaos Dwarf war-machine passives) restricts the legal target to an artillery/war-machine friendly unit.",
+  "why": "the carrier is a character (the ability is granted by the Makaisson's Persuader weapon), not a war machine — the self-cast points the repair at a unit the ability's own gate excludes and that has no ammo to replenish.",
+  "feas": "a friendly-target version is buildable (friendly reads exist; the war-machine class could be derived from the game's data like the Slayer list), but the current self-cast cannot land.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 543,
+  "name": "Patch Up",
+  "keys": [
+   "wh2_dlc13_character_abilities_patch_up"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "single-target friendly heal (7 s regen at 1.6%/s) — \"swiftly dress the wounds of targeted friendly units\"; `target_friends = true` with no self target and no self effect (no `target_self`/`affect_self`/`always_affect_self`).",
+  "why": "the ability can only be pointed at another friendly unit; a self-cast targets the caster, which the ability cannot affect, so the heal can never land.",
+  "feas": "ally-targeting is buildable (readable friendlies), but not as wired on this self-cast trigger.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 548,
+  "name": "Reforge",
+  "keys": [
+   "wh3_dlc23_character_abilities_reforge"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "restores the hitpoints of \"units with the Hell-Forged attribute\" (UiEffect bullet verbatim: \"Restores the hitpoints of units with the Hell-Forged attribute\"); its invalid-target gate `unit_is_not_hellforged` encodes the same restriction, and the ability's owners are Daemonsmith Sorcerers — flesh-and-blood casters, not Hell-Forged units.",
+  "why": "the Daemonsmith is not Hell-Forged, so a self-cast targets a unit the ability's own gate excludes (the row's `target_self = true` is contradicted by the effect bullet and the gate that CA ships for this key); no healing happens.",
+  "feas": "could be re-scoped to target a friendly Hell-Forged unit (friendly reads exist; attribute keys derivable from game data), but the current self-cast cannot land.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 551,
+  "name": "Remouldered",
+  "keys": [
+   "wh2_dlc16_lord_abilities_remouldered"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "single-target friendly heal plus a 24 s combat buff (+24 melee attack, +8 morale) for a wounded MONSTER (\"keep wounded monsters alive and keen\"); `target_friends = true` with NO `target_self` — the exact target shape of Throt's Shock Collar, which is cast on his beasts, not himself.",
+  "why": "the caster (Throt) is not the declared target of this ability; casting it at itself hands the engine a target the data does not declare (the tracker's intended rule was \"cast on the hurt friendly unit\"), so the heal/buff does not land where the ability is designed to go.",
+  "feas": "an ally-targeted version is buildable (friendly reads exist; the monster-class gate could be derived from game data), but the current self-cast is wrong.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 552,
+  "name": "Restore",
+  "keys": [
+   "wh2_dlc09_character_abilities_restore"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "single-target friendly heal (24 s regen) whose invalid-target gate `unit_is_not_construct` restricts the target to a Tomb Kings CONSTRUCT; `target_friends = true` with no self target or self effect; the owner is a Necrotect.",
+  "why": "the Necrotect is not a construct and self is not a declared target — the mod's self-cast can never apply the heal.",
+  "feas": "a friendly-construct target is in principle selectable (readable friendlies; construct keys derivable), but not as wired.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 553,
+  "name": "Revivification Crystal",
+  "keys": [
+   "wh2_main_unit_abilities_revivification_crystal"
+  ],
+  "logic": "trigger `ushoran_health` — fires at the unit's own ≤75% health and casts on itself.",
+  "declares": "single-target friendly heal plus resurrect (20 s, 0.5%/s); `target_friends = true` with no self target and no self effect; the owner is a Bastiladon whose crystal restores \"supplicants\" — other units — from the point of death.",
+  "why": "the caster cannot be the target of its own crystal; the self-cast heals/resurrects nothing.",
+  "feas": "ally-targeting is buildable (readable friendlies), but not as wired.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 556,
+  "name": "Scroll of Power",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_power"
+  ],
+  "logic": "trigger `ushoran_health` — fires when the unit's own health ≤75% and casts on itself (single use).",
+  "declares": "a one-use item effect (\"runes to boost the power of a single spell\"): 57 s positive phase with `ability_recharge_change = −60` and NO heal amount anywhere — it is an ability-recharge/spell-power boost, not a heal.",
+  "why": "the entry rides the health-gated heal family, but the effect has nothing to do with the unit's health; the trigger cannot fit the effect, and firing it at ≤75% health wastes its one use at an arbitrary moment.",
+  "feas": "no readable condition in the mod matches the ability's purpose (no magic-power or per-ability cooldown reads exist; only the engine's own readiness gate), so it should not ride this trigger at all.",
+  "notes": []
+ },
+ {
+  "slice": 10,
+  "entry": 575,
+  "name": "Eat da Runts!",
+  "keys": [
+   "wh3_dlc26_unit_abilities_eat_da_runts"
+  ],
+  "logic": "bespoke `eat_da_runts` trigger — self ≤75% health → cast on SELF; otherwise the lowest-health in-range ally ≤75% → cast on that ALLY (both arms are described in-file as \"ally-targeting HEALS\").",
+  "declares": "the target is a friendly unit that gets EATEN — the ally phase deals `damage_amount = 144` (\"Causes damage to allies\" UiEffect bullet; the initiative text: feed gobbo-fodder to the hungry big'un), while the CASTER heals (1.5%/s self phase). `target_friends = true` with no self target — the ally is the meal, not the patient.",
+  "why": "the mod inverts the effect — the \"heal the ally\" arm spends the cast to damage the ally it was trying to save (the lowest-health one, where 144 damage likely kills models), and the self arm targets a unit (the caster) the ability cannot take as a target.",
+  "feas": "the ability deliberately damages a friendly unit; \"which ally is expendable\" is not a decidable read and the current direction is backwards — do not keep this as an ally-heal.",
+  "notes": []
+ }
+]

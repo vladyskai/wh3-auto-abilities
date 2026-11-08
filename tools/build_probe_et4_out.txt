@@ -1,0 +1,72 @@
+C:\Users\vlady\Desktop\rpfm_tools\build_probe_enemy_target.py:38: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=20))))
+== main mod (must stay byte-identical) ==
+   data/zz_test_deadly_onslaught.pack md5 BEFORE : d83c5f93539d770fd6003cf91ce73e2d
+   script source        md5 BEFORE : a95832601f6223fcafdb02fd8eb13cf4
+
+source zz_probe_enemy_target.lua          40481 bytes  sha256 473157bd594a850d30563c101357f0d9
+  hello: {"id": 0, "data": {"SessionConnected": 2}}
+
+== 1 select game
+  <= {"CompressionFormatDependenciesInfo": ["None", null]}
+
+== 2 new pack
+  <= {"String": "new_pack.pack"}
+
+== 3 add the one probe script
+  <= {"VecContainerPathOptionString": [[{"File": "script/battle/mod/zz_probe_enemy_target.lua"}], null]}
+
+== 4 type = Movie
+  <= "Success"
+
+== 5 list contents
+  <= {"ContainerInfoVecRFileInfo": [{"file_name": "new_pack.pack", "file_path": "new_pack.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "", "compress": "None", "timestamp": 0}, [{"path
+   container: Movie | files: ['script/battle/mod/zz_probe_enemy_target.lua']
+   script/battle/mod/zz_probe_enemy_target.lua        40481 bytes  MATCHES SOURCE: True
+
+== 6 the pack must contain the probe (token checks)
+   zz_probe_enemy_target_status                         present: True
+   get_scriptunits_for_main_enemy_army_to_local_player  present: True
+   get_scriptunits_for_local_players_army               present: True
+   get_first_non_player_army                            present: True
+   script_unit:new                                      present: True
+   perform_special_ability_q                            present: True
+   use_special_ability                                  present: True
+   attack_unit                                          present: True
+   take_control                                         present: True
+   release_control                                      present: True
+   register_command_handler_callback                    present: True
+   CMD event=SpecialAbility                             present: True
+   TRY route=                                           present: True
+   ORDER route=                                         present: True
+   CANPOST route=                                       present: True
+   SELF route=                                          present: True
+   EFF route=                                           present: True
+   RESULT route=                                        present: True
+   landed=                                              present: True
+   in_range=                                            present: True
+   COOLDOWN                                             present: True
+   NOT CALLED (write-shaped)                            present: True
+   ActiveEffectList(true).Size                          present: True
+   conflict=                                            present: True
+   accepted=                                            present: True
+
+== 7 save to disk
+  <= {"ContainerInfo": {"file_name": "zz_probe_enemy_target.pack", "file_path": "C:/Users/vlady/Desktop/wh3_auto_ability_test/dist/zz_probe_enemy_target.pack", "pfh_version": "PFH5", "pfh_file_type": "Movi
+
+== 8 close
+  <= "Success"
+
+================ INSTALL ================
+built probe pack    md5 e21411bdd306db0e520f4e0b19a0244a
+installed           md5 e21411bdd306db0e520f4e0b19a0244a
+IDENTICAL           True
+installed to        C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_probe_enemy_target.pack
+
+== main mod AFTER ==
+   data/zz_test_deadly_onslaught.pack md5 AFTER  : d83c5f93539d770fd6003cf91ce73e2d
+   script source        md5 AFTER  : a95832601f6223fcafdb02fd8eb13cf4
+   main PACK unchanged : True
+   main SOURCE unchanged : True
+
+PROBE BUILD+INSTALL OK

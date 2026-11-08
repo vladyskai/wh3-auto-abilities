@@ -1,0 +1,396 @@
+"""Build the mod pack, verify it, install it. One WebSocket session, then done.
+
+Pack contents (housekeeping 20261004 - the two experiment probes are RETIRED):
+  script/battle/mod/zz_test_deadly_onslaught.lua   the main mod (trigger + right-click toggle)
+  ui/templates/zz_auto_badge.twui.xml              the auto badge template
+  ui/zz_auto/auto_badge.png  ui/zz_auto/blank.png  the badge art
+  ui/common ui/special_ability_tooltip.twui.xml    the tooltip's right-click line, filled in
+
+The throwaway probes (zz_probe_unit_reads.lua, zz_probe_ui_text.lua) shipped until
+2026-10-04; their sources are preserved in releases/20261004_probe_sources_retired/
+and must NOT ship again (the pack-contents check below fails if a zz_probe_ path returns)
+
+No HUD button, no icon files, no localisation file: the control is a right-click on the
+ability's own icon, and the hint is a plain line in the tooltip layout.
+"""
+import hashlib
+import json
+import shutil
+import os
+from websockets.sync.client import connect
+
+WS_URL = "ws://127.0.0.1:45127/ws"
+SRC_ROOT = r"C:/Users/vlady/Desktop/WH3_mod/mod_source"
+
+FILES = [
+    (SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+     "script/battle/mod/zz_test_deadly_onslaught.lua"),
+    (SRC_ROOT + "/ui/templates/zz_auto_badge.twui.xml",
+     "ui/templates/zz_auto_badge.twui.xml"),
+    (SRC_ROOT + "/ui/zz_auto/blank.png", "ui/zz_auto/blank.png"),
+    (SRC_ROOT + "/ui/zz_auto/auto_badge.png",
+     "ui/zz_auto/auto_badge.png"),
+    (SRC_ROOT + "/ui/common ui/special_ability_tooltip.twui.xml",
+     "ui/common ui/special_ability_tooltip.twui.xml"),
+]
+
+OUT_PACK = SRC_ROOT + "/dist/zz_test_deadly_onslaught.pack"
+GAME_PACK = r"C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack"
+
+HINT = "Automatic: this ability fires by itself while the unit charges"
+
+
+class Client:
+    def __init__(self, url):
+        self.ws = connect(url, max_size=None, open_timeout=15)
+        self.next_id = 1
+        print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+
+    def send(self, command):
+        req_id = self.next_id
+        self.next_id += 1
+        self.ws.send(json.dumps({"id": req_id, "data": command}))
+        while True:
+            msg = json.loads(self.ws.recv(timeout=180))
+            if msg.get("id") == req_id:
+                return msg.get("data")
+            print("  (unsolicited)", json.dumps(msg)[:160])
+
+
+def step(label, command):
+    print(f"\n== {label}")
+    resp = c.send(command)
+    print(f"  <= {json.dumps(resp)[:200]}")
+    return resp
+
+
+for p in (OUT_PACK, GAME_PACK):
+    if os.path.exists(p):
+        os.remove(p)
+        print("removed stale:", p)
+
+hashes = {}
+for _src, _in_pack in FILES:
+    _data = open(_src, "rb").read()
+    hashes[_in_pack] = (len(_data), hashlib.sha256(_data).hexdigest())
+    print(f"source {_src.split('/')[-1]:34s} {len(_data):>8d} bytes  sha256 {hashes[_in_pack][1][:32]}")
+
+c = Client(WS_URL)
+step("1 select game", {"SetGameSelected": ["warhammer_3", False]})
+key = step("2 new pack", "NewPack")["String"]
+step("3 add the main script and the four ui files",
+     {"AddPackedFiles": [key, [f[0] for f in FILES], [{"File": f[1]} for f in FILES], None]})
+step("4 type = Movie", {"SetPackFileType": [key, "Movie"]})
+
+info = step("5 list contents", {"GetPackFileDataForTreeView": key})
+container, files = info["ContainerInfoVecRFileInfo"]
+in_pack_paths = sorted(f["path"] for f in files)
+expected = sorted(_in_pack for _src, _in_pack in FILES)
+print("   container:", container["pfh_file_type"], "| files:", in_pack_paths)
+assert in_pack_paths == expected, f"pack contents wrong: {in_pack_paths} != {expected}"
+
+ok_all = True
+for _src, in_pack in FILES:
+    raw = c.send({"GetPackedFileRawData": [key, in_pack]})
+    packed = bytes(raw["VecU8"])
+    got = hashlib.sha256(packed).hexdigest()
+    want_len, want = hashes[in_pack]
+    ok = (got == want and len(packed) == want_len)
+    ok_all = ok_all and ok
+    print(f"   {in_pack:48s} {len(packed):>8d} bytes  MATCHES SOURCE: {ok}")
+assert ok_all, "content mismatch - refusing to install"
+
+# what we shipped must contain what we expect
+t_raw = bytes(c.send({"GetPackedFileRawData": [key, "ui/common ui/special_ability_tooltip.twui.xml"]})["VecU8"])
+t_txt = t_raw.decode("utf-8", "replace")
+print("\n== 6 what the pack must contain")
+script_txt = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua",
+                  encoding="utf-8", errors="replace").read()
+print(f"   tooltip hint line present                 : {HINT in t_txt}")
+print(f"   the double-click toggles are gone         : "
+      f"{'Double Click Unit Card' not in script_txt}"
+      f" and {'ComponentLDBLClickUp' not in script_txt}")
+dead = sum(script_txt.count(t) for t in ('zz_rclick', 'check_rclick_property'))
+print(f"   dead property-route code left behind      : {dead} (want 0)")
+assert HINT in t_txt, "tooltip hint missing"
+assert "Double Click Unit Card" not in script_txt, "the double-click command handler should be gone"
+assert "ComponentLDBLClickUp" not in script_txt, "the double-click component listener should be gone"
+# the claim path copies the engine's key value before ANY string operation
+# (as_plain_string) and the scan probe reports keytype/copyok/lenok; the old
+# AddScriptEventReporter gate died with the call itself.
+assert "badge creation deferred to the tick" in script_txt, "the deferred badge creation line is missing"
+assert "as_plain_string" in script_txt, "the engine-key copy helper is missing from the claim path"
+assert "scan probe: keytype=" in script_txt, "the scan probe keytype line is missing"
+# round 7: the bounded re-scan loop (the brisk window; the dead local-ceiling
+# slot stays freed so the chunk compiles under Lua's 200-local limit).
+assert "local brisk_walk_until = -1" in script_txt, "the round-7 window local is missing"
+assert "brisk_walk_until = ui_ticks + 48" in script_txt, "the fresh-window open is missing"
+assert "CHARGE_ORDER_TOLERANCE_M" not in script_txt, "the freed local-ceiling slot came back"
+assert "zz_auto_" in script_txt, "the badge component is missing from the script"
+assert "onslaught" in script_txt, "the ability marker is missing from the script"
+assert "SetText" in script_txt, "the badge letter switch (SetText) is missing"
+for tok in ("zz_rclick", "check_rclick_property"):
+    assert tok not in script_txt, f"dead right-click code left in the script: {tok}"
+
+# round 35 (extensions - nothing above is loosened): the second ability
+# (Foe-Seeker) must ship, driven by the ABILITIES table, and the 60/90 s
+# timers must NOT come back.
+assert "foe_seeker" in script_txt, "the foe_seeker ability is missing from the script"
+assert "wh_main_character_abilities_foe_seeker" in script_txt, "the foe_seeker key is missing"
+assert "wh_dlc03_character_abilities_foe_seeker" in script_txt, "the foe_seeker dlc key variant is missing"
+assert "zz_auto_badge_fs" in script_txt, "the Foe-Seeker badge id is missing from the script"
+# ROUND v81 (the three approved trigger changes - nothing above is loosened):
+#   * Deadly Onslaught fires on the charge window OR in melee (both arms on);
+#   * Foe-Seeker's trigger is "tired" - read via battle_unit:fatigue_state(),
+#     exact matching only, a one-time notice when unreadable;
+#   * the "running" trigger is DELETED - it must never come back.
+assert "elseif ability.trigger == \"running\" then" not in script_txt, "the deleted running trigger is back in the script"
+assert "reason = \"running\"" not in script_txt, "the old running reason text is back in the script"
+assert "fast = unit:is_moving_fast()," in script_txt, "the charge detector's fast read is missing"
+assert "melee = unit:is_in_melee()," in script_txt, "the charge detector's melee read is missing"
+assert "local FIRE_ON_MELEE  = true" in script_txt, "the approved in-melee arm is not switched on"
+assert 'marker = "foe_seeker", name = "Foe-Seeker", trigger = "tired"' in script_txt, "the fatigue trigger is missing from the script"
+assert "FOURTH.fatigue_states = {" in script_txt, "the exact-match fatigue state map is missing"
+assert "FOURTH.fatigue_fire = {" in script_txt, "the tired-or-worse fire set is missing"
+assert "function FOURTH.fatigue_state(unit)" in script_txt, "the fatigue reader is missing"
+assert "return unit:fatigue_state() end" in script_txt, "the plain fatigue getter read is missing"
+assert "foe_seeker fatigue: read UNAVAILABLE" in script_txt, "the one-time unreadable notice is missing"
+assert "foe_seeker fatigue: UNRECOGNISED value" in script_txt, "the unrecognised-state notice is missing"
+assert "string.find(" not in script_txt, "a string.find call is back in the script"
+assert "check_readiness" in script_txt, "the readiness gate is missing from the script"
+assert "GUARD_SECONDS = 2" in script_txt, "the short 2 s guard is missing from the script"
+for tok in ("ABILITY_RECHARGE_SECONDS", "ACTIVATION_BRAKE_TICKS", "MIN_SECONDS_BETWEEN_FIRES"):
+    assert tok not in script_txt, f"a 60/90 s timer token is back in the script: {tok}"
+
+# ROUND v82 (the approved in-melee-self batch + critique-2 item 8 - nothing
+# above is loosened): every ability entry carries its own evaluate(unit,
+# routing), wired at load from the trigger name; the if/elseif trigger chain
+# is GONE; the approved batch (28 entries, 29 keys, all on blood_lust's
+# melee_unwavering rule) ships with its ONE shared evaluator and its own
+# badges.
+assert "ability.trigger ==" not in script_txt, "the old trigger chain is back in the script"
+assert "function FOURTH.evaluate_charge(unit, routing)" in script_txt, "the charge evaluator is missing"
+assert "function FOURTH.evaluate_tired(unit, routing)" in script_txt, "the tired evaluator is missing"
+assert "function FOURTH.evaluate_melee(unit, routing)" in script_txt, "the melee evaluator is missing"
+assert "function FOURTH.evaluate_melee_low_morale(unit, routing)" in script_txt, "the melee_low_morale evaluator is missing"
+assert "function FOURTH.evaluate_in_melee_self(unit, routing)" in script_txt, "the shared in-melee-self evaluator is missing"
+assert "FOURTH.evaluators = {" in script_txt, "the trigger -> evaluator map is missing"
+assert "ability.evaluate = FOURTH.evaluators[ability.trigger]" in script_txt, "the entry wiring loop is missing"
+assert "local reason = ability.evaluate(unit, routing)" in script_txt, "the single dispatch call is missing"
+assert 'marker = "aether_sword"' in script_txt, "the batch's first entry is missing"
+assert 'marker = "strike_of_nehekhara"' in script_txt, "the batch's last entry is missing"
+assert "wh3_dlc20_weapon_abilities_aether_sword" in script_txt, "the batch's first key is missing"
+assert "wh2_dlc09_character_abilities_strike_of_nehekhara" in script_txt, "the batch's last key is missing"
+assert "wh3_main_lord_abilities_deathbringer" in script_txt and "wh3_main_lord_abilities_deathbringer_upgraded" in script_txt, "the deathbringer keys are missing"
+assert 'badge = "zz_auto_badge_aether_sword"' in script_txt, "a batch badge id is missing from the script"
+assert 'badge = "zz_auto_badge_deathbringer"' in script_txt, "the deathbringer badge id is missing from the script"
+
+# ROUND v83 (BLOCK 2 - the second in-melee-self batch + the five new trigger
+# types). Nothing above is loosened. The 27 approved simple entries ride the
+# SAME shared evaluator; the four new-trigger entries ship with their own
+# evaluators; the summoned Foe-Seeker is a THIRD key on the existing foe_seeker
+# entry; and the context read, the ally-target slot and the Ushoran hysteresis
+# field all ship.
+BLOCK2_SIMPLE = [
+    ("dolorous_blade", "wh_dlc07_hero_abilities_dolorous_blade"),
+    ("dragon_spear", "wh2_dlc16_weapon_abilities_dragon_spear"),
+    ("dreaded_duelist", "wh2_dlc11_lord_abilities_dreaded_duelist"),
+    ("dwarf_gouger", "wh2_main_weapon_abilities_dwarf_gouger"),
+    ("enrage", "wh_pro04_unit_abilities_enrage"),
+    ("entice", "wh3_dlc29_unit_abilities_entice"),
+    ("everyone_has_their_price", "wh3_main_lord_abilities_everyone_has_their_price"),
+    ("evisceration", "wh2_dlc16_hero_abilities_evisceration"),
+    ("eye_jabber", "wh3_dlc29_spell_bound_eye_jabber"),
+    ("eye_gouger", "wh3_dlc29_spell_bound_eye_gouger"),
+    ("eye_of_the_storm", "wh3_main_lord_abilities_eye_of_the_storm"),
+    ("faiths_bastion", "wh_main_hero_abilities_faiths_bastion"),
+    ("fangsword_of_eltharion", "wh2_dlc15_weapon_abilities_fangsword_of_eltharion"),
+    ("feint_and_reposte", "wh2_main_lord_abilities_feint_and_reposte"),
+    ("filth_mace", "wh_main_weapon_abilities_filth_mace"),
+    ("fluid_injection", "wh2_dlc16_unit_abilities_fluid_injection"),
+    ("gaze_of_khorne", "wh3_dlc26_lord_abilities_gaze_of_khorne"),
+    ("fury_of_the_land", "wh3_dlc24_character_abilities_fury_of_the_land"),
+    ("fury_of_ursun", "wh3_main_lord_abilities_fury_of_ursun"),
+    ("ghal_maraz", "wh_main_weapon_abilities_ghal_maraz"),
+    ("giant_leap", "wh3_dlc24_character_abilities_giant_leap"),
+    ("gitsnik", "wh_main_weapon_abilities_gitsnik"),
+    ("gotrek_doom", "wh2_pro08_character_abilities_gotrek_doom"),
+    ("shield_of_faith_upgraded", "wh_dlc04_spell_bound_shield_of_faith_upgraded"),
+    ("great_gutgouger", "wh3_dlc26_weapon_abilities_great_gutgouger"),
+    ("halo_of_maidenly_wrath", "wh2_dlc14_lord_abilities_halo_of_maidenly_wrath"),
+    ("hammer_axe_of_skoll", "wh3_dlc29_weapon_active_hammer_axe_of_skoll"),
+]
+for _marker, _key in BLOCK2_SIMPLE:
+    assert 'marker = "%s"' % _marker in script_txt, "block-2 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-2 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-2 key missing: " + _key
+# the corrected single-l key must be used; the tracker's double-l typo must not
+# appear anywhere.
+assert "wh2_dlc11_lord_abilities_dreaded_duelist" in script_txt, "the corrected 'dreaded_duelist' key is missing"
+assert "wh2_dlc11_lord_abilities_dreaded_duelist".replace("duelist", "duellist") not in script_txt, \
+    "the double-l 'dreaded_duellist' typo came back"
+# the four own-evaluator trigger entries
+BLOCK2_NEWT = [
+    ("eagle_feather_torc", "wh3_dlc27_item_abilities_eagle_feather_torc", "barrier_broken"),
+    ("fangspike", "wh3_dlc26_weapon_abilities_fangspike", "charge_or_melee"),
+    ("ghoul_king_of_ushoran", "wh2_dlc11_lord_abilities_ghoul_king_of_ushoran", "ushoran_health"),
+    ("glorious_death", "wh3_dlc25_lord_abilities_glorious_death", "glorious_death"),
+]
+for _marker, _key, _trig in BLOCK2_NEWT:
+    assert 'marker = "%s"' % _marker in script_txt, "new-trigger marker missing: " + _marker
+    assert '"%s"' % _key in script_txt, "new-trigger key missing: " + _key
+    assert 'trigger = "%s"' % _trig in script_txt, "new-trigger trigger name missing: " + _trig
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "new-trigger badge missing: " + _marker
+assert "wh_main_character_abilities_foe_seeker_summoned" in script_txt, "the summoned Foe-Seeker key is missing"
+for _fn in ("function FOURTH.evaluate_barrier_broken(unit, routing)",
+            "function FOURTH.evaluate_charge_or_melee(unit, routing)",
+            "function FOURTH.evaluate_ushoran_health(unit, routing)",
+            "function FOURTH.evaluate_glorious_death(unit, routing)"):
+    assert _fn in script_txt, "a block-2 evaluator is missing: " + _fn
+for _map in ("barrier_broken = FOURTH.evaluate_barrier_broken,",
+             "charge_or_melee = FOURTH.evaluate_charge_or_melee,",
+             "ushoran_health = FOURTH.evaluate_ushoran_health,",
+             "glorious_death = FOURTH.evaluate_glorious_death,"):
+    assert _map in script_txt, "a block-2 evaluator map entry is missing: " + _map
+assert "function FOURTH.context_value(unit, field)" in script_txt, "the context-value reader is missing"
+assert "FOURTH.cast_target = nil" in script_txt and "uc:perform_special_ability(ability_key, target or unit)" in script_txt, \
+    "the ally-target dispatch is missing"
+assert "FOURTH.ushoran_high" not in script_txt, "the removed Ushoran hysteresis field came back"
+assert 'string.format("barrier broken (BarrierHp %.0f/%.0f)"' in script_txt, "the barrier-broken reason is missing"
+assert 'reason = "in melee (charge or melee)"' in script_txt, "the fangspike melee reason is missing"
+assert 'string.format("health %d%% (<= 75%%)"' in script_txt, "the ushoran health reason is missing"
+# ROUND v85 (job 1): GLORIOUS DEATH CASTS ON SELF. The trigger is unchanged,
+# but every firing arm now writes the OWNER into FOURTH.cast_target - the old
+# ally-target reasons and the ally cast-target write are GONE.
+assert 'reason = "slayer in melee (self-cast)"' in script_txt, "the Slayer self-cast reason is missing"
+assert 'reason = "self in melee (self-cast)"' in script_txt, "the self self-cast reason is missing"
+assert 'reason = "slayer ally in melee (priority)"' not in script_txt, "the removed ally-target reason came back"
+assert 'reason = "self slayer fallback (in melee)"' not in script_txt, "the removed ally self-fallback reason came back"
+assert 'reason = "ally in melee (priority)"' not in script_txt, "the removed any-ally fallback reason came back"
+assert 'reason = "self fallback (no other melee ally)"' not in script_txt, "the removed any-ally self reason came back"
+assert "FOURTH.cast_target = best_unit" not in script_txt, "the removed ally cast-target write came back"
+assert script_txt.count("FOURTH.cast_target = unit") == 2, "the self-cast writes are not exactly two"
+# ROUND v85 (job 2): BLOCK 3 - 38 approved entries (35 in-melee-self on the
+# existing melee_unwavering evaluator + 3 charge-or-melee on the existing
+# charge_or_melee evaluator). NO new evaluator, NO new chunk locals.
+BLOCK3_SELF = [
+    ("legbiter", "wh3_dlc29_weapon_abilities_legbiter"),
+    ("hellfire_sword", "wh_main_weapon_abilities_hellfire_sword"),
+    ("helm_of_discord", "wh_main_weapon_abilities_helm_of_discord"),
+    ("helm_of_many_eyes", "wh_dlc01_item_passive_helm_of_many_eyes"),
+    ("heroic_killing_blow_2", "wh3_main_pro_character_abilities_heroic_killing_blow_2"),
+    ("heroic_killing_blow_dlc07", "wh_dlc07_character_abilities_heroic_killing_blow"),
+    ("heroic_killing_blow_main", "wh_main_character_abilities_heroic_killing_blow"),
+    ("hydra_blade", "wh2_main_weapon_abilities_hydra_blade"),
+    ("inevitable_horror", "wh3_dlc26_character_abilities_inevitable_horror"),
+    ("karaghul", "wh2_pro08_weapon_abilities_karaghul"),
+    ("killing_blow_1", "wh3_main_pro_character_abilities_heroic_killing_blow_1"),
+    ("killing_blow", "wh_main_unit_abilities_killing_blow"),
+    ("liarsbane", "wh3_dlc25_weapon_abilities_liarsbane"),
+    ("lightning_reflexes", "wh2_dlc11_lord_abilities_lightning_reflexes"),
+    ("locus_of_beguilement", "wh3_main_character_abilities_locus_of_beguilement"),
+    ("locus_of_grace", "wh3_main_character_abilities_locus_of_grace"),
+    ("locus_of_wrath", "wh3_main_character_abilities_locus_of_wrath"),
+    ("lucky_banner", "wh2_dlc15_item_abilities_lucky_banner"),
+    ("mace_of_ulumak", "wh2_dlc13_weapon_abilities_mace_of_ulumak"),
+    ("mananns_luck", "wh2_dlc11_lord_abilities_mananns_luck"),
+    ("master_of_the_skies", "wh2_dlc12_lord_abilities_master_of_the_skies"),
+    ("mimic_waaagh", "wh2_dlc15_unit_abilities_mimic_waaagh"),
+    ("mimic_grom_waaagh", "wh2_dlc15_unit_abilities_mimic_grom_waaagh"),
+    ("monstrous_strength", "wh2_dlc13_lord_abilities_monstrous_strength"),
+    ("mortal_blow", "wh3_main_daemon_arms_abilities_mortal_blow"),
+    ("mortal_blow_upgraded", "wh3_main_daemon_arms_abilities_mortal_blow_upgraded"),
+    ("mumbo_jumbo_chant", "wh3_dlc26_character_abilities_mumbo_jumbo_chant"),
+    ("strike_of_nagash", "wh2_dlc09_character_abilities_strike_of_nagash"),
+    ("nurgles_favoured_son", "wh3_dlc25_lord_abilities_nurgles_favoured_son"),
+    ("opal_amulet", "wh_main_item_abilities_opal_amulet"),
+    ("oracle_of_eternity", "wh3_main_lord_abilities_oracle_of_eternity"),
+    ("pendant_of_slaanesh", "wh_main_item_abilities_pendant_of_slaanesh"),
+    ("plaguefathers_oration", "wh3_main_lord_abilities_plaguefathers_oration"),
+    ("primal_roar", "wh2_dlc13_lord_abilities_primal_roar"),
+    ("puncture", "wh3_dlc26_character_abilities_puncture"),
+]
+BLOCK3_CHARGE = [
+    ("heart_piercing", "wh2_dlc11_lord_abilities_heart_piercing"),
+    ("horn_of_the_first_beast", "wh_dlc03_item_abilities_horn_of_the_first_beast"),
+    ("morglor_the_mangler", "wh3_dlc26_weapon_abilities_morglor_the_mangler"),
+]
+assert len(BLOCK3_SELF) == 35 and len(BLOCK3_CHARGE) == 3
+for _marker, _key in BLOCK3_SELF:
+    assert 'marker = "%s"' % _marker in script_txt, "block-3 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-3 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-3 key missing: " + _key
+for _marker, _key in BLOCK3_CHARGE:
+    assert 'marker = "%s"' % _marker in script_txt, "block-3 marker missing: " + _marker
+    assert 'badge = "zz_auto_badge_%s"' % _marker in script_txt, "block-3 badge missing: " + _marker
+    assert '"%s"' % _key in script_txt, "block-3 key missing: " + _key
+# 91 entries carry the shared melee_unwavering trigger (blood_lust + 28 block-1
+# + 27 block-2 + 35 block-3); 4 carry the charge_or_melee trigger (fangspike + 3)
+assert script_txt.count('trigger = "melee_unwavering"') == 91, \
+    "the melee_unwavering entry count is not 91"
+assert script_txt.count('trigger = "charge_or_melee"') == 4, \
+    "the charge_or_melee entry count is not 4"
+
+# ROUND v84 (the user's two field-test corrections - nothing above is loosened):
+#   * GLORIOUS DEATH's candidate set is SLAYER UNITS ONLY. Who is a Slayer is
+#     the DERIVED land_units type-key list (FOURTH.slayer_keys), tested by
+#     EXACT WHOLE-KEY equality only (no string.find). A NON-Slayer ally is
+#     NEVER targeted (the old any-in-melee-ally fallback is gone); the self
+#     fallback fires only when the OWNER is a Slayer and in melee.
+#   * GHOUL KING OF USHORAN's HYSTERESIS is REMOVED - plain own health <= 75%.
+SLAYER_KEYS = [
+    "wh_main_dwf_inf_slayers",
+    "wh2_dlc10_dwf_inf_giant_slayers",
+    "wh3_dlc25_dwf_cha_daemon_slayer",
+    "wh3_dlc25_dwf_cha_dragon_slayer",
+    "wh3_dlc25_dwf_inf_slayer_pirates",
+    "wh3_dlc25_dwf_inf_slayer_pirates_ror",
+    "wh3_dlc25_dwf_inf_slayers_grudge_unit",
+    "wh_dlc06_dwf_inf_dragonback_slayers_0",
+    "wh3_dlc25_dwf_inf_doomseekers",
+    "wh3_dlc25_dwf_inf_doomseekers_ror",
+]
+assert "FOURTH.slayer_keys = {" in script_txt, "the Slayer type-key list is missing"
+for _k in SLAYER_KEYS:
+    assert ('["%s"] = true' % _k) in script_txt, "a derived Slayer key is missing: " + _k
+assert "function FOURTH.is_slayer(unit)" in script_txt, "the Slayer reader is missing"
+assert "return FOURTH.slayer_keys[t] == true" in script_txt, \
+    "the Slayer membership test is not the exact whole-key lookup"
+assert "and FOURTH.is_slayer(other) then" in script_txt, "the Glorious Death ally scan is not Slayer-filtered"
+assert "FOURTH.is_slayer(unit) and unit:is_in_melee()" in script_txt, \
+    "the Glorious Death self-cast is not gated on the owner being a Slayer"
+# the old outer melee guard is gone from Glorious Death (3 remaining guard paths)
+assert script_txt.count("unit:is_in_melee() and not routing") == 3, \
+    "the old Glorious Death outer melee guard is back"
+assert 'type(hp) == "number" and hp <= 75 then' in script_txt, "the plain Ushoran <=75% test is missing"
+
+# HOUSEKEEPING 20261004: the two throwaway experiment probes were RETIRED from the
+# pack (zz_probe_unit_reads.lua and zz_probe_ui_text.lua - their experiments are
+# finished and their findings are recorded). Their sources are preserved in
+# releases/20261004_probe_sources_retired/ and must NOT ship again:
+assert not any("zz_probe_" in p for p in in_pack_paths), "a retired probe is back in the pack"
+for _retired in ("zz_probe_ui_text.lua", "zz_probe_unit_reads.lua"):
+    _retired_path = SRC_ROOT + "/releases/20261004_probe_sources_retired/" + _retired
+    assert os.path.exists(_retired_path), f"the preserved retired probe source is missing: {_retired_path}"
+
+# the main mod must be byte-identical (untouched by this work)
+main_src = open(SRC_ROOT + "/script/battle/mod/zz_test_deadly_onslaught.lua", "rb").read()
+main_raw = bytes(c.send({"GetPackedFileRawData": [key, "script/battle/mod/zz_test_deadly_onslaught.lua"]})["VecU8"])
+print(f"\n== 6d main mod untouched (byte-identical)     : {main_raw == main_src}")
+assert main_raw == main_src, "the main mod changed - it must not"
+
+step("7 save to disk", {"SavePackAs": [key, OUT_PACK]})
+step("8 close", {"ClosePack": key})
+try:
+    c.send("ClientDisconnecting")
+except Exception:
+    pass  # the server shuts down as soon as the last session leaves
+
+print("\n================ INSTALL ================")
+shutil.copy2(OUT_PACK, GAME_PACK)
+a = hashlib.md5(open(OUT_PACK, "rb").read()).hexdigest()
+b = hashlib.md5(open(GAME_PACK, "rb").read()).hexdigest()
+print(f"built pack   md5 {a}")
+print(f"installed    md5 {b}")
+print(f"IDENTICAL    {a == b}")
+print(f"installed to {GAME_PACK}")

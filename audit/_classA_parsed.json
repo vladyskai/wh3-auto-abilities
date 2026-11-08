@@ -1,0 +1,990 @@
+[
+ {
+  "num": 263,
+  "name": "Accusation",
+  "keys": [
+   "wh_main_hero_abilities_accusation"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 264,
+  "name": "Acquiescence",
+  "keys": [
+   "wh3_dlc27_spell_bound_acquiescence"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 271,
+  "name": "Amulet of Pha-Stah",
+  "keys": [
+   "wh2_dlc09_item_abilities_amulet_of_phastah"
+  ],
+  "intercept": 100.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 276,
+  "name": "Assassin's Trophy",
+  "keys": [
+   "wh2_main_character_abilities_assassins_trophy"
+  ],
+  "intercept": 150.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 281,
+  "name": "Bastet",
+  "keys": [
+   "wh3_dlc29_lord_abilities_bastet"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 282,
+  "name": "Bitter Sting",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_bitter_sting"
+  ],
+  "intercept": 30.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 285,
+  "name": "Blade of Setep",
+  "keys": [
+   "wh2_dlc09_weapon_abilities_blade_of_setep"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 288,
+  "name": "Blight Swarm",
+  "keys": [
+   "wh3_main_lord_abilities_blight_swarm"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 290,
+  "name": "Bloody Onslaught",
+  "keys": [
+   "wh3_dlc26_character_abilities_bloody_onslaught"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 294,
+  "name": "Book of Secrets",
+  "keys": [
+   "wh3_dlc24_item_abilities_book_of_secrets"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 298,
+  "name": "Chalice of Dark Rain",
+  "keys": [
+   "wh_dlc03_item_abilities_chalice_of_dark_rain"
+  ],
+  "intercept": 200.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 303,
+  "name": "Cube of Darkness",
+  "keys": [
+   "wh2_main_item_abilities_cube_of_darkness"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 304,
+  "name": "Curse of Khsar",
+  "keys": [
+   "wh2_dlc09_character_abilities_curse_of_khsar"
+  ],
+  "intercept": 35.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 309,
+  "name": "Don't Even Try It",
+  "keys": [
+   "wh2_dlc15_lord_abilities_dont_even_try_it"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 310,
+  "name": "Doom & Darkness",
+  "keys": [
+   "wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school",
+   "wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness",
+   "wh_dlc08_spell_bound_death_doom_and_darkness"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 313,
+  "name": "El Syf",
+  "keys": [
+   "wh_dlc05_weapon_abilities_el_syf"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 318,
+  "name": "Entangle",
+  "keys": [
+   "wh2_dlc10_character_abilities_entangle"
+  ],
+  "intercept": 15.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 320,
+  "name": "Eternal Gaze",
+  "keys": [
+   "wh3_dlc29_lord_abilities_gaze_of_usirian"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 324,
+  "name": "Fear of Aramar",
+  "keys": [
+   "wh2_dlc10_item_abilities_fear_of_aramar"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 326,
+  "name": "Fecund Rebirth",
+  "keys": [
+   "wh3_dlc29_character_active_mark_of_the_monster"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 327,
+  "name": "Fermented Fungi",
+  "keys": [
+   "wh2_dlc15_lord_abilities_fermented_fungi"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 333,
+  "name": "Frenzied Challenge",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_frenzied_challenge"
+  ],
+  "intercept": 150.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 334,
+  "name": "Frost Shard Glaive",
+  "keys": [
+   "wh3_main_weapon_abilities_frost_shard_glaive"
+  ],
+  "intercept": 50.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 336,
+  "name": "Gaze of Fate",
+  "keys": [
+   "wh3_main_lord_abilities_gaze_of_fate"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 337,
+  "name": "Get 'Em!",
+  "keys": [
+   "wh3_dlc25_character_abilities_get_em"
+  ],
+  "intercept": 35.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 339,
+  "name": "Gilellion's Soulnetter",
+  "keys": [
+   "wh3_main_weapon_abilities_soulnetter"
+  ],
+  "intercept": 50.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 341,
+  "name": "Glory Seeker",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 342,
+  "name": "Glory Seeker Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_glory_seeker_upgraded"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 348,
+  "name": "Headhunt",
+  "keys": [
+   "wh3_dlc26_character_abilities_headhunt"
+  ],
+  "intercept": 150.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 351,
+  "name": "Hidden Huntress",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 352,
+  "name": "Hidden Huntress Upgraded",
+  "keys": [
+   "wh3_cp1_lord_abilities_hidden_huntress_upgraded"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 355,
+  "name": "Hornswaggle",
+  "keys": [
+   "wh2_dlc11_character_abilities_hornswaggle"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 357,
+  "name": "Hunter of Champions",
+  "keys": [
+   "wh_dlc08_character_abilities_hunter_of_champions"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 358,
+  "name": "Hunter's Snare",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_snare"
+  ],
+  "intercept": 35.0,
+  "ground": true,
+  "area": false
+ },
+ {
+  "num": 359,
+  "name": "Hunter's Trap",
+  "keys": [
+   "wh2_dlc13_lord_abilities_hunters_trap"
+  ],
+  "intercept": 35.0,
+  "ground": true,
+  "area": false
+ },
+ {
+  "num": 369,
+  "name": "Looming Dread",
+  "keys": [
+   "wh2_dlc14_lord_abilities_looming_dread"
+  ],
+  "intercept": 150.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 370,
+  "name": "Lord of Dragons",
+  "keys": [
+   "wh2_dlc15_lord_abilities_lord_of_dragons"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 372,
+  "name": "Mark of the Plague Fleet",
+  "keys": [
+   "wh3_dlc29_item_active_mark_of_the_plague_fleet"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 373,
+  "name": "Mark of Yin",
+  "keys": [
+   "wh3_dlc24_unit_abilities_mark_of_yin"
+  ],
+  "intercept": 180.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 374,
+  "name": "Marked by Ulthar",
+  "keys": [
+   "wh_dlc06_unit_abilities_marked_by_ulthar"
+  ],
+  "intercept": 150.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 375,
+  "name": "Marked for Eatin'",
+  "keys": [
+   "wh3_dlc26_unit_abilities_marked_for_eatin"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 376,
+  "name": "Master of Beguilement",
+  "keys": [
+   "wh_dlc04_lord_abilities_beguile"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 381,
+  "name": "Master Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_master_rune_of_slowness"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 390,
+  "name": "Missile Mirror",
+  "keys": [
+   "wh3_dlc24_unit_bound_missile_mirror"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 391,
+  "name": "Mither",
+  "keys": [
+   "wh2_dlc15_hero_abilities_mither"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 394,
+  "name": "Muster of Malevolents",
+  "keys": [
+   "wh2_dlc16_character_abilities_muster_of_malevolents"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 396,
+  "name": "Net Dem Up!",
+  "keys": [
+   "wh3_dlc26_unit_abilities_net_dem_up"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 397,
+  "name": "Net of Amyntok",
+  "keys": [
+   "wh_dlc04_spell_bound_net_of_amyntok"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 399,
+  "name": "Oath of Vengeance",
+  "keys": [
+   "wh2_dlc10_lord_abilities_oath_of_vengeance"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 400,
+  "name": "Oil Flask",
+  "keys": [
+   "wh2_dlc13_lord_abilities_oil_flask"
+  ],
+  "intercept": 70.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 401,
+  "name": "Otto's Scythe",
+  "keys": [
+   "wh3_dlc29_item_active_ottos_scythe"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 402,
+  "name": "Pack Trap",
+  "keys": [
+   "wh3_dlc24_unit_abilities_pack_trap"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 403,
+  "name": "Pageant of Shrikes",
+  "keys": [
+   "wh2_dlc16_character_abilities_pageant_of_shrikes"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 405,
+  "name": "Pestilent Potions",
+  "keys": [
+   "wh3_dlc20_item_abilities_pestilent_potions"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 408,
+  "name": "Plague of Rust",
+  "keys": [
+   "wh3_main_spell_bound_plague_of_rust"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 414,
+  "name": "Power Siphon",
+  "keys": [
+   "wh2_dlc11_lord_abilities_power_siphon"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 417,
+  "name": "Prey of Anath Raema",
+  "keys": [
+   "wh_dlc05_character_abilities_prey_of_anath_raema"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 418,
+  "name": "Prey of the Blood God",
+  "keys": [
+   "wh3_pro12_hero_abilities_prey_of_the_blood_god"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 421,
+  "name": "Ravaging Swarm",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack"
+  ],
+  "intercept": 30.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 422,
+  "name": "Ravaging Swarm Upgraded",
+  "keys": [
+   "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded"
+  ],
+  "intercept": 30.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 429,
+  "name": "Rune of Slowness",
+  "keys": [
+   "wh2_dlc17_rune_abilities_rune_of_slowness"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 431,
+  "name": "Sadistic Snare",
+  "keys": [
+   "wh3_dlc23_lord_abilities_sadistic_snare"
+  ],
+  "intercept": 20.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 434,
+  "name": "Scroll of Leeching",
+  "keys": [
+   "wh_main_item_abilities_scroll_of_leeching"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 440,
+  "name": "Silence the Prey",
+  "keys": [
+   "wh3_main_character_abilities_silence_the_prey"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 445,
+  "name": "Spearfisher's Net",
+  "keys": [
+   "wh2_dlc11_lord_abilities_spearfishers_net"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 447,
+  "name": "Spiderweb Attack",
+  "keys": [
+   "wh3_dlc26_character_abilities_spider_web_attack"
+  ],
+  "intercept": 50.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 455,
+  "name": "Sword of Filth",
+  "keys": [
+   "wh3_dlc25_weapon_abilities_sword_of_filth"
+  ],
+  "intercept": 35.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 457,
+  "name": "Taunt",
+  "keys": [
+   "wh2_dlc11_character_abilities_taunt"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 458,
+  "name": "Tendrils of the Sea",
+  "keys": [
+   "wh3_dlc29_hero_active_tendrils_of_the_sea"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 460,
+  "name": "The Averland Runefang",
+  "keys": [
+   "wh2_dlc13_weapon_abilities_averland_runefang"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 462,
+  "name": "The Black Tongue",
+  "keys": [
+   "wh3_dlc27_character_abilities_the_black_tongue"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 464,
+  "name": "The Dark Master",
+  "keys": [
+   "wh3_main_lord_abilities_the_dark_master"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 465,
+  "name": "The Enfeebling Foe",
+  "keys": [
+   "wh3_dlc23_spell_bound_enfeebling_foe",
+   "wh3_dlc27_spell_bound_enfeebling_foe",
+   "wh3_main_spell_bound_enfeebling_foe",
+   "wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror"
+  ],
+  "intercept": 200.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 468,
+  "name": "The Hammer of Karak Drazh",
+  "keys": [
+   "wh_main_weapon_abilities_the_hammer_of_karak_drazh"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 474,
+  "name": "The Trickster's Pendant",
+  "keys": [
+   "wh2_main_item_abilities_the_tricksters_pendant"
+  ],
+  "intercept": 100.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 475,
+  "name": "The Vial of Hashut",
+  "keys": [
+   "wh3_dlc23_item_abilities_the_vial_of_hashut"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 476,
+  "name": "The Vortex Shard",
+  "keys": [
+   "wh2_main_item_abilities_the_vortex_shard"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 479,
+  "name": "The Withering",
+  "keys": [
+   "wh3_dlc23_spell_bound_the_withering",
+   "wh3_twa08_spell_bound_the_withering"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 480,
+  "name": "They Needs Stabbin'",
+  "keys": [
+   "wh2_dlc15_character_abilities_they_needs_stabbin"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 484,
+  "name": "Titan Headsman",
+  "keys": [
+   "wh3_dlc25_hero_abilities_titan_headsman"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 485,
+  "name": "Torment Blade",
+  "keys": [
+   "wh3_main_weapon_abilities_torment_blade"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 486,
+  "name": "Trickster's Shard",
+  "keys": [
+   "wh_main_item_abilities_tricksters_shard"
+  ],
+  "intercept": 500.0,
+  "ground": true,
+  "area": true
+ },
+ {
+  "num": 487,
+  "name": "Trophy Heads",
+  "keys": [
+   "wh2_main_lord_abilities_trophy_heads",
+   "wh3_main_daemon_wings_abilities_trophy_heads"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 496,
+  "name": "Virulent Contagion",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 497,
+  "name": "Virulent Contagion Upgraded",
+  "keys": [
+   "wh3_main_lord_abilities_virulent_contagion_upgraded"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 498,
+  "name": "Visions of Madness",
+  "keys": [
+   "wh3_dlc27_qb_unit_abilities_visions_of_madness"
+  ],
+  "intercept": 30.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 499,
+  "name": "Void Pendulum",
+  "keys": [
+   "wh3_main_item_abilities_void_pendulum"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 500,
+  "name": "Vorozheja's Foresight",
+  "keys": [
+   "wh3_dlc24_hero_abilities_vorozhejas_foresight"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 503,
+  "name": "Warden's Cage",
+  "keys": [
+   "wh2_dlc15_character_abilities_wardens_cage"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 504,
+  "name": "Warp Gaze",
+  "keys": [
+   "wh_pro04_unit_abilities_warp_gaze"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 505,
+  "name": "Warpstiletto",
+  "keys": [
+   "wh3_dlc29_item_abilities_warpstiletto"
+  ],
+  "intercept": 100.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 509,
+  "name": "Whip of Agony",
+  "keys": [
+   "wh2_twa03_weapon_abilities_whip_of_agony"
+  ],
+  "intercept": 75.0,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 510,
+  "name": "Whip of Misery",
+  "keys": [
+   "wh2_main_spell_bound_whip_of_agony"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 512,
+  "name": "Whispering Mist",
+  "keys": [
+   "wh3_dlc29_hero_abilities_whispering_mist"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 515,
+  "name": "Willing Prey",
+  "keys": [
+   "wh3_main_lord_abilities_willing_prey"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 517,
+  "name": "Word of Change",
+  "keys": [
+   "wh3_main_daemon_head_abilities_word_of_change"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 518,
+  "name": "Word of Pain",
+  "keys": [
+   "wh2_dlc10_spell_bound_word_of_pain",
+   "wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ },
+ {
+  "num": 523,
+  "name": "You're Next!",
+  "keys": [
+   "wh2_dlc15_lord_abilities_youre_next"
+  ],
+  "intercept": null,
+  "ground": false,
+  "area": false
+ }
+]

@@ -1,0 +1,77 @@
+sheets: ['Abilities', 'Numbers', 'Changelog', 'Definitions', 'Transforms']
+   OK   Abilities: 1,800 rows (header + 1,799 abilities)  got 1800
+   OK   19 air-drop rows  got 19
+   OK   no retired-machinery text in ANY of the 23 columns on the 19 air-drop rows
+   OK   col 22: every air-drop row states the shipped rule in order  []
+   OK   col 19: every air-drop row names round 118  []
+   OK   col 22: the candidate rule (> 10 models) is kept on every row  []
+   OK   col 22: no infantry filter is stated on every row  []
+   OK   Definitions: new section 15 present
+   OK   Definitions: the one-line rule present
+   OK   Definitions: the single decision constant present
+   OK   Definitions: section 12 retired
+   OK   Definitions: section 13 retired
+   OK   Definitions: section 14 retired
+   OK   Definitions: sections 8-11 retirement reasons
+   OK   Definitions: the retired list
+   OK   Definitions: the glossary line no longer describes a wait or a gap
+   OK   Definitions row 69 = the air_drop glossary line, rewritten
+   OK   Numbers: 1,141 IN-WHEEL rows  got 1141
+   OK   Numbers: 658 EXCLUDED rows  got 658
+   OK   Numbers: 1,141 + 658 = 1,799  got 1799
+   OK   Numbers: 741 IMPLEMENTED rows  got 741
+   OK   mod: 689 entries  got 689
+   OK   mod: 742 keys  got 742
+   OK   mod: 46 evaluators  got 46
+   OK   Numbers: 46 trigger families listed  got 46
+   OK   Numbers: families sum to 689 entries  got 689
+   OK   Numbers: families sum to 742 keys  got 742
+   OK   Numbers: air_drop_on_infantry listed as 12 / 19
+   OK   Numbers row 101 states: SIGN-OFF RECONCILIATION (v18)
+   OK   Numbers row 101 states: 1,141 + 658 = 1,799
+   OK   Numbers row 101 states: 689 ENTRIES
+   OK   Numbers row 101 states: 741 + 1 = 742
+   OK   Numbers row 101 states: wh3_main_spell_slaanesh_slicing_shards_bound
+   OK   Numbers row 101 states: 46 EVALUATORS
+   OK   Numbers row 101 states: 131 wh_type_bombardment rows
+   OK   Numbers row 101 states: LABELLING CAVEAT
+   OK   Changelog last row is v18  got v18
+   OK   Changelog: rounds 117 and 118 reconciled, light mode named
+   OK   Changelog: round 117 installed md5
+   OK   Changelog: round 118 installed md5
+   OK   Changelog: the full-suite totals
+   OK   v1-v17: 30 older workbooks all predate v18 (untouched)  []
+
+   older workbooks (md5):
+     WH3_abilities_master_v10_2026-10-18.ods        89ad6a8b0c1aa6d56349e1fa3076242c
+     WH3_abilities_master_v10_2026-10-18.xlsx       11c0863ceb9b420e89e69fa66cac8beb
+     WH3_abilities_master_v11_2026-10-18.ods        b7931a4e7d58c48f8c6863f9e7530e44
+     WH3_abilities_master_v11_2026-10-18.xlsx       b4e1f273a7e4afe1b5118d6568f3fd90
+     WH3_abilities_master_v12_2026-10-18.ods        8c2fdd25e7c6f80d771a63d3c54dbfc0
+     WH3_abilities_master_v12_2026-10-18.xlsx       f70ba3a7c1165335b13a1bcf01a53173
+     WH3_abilities_master_v13_2026-10-18.ods        ad061c89f3da0070b06f2ce4c4e6fdfc
+     WH3_abilities_master_v13_2026-10-18.xlsx       6b173b320b368349d38c252ebccf32cc
+     WH3_abilities_master_v14_2026-10-18.xlsx       308c6aa715ad893785566e47b7daff85
+     WH3_abilities_master_v15_2026-10-18.xlsx       f4a627e7b33dd51366c12e87d6d43b9c
+     WH3_abilities_master_v16_2026-10-18.xlsx       d942ed769df072deb92839e1abb5b87c
+     WH3_abilities_master_v17_2026-10-18.xlsx       0536f0868ae6769446f0b8125808a17e
+     WH3_abilities_master_v1_2026-10-17.ods         097abbf1c3099d079f33b2d7be472986
+     WH3_abilities_master_v1_2026-10-17.xlsx        84526b357c96d6209f085bc4a1178581
+     WH3_abilities_master_v2_2026-10-17.ods         e93c4b9f5b4c8a87d857a0b11fcea503
+     WH3_abilities_master_v2_2026-10-17.xlsx        c8f34afe50c1c93945a225618ea545ae
+     WH3_abilities_master_v3_2026-10-17.ods         a536b78081287240d280924c997d7b0b
+     WH3_abilities_master_v3_2026-10-17.xlsx        aa3bf8af57a47cfe05af8525e2f840f5
+     WH3_abilities_master_v4_2026-10-17.ods         f6e6d547276ebcdaf089c637bf6640da
+     WH3_abilities_master_v4_2026-10-17.xlsx        33de4f53293148c4d49dcadeed9c9e25
+     WH3_abilities_master_v5_2026-10-17.ods         796d9e186aeb03cfe812a27f3759812d
+     WH3_abilities_master_v5_2026-10-17.xlsx        73582279d138f5d903cffc7df95aae10
+     WH3_abilities_master_v6_2026-10-17.ods         469d04c2a9f8a11a1f5ad7ed13eb0223
+     WH3_abilities_master_v6_2026-10-17.xlsx        5bd37fd189fc05d799581dc3ecda156c
+     WH3_abilities_master_v7_2026-10-17.ods         0494f2166d3d401492a3271218ce4b2a
+     WH3_abilities_master_v7_2026-10-17.xlsx        c7bd898ca6531aff2e6d0f1c0eca3bda
+     WH3_abilities_master_v8_2026-10-17.ods         1119280c7f37fd848c2d07512a35ccfd
+     WH3_abilities_master_v8_2026-10-17.xlsx        659a5c7a13367cef771a197a8e827942
+     WH3_abilities_master_v9_2026-10-17.ods         36a82d7064be6a1dc00d9210cf4c9eb4
+     WH3_abilities_master_v9_2026-10-17.xlsx        9b6e50ff217c04336b1d84638d0566d1
+
+V18 ASSERTIONS: ALL PASS

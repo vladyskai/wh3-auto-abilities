@@ -1,0 +1,53 @@
+[2m2026-10-17T20:36:05.939462Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Sentry logging support for RPFM SERVER enabled. Starting...
+[2m2026-10-17T20:36:05.950382Z[0m [32m INFO[0m [2mrpfm_server[0m[2m:[0m Listening on 127.0.0.1:45127
+[2m2026-10-17T20:36:15.271464Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Created new session with ID: 1
+[2m2026-10-17T20:36:15.271513Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m New WebSocket client connected, created session ID: 1
+[2m2026-10-17T20:36:15.271588Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 background thread starting...
+[2m2026-10-17T20:36:15.272945Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 1]: SetGameSelected("warhammer_3", false)
+[2m2026-10-17T20:36:15.276113Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Background Thread looping around…
+[2m2026-10-17T20:36:15.276141Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Setting game selected.
+[2m2026-10-17T20:36:15.318451Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Branch 2.
+[2m2026-10-17T20:36:15.318466Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Switching game selected done.
+[2m2026-10-17T20:36:15.318664Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 2]: NewPack
+[2m2026-10-17T20:36:15.318836Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 3]: AddPackedFiles("new_pack.pack", ["C:/Users/vlady/Desktop/WH3_mod/mod_source/script/battle/mod/zz_test_deadly_onslaught.lua", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/templates/zz_auto_badge.twui.xml", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/zz_auto/blank.png", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/zz_auto/auto_badge.png", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/common ui/special_ability_tooltip.twui.xml"], [File("script/battle/mod/zz_test_deadly_onslaught.lua"), File("ui/templates/zz_auto_badge.twui.xml"), File("ui/zz_auto/blank.png"), File("ui/zz_auto/auto_badge.png"), File("ui/common ui/special_ability_tooltip.twui.xml")], None)
+[2m2026-10-17T20:36:15.319917Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 4]: SetPackFileType("new_pack.pack", Movie)
+[2m2026-10-17T20:36:15.320102Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 5]: GetPackFileDataForTreeView("new_pack.pack")
+[2m2026-10-17T20:36:15.320448Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 6]: GetPackedFileRawData("new_pack.pack", "script/battle/mod/zz_test_deadly_onslaught.lua")
+[2m2026-10-17T20:36:15.362576Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 7]: GetPackedFileRawData("new_pack.pack", "ui/templates/zz_auto_badge.twui.xml")
+[2m2026-10-17T20:36:15.363701Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 8]: GetPackedFileRawData("new_pack.pack", "ui/zz_auto/blank.png")
+[2m2026-10-17T20:36:15.363866Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 9]: GetPackedFileRawData("new_pack.pack", "ui/zz_auto/auto_badge.png")
+[2m2026-10-17T20:36:15.363988Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 10]: GetPackedFileRawData("new_pack.pack", "ui/common ui/special_ability_tooltip.twui.xml")
+[2m2026-10-17T20:36:15.380413Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Received command [ID 11]: GetPackedFileRawData("new_pack.pack", "ui/common ui/special_ability_tooltip.twui.xml")
+[2m2026-10-17T20:36:15.465161Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1: Client disconnected (error)
+[2m2026-10-17T20:36:15.465183Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 has no active connections, will timeout in 300s
+[2m2026-10-17T20:36:15.465221Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 1 client disconnected, session will timeout in 5 minutes if not reconnected
+[2m2026-10-17T20:36:22.574894Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Created new session with ID: 2
+[2m2026-10-17T20:36:22.574918Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m New WebSocket client connected, created session ID: 2
+[2m2026-10-17T20:36:22.574974Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 2 background thread starting...
+[2m2026-10-17T20:36:22.575119Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 1]: SetGameSelected("warhammer_3", false)
+[2m2026-10-17T20:36:22.578718Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Background Thread looping around…
+[2m2026-10-17T20:36:22.578738Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Setting game selected.
+[2m2026-10-17T20:36:22.614685Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Branch 2.
+[2m2026-10-17T20:36:22.614697Z[0m [32m INFO[0m [2mrpfm_server::background_thread[0m[2m:[0m Switching game selected done.
+[2m2026-10-17T20:36:22.614920Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 2]: NewPack
+[2m2026-10-17T20:36:22.615181Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 3]: AddPackedFiles("new_pack.pack", ["C:/Users/vlady/Desktop/WH3_mod/mod_source/script/battle/mod/zz_test_deadly_onslaught.lua", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/templates/zz_auto_badge.twui.xml", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/zz_auto/blank.png", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/zz_auto/auto_badge.png", "C:/Users/vlady/Desktop/WH3_mod/mod_source/ui/common ui/special_ability_tooltip.twui.xml"], [File("script/battle/mod/zz_test_deadly_onslaught.lua"), File("ui/templates/zz_auto_badge.twui.xml"), File("ui/zz_auto/blank.png"), File("ui/zz_auto/auto_badge.png"), File("ui/common ui/special_ability_tooltip.twui.xml")], None)
+[2m2026-10-17T20:36:22.616211Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 4]: SetPackFileType("new_pack.pack", Movie)
+[2m2026-10-17T20:36:22.616350Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 5]: GetPackFileDataForTreeView("new_pack.pack")
+[2m2026-10-17T20:36:22.616555Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 6]: GetPackedFileRawData("new_pack.pack", "script/battle/mod/zz_test_deadly_onslaught.lua")
+[2m2026-10-17T20:36:22.657812Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 7]: GetPackedFileRawData("new_pack.pack", "ui/templates/zz_auto_badge.twui.xml")
+[2m2026-10-17T20:36:22.658529Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 8]: GetPackedFileRawData("new_pack.pack", "ui/zz_auto/blank.png")
+[2m2026-10-17T20:36:22.658696Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 9]: GetPackedFileRawData("new_pack.pack", "ui/zz_auto/auto_badge.png")
+[2m2026-10-17T20:36:22.658816Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 10]: GetPackedFileRawData("new_pack.pack", "ui/common ui/special_ability_tooltip.twui.xml")
+[2m2026-10-17T20:36:22.674719Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 11]: GetPackedFileRawData("new_pack.pack", "ui/common ui/special_ability_tooltip.twui.xml")
+[2m2026-10-17T20:36:22.752816Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 12]: GetPackedFileRawData("new_pack.pack", "script/battle/mod/zz_test_deadly_onslaught.lua")
+[2m2026-10-17T20:36:22.808505Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 13]: SavePackAs("new_pack.pack", "C:/Users/vlady/Desktop/WH3_mod/mod_source/dist/zz_test_deadly_onslaught.pack")
+[2m2026-10-17T20:36:22.815363Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 14]: ClosePack("new_pack.pack")
+[2m2026-10-17T20:36:22.815547Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Received command [ID 15]: ClientDisconnecting
+[2m2026-10-17T20:36:22.815570Z[0m [32m INFO[0m [2mrpfm_server::server_websocket[0m[2m:[0m Session 2: Client requested graceful disconnect, removing session immediately
+[2m2026-10-17T20:36:22.815577Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Removing session 2
+[2m2026-10-17T20:36:22.815581Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 2 shutting down...
+[2m2026-10-17T20:36:22.816456Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 2 background thread terminated.
+[2m2026-10-17T20:41:15.464989Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 timeout check triggered (cleanup handled by manager)
+[2m2026-10-17T20:41:15.465055Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Removing session 1
+[2m2026-10-17T20:41:15.465064Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m Session 1 shutting down...
+[2m2026-10-17T20:41:15.465084Z[0m [32m INFO[0m [2mrpfm_server::session[0m[2m:[0m No more active sessions, shutting down server...

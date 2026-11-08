@@ -1,0 +1,15 @@
+patch env pair: applied
+patch banner: applied
+patch mu count pins: applied
+patch mu var pin: applied
+patch 0r moved counts: applied
+patch 0r live tokens: applied
+patch 0t choice-log token: applied
+patch 0t recheck-log token: applied
+patch h93 TIP map: applied
+patch h91 M_MU1 key: applied
+patch h91 O1 marker: applied
+patch h91 O2 marker: applied
+patch append section: applied
+patch tail list: applied
+wrote harness97.lua 775829 bytes

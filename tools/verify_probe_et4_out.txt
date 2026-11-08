@@ -1,0 +1,36 @@
+C:\Users\vlady\Desktop\rpfm_tools\verify_probe_enemy_target_installed.py:25: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  self.ws.recv(timeout=20)  # hello
+opened INSTALLED pack; type: Movie | version: PFH5
+
+=== 1 file(s) in the INSTALLED probe pack ===
+   - script/battle/mod/zz_probe_enemy_target.lua
+only the probe file present : True
+no main-mod path present    : True
+
+byte-for-byte vs source:
+   pack     40481  sha256 473157bd594a850d30563c101357f0d9ae067125c0e31c6f3500e3c26a634989
+   source   40481  sha256 473157bd594a850d30563c101357f0d9ae067125c0e31c6f3500e3c26a634989
+   MATCHES SOURCE: True
+   token zz_probe_enemy_target_status                         present: True
+   token get_scriptunits_for_main_enemy_army_to_local_player  present: True
+   token get_scriptunits_for_local_players_army               present: True
+   token get_first_non_player_army                            present: True
+   token script_unit:new                                      present: True
+   token perform_special_ability_q                            present: True
+   token use_special_ability                                  present: True
+   token attack_unit                                          present: True
+   token take_control                                         present: True
+   token release_control                                      present: True
+   token register_command_handler_callback                    present: True
+   token CMD event=SpecialAbility                             present: True
+   token TRY route=                                           present: True
+   token ORDER route=                                         present: True
+   token CANPOST route=                                       present: True
+   token SELF route=                                          present: True
+   token EFF route=                                           present: True
+   token RESULT route=                                        present: True
+   token landed=                                              present: True
+   token ActiveEffectList(true).Size                          present: True
+   token conflict=                                            present: True
+
+INSTALLED-PACK VERIFY OK

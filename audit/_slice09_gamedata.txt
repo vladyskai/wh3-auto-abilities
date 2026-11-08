@@ -1,0 +1,800 @@
+====================================================================================================
+### [465] enfeebling_foe  |  The Enfeebling Foe  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc23_spell_bound_enfeebling_foe
+      spec: active_time=17.0000 ; recharge_time=60.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh_dlc05_spell_shadow_the_enfeebling_foe self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=17.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      tooltip: By means of the Lore of Shadows, the Wizard causes the enemy to be worn down by their own burdens, until they are enervated to a sorry standstill.
+      loc_name: {{tr:unit_abilities_onscreen_name_wh3_main_spell_bound_enfeebling_foe}}
+  --- KEY: wh3_dlc27_spell_bound_enfeebling_foe
+      spec: active_time=17.0000 ; recharge_time=60.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh_dlc05_spell_shadow_the_enfeebling_foe self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=17.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      tooltip: {{tr:unit_abilities_tooltip_text_wh3_main_spell_bound_enfeebling_foe}}
+      loc_name: {{tr:unit_abilities_onscreen_name_wh3_main_spell_bound_enfeebling_foe}}
+  --- KEY: wh3_main_spell_bound_enfeebling_foe
+      spec: active_time=17.0000 ; recharge_time=60.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh_dlc05_spell_shadow_the_enfeebling_foe self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=17.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      tooltip: By means of the Lore of Shadows, the Wizard causes the enemy to be worn down by their own burdens, until they are enervated to a sorry standstill.
+      loc_name: The Enfeebling Foe
+  --- KEY: wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror
+      spec: active_time=17.0000 ; recharge_time=60.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=true
+      phase_junc: wh_dlc05_spell_shadow_the_enfeebling_foe self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=17.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_dlc05_spell_shadow_the_enfeebling_foe]
+      tooltip: By means of the Lore of Shadows, the Wizard causes the enemy to be worn down by their own burdens until they are enervated to a sorry standstill.
+      loc_name: The Enfeebling Foe
+====================================================================================================
+### [466] the_golden_eye_of_tzeentch  |  The Golden Eye of Tzeentch  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch
+      spec: active_time=33.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_defense_ranged ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_defense_ranged
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=33.0000 ; barrier_heal_amount=0.0080 ; affects_allies=true ; affects_enemies=true ; hp_change_frequency=1.0000
+      stat: [[img:ui/Battle UI/ability_icons/resistance_missile.png]][[/img]] Missile Resistance: 40.0000 (add) [phase wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch]
+      tooltip: This potent talisman consists of a filigree of witch-hair cradling the fossilised eye of a Lord of Change; its bearer develops a sixth-sense that warns him of threats from afar.
+      loc_name: The Golden Eye of Tzeentch
+====================================================================================================
+### [467] the_guiding_eye  |  The Guiding Eye  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_the_guiding_eye
+      spec: active_time=18.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=55.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_ranged_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_ranged_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh2_main_item_abilities_the_guiding_eye self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=18.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing_ranged.png]][[/img]] Armour-Piercing Missile Damage: 1.2000 (mult) [phase wh2_main_item_abilities_the_guiding_eye]
+      tooltip: Wrought in black iron with an oval ruby at its centre, the Guiding Eye grants mystical sight to its wearer.
+      loc_name: The Guiding Eye
+====================================================================================================
+### [468] the_hammer_of_karak_drazh  |  The Hammer of Karak Drazh  |  trigger=melee_unwavering
+  --- KEY: wh_main_weapon_abilities_the_hammer_of_karak_drazh
+      spec: active_time=50.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=50.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh_main_weapon_abilities_the_hammer_of_karak_drazh self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=50.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -40.0000 (add) [phase wh_main_weapon_abilities_the_hammer_of_karak_drazh]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 0.7000 (mult) [phase wh_main_weapon_abilities_the_hammer_of_karak_drazh]
+      tooltip: The Hammer of Karak Drazh was struck with such powerful runes it can be swung with preternatural ease. 
+      loc_name: The Hammer of Karak Drazh
+====================================================================================================
+### [469] undeath_sulekhim_hand_of_dust  |  The Hand of Dust  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust
+      spec: active_time=14.0000 ; recharge_time=28.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_self ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=bound family=augment_melee_self
+      ub_type=wh_type_augment source=bound uniqueness=true
+      phase_junc: wh3_dlc29_spell_undeath_sulekhim_hand_of_dust self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=14.0000 ; affects_allies=true ; affects_enemies=true ; imbue_magical=true
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing.png]][[/img]] Armour-Piercing Weapon Damage: 1.5000 (mult) [phase wh3_dlc29_spell_undeath_sulekhim_hand_of_dust]
+      tooltip: {{tr:unit_abilities_tooltip_text_wh3_dlc29_spell_undeath_sulekhim_hand_of_dust}}
+      loc_name: {{tr:unit_abilities_onscreen_name_wh3_dlc29_spell_undeath_sulekhim_hand_of_dust}}
+====================================================================================================
+### [470] the_liber_noctus  |  The Liber Noctus  |  trigger=melee_unwavering
+  --- KEY: wh_dlc04_item_abilities_the_liber_noctus
+      spec: active_time=33.0000 ; recharge_time=120.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh_dlc04_item_abilities_the_liber_noctus self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=33.0000 ; damage_amount=33 ; max_damaged_entities=1 ; affects_allies=true ; affects_enemies=true ; hp_change_frequency=1.0000
+      ui: Causes damage to self
+      tooltip: This decrepit tome bristles with dark secrets and eldritch powers. Reading from it summons dark thoughts and grim deeds. 
+      loc_name: The Liber Noctus
+====================================================================================================
+### [471] lions_shield  |  The Lion's Shield  |  trigger=melee_unwavering
+  --- KEY: wh_dlc07_lord_abilities_lions_shield
+      spec: active_time=22.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_defense_ranged ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_defense_ranged
+      ub_type=wh_type_ward_save source=active uniqueness=true
+      phase_junc: wh_dlc07_lord_abilities_lions_shield self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=22.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/Battle UI/ability_icons/resistance_magic.png]][[/img]] Spell Resistance: 40.0000 (add) [phase wh_dlc07_lord_abilities_lions_shield]
+      stat: [[img:ui/Battle UI/ability_icons/resistance_missile.png]][[/img]] Missile Resistance: 40.0000 (add) [phase wh_dlc07_lord_abilities_lions_shield]
+      tooltip: King Louen’s shield has protected him from the first days of his Knighthood; strengthened by enchantment, it will continue to do so.
+      loc_name: The Lion's Shield
+====================================================================================================
+### [472] the_praise_of_slaanesh  |  The Praise of Slaanesh  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc27_lord_abilities_the_praise_of_slaanesh
+      spec: active_time=-1.0000 ; recharge_time=30.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=true ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_defense_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_defense_melee
+      ub_type=wh_type_augment source=active uniqueness=false
+      phase_junc: wh3_dlc27_lord_abilities_the_praise_of_slaanesh self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=-1.0000 ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -36.0000 (add) [phase wh3_dlc27_lord_abilities_the_praise_of_slaanesh]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: 36.0000 (add) [phase wh3_dlc27_lord_abilities_the_praise_of_slaanesh]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Missile Block Chance: 36.0000 (add) [phase wh3_dlc27_lord_abilities_the_praise_of_slaanesh]
+      attr: 360 Missile Block (positive) [phase wh3_dlc27_lord_abilities_the_praise_of_slaanesh]
+      ui: Mutually exclusive with Dance of Destruction and Daggerdance
+      tooltip: {{tr:character_skills_localised_description_wh3_dlc27_skill_sla_dechala_unique_1}}
+      loc_name: {{tr:character_skills_localised_name_wh3_dlc27_skill_sla_dechala_unique_1}}
+====================================================================================================
+### [473] the_seerstaff_of_saphery  |  The Seerstaff of Saphery  |  trigger=melee_unwavering
+  --- KEY: wh2_main_spell_bound_the_seerstaff_of_saphery
+      spec: active_time=22.0000 ; recharge_time=60.0000 ; num_uses=4 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_ranged ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=friend-unit owner=bound family=augment_ranged
+      ub_type=wh_type_augment source=bound uniqueness=true
+      phase_junc: wh2_main_spell_bound_the_seerstaff_of_saphery self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=22.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 24.0000 (add) [phase wh2_main_spell_bound_the_seerstaff_of_saphery]
+      stat: [[img:ui/skins/default/icon_stat_reload_time.png]][[/img]] Reload Skill: 40.0000 (add) [phase wh2_main_spell_bound_the_seerstaff_of_saphery]
+      tooltip: The spirits of ancient warriors are summoned and lend their might to allies in the present.
+      loc_name: The Seerstaff of Saphery
+====================================================================================================
+### [474] the_tricksters_pendant  |  The Trickster's Pendant  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_the_tricksters_pendant
+      spec: active_time=16.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=true ; target_ground=true ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_spellcaster ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-ground owner=active family=hex_spellcaster
+      ub_type=wh_type_area_of_hexes source=active uniqueness=true
+      phase_junc: wh2_main_item_abilities_the_tricksters_pendant self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=16.0000 ; affects_allies=true ; affects_enemies=true
+      stat: Miscast Chance: 2.0000 (mult) [phase wh2_main_item_abilities_the_tricksters_pendant]
+      tooltip: All those who seek the favour of Loec wear a simple-looking pendant of silver that actually conceals great power.
+      loc_name: The Trickster's Pendant
+====================================================================================================
+### [475] the_vial_of_hashut  |  The Vial of Hashut  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc23_item_abilities_the_vial_of_hashut
+      spec: active_time=60.0000 ; recharge_time=120.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=50.0000 ; always_affect_self=false ; only_affect_target=true ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_armour ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_armour
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc23_item_ability_the_vial_of_hashut self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=60.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -60.0000 (add) [phase wh3_dlc23_item_ability_the_vial_of_hashut]
+      stat: Weakness to [[img:ui/skins/default/modifier_icon_flaming.png]][[/img]]Fire Damage: -20.0000 (add) [phase wh3_dlc23_item_ability_the_vial_of_hashut]
+      tooltip: Within this ampoule is contained the "Blood of Hashut"; though highly unlikely to be true, it is nevertheless a powerful alchemical substance that ignites metal on contact.
+      loc_name: The Vial of Hashut
+====================================================================================================
+### [476] the_vortex_shard  |  The Vortex Shard  |  trigger=melee_unwavering
+  --- KEY: wh2_main_item_abilities_the_vortex_shard
+      spec: active_time=31.0000 ; recharge_time=60.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_spellcaster ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_spellcaster
+      ub_type=wh_type_hex_of_the_winds source=active uniqueness=true
+      phase_junc: wh2_main_item_abilities_the_vortex_shard self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=31.0000 ; affects_allies=true ; affects_enemies=true
+      tooltip: Hewn from the same rock that forms the Waystones, the Vortex Shard has the power to becalm the Winds of Magic.
+      loc_name: The Vortex Shard
+====================================================================================================
+### [477] the_wintertooth_crown  |  The Wintertooth Crown  |  trigger=melee_unwavering
+  --- KEY: wh_dlc08_item_abilities_the_wintertooth_crown
+      spec: active_time=24.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=55.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh_dlc08_item_abilities_the_wintertooth_crown self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=24.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: 24.0000 (add) [phase wh_dlc08_item_abilities_the_wintertooth_crown]
+      attr: Unbreakable (positive) [phase wh_dlc08_item_abilities_the_wintertooth_crown]
+      tooltip: Whether by the crown's own properties, or by the grace of the Dark Gods, all things bestial and savage obey the wearer.
+      loc_name: The Wintertooth Crown
+====================================================================================================
+### [478] wissenland_runefang  |  The Wissenland Runefang  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc13_weapon_abilities_wissenland_runefang
+      spec: active_time=29.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee_area_self ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=hex_melee_area_self
+      ub_type=wh_type_area_of_hexes source=active uniqueness=true
+      phase_junc: wh2_dlc13_weapon_abilities_wissenland_runefang self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=29.0000 ; affects_allies=true ; affects_enemies=true ; fatigue_change_ratio=0.0100
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 0.5500 (mult) [phase wh2_dlc13_weapon_abilities_wissenland_runefang]
+      tooltip: One of twelve magical swords belonging to the Empire's Elector Counts, 'Blood Bringer' is a mighty blade befitting Wissenland's important status as the centre of Imperial arms production.
+      loc_name: The Wissenland Runefang
+====================================================================================================
+### [479] the_withering  |  The Withering  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc23_spell_bound_the_withering
+      spec: active_time=40.0000 ; recharge_time=90.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_morale ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=bound family=hex_morale
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh_dlc05_spell_shadow_the_withering self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=40.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -30.0000 (add) [phase wh_dlc05_spell_shadow_the_withering]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: -8.0000 (add) [phase wh_dlc05_spell_shadow_the_withering]
+      tooltip: The Wizard destroys the foe from within, corroding their minds with doubt and crisis.
+      loc_name: The Withering
+  --- KEY: wh3_twa08_spell_bound_the_withering
+      spec: active_time=40.0000 ; recharge_time=90.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_morale ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=bound family=hex_morale
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh_dlc05_spell_shadow_the_withering self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=40.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -30.0000 (add) [phase wh_dlc05_spell_shadow_the_withering]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: -8.0000 (add) [phase wh_dlc05_spell_shadow_the_withering]
+      tooltip: The Wizard destroys the foe from within, corroding their minds with doubt and crisis.
+      loc_name: The Withering
+====================================================================================================
+### [480] they_needs_stabbin  |  They Needs Stabbin’  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc15_character_abilities_they_needs_stabbin
+      spec: active_time=29.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=75.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh2_dlc15_character_abilities_they_needs_stabbin self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=29.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -30.0000 (add) [phase wh2_dlc15_character_abilities_they_needs_stabbin]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh2_dlc15_character_abilities_they_needs_stabbin]
+      invalid_target: unit_is_not_commander_class
+      tooltip: Get yer stabbers out, boys. We ain’t leavin’ ‘til they's fulla gashes!
+      loc_name: They Needs Stabbin’
+====================================================================================================
+### [481] thorns_aura  |  Thorn's Aura  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_hero_abilities_thorns_aura
+      spec: active_time=30.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=self owner=active family=hex_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_dlc24_hero_abilities_thorns_aura self=true friends=true enemies=false
+        phase_row: effect_type=negative ; duration=30.0000 ; affects_allies=true
+      stat: Melee Damage Reflection: 14.0000 (add) [phase wh3_dlc24_hero_abilities_thorns_aura]
+      tooltip: Once caught in a vice-like grip of vines, each thorn is a sharpened blade, piercing the skin and tearing at fragile flesh.
+      loc_name: Thorn's Aura
+====================================================================================================
+### [482] thunderburner  |  Thunderburner  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc25_unit_abilities_thunderburner
+      spec: active_time=-1.0000 ; recharge_time=30.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_speed_under_fire ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=self owner=active family=hex_speed_under_fire
+      ub_type=wh_type_augment source=active uniqueness=false
+      phase_junc: wh3_dlc25_unit_abilities_thunderburner self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=-1.0000 ; damage_amount=30 ; max_damaged_entities=1 ; affects_allies=true ; affects_enemies=true ; hp_change_frequency=0.2000
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Turn Speed: 0.3000 (mult) [phase wh3_dlc25_unit_abilities_thunderburner]
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 2.5000 (mult) [phase wh3_dlc25_unit_abilities_thunderburner]
+      tooltip: With a sudden rush of piping hot steam, the Thunderbarge soars forward at speed, taking the battlefield by storm.
+      loc_name: Thunderburner
+====================================================================================================
+### [483] thunderburner_upgraded  |  Thunderburner Upgraded  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc25_unit_abilities_thunderburner_upgraded
+      spec: active_time=-1.0000 ; recharge_time=30.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_speed_under_fire ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=self owner=active family=hex_speed_under_fire
+      ub_type=wh_type_augment source=active uniqueness=false
+      phase_junc: wh3_dlc25_unit_abilities_thunderburner_upgraded self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=-1.0000 ; damage_amount=10 ; max_damaged_entities=1 ; affects_allies=true ; affects_enemies=true ; hp_change_frequency=0.2000
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Turn Speed: 0.3000 (mult) [phase wh3_dlc25_unit_abilities_thunderburner_upgraded]
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 3.0000 (mult) [phase wh3_dlc25_unit_abilities_thunderburner_upgraded]
+      tooltip: {{tr:unit_abilities_tooltip_text_wh3_dlc25_unit_abilities_thunderburner}}
+      loc_name: Thunderburner Upgraded
+====================================================================================================
+### [484] titan_headsman  |  Titan Headsman  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc25_hero_abilities_titan_headsman
+      spec: active_time=29.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=75.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc25_hero_abilities_titan_headsman self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=29.0000 ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 0.5500 (mult) [phase wh3_dlc25_hero_abilities_titan_headsman]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh3_dlc25_hero_abilities_titan_headsman]
+      tooltip: When an enemy stands broken and bruised, finishing them off is but a matter of one solid strike.
+      loc_name: Titan Headsman
+====================================================================================================
+### [485] torment_blade  |  Torment Blade  |  trigger=melee_unwavering
+  --- KEY: wh3_main_weapon_abilities_torment_blade
+      spec: active_time=18.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=50.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_main_weapon_abilities_torment_blade self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=18.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh3_main_weapon_abilities_torment_blade]
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing.png]][[/img]] Armour-Piercing Weapon Damage: 0.7500 (mult) [phase wh3_main_weapon_abilities_torment_blade]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 0.7500 (mult) [phase wh3_main_weapon_abilities_torment_blade]
+      tooltip: This sword is coated with a paralysing venom, a dose of which renders the victim utterly immobile.
+      loc_name: Torment Blade
+====================================================================================================
+### [486] tricksters_shard  |  Trickster's Shard  |  trigger=melee_unwavering
+  --- KEY: wh_main_item_abilities_tricksters_shard
+      spec: active_time=16.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=true ; target_ground=true ; target_intercept_range=500.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_spellcaster ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-ground owner=active family=hex_spellcaster
+      ub_type=wh_type_area_of_hexes source=active uniqueness=true
+      phase_junc: wh_main_item_abilities_tricksters_shard self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=16.0000 ; affects_allies=true ; affects_enemies=true
+      stat: Miscast Chance: 2.0000 (mult) [phase wh_main_item_abilities_tricksters_shard]
+      tooltip: A shard of pure aqua, its surface ripples with a malevolent curse bestowed upon it by the Trickster. Any magic-users nearby will surely suffer.
+      loc_name: Trickster's Shard
+====================================================================================================
+### [487] trophy_heads  |  Trophy Heads  |  trigger=melee_unwavering
+  --- KEY: wh2_main_lord_abilities_trophy_heads
+      spec: active_time=36.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=150.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh2_main_lord_abilities_trophy_heads self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=36.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh2_main_lord_abilities_trophy_heads]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -40.0000 (add) [phase wh2_main_lord_abilities_trophy_heads]
+      invalid_target: unit_is_not_commander_class
+      tooltip: Oft-times, killers retain the heads of their victims as prizes or reminders of dark deeds done.
+      loc_name: Trophy Heads
+  --- KEY: wh3_main_daemon_wings_abilities_trophy_heads
+      spec: active_time=36.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=150.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_main_daemon_wings_abilities_trophy_heads self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=36.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -30.0000 (add) [phase wh3_main_daemon_wings_abilities_trophy_heads]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -30.0000 (add) [phase wh3_main_daemon_wings_abilities_trophy_heads]
+      tooltip: The score must be kept just as surely as the harvested skulls be delivered to the Lord of Murder, atop His mighty Skull Throne.
+      loc_name: Trophy Heads
+====================================================================================================
+### [488] twilight_horn_i  |  Twilight Horn I  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc16_item_abilities_twilight_horn_i
+      spec: active_time=33.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=active family=augment_melee
+      ub_type=wh_type_augment source=active uniqueness=false
+      phase_junc: wh2_dlc16_item_abilities_twilight_horn_i self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=33.0000 ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Charge Speed: 1.2500 (mult) [phase wh2_dlc16_item_abilities_twilight_horn_i]
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 1.2500 (mult) [phase wh2_dlc16_item_abilities_twilight_horn_i]
+      stat: [[img:ui/skins/default/icon_stat_charge_bonus.png]][[/img]] Charge Bonus: 1.2000 (mult) [phase wh2_dlc16_item_abilities_twilight_horn_i]
+      tooltip: No purer sound is there than a single note from this great horn, capable of emboldening the faint of heart and rousing the timid.
+      loc_name: Twilight Horn I
+====================================================================================================
+### [489] undeath_resurgent  |  Undeath Resurgent  |  trigger=melee_unwavering
+  --- KEY: wh_main_character_abilities_undeath_resurgent
+      spec: active_time=18.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_melee_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh_main_character_abilities_undeath_resurgent self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=18.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: 24.0000 (add) [phase wh_main_character_abilities_undeath_resurgent]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 16.0000 (add) [phase wh_main_character_abilities_undeath_resurgent]
+      tooltip: Arise! Do not falter! Do not crumble! Back to life once more! 
+      loc_name: Undeath Resurgent
+====================================================================================================
+### [490] unholy_clamour  |  Unholy Clamour  |  trigger=melee_unwavering
+  --- KEY: wh2_main_mount_abilities_unholy_clamour
+      spec: active_time=18.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale ; miscast_chance=0.5000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale
+      ub_type=wh_type_area_of_augments source=active uniqueness=false
+      phase_junc: wh2_main_mount_abilities_unholy_clamour self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=18.0000 ; affects_allies=true ; affects_enemies=true ; fatigue_change_ratio=-0.0100
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 16.0000 (add) [phase wh2_main_mount_abilities_unholy_clamour]
+      invalid_target: unit_is_not_skaven
+      tooltip: As the clanging of the Bell rises alarmingly, the Skaven's squeaking escalates in unison; they know for whom it tolls.
+      loc_name: Unholy Clamour
+====================================================================================================
+### [491] unlimited_power  |  Unlimited Power!  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc12_lord_abilities_unlimited_power
+      spec: active_time=26.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.5000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment_of_the_winds source=active uniqueness=true
+      phase_junc: wh2_dlc12_lord_abilities_unlimited_power self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=26.0000 ; affects_allies=true ; affects_enemies=true
+      tooltip: Unlimited power corrupts the already-totally-corrupted utterly.
+      loc_name: Unlimited Power!
+====================================================================================================
+### [492] ursuns_roar_2  |  Ursun's Mighty Roar  |  trigger=melee_unwavering
+  --- KEY: wh3_main_pro_character_abilities_ursuns_roar_2
+      spec: active_time=30.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_pro_character_abilities_ursuns_roar_2 self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=30.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 40.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_2]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 16.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_2]
+      ui: Greater effect on [[img:icon_melee_attack]][[/img]]melee attack
+      tooltip: The blood-curdling howl of Father Bear rallies the men of Kislev to his banner, for their fortunes are forever entwined, and the fate of the Motherland hangs in the balance. 
+      loc_name: Ursun's Mighty Roar
+====================================================================================================
+### [493] ursuns_roar  |  Ursun's Roar  |  trigger=melee_unwavering
+  --- KEY: wh3_main_character_abilities_ursuns_roar
+      spec: active_time=9.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_character_abilities_ursuns_roar self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=9.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_charge_bonus.png]][[/img]] Charge Bonus: 1.3600 (mult) [phase wh3_main_character_abilities_ursuns_roar]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 8.0000 (add) [phase wh3_main_character_abilities_ursuns_roar]
+      tooltip: The blood-curdling howl of Father Bear rallies the men of Kislev to his banner, for their fortunes are forever entwined, and the fate of the Motherland hangs in the balance. 
+      loc_name: Ursun's Roar
+  --- KEY: wh3_main_pro_character_abilities_ursuns_roar
+      spec: active_time=20.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_pro_character_abilities_ursuns_roar self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=20.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 40.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar]
+      tooltip: The blood-curdling howl of Father Bear rallies the men of Kislev to his banner, for their fortunes are forever entwined, and the fate of the Motherland hangs in the balance. 
+      loc_name: Ursun's Roar
+  --- KEY: wh3_main_pro_character_abilities_ursuns_roar_1
+      spec: active_time=30.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_pro_character_abilities_ursuns_roar_1 self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=30.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 20.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_1]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 16.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_1]
+      tooltip: The blood-curdling howl of Father Bear rallies the men of Kislev to his banner, for their fortunes are forever entwined, and the fate of the Motherland hangs in the balance. 
+      loc_name: Ursun's Roar
+  --- KEY: wh3_main_pro_character_abilities_ursuns_roar_3
+      spec: active_time=30.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_morale_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=morale target_cat=self owner=active family=augment_morale_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_pro_character_abilities_ursuns_roar_3 self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=30.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 60.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_3]
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: 16.0000 (add) [phase wh3_main_pro_character_abilities_ursuns_roar_3]
+      ui: Greater effect on [[img:icon_melee_attack]][[/img]]melee attack
+      tooltip: The blood-curdling howl of Father Bear rallies the men of Kislev to his banner, for their fortunes are forever entwined, and the fate of the Motherland hangs in the balance. 
+      loc_name: Ursun's Roar
+====================================================================================================
+### [494] van_horstmanns_speculum  |  Van Horstmann's Speculum  |  trigger=melee_unwavering
+  --- KEY: wh_main_item_abilities_van_horstmanns_speculum
+      spec: active_time=16.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=self owner=active family=hex_melee_area
+      ub_type=wh_type_area_of_hexes source=active uniqueness=true
+      phase_junc: wh_main_item_abilities_van_horstmanns_speculum self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=16.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh_main_item_abilities_van_horstmanns_speculum]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 0.7000 (mult) [phase wh_main_item_abilities_van_horstmanns_speculum]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_main_item_abilities_van_horstmanns_speculum]
+      tooltip: Van Horstmann's small magical mirror has the ability to destroy the enemy if only they will look upon its cracked surface...
+      loc_name: Van Horstmann's Speculum
+====================================================================================================
+### [495] verminous_fury  |  Verminous Fury  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_lord_abilities_verminous_fury
+      spec: active_time=60.0000 ; recharge_time=120.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=active family=augment_melee
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_dlc29_lord_abilities_verminous_fury self=false friends=true enemies=false
+        phase_row: effect_type=positive ; duration=60.0000 ; affects_allies=true ; affects_enemies=true
+      attr: Rampage (positive) [phase wh3_dlc29_lord_abilities_verminous_fury]
+      attr: Unbreakable (positive) [phase wh3_dlc29_lord_abilities_verminous_fury]
+      attr: Unyielding Assault (positive) [phase wh3_dlc29_lord_abilities_verminous_fury]
+      tooltip: Fervour and madness seep into the very ground the Warbringer walks on.
+      loc_name: Verminous Fury
+====================================================================================================
+### [496] virulent_contagion  |  Virulent Contagion  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_virulent_contagion
+      spec: active_time=30.0000 ; recharge_time=120.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=5 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_chain_hex source=active uniqueness=true
+      phase_junc: wh3_main_lord_abilities_virulent_contagion self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=30.0000 ; affects_allies=true ; affects_enemies=true ; spreading=wh3_main_lord_abilities_virulent_contagion
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -40.0000 (add) [phase wh3_main_lord_abilities_virulent_contagion]
+      ui: Will spread to enemies within the Spread Range metres of affected unit
+      ui: Affects up to five units
+      tooltip: Sulphurous, acerbic disease is no respecter of rank, nobility or prowess in battle; all shall fall afore Nurgle's filthy infections.
+      loc_name: Virulent Contagion
+====================================================================================================
+### [497] virulent_contagion_upgraded  |  Virulent Contagion Upgraded  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_virulent_contagion_upgraded
+      spec: active_time=30.0000 ; recharge_time=120.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=5 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_chain_hex source=active uniqueness=true
+      phase_junc: wh3_main_lord_abilities_virulent_contagion_upgraded self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=30.0000 ; affects_allies=true ; affects_enemies=true ; spreading=wh3_main_lord_abilities_virulent_contagion
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -50.0000 (add) [phase wh3_main_lord_abilities_virulent_contagion_upgraded]
+      ui: Will spread to enemies within the Spread Range metres of affected unit
+      ui: Affects up to five units
+      tooltip: {{tr:unit_abilities_tooltip_text_wh3_main_lord_abilities_virulent_contagion}}
+      loc_name: Virulent Contagion Upgraded
+====================================================================================================
+### [498] visions_of_madness  |  Visions of Madness  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc27_qb_unit_abilities_visions_of_madness
+      spec: active_time=10.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=5 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=30.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc27_qb_unit_abilities_visions_of_madness self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=10.0000 ; affects_allies=true ; affects_enemies=true ; fatigue_change_ratio=0.0250 ; spreading=wh3_dlc27_qb_unit_abilities_visions_of_madness
+      stat: [[img:ui/skins/default/icon_stat_morale.png]][[/img]] Leadership: -16.0000 (add) [phase wh3_dlc27_qb_unit_abilities_visions_of_madness]
+      attr: Rampage (positive) [phase wh3_dlc27_qb_unit_abilities_visions_of_madness]
+      tooltip: Desperate bloodlust is a mark of borderline derangement – yet some creatures care not for the limits of mind.
+      loc_name: Visions of Madness
+====================================================================================================
+### [499] void_pendulum  |  Void Pendulum  |  trigger=melee_unwavering
+  --- KEY: wh3_main_item_abilities_void_pendulum
+      spec: active_time=25.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_spellcasting
+      ub_type=wh_type_hex_of_the_winds source=active uniqueness=true
+      phase_junc: wh3_main_item_abilities_void_pendulum self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=25.0000 ; affects_allies=true ; affects_enemies=true
+      invalid_target: hasnt_casting_ability
+      tooltip: When the pendulum swings, the foe's spellcasters find themselves powerless and magically impotent.
+      loc_name: Void Pendulum
+====================================================================================================
+### [500] vorozhejas_foresight  |  Vorozheja's Foresight  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_hero_abilities_vorozhejas_foresight
+      spec: active_time=25.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=150.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=3.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_ranged ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_ranged
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc24_hero_abilities_vorozhejas_foresight self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=25.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -12.0000 (add) [phase wh3_dlc24_hero_abilities_vorozhejas_foresight]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Missile Block Chance: -12.0000 (add) [phase wh3_dlc24_hero_abilities_vorozhejas_foresight]
+      stat: [[img:ui/Battle UI/ability_icons/resistance_missile.png]][[/img]] Missile Resistance: -10.0000 (add) [phase wh3_dlc24_hero_abilities_vorozhejas_foresight]
+      tooltip: No enemy can fight the cursed lashings of fate, binding them to their inevitable doom.
+      loc_name: Vorozheja's Foresight
+====================================================================================================
+### [501] waaagh_in_combat  |  Waaagh!  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_unit_abilities_waaagh_in_combat
+      spec: active_time=18.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_melee
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh2_dlc15_army_abilities_waaagh self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=18.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 24.0000 (add) [phase wh2_dlc15_army_abilities_waaagh]
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing.png]][[/img]] Armour-Piercing Weapon Damage: 1.2500 (mult) [phase wh2_dlc15_army_abilities_waaagh]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 1.2500 (mult) [phase wh2_dlc15_army_abilities_waaagh]
+      attr: Immune to Psychology (positive) [phase wh2_dlc15_army_abilities_waaagh]
+      tooltip: {{tr:unit_abilities_tooltip_text_wh2_dlc15_army_abilities_waaagh}}
+      loc_name: {{tr:unit_abilities_onscreen_name_wh2_dlc15_army_abilities_waaagh}}
+  --- KEY: wh_main_character_abilities_waaagh
+      spec: active_time=30.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=-1.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_melee_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh_main_character_abilities_waaagh self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=30.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 1.2500 (mult) [phase wh_main_character_abilities_waaagh]
+      stat: [[img:ui/skins/default/icon_stat_charge_bonus.png]][[/img]] Charge Bonus: 1.2000 (mult) [phase wh_main_character_abilities_waaagh]
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 20.0000 (add) [phase wh_main_character_abilities_waaagh]
+      tooltip: The Warboss lifts his head and unleashes a mighty "WAAAGH!" – the boyz echo this terrifying roar as the entire Greenskin horde surges towards the enemy!
+      loc_name: Waaagh!
+====================================================================================================
+### [502] wand_of_jet  |  Wand of Jet  |  trigger=melee_unwavering
+  --- KEY: wh_main_item_abilities_wand_of_jet
+      spec: active_time=57.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment_of_the_winds source=active uniqueness=true
+      phase_junc: wh_main_item_abilities_wand_of_jet self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=57.0000 ; affects_allies=true ; affects_enemies=true
+      tooltip: The bearer of this black wand, flecked in glowing jade, can increase the Winds and more quickly power his spells.
+      loc_name: Wand of Jet
+====================================================================================================
+### [503] wardens_cage  |  Warden's Cage  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc15_character_abilities_wardens_cage
+      spec: active_time=25.0000 ; recharge_time=120.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_direct_damage source=active uniqueness=true
+      phase_junc: wh2_dlc15_character_abilities_wardens_cage self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=25.0000 ; damage_amount=20 ; max_damaged_entities=1 ; affects_allies=true ; affects_enemies=true ; cant_move=true ; hp_change_frequency=1.0000
+      stat: [[img:ui/skins/default/icon_stat_armour.png]][[/img]] Armour: -60.0000 (add) [phase wh2_dlc15_character_abilities_wardens_cage]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -48.0000 (add) [phase wh2_dlc15_character_abilities_wardens_cage]
+      ui: If wounded while ability is active, target character will be imprisoned after battle
+      ui: Strong vs characters
+      ui: Causes damage to combatants
+      invalid_target: unit_is_not_commander_class
+      tooltip: The Warden summons a magical cage that temporarily traps his target with no chance of escape.
+      loc_name: Warden's Cage
+====================================================================================================
+### [504] warp_gaze  |  Warp Gaze  |  trigger=melee_unwavering
+  --- KEY: wh_pro04_unit_abilities_warp_gaze
+      spec: active_time=12.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_speed_under_fire ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_speed_under_fire
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh_pro04_unit_abilities_warp_gaze self=false friends=false enemies=true
+        phase_row: effect_type=positive ; duration=12.0000 ; affects_allies=true ; affects_enemies=true ; cant_move=true
+      tooltip: Never make direct eye-contact with a Beastman lest it mark you out for a hideous, flesh-ripping demise.
+      loc_name: Warp Gaze
+====================================================================================================
+### [505] warpstiletto  |  Warpstiletto  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_item_abilities_warpstiletto
+      spec: active_time=20.0000 ; recharge_time=120.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_speed_under_fire ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=enemy-unit owner=active family=hex_speed_under_fire
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc29_item_abilities_warpstiletto self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=20.0000 ; affects_allies=true ; affects_enemies=true ; cant_move=true
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_weapon_warpstiletto}}
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_weapon_warpstiletto}}
+====================================================================================================
+### [506] warpstone_tokens  |  Warpstone Tokens  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_item_abilities_warpstone_tokens
+      spec: active_time=26.0000 ; recharge_time=120.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=true ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment_of_the_winds source=active uniqueness=true
+      phase_junc: wh3_dlc29_item_abilities_warpstone_tokens self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=26.0000 ; affects_allies=true ; affects_enemies=true
+      stat: Miscast Chance: 0.5000 (mult) [phase wh3_dlc29_item_abilities_warpstone_tokens]
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_enchanted_item_warpstone_tokens}}
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_enchanted_item_warpstone_tokens}}
+====================================================================================================
+### [507] watched_by_the_watcher  |  Watched by the Watcher  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc24_character_abilities_watched_by_the_watcher
+      spec: active_time=60.0000 ; recharge_time=120.0000 ; num_uses=3 ; effect_range=-1.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=-1 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_ranged_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=target target_cat=self owner=active family=hex_ranged_area
+      ub_type=wh_type_area_of_hexes source=active uniqueness=false
+      phase_junc: wh3_dlc24_character_abilities_watched_by_the_watcher self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=60.0000 ; affects_allies=true ; affects_enemies=true
+      attr: Revealed (positive) [phase wh3_dlc24_character_abilities_watched_by_the_watcher]
+      tooltip: Near… far… In fact, wherever it is that you are, Saytang's belittling gaze will find you.
+      loc_name: Watched by the Watcher
+====================================================================================================
+### [508] were_you_goin  |  Where You Goin!?  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_character_abilities_were_you_goin
+      spec: active_time=25.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_defense_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=active family=augment_defense_melee
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_dlc26_character_abilities_were_you_goin self=false friends=true enemies=false
+        phase_row: effect_type=positive ; duration=25.0000 ; affects_allies=true
+      attr: Unbreakable (positive) [phase wh3_dlc26_character_abilities_were_you_goin]
+      tooltip: If anyone even thinks of fleeing a battle in the Bruiser's presence, they find themselves flung head over heels in the thick of it.
+      loc_name: Where You Goin!?
+====================================================================================================
+### [509] whip_of_agony  |  Whip of Agony  |  trigger=melee_unwavering
+  --- KEY: wh2_twa03_weapon_abilities_whip_of_agony
+      spec: active_time=29.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=75.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh2_twa03_weapon_abilities_whip_of_agony self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=29.0000 ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh2_twa03_weapon_abilities_whip_of_agony]
+      attr: Causes Fear (negative) [phase wh2_twa03_weapon_abilities_whip_of_agony]
+      attr: Causes Terror (negative) [phase wh2_twa03_weapon_abilities_whip_of_agony]
+      tooltip: Pain nourishes courage in the hearts of the wild and fear in the hearts of the weak.
+      loc_name: Whip of Agony
+====================================================================================================
+### [510] whip_of_misery  |  Whip of Misery  |  trigger=melee_unwavering
+  --- KEY: wh2_main_spell_bound_whip_of_agony
+      spec: active_time=31.0000 ; recharge_time=90.0000 ; num_uses=3 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=true
+      phase_junc: wh2_main_spell_bound_whip_of_agony self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=31.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_range.png]][[/img]] Accuracy: -30.0000 (add) [phase wh2_main_spell_bound_whip_of_agony]
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh2_main_spell_bound_whip_of_agony]
+      invalid_target: unit_is_not_large
+      tooltip: As the caster utters a forbidden name, her enemies are wracked with waves of misery.
+      loc_name: Whip of Misery
+====================================================================================================
+### [511] whiplash  |  Whiplash!  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc14_lord_abilities_whiplash
+      spec: active_time=21.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=active family=augment_melee
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh2_dlc14_lord_abilities_whiplash self=false friends=true enemies=false
+        phase_row: effect_type=positive ; duration=21.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Charge Speed: 1.2500 (mult) [phase wh2_dlc14_lord_abilities_whiplash]
+      stat: [[img:ui/skins/default/icon_stat_charge_bonus.png]][[/img]] Charge Bonus: 1.2000 (mult) [phase wh2_dlc14_lord_abilities_whiplash]
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing.png]][[/img]] Armour-Piercing Weapon Damage: 1.5000 (mult) [phase wh2_dlc14_lord_abilities_whiplash]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 1.5000 (mult) [phase wh2_dlc14_lord_abilities_whiplash]
+      invalid_target: unit_is_commander_class
+      tooltip: The startling crack of the Beastmaster’s hefty and ever-so-slightly serrated whip of Dragon-sinew suitably infuriates the beasts for battle.
+      loc_name: Whiplash!
+====================================================================================================
+### [512] whispering_mist  |  Whispering Mist  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_hero_abilities_whispering_mist
+      spec: active_time=32.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee_area
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_dlc29_hero_abilities_whispering_mist self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=32.0000 ; affects_allies=true ; affects_enemies=true ; fatigue_change_ratio=0.0100
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Charge Speed: 0.5500 (mult) [phase wh3_dlc29_hero_abilities_whispering_mist]
+      stat: [[img:ui/skins/default/icon_stat_speed.png]][[/img]] Speed: 0.5500 (mult) [phase wh3_dlc29_hero_abilities_whispering_mist]
+      tooltip: Cold mists curl about the enemy like a maiden's distracting caress.
+      loc_name: Whispering Mist
+====================================================================================================
+### [513] whispering_skull  |  Whispering Skull  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_item_abilities_whispering_skull
+      spec: active_time=17.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_dlc29_item_abilities_whispering_skull self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=17.0000 ; affects_allies=true ; affects_enemies=true
+      stat: Miscast Chance: 0.5000 (mult) [phase wh3_dlc29_item_abilities_whispering_skull]
+      stat: [[img:ui/Battle UI/ability_icons/spell_mastery.png]][[/img]] Spell Mastery: 1.1500 (mult) [phase wh3_dlc29_item_abilities_whispering_skull]
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_arcane_item_whispering_skull}}
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_arcane_item_whispering_skull}}
+====================================================================================================
+### [514] wild_abandon  |  Wild Abandon  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc26_lord_abilities_wild_abandon
+      spec: active_time=25.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=1 ; num_effected_enemy_units=0 ; target_friends=true ; target_enemies=false ; target_ground=false ; target_intercept_range=100.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=friend-unit owner=active family=augment_melee
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_dlc26_lord_abilities_wild_abandon self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=25.0000 ; max_damaged_entities=-1 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 40.0000 (add) [phase wh3_dlc26_lord_abilities_wild_abandon]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh3_dlc26_lord_abilities_wild_abandon]
+      attr: Cannot Die (positive) [phase wh3_dlc26_lord_abilities_wild_abandon]
+      tooltip: The Bloodspeaker asks the impossible of his followers, and they do it. Many die afterwards. But before that, they kill.
+      loc_name: Wild Abandon
+====================================================================================================
+### [515] willing_prey  |  Willing Prey  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_willing_prey
+      spec: active_time=15.0000 ; recharge_time=90.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex source=active uniqueness=true
+      phase_junc: wh3_main_lord_abilities_willing_prey self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=15.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -24.0000 (add) [phase wh3_main_lord_abilities_willing_prey]
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -40.0000 (add) [phase wh3_main_lord_abilities_willing_prey]
+      tooltip: Some beings, in their darkest heart, have a deep-seated desire for an agonising death.
+      loc_name: Willing Prey
+====================================================================================================
+### [516] winds_of_change  |  Winds of Change  |  trigger=melee_unwavering
+  --- KEY: wh3_main_daemon_body_abilities_winds_of_change
+      spec: active_time=26.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_spellcasting ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_spellcasting
+      ub_type=wh_type_augment_of_the_winds source=active uniqueness=true
+      phase_junc: wh3_main_daemon_body_abilities_winds_of_change self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=26.0000
+      stat: Miscast Chance: 0.5000 (mult) [phase wh3_main_daemon_body_abilities_winds_of_change]
+      tooltip: Take me to the magic moment, upon glory night, where the children of tomorrow dream…
+      loc_name: Winds of Change
+====================================================================================================
+### [517] word_of_change  |  Word of Change  |  trigger=melee_unwavering
+  --- KEY: wh3_main_daemon_head_abilities_word_of_change
+      spec: active_time=42.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=active family=hex_melee
+      ub_type=wh_type_hex_of_the_winds source=active uniqueness=true
+      phase_junc: wh3_main_daemon_head_abilities_word_of_change self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=42.0000 ; affects_enemies=true
+      stat: Miscast Chance: 2.0000 (mult) [phase wh3_main_daemon_head_abilities_word_of_change]
+      invalid_target: hasnt_casting_ability
+      tooltip: Through His ever-willing vessel, the Dark Sorcerer of the Chaos Gods can cause broiling waves of maddening Change to engulf spellcasting foes.
+      loc_name: Word of Change
+====================================================================================================
+### [518] word_of_pain  |  Word of Pain  |  trigger=melee_unwavering
+  --- KEY: wh2_dlc10_spell_bound_word_of_pain
+      spec: active_time=40.0000 ; recharge_time=90.0000 ; num_uses=2 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh2_main_spell_dark_magic_word_of_pain self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=40.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_range.png]][[/img]] Accuracy: -30.0000 (add) [phase wh2_main_spell_dark_magic_word_of_pain]
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -40.0000 (add) [phase wh2_main_spell_dark_magic_word_of_pain]
+      tooltip: As the caster utters a forbidden name, their enemies are wracked with waves of agony.
+      loc_name: Word of Pain
+  --- KEY: wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use
+      spec: active_time=40.0000 ; recharge_time=90.0000 ; num_uses=1 ; effect_range=0.0000 ; affect_self=false ; num_effected_friendly_units=0 ; num_effected_enemy_units=1 ; target_friends=false ; target_enemies=true ; target_ground=false ; target_intercept_range=200.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=hex_melee ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_enemy target_cat=enemy-unit owner=bound family=hex_melee
+      ub_type=wh_type_hex source=bound uniqueness=false
+      phase_junc: wh2_main_spell_dark_magic_word_of_pain self=false friends=false enemies=true
+        phase_row: effect_type=negative ; duration=40.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_range.png]][[/img]] Accuracy: -30.0000 (add) [phase wh2_main_spell_dark_magic_word_of_pain]
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: -40.0000 (add) [phase wh2_main_spell_dark_magic_word_of_pain]
+      tooltip: As the caster utters a forbidden name, their enemies are wracked with waves of agony.
+      loc_name: Word of Pain
+====================================================================================================
+### [519] woven_mist  |  Woven Mist  |  trigger=melee_unwavering
+  --- KEY: wh_dlc05_unit_abilities_woven_mist
+      spec: active_time=-1.0000 ; recharge_time=1.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=1.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_defense_ranged ; miscast_chance=0.0000
+      grouped2: trigger_cat=ready target_cat=self owner=active family=augment_defense_ranged
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh_dlc05_unit_abilities_woven_mist self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=-1.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/icon_stat_defence.png]][[/img]] Melee Defence: -24.0000 (add) [phase wh_dlc05_unit_abilities_woven_mist]
+      stat: [[img:ui/Battle UI/ability_icons/resistance_missile.png]][[/img]] Missile Resistance: 40.0000 (add) [phase wh_dlc05_unit_abilities_woven_mist]
+      tooltip: The Wardancer threads and loops, contorting to create an ethereal fabric that turns aside arrows and bolts.
+      loc_name: Woven Mist
+====================================================================================================
+### [520] wrath_of_the_storm  |  Wrath of the Storm  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_wrath_of_the_storm
+      spec: active_time=32.0000 ; recharge_time=120.0000 ; num_uses=-1 ; effect_range=35.0000 ; affect_self=true ; num_effected_friendly_units=-1 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_area ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_melee_area
+      ub_type=wh_type_area_of_augments source=active uniqueness=true
+      phase_junc: wh3_main_lord_abilities_wrath_of_the_storm self=true friends=true enemies=false
+        phase_row: effect_type=positive ; duration=32.0000 ; affects_allies=true ; affects_enemies=true ; imbue_magical=true
+      stat: [[img:ui/skins/default/icon_stat_attack.png]][[/img]] Melee Attack: 24.0000 (add) [phase wh3_main_lord_abilities_wrath_of_the_storm]
+      attr: Immune to Psychology (positive) [phase wh3_main_lord_abilities_wrath_of_the_storm]
+      invalid_usage: flying_unit
+      tooltip: Elements thought uncontrollable can be harnessed to do the Dragon's bidding – both to crush their enemies and protect them when in human form.
+      loc_name: Wrath of the Storm
+====================================================================================================
+### [521] wrathful_reaper  |  Wrathful Reaper  |  trigger=melee_unwavering
+  --- KEY: wh3_main_lord_abilities_wrathful_reaper
+      spec: active_time=18.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_self ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=active family=augment_melee_self
+      ub_type=wh_type_augment source=active uniqueness=true
+      phase_junc: wh3_main_lord_abilities_wrathful_reaper self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=18.0000 ; affects_allies=true ; affects_enemies=true
+      stat: [[img:ui/skins/default/modifier_icon_armour_piercing.png]][[/img]] Armour-Piercing Weapon Damage: 1.5000 (mult) [phase wh3_main_lord_abilities_wrathful_reaper]
+      stat: [[img:ui/skins/default/icon_stat_damage_base.png]][[/img]] Base Weapon Damage: 1.5000 (mult) [phase wh3_main_lord_abilities_wrathful_reaper]
+      attr: Rampage (positive) [phase wh3_main_lord_abilities_wrathful_reaper]
+      tooltip: Skarbrand runs rampant, twin axes hacking and cleaving until there is no one left to kill. 
+      loc_name: Wrathful Reaper
+====================================================================================================
+### [522] wristbands_of_black_gold  |  Wristbands of Black Gold  |  trigger=melee_unwavering
+  --- KEY: wh3_dlc29_item_abilities_wristbands_of_black_gold
+      spec: active_time=22.0000 ; recharge_time=60.0000 ; num_uses=-1 ; effect_range=0.0000 ; affect_self=true ; num_effected_friendly_units=0 ; num_effected_enemy_units=0 ; target_friends=false ; target_enemies=false ; target_ground=false ; target_intercept_range=0.0000 ; always_affect_self=false ; only_affect_target=false ; wind_up_time=0.0000 ; passive=false ; bombardment= ; activated_projectile= ; mana_cost=0.0000 ; min_range=0.0000 ; ai_usage=augment_melee_self ; miscast_chance=0.0000
+      grouped2: trigger_cat=melee_self target_cat=self owner=item family=augment_melee_self
+      ub_type=wh_type_ward_save source=item uniqueness=true
+      phase_junc: wh3_dlc29_item_abilities_wristbands_of_black_gold self=true friends=false enemies=false
+        phase_row: effect_type=positive ; duration=22.0000
+      stat: [[img:ui/Battle UI/ability_icons/resistance_ward_save.png]][[/img]] Damage Resistance : 20.0000 (add) [phase wh3_dlc29_item_abilities_wristbands_of_black_gold]
+      tooltip: {{tr:ancillaries_colour_text_wh3_dlc29_anc_talisman_wristbands_of_black_gold}}
+      loc_name: {{tr:ancillaries_onscreen_name_wh3_dlc29_anc_talisman_wristbands_of_black_gold}}
