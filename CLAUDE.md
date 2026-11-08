@@ -45,6 +45,21 @@ source (paths below relative to `mod_source\`):
 - `mod_source\ui\common ui\special_ability_tooltip.twui.xml` (the folder name really
   contains a space)
 
+## 1b. VERSION CONTROL (since 2026-11-08)
+
+- Public GitHub repository: https://github.com/vladyskai/wh3-auto-abilities (branch `main`), pushed
+  over HTTPS through the GitHub CLI (`gh`, account `vladyskai`).
+- Commit author is set in the repo: `vladyskaizen` / `116801803+vladyskai@users.noreply.github.com`
+  (GitHub's private address; never the user's Gmail).
+- Every round ends with ONE commit (the round's source, annotated copy, harness, builder, docs) and a
+  push. The user wants the activity visible on his profile.
+- `.gitattributes` stores every file byte for byte (`* -text`): the build's byte-identity gates and
+  the LF mod source depend on it. Never remove it.
+- `.gitignore` keeps out battle logs, packs, `gamedata/` and `archive/` (Creative Assembly data and
+  other modders' files: not ours to publish), RPFM, the unchanged `hud_battle.twui.xml` copies and
+  `claude_code_export/`. Before pushing, check that nothing over 50 MB and nothing from those
+  groups is staged.
+
 ## 2. HARD RULES (settled; never re-litigate)
 
 1. **Wheel-only.** `perform_special_ability` only fires abilities that are present in the
