@@ -99,3 +99,20 @@ ability per combination of:
 A tool can pick the units that cover all of these in the fewest armies (a set-cover over the game's
 own unit-to-ability tables). The expected result is a handful of armies, not hundreds of battles.
 Then each new batch only adds a QA check for what it changes.
+
+## 6. The trial (2026-11-08): what worked
+
+Claude launched the game through Steam and the Total War launcher (game version 9.0.5) and reached the
+main menu.
+
+| Input | Result |
+|---|---|
+| Screenshots of the game (windowed) | **work**, clear and readable |
+| Mouse movement | **works**: buttons light up and tooltips appear |
+| Keyboard | **works**: Escape opened and closed the quit dialog |
+| Mouse clicks | **ignored**: no button reacts, on any screen (a normal, slow press-and-release and a double click all failed; the game was focused and is not running as administrator) |
+
+**Consequence:** Claude cannot click through Custom Battle setup today. The realistic QA loop is: the
+user sets up a QA custom battle once and saves the armies (a few minutes); the QA build of the mod arms
+everything and orders the attack by itself; Claude reads the log and prints PASS / FAIL. If a later
+version of the desktop driver sends clicks the game accepts, Claude can take over the menus too.
