@@ -8,7 +8,7 @@ Every automated ability (700 entries) checked against the rules below by `tools/
 | R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these) | 0 |
 | R3. Melee-only debuffs on a trigger with a missile arm (rule 10) | 23 |
 | R4. Enemy slows on a trigger that is neither melee nor charge (rule 10) | 19 |
-| R5. Protection against shots on a melee-only trigger | 7 |
+| R5. Protection against shots on a melee-only trigger | 0 |
 | R6. Morale effects on a trigger with no morale read | 25 |
 | R7. Speed buffs on the unit itself on a melee-only trigger | 14 |
 
@@ -74,15 +74,7 @@ None.
 
 ## R5. Protection against shots on a melee-only trigger
 
-| Ability | Marker | Trigger now | Effect (game data) |
-|---|---|---|---|
-| Blessed Helm of the Oblast | `blessed_helm_of_the_oblast` | `melee_unwavering` | Armour: +60; Missile Resistance: +20 (to self and allies in range) |
-| Charmed Shield | `charmed_shield` | `melee_unwavering` | Missile Block Chance: +25; Damage Resistance: +20 (to self) |
-| Glacial Defence | `glacial_defence` | `melee_unwavering` | Speed: -25%; Armour: +60; Missile Resistance: +20 (to self) |
-| Shield of Chaqua | `shield_of_chaqua` | `melee_unwavering` | Missile Resistance: +40 (to self and allies in range) |
-| The Bane Shield | `the_bane_shield` | `melee_unwavering` | Armour: +30; Missile Block Chance: +24 (to self and allies in range) |
-| The Golden Eye of Tzeentch | `the_golden_eye_of_tzeentch` | `melee_unwavering` | Missile Resistance: +40; Barrier restore: 0.008 (to self) |
-| The Lion's Shield | `lions_shield` | `melee_unwavering` | Spell Resistance: +40; Missile Resistance: +40 (to self) |
+None.
 
 ## R6. Morale effects on a trigger with no morale read
 

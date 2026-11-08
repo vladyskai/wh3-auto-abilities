@@ -4828,12 +4828,12 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Black Hammer of Hashut `wh3_dlc23_weapon_abilities_black_hammer_of_hashut` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 32s · self · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast melee damage buff)** |
 | Black Periapt `wh_main_item_abilities_black_periapt` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 27s · self |
 | Black Staff `wh2_main_spell_bound_black_staff` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 90s · 20s · friend · ×3 uses · bound |
-| Blessed Helm of the Oblast `wh3_dlc24_item_abilities_blessed_helm_of_the_oblast` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 30s · self |
+| Blessed Helm of the Oblast `wh3_dlc24_item_abilities_blessed_helm_of_the_oblast` | `implemented (melee or under missile fire: melee_or_under_fire)` | self | When armed, fires when the caster or a friendly unit within 24 m (70% of the 35 m aura) is in melee (not wavering) or under missile fire: cast on self. | cd 90s · 30s · self · **round 133 (2026-11-08):** audit batch 2, user ruling: "In melee or under fire". |
 | Book of Hoeth `wh2_main_item_abilities_book_of_hoeth` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 36s · self |
 | Boom! `wh_main_unit_abilities_boom` | `implemented (shooting: self_shooting)` | self | When the unit itself is shooting past its cast point: cast on self. | cd 90s · 15s · self · **round 132 (2026-11-08):** audit batch 1, user ruling: "When it is shooting". |
 | Channelling Spire `wh2_main_army_abilities_channeling_spire` | `excluded (auto: army-bar ability (standing rule 10))` | ready | Whenever the engine allows (no readable condition): cast on the ground. | cd 60s · -1s · ground · ×3 uses · wind-up 1s · army |
 | Channelling Staff `wh_main_item_abilities_channelling_staff` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 29s · self |
-| Charmed Shield `wh_main_weapon_abilities_charmed_shield` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 17s · self |
+| Charmed Shield `wh_main_weapon_abilities_charmed_shield` | `implemented (melee or under missile fire: melee_or_under_fire)` | self | When armed, fires when the caster is in melee (not wavering) or under missile fire: cast on self. | cd 60s · 17s · self · **round 133 (2026-11-08):** audit batch 2, user ruling: "In melee or under fire". |
 | Cloak of the Dunes `wh2_dlc09_item_abilities_cloak_of_the_dunes` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 73s · self |
 | Concealment Bombs `wh2_main_character_abilities_concealment_bombs` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 73s · self · ×3 uses · triage-family: Flanking / ambush (flanking_opportunity) |
 | Concealment Bombs `wh2_main_unit_abilities_concealment_bombs` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 73s · self · ×3 uses · triage-family: Flanking / ambush (flanking_opportunity) |
@@ -4852,7 +4852,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Forbidden Rod `wh_main_item_abilities_forbidden_rod` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 23s · self · ×3 uses |
 | From the Shadows `wh3_main_character_abilities_from_the_shadows` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 38s · self · triage-family: Flanking / ambush (flanking_opportunity) |
 | Funnel of Flame `wh2_dlc13_lord_abilities_funnel_of_flame` | `implemented (firing aura: allies_firing_aura)` | self | When this unit or a friendly unit within 38 m (70% of the 55 m aura) is shooting past its cast point: cast on self (the aura). | cd 90s · 33s · self · **round 131 (user ruling 2026-11-01):** moved off the melee trigger; the caster counts. |
-| Glacial Defence `wh3_twa08_unit_abilities_glacial_defence` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 21s · self |
+| Glacial Defence `wh3_twa08_unit_abilities_glacial_defence` | `implemented (melee or under missile fire: melee_or_under_fire)` | self | When armed, fires when the caster is in melee (not wavering) or under missile fire: cast on self. | cd 60s · 21s · self · **round 133 (2026-11-08):** audit batch 2, user ruling: "In melee or under fire". |
 | Grut's Sickle `wh3_main_item_abilities_gruts_sickle` | `implemented (ally-targeted: winds_maxhp)` | ally_unit | Cast on the chosen ALLY (trigger `ally_winds`; class gate: the ally with the HIGHEST ABSOLUTE HIT POINTS REMAINING (max HealthValue) - ruled + requested MID-FLIGHT this round); trigger range = 70 m = 70% of the real 100 m. | cd 60s · 20s · friend · ×3 uses · **round 98 (Class B): NEEDS A RULING** - rule 14 - carries a health COST (drawback); the note says 'flag for the user'. · **round 99 (target-class-gated):** casts ON THE CHOSEN ALLY of the required class (the ally with the HIGHEST ABSOLUTE HIT POINTS REMAINING (max HealthValue) - ruled + requested MID-FLIGHT this round) - the offer test is `unit:unit_distance(ally)` <= its own 70% bound = floor(100 * 0.70) = 70 m (`FOURTH.ALLY_CAST_R100`) ONLY, never the engine's `unit_in_range`; fresh caster+ally handles. Was a self-cast. |
 | Hag's Denial `wh3_dlc24_unit_abilities_hags_denial` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 44s · self · ×1 uses |
 | Hagtree Fetish `wh_dlc03_item_abilities_hagtree_fetish` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 29s · self · ×1 uses |
@@ -4895,7 +4895,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Sceptre of Stability `wh_main_item_abilities_sceptre_of_stability` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 60s · 22s · friend |
 | Scroll of Destiny `wh3_main_item_abilities_scroll_of_destiny` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 46s · self · ×1 uses |
 | Scruten Clanstone `wh3_dlc29_army_abilities_scruten_clanstone` | `excluded (auto: army-bar ability (standing rule 10))` | ready | Whenever the engine allows (no readable condition): cast on the ground. | cd 120s · 48s · ground · ×3 uses · army |
-| Shield of Chaqua `wh2_dlc12_unit_abilities_shield_of_chaqua` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 25s · self · ×3 uses |
+| Shield of Chaqua `wh2_dlc12_unit_abilities_shield_of_chaqua` | `implemented (under missile fire: under_fire)` | self | When armed, fires when the caster or a friendly unit within 38 m (70% of the 55 m aura) is under missile fire: cast on self. | cd 90s · 25s · self · ×3 uses · **round 133 (2026-11-08):** audit batch 2, user ruling: "When under fire". |
 | Shield of the Old Ones `wh2_dlc13_final_battle_abilities_shield_of_the_old_ones` | `excluded (auto: army-bar ability (standing rule 10))` | ready | Whenever the engine allows (no readable condition): cast on the ground. | cd 90s · 180s · ground · army |
 | Ships of the Line `wh3_dlc27_army_abilities_ships_of_the_line` | `excluded (auto: army-bar ability (standing rule 10))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 60s · 10s · friend/self · ×3 uses · wind-up 1s · army |
 | Skitterleap `wh3_dlc29_spell_bound_skitterleap` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 29s · 25s · friend/self · ×3 uses · wind-up 1s · bound |
@@ -4913,15 +4913,15 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Storm of Blades `wh_dlc05_unit_abilities_storm_of_blades` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 1s · -1s · self · wind-up 1s |
 | Temptator `wh3_dlc20_lord_abilities_temptator` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 19s · self · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast melee survival buff)** |
 | Terrorgheist Skull `wh_dlc08_item_abilities_terrorgheist_skull` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 120s · 44s · friend |
-| The Bane Shield `wh2_main_item_abilities_the_bane_shield` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 0s · 44s · self · ×1 uses |
+| The Bane Shield `wh2_main_item_abilities_the_bane_shield` | `implemented (melee or under missile fire: melee_or_under_fire)` | self | When armed, fires when the caster or a friendly unit within 24 m (70% of the 35 m aura) is in melee (not wavering) or under missile fire: cast on self. | cd 0s · 44s · self · ×1 uses · **round 133 (2026-11-08):** audit batch 2, user ruling: "In melee or under fire". |
 | The Chromatic Tome `wh3_main_item_abilities_the_chromatic_tome` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 27s · self |
 | The Crimson Blade `wh3_dlc29_item_abilities_crimson_blade` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 30s · self · item · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast Executioner)** |
 | The Gold Standard `wh3_dlc25_item_abilities_the_gold_standard` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 90s · 13s · friend |
-| The Golden Eye of Tzeentch `wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 33s · self |
+| The Golden Eye of Tzeentch `wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch` | `implemented (under missile fire: under_fire)` | self | When armed, fires when the caster is under missile fire: cast on self. | cd 120s · 33s · self · **round 133 (2026-11-08):** audit batch 2, user ruling: "When under fire". |
 | The Graven Sceptre `wh3_dlc23_weapon_abilities_the_graven_sceptre` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 24s · self · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast melee damage buff)** |
 | The Guiding Eye `wh2_main_item_abilities_the_guiding_eye` | `implemented (firing aura: allies_firing_aura)` | self | When this unit or a friendly unit within 38 m (70% of the 55 m aura) is shooting past its cast point: cast on self (the aura). | cd 60s · 18s · self · **round 131 (user ruling 2026-11-01):** moved off the melee trigger; the caster counts. |
 | The Liber Noctus `wh_dlc04_item_abilities_the_liber_noctus` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 33s · self · ×2 uses |
-| The Lion's Shield `wh_dlc07_lord_abilities_lions_shield` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 22s · self |
+| The Lion's Shield `wh_dlc07_lord_abilities_lions_shield` | `implemented (under missile fire: under_fire)` | self | When armed, fires when the caster is under missile fire: cast on self. | cd 90s · 22s · self · **round 133 (2026-11-08):** audit batch 2, user ruling: "When under fire". |
 | The Seerstaff of Saphery `wh2_main_spell_bound_the_seerstaff_of_saphery` | `implemented (melee or shooting, self or ally: melee_or_shooting_self_or_ally)` | ally_unit | When the caster is in melee (not wavering) or shooting past its cast point: cast on self; otherwise on the closest ally within 140 m (70% of 200 m) that is in melee or shooting. | cd 60s · 22s · friend · ×4 uses · bound · **round 132 (2026-11-08):** audit batch 1, user ruling: "Self, else an ally". |
 | Tricksy Traps `wh_dlc06_lord_abilities_tricksy_traps` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 32s · self |
 | Unlimited Power! `wh2_dlc12_lord_abilities_unlimited_power` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 26s · self |
@@ -7160,3 +7160,28 @@ may not match their effect. Batch 1 is the group the user asked for.
 - **Tests:** harness 131 full suite **5,699 checks / 0 failures**, run twice byte-identical. RED on the
   round-131 build: 10/10.
 - **Install:** pack md5 `47efd2465d26047dde59f0fed6d03e51`.
+
+### 10.14 Round 133 - audit batch 2: protection against shots fires when under fire (2026-11-08)
+
+**Rulings (2026-11-08), both as recommended.**
+
+- **Pure missile protection, "When under fire":** Shield of Chaqua, The Golden Eye of Tzeentch, The
+  Lion's Shield.
+- **Mixed protection, "In melee or under fire":** The Blessed Helm of the Oblast, The Bane Shield,
+  Charmed Shield, Glacial Defence.
+
+**New families.**
+
+- `under_fire` (3)
+- `melee_or_under_fire` (4)
+
+Both read `battle_unit:is_under_missile_attack()`; only an exact true counts. The read has never been
+seen on the player's own units in a real battle, so the QA battle is its first field proof.
+
+**Arithmetic.**
+
+- **Rows:** implemented rows and keys unchanged at **752**.
+- **The mod:** **700 entries / 752 keys**; families 54 -> **56**; melee_unwavering 349 -> 342.
+- **Tests:** harness 132 full suite **5,738 checks / 0 failures**, run twice byte-identical. RED on the
+  round-132 build: 8/8.
+- **Install:** pack md5 `7045f8da3e5b20853eda75f92e46f489`.

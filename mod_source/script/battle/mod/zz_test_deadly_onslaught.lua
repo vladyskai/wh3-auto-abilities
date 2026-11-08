@@ -1357,9 +1357,10 @@ local ABILITIES = {
 		keys = { "wh2_dlc09_weapon_abilities_blade_of_setep" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "blessed_helm_of_the_oblast", name = "Blessed Helm of the Oblast", trigger = "melee_unwavering",
+	{ marker = "blessed_helm_of_the_oblast", name = "Blessed Helm of the Oblast", trigger = "melee_or_under_fire",
 		badge = "zz_auto_badge_blessed_helm_of_the_oblast",
 		keys = { "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "blight_of_terrors", name = "Blight of Terrors", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_blight_of_terrors",
@@ -1417,7 +1418,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_channelling_staff",
 		keys = { "wh_main_item_abilities_channelling_staff" },
 		ox = 0, oy = 0 },
-	{ marker = "charmed_shield", name = "Charmed Shield", trigger = "melee_unwavering",
+	{ marker = "charmed_shield", name = "Charmed Shield", trigger = "melee_or_under_fire",
 		badge = "zz_auto_badge_charmed_shield",
 		keys = { "wh_main_weapon_abilities_charmed_shield" },
 		ox = 0, oy = 0 },
@@ -1607,7 +1608,7 @@ local ABILITIES = {
 		keys = { "wh3_main_weapon_abilities_soulnetter" },
 		range_real = 50,
 		ox = 0, oy = 0 },
-	{ marker = "glacial_defence", name = "Glacial Defence", trigger = "melee_unwavering",
+	{ marker = "glacial_defence", name = "Glacial Defence", trigger = "melee_or_under_fire",
 		badge = "zz_auto_badge_glacial_defence",
 		keys = { "wh3_twa08_unit_abilities_glacial_defence" },
 		ox = 0, oy = 0 },
@@ -2030,9 +2031,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_scroll_of_shielding",
 		keys = { "wh_main_item_abilities_scroll_of_shielding" },
 		ox = 0, oy = 0 },
-	{ marker = "shield_of_chaqua", name = "Shield of Chaqua", trigger = "melee_unwavering",
+	{ marker = "shield_of_chaqua", name = "Shield of Chaqua", trigger = "under_fire",
 		badge = "zz_auto_badge_shield_of_chaqua",
 		keys = { "wh2_dlc12_unit_abilities_shield_of_chaqua" },
+		aura_real = 55,
 		ox = 0, oy = 0 },
 	{ marker = "dispatch_the_swarm_protect", name = "Shielding Swarm", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_dispatch_the_swarm_protect",
@@ -2138,9 +2140,10 @@ local ABILITIES = {
 		keys = { "wh2_dlc13_weapon_abilities_averland_runefang" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "the_bane_shield", name = "The Bane Shield", trigger = "melee_unwavering",
+	{ marker = "the_bane_shield", name = "The Bane Shield", trigger = "melee_or_under_fire",
 		badge = "zz_auto_badge_the_bane_shield",
 		keys = { "wh2_main_item_abilities_the_bane_shield" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "the_black_tongue", name = "The Black Tongue", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_the_black_tongue",
@@ -2164,7 +2167,7 @@ local ABILITIES = {
 			"wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "the_golden_eye_of_tzeentch", name = "The Golden Eye of Tzeentch", trigger = "melee_unwavering",
+	{ marker = "the_golden_eye_of_tzeentch", name = "The Golden Eye of Tzeentch", trigger = "under_fire",
 		badge = "zz_auto_badge_the_golden_eye_of_tzeentch",
 		keys = { "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch" },
 		ox = 0, oy = 0 },
@@ -2186,7 +2189,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_the_liber_noctus",
 		keys = { "wh_dlc04_item_abilities_the_liber_noctus" },
 		ox = 0, oy = 0 },
-	{ marker = "lions_shield", name = "The Lion's Shield", trigger = "melee_unwavering",
+	{ marker = "lions_shield", name = "The Lion's Shield", trigger = "under_fire",
 		badge = "zz_auto_badge_lions_shield",
 		keys = { "wh_dlc07_lord_abilities_lions_shield" },
 		ox = 0, oy = 0 },
@@ -12653,6 +12656,78 @@ function FOURTH.evaluate_self_shooting(unit, routing)
 	return "the unit is shooting past its cast point, cast on self"
 end
 
+-- ============================================================================
+-- ROUND 133 - AUDIT BATCH 2: PROTECTION AGAINST SHOTS (user rulings 2026-11-08).
+--   under_fire (Shield of Chaqua, The Golden Eye of Tzeentch, The Lion's Shield):
+--     the caster under missile fire; for an aura (Shield of Chaqua) also any
+--     friendly unit within the aura bound (70% of the effect_range). No melee arm.
+--   melee_or_under_fire (The Blessed Helm of the Oblast, The Bane Shield, Charmed
+--     Shield, Glacial Defence): the caster in melee (not wavering) or under fire;
+--     for an aura also any friendly unit within the bound in melee or under fire.
+--   The read is battle_unit:is_under_missile_attack() (the enemy picker's read);
+--   only an exact true counts. Cast on the caster.
+-- ============================================================================
+
+-- true only when the engine answers exactly true
+function FOURTH.under_fire(unit)
+	local ok, v = pcall(function() return unit:is_under_missile_attack() end)
+	return ok and v == true
+end
+
+-- the closest OTHER friendly unit (alive, not routing) within the current entry's
+-- aura bound that passes test(u); nil when the entry has no aura or none passes.
+-- An unreadable distance does not count.
+function FOURTH.ally_in_aura(unit, test)
+	local bound = FOURTH.fa_bound_m
+	if bound == nil or tracked_units == nil then return nil, nil end
+	local self_id = tostring(unit:unique_ui_id())
+	local best, best_gap = nil, nil
+	for i = 1, #tracked_units do
+		local other = tracked_units[i] and tracked_units[i].unit
+		if other ~= nil and other ~= unit then
+			local ok_m, men = pcall(function() return other:number_of_men_alive() end)
+			local ok_i, oid = pcall(function() return tostring(other:unique_ui_id()) end)
+			if ok_m and type(men) == "number" and men > 0 and ok_i and oid ~= self_id
+				and not unit_is_routing(other) and test(other) then
+				local gap = FOURTH.ab_ally_gap(unit, other)
+				if gap ~= nil and gap <= bound and (best_gap == nil or gap < best_gap) then
+					best, best_gap = other, gap
+				end
+			end
+		end
+	end
+	return best, best_gap
+end
+
+function FOURTH.melee_now(u)
+	local ok, v = pcall(function() return u:is_in_melee() end)
+	return ok and v == true
+end
+
+function FOURTH.melee_or_under_fire(u)
+	return FOURTH.melee_now(u) or FOURTH.under_fire(u)
+end
+
+function FOURTH.evaluate_under_fire(unit, routing)
+	if routing then return nil end
+	if FOURTH.under_fire(unit) then return "the caster is under missile fire, cast on self" end
+	local ally, gap = FOURTH.ally_in_aura(unit, FOURTH.under_fire)
+	if ally == nil then return nil end
+	return string.format("a friendly unit %.1fm away (bound %sm) is under missile fire, cast centred on the caster",
+		gap, tostring(FOURTH.fa_bound_m))
+end
+
+function FOURTH.evaluate_melee_or_under_fire(unit, routing)
+	local r = FOURTH.evaluate_in_melee_self(unit, routing)
+	if r ~= nil then return r .. ", cast on self" end
+	if routing then return nil end
+	if FOURTH.under_fire(unit) then return "the caster is under missile fire, cast on self" end
+	local ally, gap = FOURTH.ally_in_aura(unit, FOURTH.melee_or_under_fire)
+	if ally == nil then return nil end
+	return string.format("a friendly unit %.1fm away (bound %sm) is in melee or under missile fire, cast centred on the caster",
+		gap, tostring(FOURTH.fa_bound_m))
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -12723,6 +12798,9 @@ FOURTH.evaluators = {
 	melee_or_shooting_aura = FOURTH.evaluate_melee_or_shooting_aura,
 	melee_or_shooting_self_or_ally = FOURTH.evaluate_melee_or_shooting_self_or_ally,
 	self_shooting = FOURTH.evaluate_self_shooting,
+	-- ROUND 133
+	under_fire = FOURTH.evaluate_under_fire,
+	melee_or_under_fire = FOURTH.evaluate_melee_or_under_fire,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -12793,6 +12871,8 @@ FOURTH.TRIGGER_TIP = {
 	melee_or_shooting_aura = "When armed, fires when this unit or a friendly unit near it is in melee or shooting",
 	melee_or_shooting_self_or_ally = "When armed, fires on this unit when it is in melee or shooting, otherwise on the closest friendly unit in range that is",
 	self_shooting = "When armed, fires when this unit is shooting",
+	under_fire = "When armed, fires when this unit (or, for an aura, a friendly unit near it) is under missile fire",
+	melee_or_under_fire = "When armed, fires when this unit (or, for an aura, a friendly unit near it) is in melee or under missile fire",
 	melee_or_shooting_into_melee = "When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee",
 	ally_warmachine_heal = "When armed, fires on the lowest-health war machine ally in range that is at or below 75% health",
 	ally_hellforged_heal = "When armed, fires on the lowest-health Hell-Forged ally in range that is at or below 75% health",

@@ -26,6 +26,7 @@
 "wh2_dlc12_lord_abilities_drop_sphere_of_tepok",
 "wh2_dlc12_lord_abilities_master_of_the_skies",
 "wh2_dlc12_unit_abilities_drop_rocks_of_sundering",
+"wh2_dlc12_unit_abilities_shield_of_chaqua",
 "wh2_dlc13_character_abilities_patch_up",
 "wh2_dlc13_character_ability_ishas_rain",
 "wh2_dlc13_lord_abilities_hail_of_fire",
@@ -103,6 +104,8 @@
 "wh3_dlc24_character_abilities_fury_of_the_land",
 "wh3_dlc24_character_abilities_giant_leap",
 "wh3_dlc24_character_abilities_tacticians_stand_your_ground",
+"wh3_dlc24_item_abilities_blessed_helm_of_the_oblast",
+"wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch",
 "wh3_dlc24_lord_abilities_gulyas",
 "wh3_dlc24_unit_abilities_mark_of_yin",
 "wh3_dlc25_character_abilities_pigeon_bomb",
@@ -252,6 +255,6 @@
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 145,
+"logs_read": 146,
 "made": "2026-11-08"
 }
