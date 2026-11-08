@@ -131,3 +131,11 @@ main menu.
 user sets up a QA custom battle once and saves the armies (a few minutes); the QA build of the mod arms
 everything and orders the attack by itself; Claude reads the log and prints PASS / FAIL. If a later
 version of the desktop driver sends clicks the game accepts, Claude can take over the menus too.
+
+**Follow-up (2026-11-08): the answer is NO with the current tool.** Research found the likely cause.
+Claude's desktop driver (cua-driver 0.21.0) sends a plain click on a custom-drawn screen as a posted
+window message, and a game that reads the real mouse state never sees it. A modifier click was expected
+to go through real input instead (SendInput). Tested on the main menu and on the quit dialog: a
+shift-click was ignored as well. So Claude cannot click in Warhammer III today. The keyboard and
+screenshots work. The QA loop stays as agreed: the user builds and fights the QA battle, and Claude
+reads the log.
