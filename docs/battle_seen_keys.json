@@ -117,6 +117,7 @@
 "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch",
 "wh3_dlc24_lord_abilities_gulyas",
 "wh3_dlc24_unit_abilities_mark_of_yin",
+"wh3_dlc24_unit_bound_missile_mirror",
 "wh3_dlc25_character_abilities_pigeon_bomb",
 "wh3_dlc25_lord_abilities_darkwalker",
 "wh3_dlc25_lord_abilities_deranged_munitions",
@@ -193,6 +194,7 @@
 "wh3_main_daemon_head_abilities_call_for_power",
 "wh3_main_item_abilities_gruts_sickle",
 "wh3_main_item_abilities_potion_of_farsight",
+"wh3_main_item_abilities_void_pendulum",
 "wh3_main_lord_abilities_ballet_of_blows",
 "wh3_main_lord_abilities_deathbringer",
 "wh3_main_lord_abilities_deathbringer_upgraded",
@@ -271,6 +273,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 151,
+"logs_read": 152,
 "made": "2026-11-09"
 }
