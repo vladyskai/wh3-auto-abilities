@@ -104,3 +104,19 @@ Archived:
 
 - **The rest of the QA list:** battles 2 to 4 (Skaven, Warriors of Chaos, Cathay).
 - **Charge only:** has no skirmish carrier on the Empire side; battle 3 (Hellcannon) covers it.
+
+## 7. QA battle 2 (the round-139 build, the log read 2026-11-09)
+
+The same Empire army plus a Warrior Priest, against Beastmen. 294 s of battle; every first cast was ACCEPTED (the
+second attempt 2 s later is the usual "on cooldown" refusal while the ability runs).
+
+- **Stand Your Ground** (the new rule):
+  - at 119 s, the General in melee;
+  - at 213 s, about 3 s after its 90 s recharge ended, for a friendly unit 2.6 m away in melee.
+  - The first unit to waver (the Witch Hunter, 223 s) fell inside the second cast's 18 s window; the next chance (about
+    303 s) was after the battle ended.
+- **Charmed Shield:** under missile fire at 109 s and 249 s, in melee at 179 s.
+- **Slippery:** on a charge at 141 s (12.8 m, 3.8 s to contact).
+- **Already-proven triggers:** Runefang, Hammer of Sigmar, Shield of Faith, Soulfire, Scroll of Power, Accusation, Opal
+  Amulet and Foe-Seeker all fired on theirs.
+- **Nothing armed stayed silent** when its condition held.
