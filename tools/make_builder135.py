@@ -2,6 +2,7 @@
 """Build the round-135 build script from the round-134 one.
 
 Gates rebased: enemy_melee 3 -> 14, enemy_engaged_or_shot 85 -> 70 (3 gates).
+The order fix (2026-11-09): the installed pack is no longer removed before the gates.
 Adds two gates: the round-135 triggers and filters are wired (enemy_melee 14, enemy_fast_near_ally 4,
 enemy_engaged_or_shot 70, 15 target classes, the user's 5 m/s and 40 m), and BUILD REFUSED when the
 embedded large / single-entity tables differ from the game data (tools/gen_unit_size_keys.py)."""
@@ -27,6 +28,21 @@ assert _g135.lua_block(_l135, _s135) in script_txt, \
 print("ROUND 135 GATE OK: enemy_melee 14, enemy_fast_near_ally 4, 15 target classes; size tables match the game (%d large, %d single)" % (len(_l135), len(_s135)))
 '''
 RULES = [
+    # THE ORDER FIX (2026-11-09, after round 135): the installed pack is no longer deleted before the content
+    # gates run. Only the builder's own output is cleared early; the install step's copy overwrites the game's
+    # pack, so a refused build leaves the installed pack in place.
+    ("""for p in (OUT_PACK, GAME_PACK):
+    if os.path.exists(p):
+        os.remove(p)
+        print("removed stale:", p)
+""", """# THE ORDER FIX (2026-11-09): only the builder's OWN output is cleared here. The installed pack in the
+# game's data folder is never deleted: the INSTALL step at the very end overwrites it, after every gate has
+# passed, so a refused build leaves the game with the pack it had (round 135 lost it for minutes).
+if os.path.exists(OUT_PACK):
+    os.remove(OUT_PACK)
+    print("removed stale build output:", OUT_PACK)
+print("installed pack left in place until the INSTALL step:", os.path.exists(GAME_PACK))
+"""),
     ("script_txt.count('trigger = \"enemy_engaged_or_shot\"') == 85", "script_txt.count('trigger = \"enemy_engaged_or_shot\"') == 70"),
     ("assert script_txt.count('trigger = \"enemy_melee\"') == 3, \"enemy_melee is not 3 entries\"",
      "assert script_txt.count('trigger = \"enemy_melee\"') == 14, \"enemy_melee is not 14 entries\""),

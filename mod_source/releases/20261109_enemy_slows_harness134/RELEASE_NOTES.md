@@ -161,3 +161,23 @@ Archived:
   - missile units (Missile Mirror);
   - spellcasters (Void Pendulum, Word of Change).
 - **The builder's stale-pack removal** should move after the content gates.
+
+## 8. Addendum: the builder order fix (2026-11-09, after the round)
+
+- **The weakness:** the builder deleted the installed pack before its content gates ran, so a refused build left
+  the game with no mod pack (seen once in this round).
+- **The fix (in `tools\make_builder135.py`, regenerating `build_and_install135.py`):**
+  - only the builder's own output (`mod_source\dist\...pack`) is cleared early;
+  - the installed pack is overwritten by the INSTALL step at the very end, after every gate has passed;
+  - every later builder is cloned from this one, so the fix carries forward.
+- **The proof (`tools\make_refusal_probe135.py`, log `order_fix_refusal_probe_log.txt`):** a copy of the builder with
+  one gate deliberately broken, and its install step disabled, stopped with `AssertionError`. The installed pack md5
+  was `bc78b5c0e783294fcb8594a9104c317b` before and after.
+- **An accident during the proof, reported as it happened:**
+  - My first probe's text replacement did not match, so it ran as an exact copy of the fixed builder and installed
+    a fresh build.
+  - The new pack, `bc78b5c0e783294fcb8594a9104c317b`, has the same size as `79c8ffb8`. It differs from it in 2 bytes
+    only (offsets 25-26, the pack header's timestamp), and all five files inside match the source (`MATCHES SOURCE:
+    True` x5, `IDENTICAL True`).
+  - It is archived as `archive\packs\zz_test_deadly_onslaught_20261109_round135_orderfix.pack`.
+  - Lesson: RPFM builds are not byte-reproducible, so compare contents, not the pack md5.

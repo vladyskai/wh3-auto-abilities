@@ -457,10 +457,13 @@ assert not _hits, (
 print("ARMY-BAR GATE OK: %d ABILITIES keys, none of them in the %d-key army_spec junction"
       % (len(_mod_keys), len(_army)))
 
-for p in (OUT_PACK, GAME_PACK):
-    if os.path.exists(p):
-        os.remove(p)
-        print("removed stale:", p)
+# THE ORDER FIX (2026-11-09): only the builder's OWN output is cleared here. The installed pack in the
+# game's data folder is never deleted: the INSTALL step at the very end overwrites it, after every gate has
+# passed, so a refused build leaves the game with the pack it had (round 135 lost it for minutes).
+if os.path.exists(OUT_PACK):
+    os.remove(OUT_PACK)
+    print("removed stale build output:", OUT_PACK)
+print("installed pack left in place until the INSTALL step:", os.path.exists(GAME_PACK))
 
 hashes = {}
 for _src, _in_pack in FILES:
