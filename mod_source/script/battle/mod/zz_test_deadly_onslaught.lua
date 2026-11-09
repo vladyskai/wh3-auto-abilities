@@ -1402,9 +1402,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_boom",
 		keys = { "wh_main_unit_abilities_boom" },
 		ox = 0, oy = 0 },
-	{ marker = "call_of_violence", name = "Call of Violence", trigger = "melee_unwavering",
+	{ marker = "call_of_violence", name = "Call of Violence", trigger = "wavering_aura",
 		badge = "zz_auto_badge_call_of_violence",
 		keys = { "wh_dlc03_character_abilities_call_of_violence" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "cascading_fire_cloak", name = "Cascading Fire Cloak", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_cascading_fire_cloak",
@@ -1423,13 +1424,15 @@ local ABILITIES = {
 		badge = "zz_auto_badge_charmed_shield",
 		keys = { "wh_main_weapon_abilities_charmed_shield" },
 		ox = 0, oy = 0 },
-	{ marker = "cold_blooded", name = "Cold-Blooded", trigger = "melee_unwavering",
+	{ marker = "cold_blooded", name = "Cold-Blooded", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_cold_blooded",
 		keys = { "wh2_main_character_abilities_cold_blooded" },
+		ally_range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "crown_of_command", name = "Crown of Command", trigger = "melee_unwavering",
+	{ marker = "crown_of_command", name = "Crown of Command", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_crown_of_command",
 		keys = { "wh_main_item_abilities_crown_of_command" },
+		ally_range_real = 100,
 		ox = 0, oy = 0 },
 	{ marker = "cube_of_darkness", name = "Cube of Darkness", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_cube_of_darkness",
@@ -1472,9 +1475,10 @@ local ABILITIES = {
 			"wh_dlc08_spell_bound_death_doom_and_darkness" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "doom_lord", name = "Doom Lord", trigger = "melee_unwavering",
+	{ marker = "doom_lord", name = "Doom Lord", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_doom_lord",
 		keys = { "wh3_dlc29_lord_abilities_doom_lord" },
+		ally_range_real = 200,
 		ox = 0, oy = 0 },
 	{ marker = "earthing_rod", name = "Earthing Rod", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_earthing_rod",
@@ -1602,9 +1606,10 @@ local ABILITIES = {
 		keys = { "wh3_dlc25_character_abilities_get_em" },
 		range_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "get_back_ere", name = "Get Back 'Ere!", trigger = "melee_unwavering",
+	{ marker = "get_back_ere", name = "Get Back 'Ere!", trigger = "wavering_aura",
 		badge = "zz_auto_badge_get_back_ere",
 		keys = { "wh_main_character_abilities_get_back_ere" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "soulnetter", name = "Gilellion's Soulnetter", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_soulnetter",
@@ -1760,9 +1765,10 @@ local ABILITIES = {
 		keys = { "wh2_dlc15_lord_abilities_lord_of_dragons" },
 		range_real = 75,
 		ox = 0, oy = 0 },
-	{ marker = "magical_animus", name = "Magical Animus", trigger = "melee_unwavering",
+	{ marker = "magical_animus", name = "Magical Animus", trigger = "wavering_aura",
 		badge = "zz_auto_badge_magical_animus",
 		keys = { "wh_main_character_abilities_magical_animus" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "mark_of_the_plague_fleet", name = "Mark of the Plague Fleet", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_mark_of_the_plague_fleet",
@@ -1822,7 +1828,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_mighty_roar",
 		keys = { "wh2_dlc15_unit_abilities_mighty_roar" },
 		ox = 0, oy = 0 },
-	{ marker = "mimic_cold_blooded", name = "Mirror (Cold-Blooded)", trigger = "melee_unwavering",
+	{ marker = "mimic_cold_blooded", name = "Mirror (Cold-Blooded)", trigger = "wavering_aura",
 		badge = "zz_auto_badge_mimic_cold_blooded",
 		keys = { "wh2_dlc15_unit_abilities_mimic_cold_blooded" },
 		ox = 0, oy = 0 },
@@ -1901,9 +1907,10 @@ local ABILITIES = {
 		keys = { "wh2_dlc16_character_abilities_pageant_of_shrikes" },
 		range_real = 75,
 		ox = 0, oy = 0 },
-	{ marker = "pearl_of_infinite_bleakness", name = "Pearl of Infinite Bleakness", trigger = "melee_unwavering",
+	{ marker = "pearl_of_infinite_bleakness", name = "Pearl of Infinite Bleakness", trigger = "wavering_aura",
 		badge = "zz_auto_badge_pearl_of_infinite_bleakness",
 		keys = { "wh2_main_item_abilities_pearl_of_infinite_bleakness" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "pestilent_potions", name = "Pestilent Potions", trigger = "enemy_melee",
 		badge = "zz_auto_badge_pestilent_potions",
@@ -1914,9 +1921,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_phas_protection",
 		keys = { "wh3_main_spell_bound_phas_protection" },
 		ox = 0, oy = 0 },
-	{ marker = "pilgrimage_of_skulls", name = "Pilgrimage of Skulls", trigger = "melee_unwavering",
+	{ marker = "pilgrimage_of_skulls", name = "Pilgrimage of Skulls", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_pilgrimage_of_skulls",
 		keys = { "wh3_dlc26_lord_abilities_pilgrimage_of_skulls" },
+		ally_range_real = 100,
 		ox = 0, oy = 0 },
 	{ marker = "plague_of_rust", name = "Plague of Rust", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_plague_of_rust",
@@ -1971,9 +1979,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_prismatic_amplifier",
 		keys = { "wh3_main_item_abilities_prismatic_amplifier" },
 		ox = 0, oy = 0 },
-	{ marker = "rally", name = "Rally!", trigger = "melee_unwavering",
+	{ marker = "rally", name = "Rally!", trigger = "wavering_aura",
 		badge = "zz_auto_badge_rally",
 		keys = { "wh_main_character_abilities_rally" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "dispatch_the_swarm_attack", name = "Ravaging Swarm", trigger = "enemy_melee",
 		badge = "zz_auto_badge_dispatch_the_swarm_attack",
@@ -1985,13 +1994,15 @@ local ABILITIES = {
 		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded" },
 		range_real = 30,
 		ox = 0, oy = 0 },
-	{ marker = "tomb_king_rally", name = "Reanimate", trigger = "melee_unwavering",
+	{ marker = "tomb_king_rally", name = "Reanimate", trigger = "wavering_aura",
 		badge = "zz_auto_badge_tomb_king_rally",
 		keys = { "wh2_dlc09_character_abilities_tomb_king_rally" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "tomb_king_rally_upgraded", name = "Reanimate Upgraded", trigger = "melee_unwavering",
+	{ marker = "tomb_king_rally_upgraded", name = "Reanimate Upgraded", trigger = "wavering_aura",
 		badge = "zz_auto_badge_tomb_king_rally_upgraded",
 		keys = { "wh2_dlc09_character_abilities_tomb_king_rally_upgraded" },
+		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "red_fury", name = "Red Fury", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_red_fury",
@@ -2127,9 +2138,10 @@ local ABILITIES = {
 		keys = { "wh3_dlc25_weapon_abilities_sword_of_filth" },
 		range_real = 35,
 		ox = 0, oy = 0 },
-	{ marker = "tacticians_rally", name = "Tacticians, Rally!", trigger = "melee_unwavering",
+	{ marker = "tacticians_rally", name = "Tacticians, Rally!", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_tacticians_rally",
 		keys = { "wh3_dlc24_character_abilities_tacticians_rally" },
+		ally_range_real = 100,
 		ox = 0, oy = 0 },
 	{ marker = "taunt", name = "Taunt", trigger = "enemy_melee",
 		badge = "zz_auto_badge_taunt",
@@ -2278,9 +2290,10 @@ local ABILITIES = {
 		badge = "zz_auto_badge_undeath_resurgent",
 		keys = { "wh_main_character_abilities_undeath_resurgent" },
 		ox = 0, oy = 0 },
-	{ marker = "unholy_clamour", name = "Unholy Clamour", trigger = "melee_unwavering",
+	{ marker = "unholy_clamour", name = "Unholy Clamour", trigger = "wavering_aura",
 		badge = "zz_auto_badge_unholy_clamour",
 		keys = { "wh2_main_mount_abilities_unholy_clamour" },
+		aura_real = -1,
 		ox = 0, oy = 0 },
 	{ marker = "unlimited_power", name = "Unlimited Power!", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_unlimited_power",
@@ -15321,6 +15334,60 @@ function FOURTH.evaluate_enemy_fast_near_ally(unit, routing)
 		(gap ~= nil) and string.format("%.1f", gap) or "?", tostring(FOURTH.eg_range_m))
 end
 
+-- ============================================================================
+-- ROUND 137 - AUDIT BATCH 6: MORALE (user rulings 2026-11-09).
+--   wavering_aura (NEW): the caster is wavering, or a friendly unit inside the
+--     aura's 70% bound is wavering (aura_real -1 = the whole army; no aura_real
+--     = the caster only); cast on the caster. The morale read is FOURTH.wavering
+--     (is_wavering()); only an exact true counts, so an unreadable morale never
+--     fires. A routing ally is not counted (its morale is already gone).
+--   wavering_ally_range gains Crown of Command, Doom Lord, Cold-Blooded,
+--     Pilgrimage of Skulls and Tacticians, Rally! (cast on the wavering ally).
+-- ============================================================================
+
+-- the closest OTHER friendly unit (alive, not routing) that is wavering and lies
+-- inside the current entry's aura bound; a negative bound = the whole army; nil
+-- bound = nobody (a self-only effect). An unreadable distance counts only for
+-- the whole-army aura.
+function FOURTH.wavering_ally_in_aura(unit)
+	local bound = FOURTH.fa_bound_m
+	if bound == nil or tracked_units == nil then return nil, nil end
+	local self_id = tostring(unit:unique_ui_id())
+	local best, best_gap = nil, nil
+	for i = 1, #tracked_units do
+		local other = tracked_units[i] and tracked_units[i].unit
+		if other ~= nil and other ~= unit then
+			local ok_m, men = pcall(function() return other:number_of_men_alive() end)
+			local ok_i, oid = pcall(function() return tostring(other:unique_ui_id()) end)
+			if ok_m and type(men) == "number" and men > 0 and ok_i and oid ~= self_id
+				and not unit_is_routing(other) and FOURTH.wavering(other) == true then
+				local gap = FOURTH.ab_ally_gap(unit, other)
+				if bound < 0 and gap == nil then gap = 0 end
+				if gap ~= nil and (bound < 0 or gap <= bound) and (best_gap == nil or gap < best_gap) then
+					best, best_gap = other, gap
+				end
+			end
+		end
+	end
+	return best, best_gap
+end
+
+function FOURTH.evaluate_wavering_aura(unit, routing)
+	if routing then return nil end
+	if FOURTH.wavering(unit) == true then
+		return "wavering aura: the caster is wavering, cast centred on the caster"
+	end
+	local ally, gap = FOURTH.wavering_ally_in_aura(unit)
+	if ally == nil then return nil end
+	local atype = "ally"
+	pcall(function() atype = tostring(ally:type()) end)
+	if FOURTH.fa_bound_m < 0 then
+		return "wavering aura: a friendly unit (" .. atype .. ") is wavering, the whole army is covered - cast centred on the caster"
+	end
+	return string.format("wavering aura: a friendly unit (%s) %.1fm away is wavering (bound %dm), cast centred on the caster",
+		atype, gap, FOURTH.fa_bound_m)
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -15396,6 +15463,8 @@ FOURTH.evaluators = {
 	melee_or_under_fire = FOURTH.evaluate_melee_or_under_fire,
 	-- ROUND 135
 	enemy_fast_near_ally = FOURTH.evaluate_enemy_fast_near_ally,
+	-- ROUND 137
+	wavering_aura = FOURTH.evaluate_wavering_aura,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -15469,6 +15538,7 @@ FOURTH.TRIGGER_TIP = {
 	under_fire = "When armed, fires when this unit (or, for an aura, a friendly unit near it) is under missile fire",
 	melee_or_under_fire = "When armed, fires when this unit (or, for an aura, a friendly unit near it) is in melee or under missile fire",
 	enemy_fast_near_ally = "When armed, fires on a fast enemy unit moving close to your units",
+	wavering_aura = "When armed, fires when this unit or a friendly unit near it is wavering",
 	melee_or_shooting_into_melee = "When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee",
 	ally_warmachine_heal = "When armed, fires on the lowest-health war machine ally in range that is at or below 75% health",
 	ally_hellforged_heal = "When armed, fires on the lowest-health Hell-Forged ally in range that is at or below 75% health",

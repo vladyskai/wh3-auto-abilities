@@ -4279,7 +4279,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Disdain of the Dragon Emperor `wh3_dlc24_unit_abilities_disdain_of_the_dragon_emperor` | rejected (auto: mutual exclusivity) | melee_self | When in melee (and not fleeing): cast on self. | cd 30s · -1s · self · questionnaire §2 #50 · user reason: mutual exclusivity (player decides) |
 | Dolorous Blade `wh_dlc07_hero_abilities_dolorous_blade` | implemented (in-melee self) | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 33s · self · questionnaire §2 #51 |
 | Doom Glaive `wh3_dlc29_item_abilities_doom_glaive` | `implemented (in-melee self - auto, trivial)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 27s · self · ×3 uses · questionnaire §2 #239 |
-| Doom Lord `wh3_dlc29_lord_abilities_doom_lord` | `implemented (in-melee self)` | melee_self | When in melee: cast on self for now (nearest-ally picker later). | cd 120s · 40s · friend · wind-up 1s · questionnaire §2 #394 |
+| Doom Lord `wh3_dlc29_lord_abilities_doom_lord` | `implemented (morale: cast on the wavering ally: wavering_ally_range)` | ally_unit | When armed, fires on the closest wavering friendly unit in range: cast on that ally. | cd 120s · 40s · friend · wind-up 1s · questionnaire §2 #394 · **round 137 (2026-11-09):** audit batch 6: user ruling "On the wavering ally". The rampage arm was dropped: no battle read exists for a rampaging unit. |
 | Dragon Spear `wh2_dlc16_weapon_abilities_dragon_spear` | implemented (in-melee self) | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 25s · self · questionnaire §2 #52 |
 | Dragonhorn `wh2_dlc15_lord_abilities_dragonhorn` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 16s · self · ×3 uses · wind-up 6s · questionnaire §2 #299 |
 | Dreaded Duellist `wh2_dlc11_lord_abilities_dreaded_duelist` | implemented (in-melee self) | melee_self | When in melee (and not fleeing): cast on self. | cd 60s · 22s · self · questionnaire §2 #53 |
@@ -4432,7 +4432,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Pendant of Slaanesh `wh_main_item_abilities_pendant_of_slaanesh` | `implemented (charge, else in melee: charge_or_melee)` | self | When armed, fires in the charge window, else in melee: cast on self. | cd 60s · 25s · self · questionnaire §2 #128 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge, else in melee". |
 | Pestilens Clanstone `wh2_main_army_abilities_pestilens_clanstone` | `skipped (army-bar ability)` | melee_self | When in melee: cast at own feet (existing ground-cast path). | cd 120s · 75s · ground · ×3 uses · army · questionnaire §2 #341 |
 | Pha's Protection `wh3_main_spell_bound_phas_protection` | `implemented (in-melee self)` | melee_self | When in melee: cast on self for now (nearest-ally picker later). | cd 60s · 22s · friend · ×2 uses · wind-up 1s · bound · questionnaire §2 #409 |
-| Pilgrimage of Skulls `wh3_dlc26_lord_abilities_pilgrimage_of_skulls` | `implemented (in-melee self)` | melee_self | When in melee: cast on self for now (nearest-ally picker later). | cd 120s · 21s · friend · questionnaire §2 #374 |
+| Pilgrimage of Skulls `wh3_dlc26_lord_abilities_pilgrimage_of_skulls` | `implemented (morale: cast on the wavering ally: wavering_ally_range)` | ally_unit | When armed, fires on the closest wavering friendly unit in range: cast on that ally. | cd 120s · 21s · friend · questionnaire §2 #374 · **round 137 (2026-11-09):** audit batch 6: user ruling "On the wavering ally". The game forbids targeting the caster, so it is cast on the wavering ally. |
 | Plaguefather's Oration `wh3_main_lord_abilities_plaguefathers_oration` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 26s · self · questionnaire §2 #129 |
 | Potion of Strength `wh_main_item_abilities_potion_of_strength` | `implemented (in-melee self - auto, trivial)` | melee_self | When in melee (and not fleeing): cast on self. | cd 60s · 33s · self · ×1 uses · questionnaire §2 #248 |
 | Potion of Toughness `wh_main_item_abilities_potion_of_toughness` | `implemented (melee_health75)` | melee_self | When in melee (and not fleeing): cast on self. | cd 60s · 21s · self · ×1 uses · questionnaire §2 #249 |
@@ -4742,28 +4742,28 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | All Hands Hoay! `wh2_dlc11_character_abilities_all_hands_hoay` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 90s · 20s · self |
 | Avast Ye! `wh2_dlc11_character_abilities_avast_ye` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
 | Axe of Men `wh_dlc03_weapon_abilities_axe_of_men` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 120s · 46s · self |
-| Call of Violence `wh_dlc03_character_abilities_call_of_violence` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
-| Cold-Blooded `wh2_main_character_abilities_cold_blooded` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast on the wavering friendly unit. | cd 60s · 40s · friend |
-| Crown of Command `wh_main_item_abilities_crown_of_command` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast on the wavering friendly unit. | cd 90s · 30s · friend |
+| Call of Violence `wh_dlc03_character_abilities_call_of_violence` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 14s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
+| Cold-Blooded `wh2_main_character_abilities_cold_blooded` | `implemented (morale: cast on the wavering ally: wavering_ally_range)` | ally_unit | When armed, fires on the closest wavering friendly unit in range: cast on that ally. | cd 60s · 40s · friend · **round 137 (2026-11-09):** audit batch 6: user ruling "On the wavering ally". The rampage arm was dropped: no battle read exists for a rampaging unit. |
+| Crown of Command `wh_main_item_abilities_crown_of_command` | `implemented (morale: cast on the wavering ally: wavering_ally_range)` | ally_unit | When armed, fires on the closest wavering friendly unit in range: cast on that ally. | cd 90s · 30s · friend · **round 137 (2026-11-09):** audit batch 6: user ruling "On the wavering ally". |
 | Daemonic Whispers `wh3_dlc27_character_abilities_slezuzus_voice` | `implemented (ally-targeted: ally_melee_buff)` | ally_unit | Cast on the chosen ALLY (trigger `ally_melee_buff`; class gate: plain ally buff (owner in melee) - ruled + requested MID-FLIGHT this round); trigger range = 140 m = 70% of the real 200 m. | cd 120s · 26s · friend · character · **round 98 (Class B): NEEDS A RULING** - the audit note itself says 'flag for the user'. · **round 99 (target-class-gated):** casts ON THE CHOSEN ALLY of the required class (plain ally buff (owner in melee) - ruled + requested MID-FLIGHT this round) - the offer test is `unit:unit_distance(ally)` <= its own 70% bound = floor(200 * 0.70) = 140 m (`FOURTH.ALLY_CAST_R200`) ONLY, never the engine's `unit_in_range`; fresh caster+ally handles. Was a self-cast. |
 | Fight or Die! `wh_dlc08_lord_abilities_fight_or_die` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 90s · 18s · self |
 | Focus Instincts `wh2_dlc12_lord_abilities_focus_instincts` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 90s · 40s · self |
-| Get Back 'Ere! `wh_main_character_abilities_get_back_ere` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
+| Get Back 'Ere! `wh_main_character_abilities_get_back_ere` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 14s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
 | Iron-Handed Captain `wh3_dlc27_character_abilities_iron_hand_captain` | `implemented (ally-targeted: ally_broken)` | ally_unit | Cast on the chosen ALLY (trigger `ally_broken`; class gate: morale-BROKEN target (MoraleState == "broken")); trigger range = 140 m = 70% of the real 200 m. | cd 120s · 42s · friend · **round 98 (Class B): NEEDS A RULING** - needs a 'morale at or below broken' target gate (no existing ally family). · **round 99 (target-class-gated):** casts ON THE CHOSEN ALLY of the required class (morale-BROKEN target (MoraleState == "broken")) - the offer test is `unit:unit_distance(ally)` <= its own 70% bound = floor(200 * 0.70) = 140 m (`FOURTH.ALLY_CAST_R200`) ONLY, never the engine's `unit_in_range`; fresh caster+ally handles. Was a self-cast. |
-| Magical Animus `wh_main_character_abilities_magical_animus` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
+| Magical Animus `wh_main_character_abilities_magical_animus` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 14s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
 | Mighty Oath Stone `wh_dlc06_lord_abilities_mighty_oath_stone` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 90s · 25s · self |
-| Mirror (Cold-Blooded) `wh2_dlc15_unit_abilities_mimic_cold_blooded` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 40s · self · ×2 uses |
+| Mirror (Cold-Blooded) `wh2_dlc15_unit_abilities_mimic_cold_blooded` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 40s · self · ×2 uses · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". Self only (the effect reaches no ally). |
 | Moonshine `wh2_dlc11_item_abilities_moonshine` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 15s · self · ×1 uses |
-| Pearl of Infinite Bleakness `wh2_main_item_abilities_pearl_of_infinite_bleakness` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 44s · self |
+| Pearl of Infinite Bleakness `wh2_main_item_abilities_pearl_of_infinite_bleakness` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 44s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
 | Potion of Foolhardiness `wh_main_item_abilities_potion_of_foolhardiness` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 31s · self · ×1 uses |
 | Preyton Horns `wh3_dlc27_item_abilities_preyton_horns` | `excluded (impossible: no enemy-unit read)` | morale | When morale falls to wavering: cast. | cd 90s · 24s · enemy unit · bound |
-| Rally! `wh_main_character_abilities_rally` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
-| Reanimate `wh2_dlc09_character_abilities_tomb_king_rally` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 14s · self |
-| Reanimate Upgraded `wh2_dlc09_character_abilities_tomb_king_rally_upgraded` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 90s · 10s · self |
+| Rally! `wh_main_character_abilities_rally` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 14s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
+| Reanimate `wh2_dlc09_character_abilities_tomb_king_rally` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 60s · 14s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
+| Reanimate Upgraded `wh2_dlc09_character_abilities_tomb_king_rally_upgraded` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 90s · 10s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". |
 | Shock Collar `wh2_dlc16_hero_abilities_shock_collar` | `implemented (ally-targeted: ally_wavering)` | ally_unit | When morale falls to wavering: cast on the wavering friendly unit. | cd 60s · 24s · friend · **round 98 (Class B):** casts ON THE CHOSEN ALLY - ally wavering - the CLOSEST WAVERING ally in range; own 70% bound = floor(100 * 0.70) = 70 m (FOURTH.ALLY_CAST_R100), offer test on unit:unit_distance only, fresh caster+ally handles. Was a self-cast |
-| Tacticians, Rally! `wh3_dlc24_character_abilities_tacticians_rally` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast on the wavering friendly unit. | cd 60s · 14s · friend/self |
+| Tacticians, Rally! `wh3_dlc24_character_abilities_tacticians_rally` | `implemented (morale: cast on the wavering ally: wavering_ally_range)` | ally_unit | When armed, fires on the closest wavering friendly unit in range: cast on that ally. | cd 60s · 14s · friend/self · **round 137 (2026-11-09):** audit batch 6: user ruling "On the wavering ally". The game forbids targeting the caster, so it is cast on the wavering ally. |
 | The Wintertooth Crown `wh_dlc08_item_abilities_the_wintertooth_crown` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 120s · 24s · self |
-| Unholy Clamour `wh2_main_mount_abilities_unholy_clamour` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 120s · 18s · self |
+| Unholy Clamour `wh2_main_mount_abilities_unholy_clamour` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 120s · 18s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". The aura covers the whole army. |
 | Ursun's Mighty Roar `wh3_main_pro_character_abilities_ursuns_roar_2` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 30s · self |
 | Ursun's Roar `wh3_main_character_abilities_ursuns_roar` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 9s · self |
 | Ursun's Roar `wh3_main_pro_character_abilities_ursuns_roar` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 20s · self |
@@ -7255,3 +7255,30 @@ existing detector: running, an attack target 12 to 60 m away, impact within 4 s.
 - **Tests:** harness 135 full suite **5,901 checks / 0 failures**, run twice byte-identical. RED on the
   round-135 build: 10/10.
 - **Install:** pack md5 `104c049b22f675b1487f425eeb7fdb2e`.
+
+### 10.18 Round 137 - audit batch 6: morale (2026-11-09)
+
+**Rulings (2026-11-09).**
+
+- **Morale-only auras, "Self or ally wavering":** Call of Violence, Get Back 'Ere!, Magical Animus, Rally!,
+  Reanimate (both), Pearl of Infinite Bleakness, Unholy Clamour (whole army), Mirror (Cold-Blooded) (self only).
+- **"On the wavering ally":** Crown of Command, Doom Lord, Cold-Blooded; and Tacticians, Rally! and Pilgrimage of
+  Skulls (the game forbids targeting the caster).
+- **Rampage:** the user asked that an ability which removes Rampage also fire on a rampaging ally. No battle read for
+  rampage exists, so the user chose to drop that arm.
+- **Kept:**
+  - morale plus a combat stat (Change or Die!, Rot or Die!, Scrying Stone, Shield of the Old Ones, The Liber Mortis,
+    Axe of Men), "Keep in melee";
+  - the five on dedicated triggers (Ghoul King of Ushoran, Gulyas, Purge the Weak!, Daemonic Whispers, Verminous
+    Fury).
+- **Vigour:** *"the vigor buff is many times secondary to the other buffs. We should go one by one and decide what is
+  more important."* "Tired or worse" is the line. The 27 vigour restorers are listed in the trigger audit as R8.
+
+**New family.** `wavering_aura` (9).
+
+**Arithmetic.**
+
+- **Rows:** implemented 750 / 373 not implemented, unchanged.
+- **The mod:** 698 entries / 750 keys / 58 families; melee_unwavering 328 -> 314, wavering_ally_range 1 -> 6.
+- **Tests:** harness 136 full suite **5,948 checks / 0 failures**, run twice byte-identical. RED 6/6.
+- **Install:** pack md5 `c719e140ddff4f0525889c1388bb3fd8`.

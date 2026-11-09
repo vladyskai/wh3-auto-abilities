@@ -49,8 +49,20 @@ RULED = {"R4": {
     "book_of_secrets": "round 135: 'Keep as is' (no target filter in the game data)",
     "mark_of_the_monster": "round 135: 'Keep as is' (large single-entity filter)",
 }}
+RULED["R6"] = {m: "round 137: kept (%s)" % why for m, why in (
+    ("change_or_die", "morale plus a combat stat, 'Keep in melee'"),
+    ("rot_or_die", "morale plus a combat stat, 'Keep in melee'"),
+    ("scrying_stone", "morale plus a combat stat, 'Keep in melee'"),
+    ("shield_of_the_old_ones", "morale plus a combat stat, 'Keep in melee'"),
+    ("the_liber_mortis", "morale plus a combat stat, 'Keep in melee'"),
+    ("axe_of_men", "morale plus a combat stat, 'Keep in melee'"),
+    ("ghoul_king_of_ushoran", "dedicated trigger, 'Keep all 5 for now'"),
+    ("gulyas", "dedicated trigger, 'Keep all 5 for now'"),
+    ("purge_the_weak", "dedicated trigger, 'Keep all 5 for now'"),
+    ("slezuzus_voice", "dedicated trigger, 'Keep all 5 for now'"),
+    ("verminous_fury", "dedicated trigger, 'Keep all 5 for now'"))}
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
-               "charge_or_wavering", "ally_broken", "verminking_wavering"}
+               "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura"}
 
 STAT = re.compile(r"([A-Z][A-Za-z\- .'/]+?):\s*([+\-][0-9.]+%?)")
 MISSILE_UP = re.compile(r"^(Base Missile Damage|Armour-Piercing Missile Damage|Reload Skill|Accuracy|Range|"
@@ -98,7 +110,11 @@ def main():
             flags["R5"].append(row)
         morale = ("Leadership" in pos or "Unbreakable (positive)" in eff or "Immune to Psychology" in eff)
         if morale and not to_enemy and trig not in MORALE_TRIG and not melee_up and not miss_up:
-            flags["R6"].append(row)
+            flags["R6" + ("_ruled" if e["marker"] in RULED["R6"] else "")].append(row)
+        # R8 (round 137): a vigour restorer (Fatigue minus, to self or allies) not on a fatigue trigger -
+        # the user's one-by-one review ("the vigor buff is many times secondary to the other buffs")
+        if re.search(r"Fatigue:\s*-", eff or "") and not to_enemy and trig != "tired":
+            flags["R8"].append(row)
         if any(SPEED.match(n) for n in pos) and not to_enemy and trig in MELEE_ONLY_TRIG:
             flags["R7"].append(row)
 
@@ -110,6 +126,7 @@ def main():
         "R5": "R5. Protection against shots on a melee-only trigger",
         "R6": "R6. Morale effects on a trigger with no morale read",
         "R7": "R7. Speed buffs on the unit itself on a melee-only trigger",
+        "R8": "R8. Vigour restorers not on a fatigue trigger (the user's one-by-one review)",
     }
     L = ["# Trigger audit, %s" % datetime.date.today().isoformat(), "",
          "Every automated ability (%d entries) checked against the rules below by `tools/audit_triggers.py`. "

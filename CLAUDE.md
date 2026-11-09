@@ -15,9 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `104c049b22f675b1487f425eeb7fdb2e`, 1,313,294 bytes
-  (round 136, 2026-11-09, audit batch 5: the melee hexes need the enemy in melee; the immobilisers on
-  the fast-enemy trigger). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c719e140ddff4f0525889c1388bb3fd8`, 1,316,389 bytes
+  (round 137, 2026-11-09, audit batch 6: the morale abilities fire on wavering). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -141,8 +140,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 136): 698 ABILITIES entries / 750 ability keys / 57 trigger evaluator families.
-Wheel audit (workbook v28): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 750 implemented,
+Current roster (round 137): 698 ABILITIES entries / 750 ability keys / 58 trigger evaluator families.
+Wheel audit (workbook v29): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 750 implemented,
 373 not implemented among the included (24 of them skipped by user decision).
 
 ## 3. BUILD AND INSTALL
@@ -152,7 +151,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261109_melee_hexes_harness135/build_and_install136.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261109_morale_harness136/build_and_install137.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +181,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness135: 5,901 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness136: 5,948 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -245,6 +244,9 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   are ignored (plain and SendInput modifier clicks). The user builds and fights the QA battle.
 - Inline Python in a bash heredoc turns Windows paths like `ound132` into escape characters. Put any
   generator with Windows paths in a FILE with raw strings (it broke the round-133 builder once).
+- No battle read exists for a RAMPAGING unit (round 137: the user dropped the rampage arm for that reason).
+- Vigour (user, 2026-11-09): a vigour restorer is reviewed ONE BY ONE ("the vigor buff is many times secondary");
+  "Tired or worse" (fatigue_state) is the line. The trigger audit lists them as R8.
 - The mock's under-fire read is `def.missile` (a later definition overrides `def.in_range`).
 - The mock engine accepts every repeat cast (no cooldown refusal): a world that counts casts must
   stop inside the 2 s guard after the first one.
@@ -263,7 +265,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v28_2026-11-09.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v28.py`, verified by `tools\verify_xlsx_v28.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v29_2026-11-09.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v29.py`, verified by `tools\verify_xlsx_v29.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
