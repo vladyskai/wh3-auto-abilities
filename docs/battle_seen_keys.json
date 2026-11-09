@@ -22,6 +22,7 @@
 "wh2_dlc11_lord_abilities_mananns_luck",
 "wh2_dlc11_lord_abilities_seduction",
 "wh2_dlc11_lord_abilities_song_of_enthrallment",
+"wh2_dlc11_lord_abilities_transfix",
 "wh2_dlc11_lord_abilities_wraith_storm",
 "wh2_dlc12_lord_abilities_drop_sphere_of_tepok",
 "wh2_dlc12_lord_abilities_master_of_the_skies",
@@ -55,6 +56,7 @@
 "wh2_dlc16_hero_abilities_evisceration",
 "wh2_dlc16_hero_abilities_shock_collar",
 "wh2_dlc16_item_abilities_berry_wine",
+"wh2_dlc16_item_abilities_twilight_horn_i",
 "wh2_dlc16_lord_abilities_remouldered",
 "wh2_dlc16_spell_bound_death_frenzy",
 "wh2_dlc16_unit_abilities_fluid_injection",
@@ -64,6 +66,7 @@
 "wh2_dlc17_character_abilities_hunter_of_champions_upgraded",
 "wh2_dlc17_hero_abilities_more_powder_generic",
 "wh2_dlc17_lord_abilities_brass_body",
+"wh2_dlc17_rune_abilities_rune_of_speed",
 "wh2_main_character_abilities_witchbrew",
 "wh2_main_item_abilities_aura_of_quetzl",
 "wh2_main_item_abilities_blade_of_bel_korhadris",
@@ -230,6 +233,7 @@
 "wh_main_item_abilities_opal_amulet",
 "wh_main_item_abilities_pendant_of_slaanesh",
 "wh_main_item_abilities_potion_of_healing",
+"wh_main_item_abilities_potion_of_speed",
 "wh_main_item_abilities_potion_of_strength",
 "wh_main_item_abilities_potion_of_toughness",
 "wh_main_item_abilities_power_stone",
@@ -253,8 +257,9 @@
 "wh_main_weapon_abilities_tormentor_sword",
 "wh_pro01_lord_abilities_flash_bomb",
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
+"wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 146,
-"made": "2026-11-08"
+"logs_read": 147,
+"made": "2026-11-09"
 }
