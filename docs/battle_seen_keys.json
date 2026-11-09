@@ -22,6 +22,7 @@
 "wh2_dlc11_lord_abilities_mananns_luck",
 "wh2_dlc11_lord_abilities_seduction",
 "wh2_dlc11_lord_abilities_song_of_enthrallment",
+"wh2_dlc11_lord_abilities_spearfishers_net",
 "wh2_dlc11_lord_abilities_transfix",
 "wh2_dlc11_lord_abilities_wraith_storm",
 "wh2_dlc12_lord_abilities_drop_sphere_of_tepok",
@@ -75,6 +76,7 @@
 "wh2_main_item_abilities_rival_hide_talisman",
 "wh2_main_item_abilities_scrying_stone",
 "wh2_main_lord_abilities_feint_and_reposte",
+"wh2_main_lord_abilities_trophy_heads",
 "wh2_main_spell_bound_the_seerstaff_of_saphery",
 "wh2_main_unit_abilities_drop_rocks",
 "wh2_main_unit_abilities_fury_of_khaine",
@@ -195,6 +197,7 @@
 "wh3_main_lord_abilities_everyone_has_their_price",
 "wh3_main_lord_abilities_eye_of_the_storm",
 "wh3_main_lord_abilities_fury_of_ursun",
+"wh3_main_lord_abilities_gaze_of_fate",
 "wh3_main_lord_abilities_inspired_marksmanship_i",
 "wh3_main_lord_abilities_nurgling_tide",
 "wh3_main_lord_abilities_oracle_of_eternity",
@@ -265,6 +268,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 148,
+"logs_read": 150,
 "made": "2026-11-09"
 }

@@ -6,7 +6,7 @@ Every automated ability (698 entries) checked against the rules below by `tools/
 |---|---:|
 | R1. Shooting-only buffs on a trigger with no shooting arm | 0 |
 | R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these) | 0 |
-| R3. Melee-only debuffs on a trigger with a missile arm (rule 10) | 23 |
+| R3. Melee-only debuffs on a trigger with a missile arm (rule 10) | 0 |
 | R4. Enemy slows on a trigger that is neither melee nor charge (rule 10) | 0 |
 | R5. Protection against shots on a melee-only trigger | 0 |
 | R6. Morale effects on a trigger with no morale read | 25 |
@@ -22,31 +22,7 @@ None.
 
 ## R3. Melee-only debuffs on a trigger with a missile arm (rule 10)
 
-| Ability | Marker | Trigger now | Effect (game data) |
-|---|---|---|---|
-| Assassin's Trophy | `assassins_trophy` | `enemy_engaged_or_shot` | Melee Attack: -24; Melee Defence: -24 (to enemies in range) |
-| Blight Swarm | `blight_swarm` | `enemy_engaged_or_shot` | Melee Defence: -20; Spreading area: wh3_main_lord_abilities_blight_swarm (to enemies in range); Will spread to enemies within the Spread Range metres of affected unit (positive); Affects up to five units (positive) |
-| Fermented Fungi | `fermented_fungi` | `enemy_engaged_or_shot` | Melee Defence: -24; Rampage (positive) (to enemies in range) |
-| Gaze of Fate | `gaze_of_fate` | `enemy_engaged_or_shot` | Melee Attack: -40; Cannot move (to enemies in range) |
-| Lord of Dragons | `lord_of_dragons` | `enemy_engaged_or_shot` | Melee Attack: -40; Melee Defence: -24 (to enemies in range) |
-| Master of Beguilement | `beguile` | `enemy_engaged_or_shot` | Melee Attack: -40 (to enemies in range) |
-| Oath of Vengeance | `oath_of_vengeance` | `enemy_engaged_or_shot` | Melee Defence: -24 (to enemies in range) |
-| Otto's Scythe | `ottos_scythe` | `enemy_engaged_or_shot` | Melee Attack: -40; Leadership: -24; Expert Charge Defence (negative); Charge Defence vs. Large (negative); Charge Reflection (negative) (to enemies in range) |
-| Pestilent Potions | `pestilent_potions` | `enemy_engaged_or_shot` | Melee Attack: -24; Armour-Piercing Weapon Damage: -25%; Base Weapon Damage: -25%; Spreading area: wh3_dlc20_item_abilities_pestilent_potions (to enemies in range); Will spread to enemies within the Spread Range metres of |
-| Ravaging Swarm | `dispatch_the_swarm_attack` | `enemy_engaged_or_shot` | Melee Defence: -24; Fatigue: 0.01; Spreading area: wh3_dlc29_hero_active_dispatch_the_swarm_attack (to enemies in range); Will spread to enemies within the Spread Range metres of affected unit (positive); Affects up to f |
-| Ravaging Swarm Upgraded | `dispatch_the_swarm_attack_upgraded` | `enemy_engaged_or_shot` | Melee Defence: -40; Damage: 4 per hit (max 10 entities); Fatigue: 0.04; Spreading area: wh3_dlc29_hero_active_dispatch_the_swarm_attack (to enemies in range); Will spread to enemies within the Spread Range metres of affe |
-| Sadistic Snare | `sadistic_snare` | `enemy_engaged_or_shot` | Melee Defence: -24; Cannot move (to enemies in range) |
-| Spearfisher's Net | `spearfishers_net` | `enemy_engaged_or_shot` | Melee Defence: -24; Cannot move (to enemies in range) |
-| The Averland Runefang | `averland_runefang` | `enemy_engaged_or_shot` | Melee Attack: -40; Base Weapon Damage: -60% (to enemies in range) |
-| The Dark Master | `the_dark_master` | `enemy_engaged_or_shot` | Melee Attack: -40 (to enemies in range) |
-| The Enfeebling Foe | `enfeebling_foe` | `enemy_engaged_or_shot` | Melee Attack: -24; Melee Defence: -24 (to enemies in range) |
-| The Hammer of Karak Drazh | `the_hammer_of_karak_drazh` | `enemy_engaged_or_shot` | Melee Attack: -40; Base Weapon Damage: -30% (to enemies in range) |
-| Torment Blade | `torment_blade` | `enemy_engaged_or_shot` | Melee Attack: -24; Armour-Piercing Weapon Damage: -25%; Base Weapon Damage: -25% (to enemies in range) |
-| Trophy Heads | `trophy_heads` | `enemy_engaged_or_shot` | Melee Attack: -24; Melee Defence: -40 (to enemies in range) |
-| Virulent Contagion | `virulent_contagion` | `enemy_engaged_or_shot` | Melee Defence: -40; Spreading area: wh3_main_lord_abilities_virulent_contagion (to enemies in range); Will spread to enemies within the Spread Range metres of affected unit (positive); Affects up to five units (positive) |
-| Virulent Contagion Upgraded | `virulent_contagion_upgraded` | `enemy_engaged_or_shot` | Melee Defence: -50; Spreading area: wh3_main_lord_abilities_virulent_contagion (to enemies in range); Will spread to enemies within the Spread Range metres of affected unit (positive); Affects up to five units (positive) |
-| Whip of Agony | `whip_of_agony` | `enemy_engaged_or_shot` | Melee Defence: -24; Causes Fear (negative); Causes Terror (negative) (to enemies in range) |
-| Willing Prey | `willing_prey` | `enemy_engaged_or_shot` | Melee Attack: -24; Melee Defence: -40 (to enemies in range) |
+None.
 
 ## R4. Enemy slows on a trigger that is neither melee nor charge (rule 10)
 
