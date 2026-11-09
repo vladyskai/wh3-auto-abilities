@@ -7,7 +7,7 @@ Every automated ability (698 entries) checked against the rules below by `tools/
 | R1. Shooting-only buffs on a trigger with no shooting arm | 0 |
 | R2. Melee AND shooting buffs on a melee-only trigger (the user asked to review these) | 0 |
 | R3. Melee-only debuffs on a trigger with a missile arm (rule 10) | 23 |
-| R4. Enemy slows on a trigger that is neither melee nor charge (rule 10) | 19 |
+| R4. Enemy slows on a trigger that is neither melee nor charge (rule 10) | 0 |
 | R5. Protection against shots on a melee-only trigger | 0 |
 | R6. Morale effects on a trigger with no morale read | 25 |
 | R7. Speed buffs on the unit itself on a melee-only trigger | 0 |
@@ -50,27 +50,7 @@ None.
 
 ## R4. Enemy slows on a trigger that is neither melee nor charge (rule 10)
 
-| Ability | Marker | Trigger now | Effect (game data) |
-|---|---|---|---|
-| Acquiescence | `acquiescence` | `enemy_engaged_or_shot` | Speed: -25%; Melee Defence: -24 (to enemies in range) |
-| Book of Secrets | `book_of_secrets` | `enemy_engaged_or_shot` | Damage: 10 per hit (max 25 entities) (to enemies in range); Speed: -25%; Weakness to Fire Damage: -20 (to enemies in range); Melee Attack: -24; Melee Defence: -24 (to enemies in range) |
-| El Syf | `el_syf` | `enemy_engaged_or_shot` | Speed: -45%; Melee Defence: -40; Physical Resistance: -20 (to enemies in range) |
-| Fecund Rebirth | `mark_of_the_monster` | `enemy_engaged_or_shot` | Charge Speed: -50%; Speed: -50%; Incoming Healing Modifier: -100%; Damage: 38 per hit (max 1 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs a single combatant (positive) |
-| Frost Shard Glaive | `frost_shard_glaive` | `enemy_engaged_or_shot` | Speed: -45%; Melee Defence: -40 (to enemies in range) |
-| Hidden Huntress | `hidden_huntress` | `enemy_engaged_or_shot` | Speed: -25%; Melee Defence: -24 (to enemies in range) |
-| Hidden Huntress Upgraded | `hidden_huntress_upgraded` | `enemy_engaged_or_shot` | Speed: -25%; Armour: -30; Melee Defence: -40 (to enemies in range) |
-| Hornswaggle | `hornswaggle` | `enemy_engaged_or_shot` | Speed: -25%; Armour: -30; Melee Defence: -24 (to enemies in range) |
-| Hunter of Champions | `hunter_of_champions` | `enemy_engaged_or_shot` | Speed: -45%; Armour: -60; Melee Defence: -40 (to enemies in range) |
-| Looming Dread | `looming_dread` | `enemy_engaged_or_shot` | Speed: -45%; Melee Defence: -24; Missile Resistance: -20 (to enemies in range) |
-| Marked for Eatin' | `marked_for_eatin` | `enemy_engaged_or_shot` | Speed: -25%; Armour: -30; Melee Defence: -40 (to enemies in range) |
-| Master Rune of Slowness | `master_rune_of_slowness` | `enemy_engaged_or_shot` | Charge Speed: -60%; Speed: -60%; Charge Bonus: -40% (to enemies in range); Greater effect on speed (magic); Extended effect duration (magic) |
-| Mither | `mither` | `enemy_engaged_or_shot` | Charge Speed: -60%; Speed: -60% (to enemies in range) |
-| Rune of Slowness | `rune_of_slowness` | `enemy_engaged_or_shot` | Charge Speed: -45%; Speed: -45%; Charge Bonus: -40% (to enemies in range) |
-| Taunt | `taunt` | `enemy_engaged_or_shot` | Speed: -25%; Armour: -30; Melee Defence: -24 (to enemies in range) |
-| Tendrils of the Sea | `tendrils_of_the_sea` | `enemy_engaged_or_shot` | Charge Speed: -60%; Speed: -60%; Mass: -20%; Melee Attack: -40 (to enemies in range) |
-| Titan Headsman | `titan_headsman` | `enemy_engaged_or_shot` | Speed: -45%; Melee Defence: -24 (to enemies in range) |
-| Whispering Mist | `whispering_mist` | `enemy_engaged_or_shot` | Charge Speed: -45%; Speed: -45%; Fatigue: 0.01 (to enemies in range) |
-| You're Next! | `youre_next` | `enemy_engaged_or_shot` | Speed: -45%; Melee Attack: -24; Melee Defence: -40 (to enemies in range) |
+None.
 
 ## R5. Protection against shots on a melee-only trigger
 
@@ -109,3 +89,12 @@ None.
 ## R7. Speed buffs on the unit itself on a melee-only trigger
 
 None.
+
+## R4: kept by the user's ruling (not candidates)
+
+| Ability | Marker | Trigger | Ruling |
+|---|---|---|---|
+| Book of Secrets | `book_of_secrets` | `enemy_engaged_or_shot` | round 135: 'Keep as is' (no target filter in the game data) |
+| Fecund Rebirth | `mark_of_the_monster` | `enemy_engaged_or_shot` | round 135: 'Keep as is' (large single-entity filter) |
+| Hunter of Champions | `hunter_of_champions` | `enemy_engaged_or_shot` | round 123: 'Hunter of champions is okay for enemy_engaged_or_shot' |
+| Looming Dread | `looming_dread` | `enemy_engaged_or_shot` | round 135: 'Keep as is, but make sure the trigger filters for the enemy unit type' (Lord/Hero filter) |

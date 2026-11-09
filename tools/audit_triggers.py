@@ -40,7 +40,15 @@ SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_a
               "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting"}
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
-                                          "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee"}
+                                          "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",
+                                          "enemy_fast_near_ally"}  # round 135: the user's fast-enemy trigger
+# Rows the user has explicitly ruled on for a rule: listed apart, never counted as candidates again.
+RULED = {"R4": {
+    "hunter_of_champions": "round 123: 'Hunter of champions is okay for enemy_engaged_or_shot'",
+    "looming_dread": "round 135: 'Keep as is, but make sure the trigger filters for the enemy unit type' (Lord/Hero filter)",
+    "book_of_secrets": "round 135: 'Keep as is' (no target filter in the game data)",
+    "mark_of_the_monster": "round 135: 'Keep as is' (large single-entity filter)",
+}}
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
                "charge_or_wavering", "ally_broken", "verminking_wavering"}
 
@@ -84,7 +92,7 @@ def main():
                 and any(MELEE_STAT.match(n) for n in names):
             flags["R3"].append(row)
         if any(SPEED.match(n) for n in neg) and to_enemy and trig not in MELEE_OR_CHARGE_TRIG:
-            flags["R4"].append(row)
+            flags["R4" + ("_ruled" if e["marker"] in RULED["R4"] else "")].append(row)
         if any(SHOT_DEF.match(n) for n in pos) and not any(MELEE_STAT.match(n) for n in pos) \
                 and trig in MELEE_ONLY_TRIG and not to_enemy:
             flags["R5"].append(row)
@@ -117,6 +125,11 @@ def main():
         L += ["| Ability | Marker | Trigger now | Effect (game data) |", "|---|---|---|---|"]
         for n, m, t, eff in sorted(flags[r]):
             L.append("| %s | `%s` | `%s` | %s |" % (n, m, t, eff))
+    for r in sorted(RULED):
+        if flags[r + "_ruled"]:
+            L += ["", "## %s: kept by the user's ruling (not candidates)" % r, "", "| Ability | Marker | Trigger | Ruling |", "|---|---|---|---|"]
+            for n, m, t, eff in sorted(flags[r + "_ruled"]):
+                L.append("| %s | `%s` | `%s` | %s |" % (n, m, t, RULED[r][m]))
     s = "\n".join(L) + "\n"
     assert "\u2014" not in s
     open(OUT, "w", encoding="utf-8", newline="\n").write(s)

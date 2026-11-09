@@ -708,6 +708,7 @@ def main():
         "self_shooting": "The unit itself shooting past its cast point. Casts on the unit itself.",
         "under_fire": "The unit itself under missile fire (`is_under_missile_attack()` exactly true); for an aura also any friendly unit within the aura bound. Casts on the unit itself.",
         "melee_or_under_fire": "The unit in melee (not wavering) or under missile fire; for an aura also any friendly unit within the aura bound in melee or under fire. Casts on the unit itself.",
+        "enemy_fast_near_ally": "An ENEMY unit in range that is MOVING with a run speed (`fast_speed()`) of 5 m/s or more and is within 40 m of one of our units (the user's settings, round 135). Casts on that enemy.",
         "self_or_ally_shooting": "The caster SHOOTING past its cast point: cast on itself. Otherwise the closest ally in range that is shooting past its cast point: cast on that ally.",
         "melee_or_self_or_ally_shooting": "In melee and not wavering (as melee_unwavering): cast on itself. Otherwise as self_or_ally_shooting (the caster shooting, else the closest shooting ally in range).",
         "no_enemy_in_range_within_boost": "Not in melee, ammunition left, NO live enemy inside the unit's own missile_range(), and at least one inside missile_range x `FOURTH.FARSIGHT_BAND` (1 + 0.30 x 0.70 = 1.21). Casts on the unit itself.",
