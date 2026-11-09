@@ -114,7 +114,8 @@ def main():
         # R8 (round 137): a vigour restorer (Fatigue minus, to self or allies) not on a fatigue trigger -
         # the user's one-by-one review ("the vigor buff is many times secondary to the other buffs")
         if re.search(r"Fatigue:\s*-", eff or "") and not to_enemy and trig != "tired":
-            flags["R8"].append(row)
+            # user, 2026-11-09: "Skip the exercise, I reconsidered and there is no need to add this trigger."
+            flags["R8_ruled"].append(row)
         if any(SPEED.match(n) for n in pos) and not to_enemy and trig in MELEE_ONLY_TRIG:
             flags["R7"].append(row)
 
@@ -142,6 +143,8 @@ def main():
         L += ["| Ability | Marker | Trigger now | Effect (game data) |", "|---|---|---|---|"]
         for n, m, t, eff in sorted(flags[r]):
             L.append("| %s | `%s` | `%s` | %s |" % (n, m, t, eff))
+    RULED["R8"] = {row[1]: "2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this "
+                   "trigger'); keeps its current trigger" for row in flags["R8_ruled"]}
     for r in sorted(RULED):
         if flags[r + "_ruled"]:
             L += ["", "## %s: kept by the user's ruling (not candidates)" % r, "", "| Ability | Marker | Trigger | Ruling |", "|---|---|---|---|"]

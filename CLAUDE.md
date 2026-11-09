@@ -245,8 +245,8 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 - Inline Python in a bash heredoc turns Windows paths like `ound132` into escape characters. Put any
   generator with Windows paths in a FILE with raw strings (it broke the round-133 builder once).
 - No battle read exists for a RAMPAGING unit (round 137: the user dropped the rampage arm for that reason).
-- Vigour (user, 2026-11-09): a vigour restorer is reviewed ONE BY ONE ("the vigor buff is many times secondary");
-  "Tired or worse" (fatigue_state) is the line. The trigger audit lists them as R8.
+- Vigour (user, 2026-11-09): NO vigour trigger is added to a vigour restorer ("Skip the exercise, I reconsidered
+  and there is no need to add this trigger"). Do not propose it again; R8 in the audit lists them as ruled.
 - The mock's under-fire read is `def.missile` (a later definition overrides `def.in_range`).
 - The mock engine accepts every repeat cast (no cooldown refusal): a world that counts casts must
   stop inside the 2 s guard after the first one.

@@ -7282,3 +7282,10 @@ existing detector: running, an attack target 12 to 60 m away, impact within 4 s.
 - **The mod:** 698 entries / 750 keys / 58 families; melee_unwavering 328 -> 314, wavering_ally_range 1 -> 6.
 - **Tests:** harness 136 full suite **5,948 checks / 0 failures**, run twice byte-identical. RED 6/6.
 - **Install:** pack md5 `c719e140ddff4f0525889c1388bb3fd8`.
+
+### 10.19 Vigour review closed (2026-11-09)
+
+The round-137 vigour question ("if an ability restores vigor, it should trigger when vigor of target is low") was
+reviewed and closed by the user. The first 16 abilities were ruled "Keep all 16 as they are"; then, verbatim: *"Skip
+the exercise, I reconsidered and there is no need to add this trigger."* None of the 27 vigour restorers gets a
+fatigue trigger; each keeps its current trigger. The trigger audit lists them under R8 as ruled. No mod change.
