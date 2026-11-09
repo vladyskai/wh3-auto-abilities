@@ -4186,8 +4186,8 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Foe-Seeker `wh_main_character_abilities_foe_seeker` | `implemented` | melee_self | built: fatigue Tired or worse, fail-closed; fires up to 3x when an ability carries no text (field-verified) | cd 60s · 25s · self |
 | Grand Hammer of Sigmar `wh_dlc04_spell_bound_hammer_of_sigmar_upgraded` | `implemented` | melee_self | built: in melee, not routing (field-verified) | cd 90s · 50s · self · bound |
 | Hammer of Sigmar `wh_main_spell_bound_hammer_of_sigmar` | `implemented` | melee_self | built: in melee, not routing (field-verified) | cd 60s · 25s · self · bound |
-| Stand Your Ground! `wh_main_character_abilities_stand_your_ground` | `implemented` | melee_self | built: in melee + morale at/below wavering, fail-open (field-verified) | cd 90s · 18s · self |
-| Tacticians, Stand Your Ground! `wh3_dlc24_character_abilities_tacticians_stand_your_ground` | `implemented` | melee_self | built: in melee + morale at/below wavering, fail-open (field-verified) | cd 90s · 18s · friend/self |
+| Stand Your Ground! `wh_main_character_abilities_stand_your_ground` | `implemented (the General or an ally within 24 m in melee or wavering: melee_or_wavering_aura)` | self | When armed, fires when this unit, or a friendly unit within 24 m (70% of the 35 m aura), is in melee or wavering: cast on self (the aura). | cd 90s · 18s · self · **round 139 (2026-11-09):** QA battle 1 showed it fired only when the General himself wavered (232 s) while the Spearmen around him had wavered from 177 s; user ruling "The general or any friendly unit within 24m is in melee or wavering." |
+| Tacticians, Stand Your Ground! `wh3_dlc24_character_abilities_tacticians_stand_your_ground` | `implemented (the General or an ally within 24 m in melee or wavering: melee_or_wavering_aura)` | self | When armed, fires when this unit, or a friendly unit within 24 m (70% of the 35 m aura), is in melee or wavering: cast on self (the aura). | cd 90s · 18s · friend/self · **round 139 (2026-11-09):** QA battle 1 showed it fired only when the General himself wavered (232 s) while the Spearmen around him had wavered from 177 s; user ruling "The general or any friendly unit within 24m is in melee or wavering." |
 | "Stay Here, I'll Get Help!" `wh2_dlc09_character_abilities_stay_here_ill_get_help` | `implemented (ally-targeted: waver_ally)` | ally_unit | When an ally in range is wavering: cast on that ally. NO melee requirement — the ally need not be in melee (same evaluator shape as Will of the Verminking: closest ally in range, conservative range, drift re-check). | cd 90s · 35s · friend/self · ×3 uses · questionnaire §2 #319 · user: “If ally in range is wavering.” · **round 98 (Class B):** casts ON THE CHOSEN ALLY - ally wavering - the picked WAVERING ally (the cast-target fix); own 70% bound = floor(60 * 0.70) = 42 m (FOURTH.ALLY_CAST_R60), offer test on unit:unit_distance only, fresh caster+ally handles. Was the #250 cast-target gap |
 | Acid Burps `wh3_dlc26_unit_abilities_acid_vomit` | `excluded (auto: vortex)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 14s · self · questionnaire §2 #1 |
 | Aether Sword `wh3_dlc20_weapon_abilities_aether_sword` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 27s · self · questionnaire §2 #3 |
@@ -7308,3 +7308,24 @@ fatigue trigger; each keeps its current trigger. The trigger audit lists them un
   16 -> 21.
 - **Tests:** harness 137 full suite **5,995 checks / 0 failures**, run twice byte-identical. RED 8/8.
 - **Install:** pack md5 `4d69206141c5d9eb89506fd0ed1064bd`.
+
+### 10.21 Round 139 - QA battle 1 and Stand Your Ground (2026-11-09)
+
+**QA battle 1** (Empire: General, Witch Hunter, 7 Spearmen, 7 Archers; against Beastmen).
+
+- **Charmed Shield** fired under missile fire (2 attempts) and in melee (4). The user: *"The charmed shield worked
+  really well."*
+- **Slippery** fired on a charge (12.6 m, 3.7 s to contact) and in melee.
+- **Accusation, Runefang, Opal Amulet and Foe-Seeker** fired on their triggers.
+- **Stand Your Ground** fired once, when the General himself was in melee and wavering (232 s). The Spearmen had been
+  wavering since 177 s; the second waver (254 s) fell inside the 90 s recharge.
+- **Not testable in skirmish:** Potion of Speed (not offered), and the Huntsman General with the General (one Lord).
+
+**Ruling (2026-11-09):** *"The general or any friendly unit within 24m is in melee or wavering."* This is the NEW
+`melee_or_wavering_aura` (Stand Your Ground only); `melee_low_morale` keeps its evaluator with no entry.
+
+**Arithmetic.**
+
+- **Rows / families:** 750 rows / keys, unchanged; 59 families.
+- **Tests:** harness 138 full suite **6,018 checks / 0 failures**, run twice byte-identical. RED 4/4.
+- **Install:** pack md5 `55f3263e09fedd951d1bcd8ee9ce9351`.

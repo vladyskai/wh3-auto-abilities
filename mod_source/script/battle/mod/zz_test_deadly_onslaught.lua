@@ -176,10 +176,11 @@ local ABILITIES = {
 		keys = { "wh_main_spell_bound_hammer_of_sigmar",
 			"wh_dlc04_spell_bound_hammer_of_sigmar_upgraded" },
 		ox = 98, oy = 102 },
-	{ marker = "stand_your_ground", name = "Stand Your Ground", trigger = "melee_low_morale",
+	{ marker = "stand_your_ground", name = "Stand Your Ground", trigger = "melee_or_wavering_aura",
 		badge = "zz_auto_badge_syg",
 		keys = { "wh_main_character_abilities_stand_your_ground",
 			"wh3_dlc24_character_abilities_tacticians_stand_your_ground" },
+		aura_real = 35,
 		ox = 66, oy = 172 },
 	{ marker = "blood_lust", name = "Blood Lust", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_bl",
@@ -15851,6 +15852,35 @@ function FOURTH.evaluate_enemy_missile_shooting(unit, routing)
 		(best_gap ~= nil) and string.format("%.1f", best_gap) or "?", tostring(FOURTH.eg_range_m))
 end
 
+-- ============================================================================
+-- ROUND 139 - STAND YOUR GROUND FIRES FOR THE ALLIES IT PROTECTS (QA battle 1).
+--   melee_or_wavering_aura (NEW): the caster is in melee or wavering, or a
+--   friendly unit (alive, not routing) inside the aura's 70% bound (35 m ->
+--   24 m) is in melee or wavering; cast on the caster. User ruling 2026-11-09:
+--   "The general or any friendly unit within 24m is in melee or wavering."
+--   Wavering counts only on an exact true (FOURTH.wavering).
+-- ============================================================================
+function FOURTH.melee_or_wavering(u)
+	local ok, m = pcall(function() return u:is_in_melee() end)
+	if ok and m == true then return true end
+	return FOURTH.wavering(u) == true
+end
+
+function FOURTH.evaluate_melee_or_wavering_aura(unit, routing)
+	if routing then return nil end
+	local ok, m = pcall(function() return unit:is_in_melee() end)
+	if ok and m == true then
+		return "melee or wavering aura: the caster is in melee, cast centred on the caster"
+	end
+	if FOURTH.wavering(unit) == true then
+		return "melee or wavering aura: the caster is wavering, cast centred on the caster"
+	end
+	local ally, gap = FOURTH.ally_in_aura(unit, FOURTH.melee_or_wavering)
+	if ally == nil then return nil end
+	return string.format("melee or wavering aura: a friendly unit %.1fm away (bound %dm) is in melee or wavering, cast centred on the caster",
+		gap, FOURTH.fa_bound_m)
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -15930,6 +15960,8 @@ FOURTH.evaluators = {
 	wavering_aura = FOURTH.evaluate_wavering_aura,
 	-- ROUND 138
 	enemy_missile_shooting = FOURTH.evaluate_enemy_missile_shooting,
+	-- ROUND 139
+	melee_or_wavering_aura = FOURTH.evaluate_melee_or_wavering_aura,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -16005,6 +16037,7 @@ FOURTH.TRIGGER_TIP = {
 	enemy_fast_near_ally = "When armed, fires on a fast enemy unit moving close to your units",
 	wavering_aura = "When armed, fires when this unit or a friendly unit near it is wavering",
 	enemy_missile_shooting = "When armed, fires on the closest enemy missile unit in range that is shooting",
+	melee_or_wavering_aura = "When armed, fires when this unit or a friendly unit near it is in melee or wavering",
 	melee_or_shooting_into_melee = "When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee",
 	ally_warmachine_heal = "When armed, fires on the lowest-health war machine ally in range that is at or below 75% health",
 	ally_hellforged_heal = "When armed, fires on the lowest-health Hell-Forged ally in range that is at or below 75% health",

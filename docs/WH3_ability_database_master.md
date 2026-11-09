@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-09 21:16 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-09 21:46 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -84,7 +84,7 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `health_aura_self` | When armed, fires when this unit or a friendly unit in its aura is at or below 75% health, cast on itself | 2 | 2 |
 | `charge` | When armed, fires when this unit charges or is in melee | 1 | 1 |
 | `melee` | When armed, fires when this unit is in melee | 1 | 2 |
-| `melee_low_morale` | When armed, fires when this unit is in melee and wavering | 1 | 2 |
+| `melee_or_wavering_aura` | When armed, fires when this unit or a friendly unit near it is in melee or wavering | 1 | 2 |
 | `barrier_broken` | When armed, fires when this unit's barrier breaks | 1 | 1 |
 | `glorious_death` | When armed, fires when a Slayer ally in range is in melee | 1 | 1 |
 | `melee_health75` | When armed, fires when this unit is in melee and at or below 75% health | 1 | 1 |
@@ -1524,19 +1524,6 @@ In melee AND the unit's own health at or below 75%. Casts on the unit itself.
 |---|---|---|---|---|---|---|
 | Potion of Toughness | `wh_main_item_abilities_potion_of_toughness` | Armour: +30; Melee Defence: +24; Heals: 0.008 per tick every 1 s (to self); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `morale_is_broken_or_lower` | unlimited / no range column | implemented (melee_health75) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
 
-### `melee_low_morale` — 1 entries / 2 keys
-
-In melee AND wavering (morale at or below the wobble threshold). Casts on the unit itself.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is in melee and wavering.*
-
-**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Stand Your Ground | `wh_main_character_abilities_stand_your_ground` | Melee Defence: +24; Leadership: +16 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented | Fires: When armed, fires when this unit is in melee and wavering. Cast target: the unit itself |
-| Stand Your Ground | `wh3_dlc24_character_abilities_tacticians_stand_your_ground` | Melee Defence: +24; Leadership: +16 (to self and allies in range); Extended cast range (magic) | targeting: self=no friends=yes enemies=no ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground | implemented | Fires: When armed, fires when this unit is in melee and wavering. Cast target: the unit itself |
-
 ### `melee_or_self_or_ally_shooting` — 1 entries / 1 keys
 
 In melee and not wavering (as melee_unwavering): cast on itself. Otherwise as self_or_ally_shooting (the caster shooting, else the closest shooting ally in range).
@@ -1560,6 +1547,19 @@ In melee and not wavering (as melee_unwavering), OR shooting past its cast point
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
 | Skjalandir's Fall | `wh3_dlc23_character_abilities_skjalandirs_fall` | Accuracy: +90; Imbues its target's attacks on contact: wh3_dlc23_unit_contact_blinded (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (melee or shooting into melee) | Fires: When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee. Cast target: the unit itself |
+
+### `melee_or_wavering_aura` — 1 entries / 2 keys
+
+The unit itself in melee or WAVERING, or a friendly unit inside the aura bound in melee or wavering. Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit or a friendly unit near it is in melee or wavering.*
+
+**Cast target:** the unit itself. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Stand Your Ground | `wh_main_character_abilities_stand_your_ground` | Melee Defence: +24; Leadership: +16 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (the General or an ally within 24 m in melee or wavering: melee_or_wavering_aura) | Fires: When armed, fires when this unit or a friendly unit near it is in melee or wavering. Cast target: the unit itself. Bound: 24 m (70% of the mod's 35 m aura) |
+| Stand Your Ground | `wh3_dlc24_character_abilities_tacticians_stand_your_ground` | Melee Defence: +24; Leadership: +16 (to self and allies in range); Extended cast range (magic) | targeting: self=no friends=yes enemies=no ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (the General or an ally within 24 m in melee or wavering: melee_or_wavering_aura) | Fires: When armed, fires when this unit or a friendly unit near it is in melee or wavering. Cast target: the unit itself. Bound: 24 m (70% of the mod's 35 m aura) |
 
 ### `no_enemy_in_range_within_boost` — 1 entries / 1 keys
 
