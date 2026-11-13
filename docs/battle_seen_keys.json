@@ -131,6 +131,7 @@
 "wh3_dlc24_item_abilities_blessed_helm_of_the_oblast",
 "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch",
 "wh3_dlc24_lord_abilities_gulyas",
+"wh3_dlc24_lord_abilities_spirit_bear_upgrade",
 "wh3_dlc24_unit_abilities_hags_denial",
 "wh3_dlc24_unit_abilities_mark_of_yin",
 "wh3_dlc24_unit_bound_missile_mirror",
@@ -288,6 +289,7 @@
 "wh_main_item_abilities_scroll_of_power",
 "wh_main_item_abilities_tricksters_shard",
 "wh_main_rune_abilities_rune_of_oath_and_steel",
+"wh_main_spell_bound_fireball",
 "wh_main_spell_bound_hammer_of_sigmar",
 "wh_main_spell_bound_shield_of_faith",
 "wh_main_spell_bound_soulfire",
@@ -312,6 +314,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 158,
+"logs_read": 160,
 "made": "2026-11-13"
 }

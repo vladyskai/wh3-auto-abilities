@@ -718,6 +718,7 @@ def main():
         "health_aura_self_undead": "The OWNER or a NON-LIVING friendly unit (the generated undead set) inside the self-centred aura is at or below 75% health. Casts on the caster; re-checked before the cast.",
         "ally_hurt_melee": "The lowest-health unit in range (owner or ally) at or below 75% health that is IN MELEE. Casts on that unit; re-checked (still in melee) before the cast.",
         "enemy_wavering": "The closest enemy in range whose `is_wavering()` reads exactly true. Casts on that enemy; re-checked (still wavering) before the cast.",
+        "enemy_blob": "The best SAFE visible enemy INFANTRY unit in range (an inf_* class, not in the generated large set, not flying, at least 10 men): no soldier of ours within the blast radius + 10 m of its estimated rectangle, and the blast around its centre covers at least half of what it covers inside a packed block. Casts on that enemy; the map is rebuilt and re-checked before the cast.",
         "self_recharging": "At least one other ability of this unit, cast by the mod, still recharging (effect + recharge from the game data). Casts on the unit itself.",
         "self_recharging_2": "At least two other abilities of this unit, cast by the mod, still recharging. Casts on the unit itself.",
         "recharging_in_reach": "The unit itself has an ability recharging (cast on itself), else the closest ally in range that has (cast on that ally).",
