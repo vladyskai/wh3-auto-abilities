@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-13
 
-Every automated ability (712 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (722 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -87,6 +87,7 @@ None.
 | Gulyas | `gulyas` | `health_aura_ground` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Hellish Vigour | `hellish_vigour` | `ally_melee_buff` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Hellish Vigour Upgraded | `hellish_vigour_upgraded` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Icon of the King | `icon_of_the_king` | `health_aura_self_undead` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Locus of Fecundity | `locus_of_fecundity` | `health_aura_self` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Mantra of Invigoration | `protection_prayer` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Mirror (Cold-Blooded) | `mimic_cold_blooded` | `wavering_aura` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
