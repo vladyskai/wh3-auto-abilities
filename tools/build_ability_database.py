@@ -712,6 +712,7 @@ def main():
         "self_shooting_clear": "The unit itself shooting past its cast point at a target that is not in melee. Casts on the unit itself.",
         "self_shooting_healthy": "The unit itself shooting past its cast point and above 50% health. Casts on the unit itself.",
         "self_moving": "The unit itself MOVING (`is_moving()`). Casts on the unit itself.",
+        "enemy_ground_shooting": "The closest enemy MISSILE unit in range that is shooting (its ammunition dropping) and not in melee. Placed on the ground under that enemy.",
         "self_recharging": "At least one other ability of this unit, cast by the mod, still recharging (effect + recharge from the game data). Casts on the unit itself.",
         "self_recharging_2": "At least two other abilities of this unit, cast by the mod, still recharging. Casts on the unit itself.",
         "recharging_in_reach": "The unit itself has an ability recharging (cast on itself), else the closest ally in range that has (cast on that ally).",
