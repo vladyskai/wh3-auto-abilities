@@ -37,7 +37,9 @@ MELEE_ONLY_TRIG = {"melee_unwavering", "melee", "melee_low_morale", "melee_healt
                    "verminking_wavering"}
 SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_ally_shooting",
               "melee_or_shooting_into_melee", "ally_ammo_low", "ally_missile", "no_enemy_in_range_within_boost",
-              "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting"}
+              "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting",
+              # round 142: the before-range ground form and the two guarded self-shooting forms
+              "ground_ally_before_range", "self_shooting_clear", "self_shooting_healthy"}
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",

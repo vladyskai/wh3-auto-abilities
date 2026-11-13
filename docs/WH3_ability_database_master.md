@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-13 20:43 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-13 21:37 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -29,8 +29,8 @@ Generated 2026-11-13 20:43 by `tools/build_ability_database.py` (re-runnable; no
 |---|---:|
 | Tracker inventory rows (all three tables) | **1801** |
 | distinct ability keys in those rows | 1800 |
-| implemented keys (per the mod's `ABILITIES` table) | **750** |
-| implemented entries in the mod | **698** |
+| implemented keys (per the mod's `ABILITIES` table) | **756** |
+| implemented entries in the mod | **703** |
 | abilities carrying an **invalid-target** restriction flag | **424** |
 | abilities carrying an **invalid-usage** restriction flag | **414** |
 | abilities carrying an **auto-deactivate** flag | **2** |
@@ -39,15 +39,15 @@ Generated 2026-11-13 20:43 by `tools/build_ability_database.py` (re-runnable; no
 
 | Final status family | Abilities |
 |---|---:|
-| excluded (no automatic logic) | 884 |
-| implemented | 751 |
+| excluded (no automatic logic) | 878 |
+| implemented | 757 |
 | excluded (impossible - engine limit) | 75 |
 | skipped (deferred / unsuitable) | 74 |
 | rejected (user decision) | 17 |
 | **TOTAL** | **1801** |
 
-Reconciliation: the mod's `ABILITIES` table holds **698 entries / 750 keys**; **751** of the inventory
-rows carry one of those keys. The tracker's own status column counts **751 implemented / 959 excluded (no automatic logic 884 + impossible 75) / 74 skipped / 17 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
+Reconciliation: the mod's `ABILITIES` table holds **703 entries / 756 keys**; **757** of the inventory
+rows carry one of those keys. The tracker's own status column counts **757 implemented / 953 excluded (no automatic logic 878 + impossible 75) / 74 skipped / 17 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
 
 ### 1.3 Implemented abilities by trigger family (what fires, in plain English)
 
@@ -74,6 +74,7 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `melee_or_under_fire` | When armed, fires when this unit (or, for an aura, a friendly unit near it) is in melee or under missile fire | 4 | 4 |
 | `melee_skip_commanders` | When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero | 4 | 5 |
 | `wavering_self` | When armed, fires when this unit is wavering | 3 | 3 |
+| `ally_ammo_low` | When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first) | 3 | 3 |
 | `ally_missile` | When armed, fires on a missile-capable ally in range | 3 | 3 |
 | `under_fire` | When armed, fires when this unit (or, for an aura, a friendly unit near it) is under missile fire | 3 | 3 |
 | `ally_heal` | When armed, fires on the lowest-health ally in range when it is at or below 75% health | 3 | 3 |
@@ -93,11 +94,13 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `ally_heal_melee` | When armed, fires when this unit is in melee, on the lowest-health ally in range at or below 75% health | 1 | 1 |
 | `ally_overseer` | When armed, fires on a non-commander, non-large ally in range | 1 | 1 |
 | `charge_or_wavering` | When armed, fires when this unit charges or is wavering | 1 | 1 |
-| `self_running` | When armed, fires when this unit is running | 1 | 1 |
+| `self_moving` | When armed, fires when this unit is moving | 1 | 1 |
 | `self_shooting` | When armed, fires when this unit is shooting | 1 | 1 |
 | `self_or_ally_shooting` | When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
 | `melee_or_self_or_ally_shooting` | When armed, fires on this unit in melee or when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
-| `ally_ammo_low` | When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first) | 1 | 1 |
+| `ground_ally_before_range` | When armed, fires under a friendly missile unit when the enemy is just out of its range | 1 | 2 |
+| `self_shooting_clear` | When armed, fires when this unit is shooting at a target that is not in melee | 1 | 1 |
+| `self_shooting_healthy` | When armed, fires when this unit is shooting and above half health | 1 | 1 |
 | `ally_winds` | When armed, fires on the ally with the most hit points remaining, cast on that ally | 1 | 1 |
 | `ally_broken` | When armed, fires on a broken-morale ally in range | 1 | 1 |
 | `enemy_missile_shooting` | When armed, fires on the closest enemy missile unit in range that is shooting | 1 | 1 |
@@ -117,7 +120,7 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `enemy_melee_noncommander` | When armed, fires on the closest enemy in range that is fighting in melee and is not a Lord or Hero | 1 | 4 |
 | `self_summon_melee` | When armed, fires when this unit itself is fighting in melee and the summon is cast on it | 1 | 1 |
 | `health_below_15` | When armed, fires when this unit is below 15% health | 1 | 5 |
-| **TOTAL** | | **698** | **750** |
+| **TOTAL** | | **703** | **756** |
 
 ### 1.4 Restriction flags found in the game's own data (the newest, most valuable layer)
 
@@ -214,15 +217,15 @@ ability off by itself when the condition holds.
 
 * Inventory rows: **1801** = one row per ability key across §3a/3b/3c.
 * Distinct keys: **1800**; keys appearing on more than one row: `wh3_twa07_spell_bound_call_of_tor`.
-* Implemented: the tracker's status column marks **750** keys implemented; the mod's `ABILITIES` table carries **750** keys.
+* Implemented: the tracker's status column marks **756** keys implemented; the mod's `ABILITIES` table carries **756** keys.
 * Tracker status and the mod's table agree exactly.
-* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **75**, excluded (no automatic logic) **884**, implemented **751**, rejected (user decision) **17**, skipped (deferred / unsuitable) **74**.
+* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **75**, excluded (no automatic logic) **878**, implemented **757**, rejected (user decision) **17**, skipped (deferred / unsuitable) **74**.
 
 ---
 
 ## 2. IMPLEMENTED ABILITIES — grouped by trigger family
 
-Every row below is shipping in the mod today (698 entries / 750 keys). The family heading gives the
+Every row below is shipping in the mod today (703 entries / 756 keys). The family heading gives the
 plain-English description of WHEN it fires; the **Trigger / logic** column gives the rule that specific
 ability rides. **Range** shows the game's own range columns and — where the mod gates a distance — the
 named trigger bound it uses (`floor(real x 0.7)`). **Restrictions** quotes the engine's own flag names.
@@ -1126,6 +1129,20 @@ unknown - see the mod's own `FOURTH.evaluate_melee_skip_commanders`.
 | Soulfire | `wh_dlc04_spell_bound_soulfire_upgraded` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: bombardment key: wh_main_spell_bound_soulfire_upgraded; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "A battle prayer that bathes the Warrior Priest in white, holy fire, sears Sigmar’s foes but leaves the supplicant unharmed." | targeting: self=no friends=no enemies=no ground=no · invalid-usage: `climbing` | unlimited / no range column | implemented (melee, skipping Lord/Hero-only fights) | Fires: When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero. Cast target: the unit itself |
 | Warp Lightning Rod | `wh2_dlc16_unit_abilities_warp_lightning_rod` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: bombardment key: wh2_main_spell_ruin_warp_lightning; AI missile CP: 100; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Dire greenish-black lightning strikes at the Skaven’s crude Warpstone implant." | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `climbing` | unlimited / no range column | implemented (melee, skipping Lord/Hero-only fights) | Fires: When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero. Cast target: the unit itself |
 
+### `ally_ammo_low` — 3 entries / 3 keys
+
+An ally in range that is SHOOTING (the firing flag: its ammo_left() dropped) with 70% or less of its ammunition left (`FOURTH.RESTOCK_AT_FRACTION`, 100% minus the 30% refill); the one with the least left wins; an ally refilled in the last `FOURTH.RESTOCK_CLAIM_S` (12 s) is skipped. Casts on that ally.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first).*
+
+**Cast target:** the chosen ally in range. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| More Powder! | `wh2_dlc11_hero_abilities_more_powder` | Replenishes ammo: 0.3000 (to self and allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ammo refill: ally_ammo_low) | Fires: When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first). Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
+| Restock! | `wh3_dlc25_abilities_restock_gunnery_school` | Replenishes ammo: 0.3000 (to allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ammo refill: ally_ammo_low) | Fires: When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first). Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
+| Restock! | `wh2_dlc17_hero_abilities_more_powder_generic` | Replenishes ammo: 0.3000 (to allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_ammo_low) | Fires: When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first). Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
+
 ### `ally_heal` — 3 entries / 3 keys
 
 The lowest-health ally in range that is at or below 75% health. Casts on that ally.
@@ -1275,18 +1292,6 @@ The unit itself is wavering OR a wavering ally is IN RANGE. Casts on the unit it
 |---|---|---|---|---|---|---|
 | Commanding Presence | `wh3_dlc29_lord_active_commanding_presence` | Leadership: +8; Immune to Psychology (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (the mod's named constant FOURTH.WAVERING_RANGE_M) | implemented (wavering self-or-ally in range) | Fires: When armed, fires when this unit or an ally in range is wavering. Cast target: the unit itself. Bound: 24 m (the mod's named constant FOURTH.WAVERING_RANGE_M) |
 | Fury of Ulric | `wh3_dlc29_spell_bound_prayer_fury_of_ulric` | Leadership: +8; Causes Fear (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (the mod's named constant FOURTH.WAVERING_RANGE_M) | implemented (wavering self-or-ally in range) | Fires: When armed, fires when this unit or an ally in range is wavering. Cast target: the unit itself. Bound: 24 m (the mod's named constant FOURTH.WAVERING_RANGE_M) |
-
-### `ally_ammo_low` — 1 entries / 1 keys
-
-An ally in range that is SHOOTING (the firing flag: its ammo_left() dropped) with 70% or less of its ammunition left (`FOURTH.RESTOCK_AT_FRACTION`, 100% minus the 30% refill); the one with the least left wins; an ally refilled in the last `FOURTH.RESTOCK_CLAIM_S` (12 s) is skipped. Casts on that ally.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first).*
-
-**Cast target:** the chosen ally in range. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Restock! | `wh2_dlc17_hero_abilities_more_powder_generic` | Replenishes ammo: 0.3000 (to allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_ammo_low) | Fires: When armed, fires on a shooting ally in range with 70% or less of its ammunition left (the lowest first). Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 
 ### `ally_beast` — 1 entries / 1 keys
 
@@ -1507,6 +1512,19 @@ A SLAYER ally in range is in melee (Slayer status = exact whole-key membership o
 |---|---|---|---|---|---|---|
 | Glorious Death | `wh3_dlc25_lord_abilities_glorious_death` | Cannot Die (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-target: `unit_is_not_slayer` | effect range (aura) 55 m · trigger bound 38 m (the mod's named constant GLORIOUS_DEATH_RANGE_M) | implemented (glorious_death) | Fires: When armed, fires when a Slayer ally in range is in melee. Cast target: a Slayer ally in melee, else the unit itself (only when the owner is itself a Slayer). Bound: 38 m (the mod's named constant GLORIOUS_DEATH_RANGE_M) |
 
+### `ground_ally_before_range` — 1 entries / 2 keys
+
+The closest friendly missile unit in range with NO enemy inside its own missile range but one inside range x 1.35. Placed on the ground under that unit.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires under a friendly missile unit when the enemy is just out of its range.*
+
+**Cast target:** the unit itself. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground under a unit just out of range: ground_ally_before_range) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
+| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists_custom` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground under a unit just out of range: ground_ally_before_range) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
+
 ### `health_below_15` — 1 entries / 5 keys
 
 unknown - see the mod's own `FOURTH.evaluate_health_below_15`.
@@ -1609,6 +1627,18 @@ The unit itself has an ability recharging (cast on itself), else the closest all
 |---|---|---|---|---|---|---|
 | Spell-Wrought Sceptre | `wh3_dlc23_weapon_abilities_spell_wrought_sceptre` | Own ability recharge: -30 s (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (the caster or an ally recharging: recharging_in_reach) | Fires: When armed, fires when this unit or a friendly unit near it has an ability recharging. Cast target: the unit itself. Bound: 70 m (70% of the game's 100 m reach) |
 
+### `self_moving` — 1 entries / 1 keys
+
+The unit itself MOVING (`is_moving()`). Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is moving.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Blooood! | `wh_main_unit_abilities_blooood` | Acceleration: +18%; Speed: +25%; Fatigue: -0.02 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `cannot_perform_missile_attack` | unlimited / no range column | implemented (moving: self_moving) | Fires: When armed, fires when this unit is moving. Cast target: the unit itself |
+
 ### `self_or_ally_shooting` — 1 entries / 1 keys
 
 The caster SHOOTING past its cast point: cast on itself. Otherwise the closest ally in range that is shooting past its cast point: cast on that ally.
@@ -1633,18 +1663,6 @@ At least two other abilities of this unit, cast by the mod, still recharging. Ca
 |---|---|---|---|---|---|---|
 | Scroll of Power | `wh_main_item_abilities_scroll_of_power` | Own ability recharge: -60 s (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (2+ of its abilities recharging: self_recharging_2) | Fires: When armed, fires when two other abilities of this unit are recharging. Cast target: the unit itself |
 
-### `self_running` — 1 entries / 1 keys
-
-The unit itself RUNNING (`is_moving_fast()`). Casts on the unit itself.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is running.*
-
-**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Blooood! | `wh_main_unit_abilities_blooood` | Acceleration: +18%; Speed: +25%; Fatigue: -0.02 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `cannot_perform_missile_attack` | unlimited / no range column | implemented (running: self_running) | Fires: When armed, fires when this unit is running. Cast target: the unit itself |
-
 ### `self_shooting` — 1 entries / 1 keys
 
 The unit itself shooting past its cast point. Casts on the unit itself.
@@ -1656,6 +1674,30 @@ The unit itself shooting past its cast point. Casts on the unit itself.
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
 | Boom! | `wh_main_unit_abilities_boom` | Armour-Piercing Explosive Damage: +20%; Base Explosive Damage: +25% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `cannot_perform_missile_attack` | unlimited / no range column | implemented (shooting: self_shooting) | Fires: When armed, fires when this unit is shooting. Cast target: the unit itself |
+
+### `self_shooting_clear` — 1 entries / 1 keys
+
+The unit itself shooting past its cast point at a target that is not in melee. Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is shooting at a target that is not in melee.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Of Warp and Ruin | `wh3_dlc29_unit_abilities_of_warp_and_ruin` | Armour-Piercing Explosive Damage: +40%; Base Explosive Damage: +40%; scalar_missile_explosion_radius: +20%; Reload Skill: +30 (to self); Can cause damage to friendly combatants (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (shooting, target not in melee: self_shooting_clear) | Fires: When armed, fires when this unit is shooting at a target that is not in melee. Cast target: the unit itself |
+
+### `self_shooting_healthy` — 1 entries / 1 keys
+
+The unit itself shooting past its cast point and above 50% health. Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is shooting and above half health.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Ominous Powder | `wh3_dlc25_item_abilities_ominous_powder` | Damage: 26 per hit (max 1 entities) (to self); Armour-Piercing Missile Damage: +40%; Base Missile Damage: +40%; Reload Skill: +40; Imbues magical attacks (to self); Armour-Piercing Missile Damage: +80%; Base Missile Damage: +80%; Reload Skill: +80; Imbues magical attacks (to self); Grants one of the listed effects at random (positive); Chance of unit taking damage instead of gaining missile strength and reload bonuses (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (shooting above half health: self_shooting_healthy) | Fires: When armed, fires when this unit is shooting and above half health. Cast target: the unit itself |
 
 ### `self_summon_melee` — 1 entries / 1 keys
 
@@ -1685,7 +1727,7 @@ An ally IN RANGE is in melee AND wavering. Casts on the unit itself (the ally is
 
 ## 3. EXCLUDED / SKIPPED / REJECTED / IMPOSSIBLE — with reasons
 
-These 1050 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
+These 1044 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
 tracker's own final status/reason for that row. The Effect / Restrictions / Range columns are the same
 fresh game-data extraction used in §2, so a later re-decision has the mechanics at hand.
 
@@ -2649,27 +2691,6 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Whirlwind of Death Upgraded | `wh3_dlc25_unit_abilities_whirlwind_of_death_upgraded` | Stance: rebirth; Cannot move (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | skipped (unsuitable: vortex) | When in melee (and not fleeing): cast on self. |
 | Wrath of Ptra | `wh2_dlc09_lord_abilities_wrath_of_ptra` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh2_dlc09_abilities_wrath_of_ptra; AI melee CP: 150; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "The heavenly fire of Ptra's rage, directed at those who dare stand against his servants." | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | skipped (unsuitable: vortex) | When in melee (and not fleeing): cast on self. |
 
-### excluded (no automatic logic) — no effect text available (unsourceable) (16)
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
-|---|---|---|---|---|---|---|
-| Banner of Hellfire | `wh3_main_banner_abilities_banner_of_hellfire` | Damage: 5 per hit (max 2 entities) (to enemies in range); Causes damage to combatants (positive) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
-| Battlefield Resupply | `wh2_dlc11_quest_battle_supply` | Speed: +25%; Heals: 0.008 per tick every 1 s; Fatigue: -0.01; Replenishes ammo: 1.0000 (to allies in range); Replenishes ammunition (positive); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Cloak of the Dunes | `wh2_dlc09_item_abilities_cloak_of_the_dunes` | Stalk (positive); Unspottable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Ghostly Howl | `wh3_dlc29_hero_active_ghostly_howl` | Leadership: -16; Damage: 16 per hit (max 25 entities) (to enemies in range); Causes severe damage to combatants (positive); Strong vs multiple combatants (positive) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `morale_is_higher_than_half_of_base_morale` | cast reach 75 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
-| Hag's Denial | `wh3_dlc24_unit_abilities_hags_denial` | Damage Resistance: +40; Cannot Die (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Hunter's Call | `wh2_dlc13_character_ability_hunters_call` | Melee Defence: +24; Unbreakable (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Icon of the King | `wh3_dlc29_item_abilities_icon_of_the_king` | Heals: 0.008 per tick every 1 s; Resurrects models; Fatigue: -0.01 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-target: `living_unit` | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | When health/men drop below the set line: cast. |
-| Morikhane, the Black Armour | `wh3_dlc29_item_abilities_morikhane_the_black_armour` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: behaviour: missile_mirror; AI missile CP: 200) — the game's own description: "{{tr:ancillaries_colour_text_wh3_dlc29_anc_armour_morikhane_the_black_armour}}" | targeting: self=no friends=no enemies=no ground=no · invalid-target: `unit_is_artillery_or_war_machine` | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
-| Of Warp and Ruin | `wh3_dlc29_unit_abilities_of_warp_and_ruin` | Armour-Piercing Explosive Damage: +40%; Base Explosive Damage: +40%; scalar_missile_explosion_radius: +20%; Reload Skill: +30 (to self); Can cause damage to friendly combatants (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Ominous Powder | `wh3_dlc25_item_abilities_ominous_powder` | Damage: 26 per hit (max 1 entities) (to self); Armour-Piercing Missile Damage: +40%; Base Missile Damage: +40%; Reload Skill: +40; Imbues magical attacks (to self); Armour-Piercing Missile Damage: +80%; Base Missile Damage: +80%; Reload Skill: +80; Imbues magical attacks (to self); Grants one of the listed effects at random (positive); Chance of unit taking damage instead of gaining missile strength and reload bonuses (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Petrifying Gaze | `wh3_dlc24_unit_passive_petrifying_gaze` | Speed: -25% (to enemies in range); Speed: -50% (to enemies in range); Speed: -75% (to enemies in range); Cannot move (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no | cast reach 50 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
-| Rock Bottom | `wh2_dlc15_unit_abilities_rock_bottom` | Damage: 350 per hit (max 1 entities); Replenishes ammo: 0.3000 (to self); Replenishes ammunition (positive); Causes damage to self (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Ruinshelter | `wh2_dlc15_unit_abilities_mimic_ruinshelter` | Speed: -60%; Armour: +45; Melee Attack: +8; Melee Defence: +10 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| Storm of Blades | `wh_dlc05_unit_abilities_storm_of_blades` | Melee Attack: +24; Melee Defence: -24 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-| The Gold Standard | `wh3_dlc25_item_abilities_the_gold_standard` | Invulnerable (positive) (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 100 m | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on an ally. |
-| Whirling Death | `wh2_dlc16_unit_abilities_whirling_death` | Armour-Piercing Weapon Damage: -10; Base Weapon Damage: +25; Freezes ability recharge (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
-
 ### excluded (no automatic logic) — not in wheel: boss-only unit (15)
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
@@ -2689,6 +2710,25 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Servants of Nagash | `wh_dlc04_quest_abilities_servant_of_nagash` | Damage: 266 per hit (max 50 entities) (to self and allies in range); Summons a unit of Grave Guard (positive); Causes severe damage to combatants (positive) | targeting: self=yes friends=yes enemies=no ground=no · invalid-target: `climbing_manning_eq_on_platform`, `health_above_20%` | cast reach 600 m | excluded (not in wheel: boss-only unit) | While the unit has an enemy in its sights: fire at it. |
 | Terrible Malice | `wh3_dlc27_qb_unit_abilities_terrible_malice` | Damage: 732 per hit (max 1 entities); Executes below 0.2 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 20% hit points threshold. (positive) | targeting: self=no friends=no enemies=yes ground=no | cast reach 15 m | excluded (not in wheel: boss-only unit) | While the unit has an enemy in its sights: fire at it. |
 | Visions of Madness | `wh3_dlc27_qb_unit_abilities_visions_of_madness` | Leadership: -16; Rampage (positive); Fatigue: 0.025; Spreading area: wh3_dlc27_qb_unit_abilities_visions_of_madness (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no | cast reach 30 m | excluded (not in wheel: boss-only unit) | — |
+
+### excluded (no automatic logic) — no effect text available (unsourceable) (14)
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
+|---|---|---|---|---|---|---|
+| Banner of Hellfire | `wh3_main_banner_abilities_banner_of_hellfire` | Damage: 5 per hit (max 2 entities) (to enemies in range); Causes damage to combatants (positive) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
+| Battlefield Resupply | `wh2_dlc11_quest_battle_supply` | Speed: +25%; Heals: 0.008 per tick every 1 s; Fatigue: -0.01; Replenishes ammo: 1.0000 (to allies in range); Replenishes ammunition (positive); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Cloak of the Dunes | `wh2_dlc09_item_abilities_cloak_of_the_dunes` | Stalk (positive); Unspottable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Ghostly Howl | `wh3_dlc29_hero_active_ghostly_howl` | Leadership: -16; Damage: 16 per hit (max 25 entities) (to enemies in range); Causes severe damage to combatants (positive); Strong vs multiple combatants (positive) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `morale_is_higher_than_half_of_base_morale` | cast reach 75 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
+| Hag's Denial | `wh3_dlc24_unit_abilities_hags_denial` | Damage Resistance: +40; Cannot Die (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Hunter's Call | `wh2_dlc13_character_ability_hunters_call` | Melee Defence: +24; Unbreakable (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Icon of the King | `wh3_dlc29_item_abilities_icon_of_the_king` | Heals: 0.008 per tick every 1 s; Resurrects models; Fatigue: -0.01 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-target: `living_unit` | effect range (aura) 35 m | excluded (auto: no effect text available (unsourceable)) | When health/men drop below the set line: cast. |
+| Morikhane, the Black Armour | `wh3_dlc29_item_abilities_morikhane_the_black_armour` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: behaviour: missile_mirror; AI missile CP: 200) — the game's own description: "{{tr:ancillaries_colour_text_wh3_dlc29_anc_armour_morikhane_the_black_armour}}" | targeting: self=no friends=no enemies=no ground=no · invalid-target: `unit_is_artillery_or_war_machine` | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
+| Petrifying Gaze | `wh3_dlc24_unit_passive_petrifying_gaze` | Speed: -25% (to enemies in range); Speed: -50% (to enemies in range); Speed: -75% (to enemies in range); Cannot move (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no | cast reach 50 m | excluded (auto: no effect text available (unsourceable)) | While the unit has an enemy in its sights: fire at it. |
+| Rock Bottom | `wh2_dlc15_unit_abilities_rock_bottom` | Damage: 350 per hit (max 1 entities); Replenishes ammo: 0.3000 (to self); Replenishes ammunition (positive); Causes damage to self (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Ruinshelter | `wh2_dlc15_unit_abilities_mimic_ruinshelter` | Speed: -60%; Armour: +45; Melee Attack: +8; Melee Defence: +10 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| Storm of Blades | `wh_dlc05_unit_abilities_storm_of_blades` | Melee Attack: +24; Melee Defence: -24 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
+| The Gold Standard | `wh3_dlc25_item_abilities_the_gold_standard` | Invulnerable (positive) (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 100 m | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on an ally. |
+| Whirling Death | `wh2_dlc16_unit_abilities_whirling_death` | Armour-Piercing Weapon Damage: -10; Base Weapon Damage: +25; Freezes ability recharge (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: no effect text available (unsourceable)) | Whenever the engine allows (no readable condition): cast on self. |
 
 ### excluded (no automatic logic) — not in wheel: army-bar ability - army_spec junction - no battle-wheel button, so it can never be cast; user ruling round 121 (13)
 
@@ -2739,20 +2779,6 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Speed of Lykos | `wh2_dlc10_item_abilities_speed_of_lykos` | Speed: +25%; Stalk (positive); Unspottable (positive) (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 200 m | excluded (impossible: already rejected by user (tactical escape/stealth)) | Whenever the engine allows (no readable condition): cast on an ally. |
 | Tricksy Traps | `wh_dlc06_lord_abilities_tricksy_traps` | Speed: +25%; Stalk (positive); Unspottable (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `climbing` | effect range (aura) 35 m | excluded (impossible: already rejected by user (tactical escape/stealth)) | Whenever the engine allows (no readable condition): cast on self. |
 
-### excluded (no automatic logic) — ground-target-only (9)
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
-|---|---|---|---|---|---|---|
-| Curse of Djaf | `wh2_dlc09_character_abilities_curse_of_djaf` | Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes · invalid-usage: `health_above_50%` | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | Whenever the engine allows (no readable condition): cast on the ground. |
-| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists_custom` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | Whenever the engine allows (no readable condition): cast on the ground. |
-| Soulblight | `wh3_dlc29_spell_bound_soulblight` | Imbues its target's attacks on contact: wh3_dlc25_unit_contact_soulblight (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| Soulblight | `wh2_dlc10_spell_bound_soulblight` | Armour: -30; Armour-Piercing Weapon Damage: -25%; Base Weapon Damage: -25% (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| The Curse of Anraheir | `wh2_dlc16_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| The Curse of Anraheir | `wh3_main_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| The Curse of Anraheir | `wh_dlc05_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-| Transmutation of Lead | `wh3_main_spell_bound_transmutation_of_lead` | Melee Attack: -24; Base Weapon Damage: -30% (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
-
 ### skipped (deferred / unsuitable) — revisit (9)
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
@@ -2792,6 +2818,18 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Hidden in Time | `wh3_main_lord_abilities_hidden_in_time` | Stalk (positive); Unspottable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09)) | Whenever the engine allows (no readable condition): cast on self. |
 | Loec's Shroud | `wh_pro04_unit_abilities_loecs_shroud` | Speed: +25%; Stalk (positive); Unspottable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09)) | Whenever the engine allows (no readable condition): cast on self. |
 | Mirror (Loec's Shroud) | `wh2_dlc15_unit_abilities_mimic_loecs_shroud` | Speed: +25%; Stalk (positive); Unspottable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09)) | Whenever the engine allows (no readable condition): cast on self. |
+
+### excluded (no automatic logic) — ground-target-only (7)
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
+|---|---|---|---|---|---|---|
+| Curse of Djaf | `wh2_dlc09_character_abilities_curse_of_djaf` | Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes · invalid-usage: `health_above_50%` | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| Soulblight | `wh3_dlc29_spell_bound_soulblight` | Imbues its target's attacks on contact: wh3_dlc25_unit_contact_soulblight (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| Soulblight | `wh2_dlc10_spell_bound_soulblight` | Armour: -30; Armour-Piercing Weapon Damage: -25%; Base Weapon Damage: -25% (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| The Curse of Anraheir | `wh2_dlc16_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| The Curse of Anraheir | `wh3_main_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| The Curse of Anraheir | `wh_dlc05_spell_bound_the_curse_of_anraheir` | Speed: -25%; Accuracy: -30; Melee Attack: -24; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
+| Transmutation of Lead | `wh3_main_spell_bound_transmutation_of_lead` | Melee Attack: -24; Base Weapon Damage: -30% (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · effect range (aura) 35 m · targets ground | excluded (auto: ground-target-only) | When in melee: cast on the ground under its current target (placement policy needed). |
 
 ### excluded (no automatic logic) — explosive / breath attack (6)
 
@@ -2864,13 +2902,6 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Battle Howl | `wh3_dlc29_ability_bound_prayer_battle_howl` | Charge Speed: +25%; Speed: +25%; Charge Bonus: +20% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | skipped (unsuitable: movement) | When in melee (and not fleeing): cast on self. |
 | Battle Howl | `wh3_dlc29_spell_bound_prayer_battle_howl` | Charge Speed: +25%; Speed: +25%; Charge Bonus: +20% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | skipped (unsuitable: movement) | When in melee (and not fleeing): cast on self. |
 | Twilight Horn II | `wh2_dlc16_item_abilities_twilight_horn_ii` | Charge Speed: +25%; Speed: +25%; Charge Bonus: +20% (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=yes · always affects self | cast reach 200 m · effect range (aura) 35 m · targets ground | skipped (unsuitable: movement) | When in melee: cast on self (self-cast allowed; nearest-ally picker later). |
-
-### excluded (no automatic logic) — no ammo-low read (ammo replenish) (2)
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
-|---|---|---|---|---|---|---|
-| More Powder! | `wh2_dlc11_hero_abilities_more_powder` | Replenishes ammo: 0.3000 (to self and allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m | excluded (auto: no ammo-low read (ammo replenish)) | Whenever the engine allows (no readable condition): cast on an ally. |
-| Restock! | `wh3_dlc25_abilities_restock_gunnery_school` | Replenishes ammo: 0.3000 (to allies in range); Replenishes ammunition (positive) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m | excluded (auto: no ammo-low read (ammo replenish)) | Whenever the engine allows (no readable condition): cast on an ally. |
 
 ### excluded (no automatic logic) — not in wheel: army ability - removed from mod per user decision 2026-10-17 (2)
 
@@ -2959,8 +2990,8 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 ## Reconciliation (repeat of §1.6)
 
 * §1 inventory rows: **1801**; distinct keys **1800**.
-* §2 implemented: **698** entries / **750** keys — equals the mod's `ABILITIES` count.
-* §3 non-implemented: **1050** rows.
+* §2 implemented: **703** entries / **756** keys — equals the mod's `ABILITIES` count.
+* §3 non-implemented: **1044** rows.
 * Rows whose EFFECT the game's tables cannot source (written `unknown`): **709** of 1801.
 * Abilities carrying a restriction flag (invalid-target / invalid-usage / auto-deactivate): **646**.
 

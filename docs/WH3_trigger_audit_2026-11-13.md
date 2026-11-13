@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-13
 
-Every automated ability (698 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (703 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -77,7 +77,7 @@ None.
 | Armour of Caledor | `armour_of_caledor` | `melee_health75` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Berry Wine | `berry_wine` | `health_aura_ally` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blood Chalice of Bathori | `blood_chalice_of_bathori` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Blooood! | `blooood` | `self_running` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Blooood! | `blooood` | `self_moving` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Breath of Darkness | `undeath_morkharn_breath_of_darkness` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Breath of Darkness Upgraded | `undeath_morkharn_breath_of_darkness_upgraded` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Bugman's XXXXXX | `bugmans_xxxxxx` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |

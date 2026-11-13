@@ -4229,7 +4229,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Bloodbeast `wh2_dlc17_lord_abilities_bloodbeast` | `excluded (auto: vortex)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 6s · self · questionnaire §2 #24 |
 | Bloodstorm `wh2_dlc14_lord_abilities_bloodstorm` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 60s · 9s · self · questionnaire §2 #25 · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast melee survival buff; the old 'vortex' auto-label was wrong)** |
 | Bloodstorm Blades `wh3_dlc26_weapon_abilities_bloodstorm_blades` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 35s · self · questionnaire §2 #26 |
-| Blooood! `wh_main_unit_abilities_blooood` | `implemented (running: self_running)` | self | When armed, fires whenever this unit runs: cast on self. | cd 60s · 18s · self · questionnaire §2 #27 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge only". · **round 140 (2026-11-13):** QA battle 3: an attack order that is not a missile attack cannot be given to a Hellcannon, so the charge trigger could never fire; user ruling "Running, any time". |
+| Blooood! `wh_main_unit_abilities_blooood` | `implemented (moving: self_moving)` | self | When armed, fires whenever the unit moves: cast on self. | cd 60s · 18s · self · questionnaire §2 #27 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge only". · **round 140 (2026-11-13):** QA battle 3: an attack order that is not a missile attack cannot be given to a Hellcannon, so the charge trigger could never fire; user ruling "Running, any time". · **round 142 (2026-11-13):** open batch 1, user ruling "When moving (a Hellcannon never runs)". |
 | Book of Arkhan `wh_main_spell_bound_book_of_arkhan` | `implemented (charge, else in melee: charge_or_melee)` | self | When armed, fires in the charge window, else in melee: cast on self. | cd 60s · 25s · friend · ×4 uses · bound · questionnaire §2 #385 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge, else in melee". |
 | Brass Body `wh2_dlc17_lord_abilities_brass_body` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 41s · self · questionnaire §2 #28 |
 | Breath of Hatred `wh3_dlc23_bound_abilities_breath_of_hatred` | `implemented (in-melee self)` | melee_self | When in melee: cast on self (self-cast allowed; nearest-ally picker later). | cd 90s · 31s · friend/self · ×3 uses · bound · questionnaire §2 #321 |
@@ -4870,17 +4870,17 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Locus of Conjuration `wh3_main_character_abilities_locus_of_conjuration` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 20s · self |
 | Loec's Blessing `wh2_dlc16_lord_abilities_loecs_blessing` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 90s · 32s · friend/self |
 | Loec's Shroud `wh_pro04_unit_abilities_loecs_shroud` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 44s · self · triage-family: Flanking / ambush (flanking_opportunity) |
-| Master of Mists `wh3_dlc27_character_abilities_master_of_mists` | `excluded (auto: ground-target-only)` | ready | Whenever the engine allows (no readable condition): cast on the ground. | cd 120s · 58s · ground · ×2 uses |
-| Master of Mists `wh3_dlc27_character_abilities_master_of_mists_custom` | `excluded (auto: ground-target-only)` | ready | Whenever the engine allows (no readable condition): cast on the ground. | cd 120s · 36s · ground · ×2 uses |
+| Master of Mists `wh3_dlc27_character_abilities_master_of_mists` | `implemented (ground under a unit just out of range: ground_ally_before_range)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 58s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
+| Master of Mists `wh3_dlc27_character_abilities_master_of_mists_custom` | `implemented (ground under a unit just out of range: ground_ally_before_range)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 36s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
 | Master of the Black Arts `wh_main_lord_abilities_master_of_the_black_arts` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 15s · self |
 | Master Predator `wh2_dlc17_lord_abilities_master_predator` | `skipped (user decision 2026-11-01: stances are not automated; a stance chooser is last priority)` | skipped | Not automated: a stance. | cd 1s · -1s · self · wind-up 1s · **round 131 (user ruling 2026-11-01):** "For now, all stances should not have any automation ... the stance logic should evaluate all the available mutually exclusive stances to the unit and decide which to activate." Removed from the mod. |
 | Maw Shard `wh3_main_item_abilities_maw_shard` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 22s · self · ×1 uses |
 | Mirror (Loec's Shroud) `wh2_dlc15_unit_abilities_mimic_loecs_shroud` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 44s · self · triage-family: Flanking / ambush (flanking_opportunity) |
-| More Powder! `wh2_dlc11_hero_abilities_more_powder` | `excluded (auto: no ammo-low read (ammo replenish))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 60s · 10s · friend · ×4 uses |
+| More Powder! `wh2_dlc11_hero_abilities_more_powder` | `implemented (ammo refill: ally_ammo_low)` | ready | When armed, refills the friendly unit within 70 m that is shooting with 70% or less ammunition left (the least first). | cd 60s · 10s · friend · ×4 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Same as Restock!". |
 | Morgrim's Eye `wh3_dlc23_item_abilities_morgrims_eye` | `implemented (firing aura: allies_firing_aura)` | self | When this unit or a friendly unit within 24 m (70% of the 35 m aura) is shooting past its cast point: cast on self (the aura). | cd 120s · 32s · self · **round 131 (user ruling 2026-11-01):** moved off the melee trigger; the caster counts. |
 | Neferra's Scrolls of Mighty Incantations `wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 31s · self · ×1 uses |
-| Of Warp and Ruin `wh3_dlc29_unit_abilities_of_warp_and_ruin` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 32s · self |
-| Ominous Powder `wh3_dlc25_item_abilities_ominous_powder` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 30s · self |
+| Of Warp and Ruin `wh3_dlc29_unit_abilities_of_warp_and_ruin` | `implemented (shooting, target not in melee: self_shooting_clear)` | ready | When armed, fires when the unit is shooting at a target that is not in melee (its shots can hurt friendly units): cast on self. | cd 120s · 32s · self · **round 142 (2026-11-13):** open batch 1, user ruling "Shooting, not into melee". |
+| Ominous Powder `wh3_dlc25_item_abilities_ominous_powder` | `implemented (shooting above half health: self_shooting_healthy)` | ready | When armed, fires when the unit is shooting and above 50% health (it damages its carrier): cast on self. | cd 120s · 30s · self · **round 142 (2026-11-13):** open batch 1, user ruling "Shooting, health above 50%". |
 | Perfect Predator `wh3_dlc27_unit_abilities_perfect_predator` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 48s · self |
 | Potion of Farsight `wh3_main_item_abilities_potion_of_farsight` | `implemented (out of range, inside the boosted range: no_enemy_in_range_within_boost)` | self | When no enemy is inside the unit's own missile range but at least one is inside range x 1.21 (the 70% rule on the +30% bonus): cast on self. Not in melee; ammunition left. | cd 60s · 36s · self · ×1 uses · **round 131 (user ruling 2026-11-01):** the user's own design: the potion only helps when the enemy is just out of reach. |
 | Potion of Speed `wh_main_item_abilities_potion_of_speed` | `implemented (charge only: charge_only)` | self | When armed, fires in the charge window (running at an attack target 12 to 60 m away, impact within 4 s): cast on self. Not in melee. | cd 60s · 36s · self · ×1 uses · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge only". |
@@ -4888,7 +4888,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Power Stone `wh_main_item_abilities_power_stone` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 31s · self · ×1 uses |
 | Prismatic Amplifier `wh3_main_item_abilities_prismatic_amplifier` | `implemented (in-melee self)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 36s · self |
 | Restock! `wh2_dlc17_hero_abilities_more_powder_generic` | `implemented (ally-targeted: ally_ammo_low)` | ally_unit | When a friendly unit within 70 m (70% of the 100 m reach) is shooting and has 70% or less of its ammunition left: cast on the one with the least left. | cd 60s · 10s · friend · ×4 uses · **round 130 (user ruling 2026-11-01, option A):** the firing flag (ammo_left() drop) says it is shooting; 70% = 100% - the 30% refill, so nothing is wasted; charge hold 60 s; an ally refilled in the last 12 s is skipped by every caster. |
-| Restock! `wh3_dlc25_abilities_restock_gunnery_school` | `excluded (auto: no ammo-low read (ammo replenish))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 60s · 10s · friend · ×2 uses |
+| Restock! `wh3_dlc25_abilities_restock_gunnery_school` | `implemented (ammo refill: ally_ammo_low)` | ready | When armed, refills the friendly unit within 70 m that is shooting with 70% or less ammunition left (the least first). | cd 60s · 10s · friend · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Same as Restock!". |
 | Rock Bottom `wh2_dlc15_unit_abilities_rock_bottom` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 45s · 1s · self · wind-up 1s |
 | Ruinshelter `wh2_dlc15_unit_abilities_mimic_ruinshelter` | `excluded (auto: no effect text available (unsourceable))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 60s · self |
 | Sand Veil `wh2_dlc09_army_abilities_sand_veil` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 90s · 89s · friend · ×3 uses · army |
@@ -7383,3 +7383,27 @@ abilities the player clicks, nor campaign recharge bonuses.
 - **Rows / families:** 750 rows / keys, unchanged; 64 families.
 - **Tests:** harness 140 full suite **6,088 checks / 0 failures**, run twice byte-identical. RED 6/6.
 - **Install:** pack md5 `2eafed987e269c47af570cf4670865cb`.
+
+### 10.24 Round 142 - open batch 1 (shooting buffs and ammo refills) and Blooood! (2026-11-13)
+
+**Earlier status:** auto-exclusions ("no ammo-low read", "ground-target-only", "no effect text"), not user decisions.
+CLAUDE.md noted that More Powder! and the gunnery-school Restock! have Restock!'s effect but were not in the round-130
+ruling.
+
+**Rulings (2026-11-13).**
+
+- **More Powder!, Restock! (gunnery school):** "Same as Restock!" -> `ally_ammo_low`.
+- **Master of Mists (2 keys):** "Before range (Farsight-like)" -> NEW `ground_ally_before_range`. It is placed on the
+  ground under the closest friendly missile unit within 175 m (70% of 250 m) that has no enemy in range but one within
+  range x 1.35.
+- **Of Warp and Ruin:** "Shooting, not into melee" -> NEW `self_shooting_clear`.
+- **Ominous Powder:** "Shooting, health above 50%" -> NEW `self_shooting_healthy`.
+- **Blooood!:** the QA battles showed a Hellcannon never runs (`is_moving_fast()` always false). "When moving" -> NEW
+  `self_moving`.
+
+**Arithmetic.**
+
+- **Rows:** implemented 750 + 6 = **756 rows / keys**; not implemented among the included 373 - 6 = **367**.
+- **The mod:** 698 + 5 = **703 entries / 756 keys**; **67** families.
+- **Tests:** harness 141 full suite **6,135 checks / 0 failures**, run twice byte-identical. RED 10/10.
+- **Install:** pack md5 `d4b0ebaef4476414ecea798c9b599a32`.

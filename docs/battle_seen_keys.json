@@ -18,6 +18,7 @@
 "wh2_dlc10_lord_abilities_gaze_of_khaine",
 "wh2_dlc10_spell_bound_lesser_doombolt",
 "wh2_dlc11_character_abilities_ballistic_enchantment",
+"wh2_dlc11_hero_abilities_more_powder",
 "wh2_dlc11_item_abilities_captain_roths_moondial",
 "wh2_dlc11_lord_abilities_claws_of_mourkain",
 "wh2_dlc11_lord_abilities_dark_protection",
@@ -127,7 +128,9 @@
 "wh3_dlc24_lord_abilities_gulyas",
 "wh3_dlc24_unit_abilities_mark_of_yin",
 "wh3_dlc24_unit_bound_missile_mirror",
+"wh3_dlc25_abilities_restock_gunnery_school",
 "wh3_dlc25_character_abilities_pigeon_bomb",
+"wh3_dlc25_item_abilities_ominous_powder",
 "wh3_dlc25_lord_abilities_darkwalker",
 "wh3_dlc25_lord_abilities_deranged_munitions",
 "wh3_dlc25_lord_abilities_glorious_death",
@@ -153,6 +156,7 @@
 "wh3_dlc26_weapon_abilities_the_slayer_sword",
 "wh3_dlc27_character_abilities_captain_of_the_phoenix_guard",
 "wh3_dlc27_character_abilities_iron_hand_captain",
+"wh3_dlc27_character_abilities_master_of_mists_custom",
 "wh3_dlc27_character_abilities_slezuzus_voice",
 "wh3_dlc27_item_abilities_bear_fang_talisman",
 "wh3_dlc27_item_abilities_eagle_feather_torc",
@@ -181,6 +185,7 @@
 "wh3_dlc29_spell_bound_prayer_fury_of_ulric",
 "wh3_dlc29_spell_bound_the_dreaded_thirteenth",
 "wh3_dlc29_unit_abilities_entice",
+"wh3_dlc29_unit_abilities_of_warp_and_ruin",
 "wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain",
 "wh3_dlc29_weapon_abilities_legbiter",
 "wh3_dlc29_weapon_active_hammer_axe_of_skoll",
@@ -288,6 +293,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 155,
+"logs_read": 156,
 "made": "2026-11-13"
 }
