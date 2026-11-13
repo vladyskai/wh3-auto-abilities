@@ -74,7 +74,7 @@ None.
 
 | Ability | Marker | Trigger | Ruling |
 |---|---|---|---|
-| Armour of Caledor | `armour_of_caledor` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Armour of Caledor | `armour_of_caledor` | `melee_health75` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Berry Wine | `berry_wine` | `health_aura_ally` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blood Chalice of Bathori | `blood_chalice_of_bathori` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blooood! | `blooood` | `self_running` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |

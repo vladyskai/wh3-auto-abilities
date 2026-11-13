@@ -53,6 +53,7 @@
 "wh2_dlc14_lord_abilities_whiplash",
 "wh2_dlc15_character_abilities_sausage_busta",
 "wh2_dlc15_hero_abilities_mither",
+"wh2_dlc15_item_abilities_armour_of_caledor",
 "wh2_dlc15_item_abilities_azhags_ard_armour",
 "wh2_dlc15_item_abilities_lucky_banner",
 "wh2_dlc15_item_abilities_vine_dragon_scale",
@@ -113,6 +114,7 @@
 "wh3_dlc23_weapon_abilities_dagger_of_malice",
 "wh3_dlc23_weapon_abilities_dark_mace",
 "wh3_dlc23_weapon_abilities_silver_dagger",
+"wh3_dlc23_weapon_abilities_spell_wrought_sceptre",
 "wh3_dlc23_weapon_abilities_the_graven_sceptre",
 "wh3_dlc24_character_abilities_change_or_die",
 "wh3_dlc24_character_abilities_colossal_strike",
@@ -220,6 +222,7 @@
 "wh3_main_spell_bound_earth_blood",
 "wh3_main_unit_abilities_sky_junk_bomb",
 "wh3_main_weapon_abilities_frost_shard_glaive",
+"wh3_main_weapon_abilities_staff_of_tomorrow",
 "wh3_main_weapon_abilities_the_eternal_blade",
 "wh3_main_weapon_abilities_torment_blade",
 "wh3_main_weapon_abilities_ursuns_claws",
@@ -235,6 +238,7 @@
 "wh_dlc06_unit_abilities_smoke_bomb",
 "wh_dlc07_character_abilities_heroic_killing_blow",
 "wh_dlc07_hero_abilities_dolorous_blade",
+"wh_dlc08_item_abilities_terrorgheist_skull",
 "wh_main_character_abilities_blood_lust",
 "wh_main_character_abilities_deadly_onslaught",
 "wh_main_character_abilities_foe_seeker",
@@ -284,6 +288,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 154,
+"logs_read": 155,
 "made": "2026-11-13"
 }
