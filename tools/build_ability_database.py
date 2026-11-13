@@ -708,6 +708,7 @@ def main():
         "self_shooting": "The unit itself shooting past its cast point. Casts on the unit itself.",
         "under_fire": "The unit itself under missile fire (`is_under_missile_attack()` exactly true); for an aura also any friendly unit within the aura bound. Casts on the unit itself.",
         "melee_or_under_fire": "The unit in melee (not wavering) or under missile fire; for an aura also any friendly unit within the aura bound in melee or under fire. Casts on the unit itself.",
+        "self_running": "The unit itself RUNNING (`is_moving_fast()`). Casts on the unit itself.",
         "melee_or_wavering_aura": "The unit itself in melee or WAVERING, or a friendly unit inside the aura bound in melee or wavering. Casts on the unit itself.",
         "enemy_missile_shooting": "An ENEMY missile unit in range that is SHOOTING (its `ammo_left()` dropped between two polls within the firing-flag window) and not in melee. Casts on that enemy.",
         "wavering_aura": "The unit itself WAVERING, or a friendly unit inside the aura bound wavering (the whole army for an army-wide aura; nobody else for a self-only effect). Casts on the unit itself.",

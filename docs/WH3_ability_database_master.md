@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-09 21:46 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-13 20:04 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -69,7 +69,7 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `allies_firing_aura` | When armed, fires when this unit or a friendly unit near it is shooting | 8 | 8 |
 | `enemy_fast_near_ally` | When armed, fires on a fast enemy unit moving close to your units | 7 | 7 |
 | `wavering_ally_range` | When armed, fires when an ally in range is wavering | 6 | 6 |
-| `charge_only` | When armed, fires when this unit charges | 5 | 5 |
+| `charge_only` | When armed, fires when this unit charges | 4 | 4 |
 | `melee_or_under_fire` | When armed, fires when this unit (or, for an aura, a friendly unit near it) is in melee or under missile fire | 4 | 4 |
 | `melee_skip_commanders` | When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero | 4 | 5 |
 | `wavering_self` | When armed, fires when this unit is wavering | 3 | 3 |
@@ -92,6 +92,7 @@ rows carry one of those keys. The tracker's own status column counts **751 imple
 | `ally_heal_melee` | When armed, fires when this unit is in melee, on the lowest-health ally in range at or below 75% health | 1 | 1 |
 | `ally_overseer` | When armed, fires on a non-commander, non-large ally in range | 1 | 1 |
 | `charge_or_wavering` | When armed, fires when this unit charges or is wavering | 1 | 1 |
+| `self_running` | When armed, fires when this unit is running | 1 | 1 |
 | `self_shooting` | When armed, fires when this unit is shooting | 1 | 1 |
 | `self_or_ally_shooting` | When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
 | `melee_or_self_or_ally_shooting` | When armed, fires on this unit in melee or when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
@@ -1068,7 +1069,7 @@ An ally IN RANGE is wavering — the ally need NOT be in melee. Casts on the CHO
 | Pilgrimage of Skulls | `wh3_dlc26_lord_abilities_pilgrimage_of_skulls` | Unbreakable (positive); Fatigue: -0.01 (to self and allies in range) | targeting: self=no friends=yes enemies=no ground=no · always affects self | cast reach 100 m · effect range (aura) 35 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (morale: cast on the wavering ally: wavering_ally_range) | Fires: When armed, fires when an ally in range is wavering. Cast target: the chosen wavering ally. Bound: 70 m (70% of the game's 100 m reach) |
 | Tacticians, Rally! | `wh3_dlc24_character_abilities_tacticians_rally` | Leadership: +16 (to self and allies in range); Extended cast range (magic) | targeting: self=no friends=yes enemies=no ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground · trigger bound 70 m (70% of the game's 100 m reach) | implemented (morale: cast on the wavering ally: wavering_ally_range) | Fires: When armed, fires when an ally in range is wavering. Cast target: the chosen wavering ally. Bound: 70 m (70% of the game's 100 m reach) |
 
-### `charge_only` — 5 entries / 5 keys
+### `charge_only` — 4 entries / 4 keys
 
 The charge window ONLY (no melee arm). Casts on the unit itself.
 
@@ -1079,7 +1080,6 @@ The charge window ONLY (no melee arm). Casts on the unit itself.
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
 | Apocalyptic Charge | `wh_pro04_unit_abilities_apocalyptic_charge` | Charge Speed: +10%; Charge Bonus: +20% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented (charge only: charge_only) | Fires: When armed, fires when this unit charges. Cast target: the unit itself |
-| Blooood! | `wh_main_unit_abilities_blooood` | Acceleration: +18%; Speed: +25%; Fatigue: -0.02 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `cannot_perform_missile_attack` | unlimited / no range column | implemented (charge only: charge_only) | Fires: When armed, fires when this unit charges. Cast target: the unit itself |
 | Ferocious Battle Howl | `wh3_dlc29_spell_bound_prayer_ferocious_battle_howl` | Charge Speed: +50%; Speed: +25%; Charge Bonus: +40%; Mass: +50% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | implemented (charge only) | Fires: When armed, fires when this unit charges. Cast target: the unit itself |
 | Potion of Speed | `wh_main_item_abilities_potion_of_speed` | Charge Speed: +25%; Acceleration: +18%; Speed: +25%; Fatigue: -0.01 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (charge only: charge_only) | Fires: When armed, fires when this unit charges. Cast target: the unit itself |
 | Twilight Horn I | `wh2_dlc16_item_abilities_twilight_horn_i` | Charge Speed: +25%; Speed: +25%; Charge Bonus: +20% (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 200 m | implemented (charge only: charge_only) | Fires: When armed, fires when this unit charges. Cast target: the unit itself |
@@ -1584,6 +1584,18 @@ The caster SHOOTING past its cast point: cast on itself. Otherwise the closest a
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
 | Deranged Munitions | `wh3_dlc25_lord_abilities_deranged_munitions` | Armour-Piercing Missile Damage: +50%; Base Missile Damage: +50%; Imbues magical attacks (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self · invalid-target: `cannot_perform_missile_attack` | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (self or a shooting ally: self_or_ally_shooting) | Fires: When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting. Cast target: the caster when it shoots, otherwise the closest shooting ally. Bound: 70 m (70% of the game's 100 m reach) |
+
+### `self_running` — 1 entries / 1 keys
+
+The unit itself RUNNING (`is_moving_fast()`). Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is running.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Blooood! | `wh_main_unit_abilities_blooood` | Acceleration: +18%; Speed: +25%; Fatigue: -0.02 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `cannot_perform_missile_attack` | unlimited / no range column | implemented (running: self_running) | Fires: When armed, fires when this unit is running. Cast target: the unit itself |
 
 ### `self_shooting` — 1 entries / 1 keys
 

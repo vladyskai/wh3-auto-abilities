@@ -4229,7 +4229,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Bloodbeast `wh2_dlc17_lord_abilities_bloodbeast` | `excluded (auto: vortex)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 6s · self · questionnaire §2 #24 |
 | Bloodstorm `wh2_dlc14_lord_abilities_bloodstorm` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 60s · 9s · self · questionnaire §2 #25 · **round 122 (2026-10-27): IMPLEMENTED on melee_unwavering (self-cast melee survival buff; the old 'vortex' auto-label was wrong)** |
 | Bloodstorm Blades `wh3_dlc26_weapon_abilities_bloodstorm_blades` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 35s · self · questionnaire §2 #26 |
-| Blooood! `wh_main_unit_abilities_blooood` | `implemented (charge only: charge_only)` | self | When armed, fires in the charge window (running at an attack target 12 to 60 m away, impact within 4 s): cast on self. Not in melee. | cd 60s · 18s · self · questionnaire §2 #27 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge only". |
+| Blooood! `wh_main_unit_abilities_blooood` | `implemented (running: self_running)` | self | When armed, fires whenever this unit runs: cast on self. | cd 60s · 18s · self · questionnaire §2 #27 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge only". · **round 140 (2026-11-13):** QA battle 3: an attack order that is not a missile attack cannot be given to a Hellcannon, so the charge trigger could never fire; user ruling "Running, any time". |
 | Book of Arkhan `wh_main_spell_bound_book_of_arkhan` | `implemented (charge, else in melee: charge_or_melee)` | self | When armed, fires in the charge window, else in melee: cast on self. | cd 60s · 25s · friend · ×4 uses · bound · questionnaire §2 #385 · **round 134 (2026-11-09):** audit batch 3, user ruling: "Charge, else in melee". |
 | Brass Body `wh2_dlc17_lord_abilities_brass_body` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 41s · self · questionnaire §2 #28 |
 | Breath of Hatred `wh3_dlc23_bound_abilities_breath_of_hatred` | `implemented (in-melee self)` | melee_self | When in melee: cast on self (self-cast allowed; nearest-ally picker later). | cd 90s · 31s · friend/self · ×3 uses · bound · questionnaire §2 #321 |
@@ -7329,3 +7329,35 @@ fatigue trigger; each keeps its current trigger. The trigger audit lists them un
 - **Rows / families:** 750 rows / keys, unchanged; 59 families.
 - **Tests:** harness 138 full suite **6,018 checks / 0 failures**, run twice byte-identical. RED 4/4.
 - **Install:** pack md5 `55f3263e09fedd951d1bcd8ee9ce9351`.
+
+### 10.22 Round 140 - the QA battles of 2026-11-13: shooting and moving; Blooood! (2026-11-13)
+
+**QA battles read** (the log cut from byte 446,198,331, four sessions).
+
+- **Battle 2 (Skaven):** Rally! fired for a wavering Clanrat unit 11 m away (157 s) and when the Warlord himself
+  wavered (226 s). Unholy Clamour: no DLC.
+- **Battle 3, fought twice (Warriors of Chaos):** Boom! cast on its cast point both times. In the first battle it also
+  cast at 159 s while the Hellcannon ran: its last shot was at 135 s and the firing flag stays on for max(2 x reload,
+  20 s). Blooood! could not fire: a Hellcannon cannot receive a non-missile attack order.
+- **Battle 4 (Cathay):** no DLC.
+- **Battle 5 (Tomb Kings):**
+  - The Necrotect's Restore heals constructs only (the game's `unit_is_not_construct` rule).
+  - It cast at 208 s (Sepulchral Stalkers at 74%, 35 m). At 268 s the Stalkers were at 12% and 40.7 m away (inside the
+    70 m bound), but the game refused "on cooldown": the 60 s recharge starts after the 24 s effect, so it was ready
+    only at about 292 s, and the Stalkers were gone by 274 s.
+  - The cooldown reducer the user saw misused is Staff of Nagash (-30 s), which fires in melee.
+
+**Rulings (2026-11-13).**
+
+- *"Unless the unit can fire while moving, shooting and moving are incompatible."* Every firing-flag read now
+  requires the unit not to be moving, unless its type is in the GENERATED fire_move set (233 types, unit attribute
+  `mounted_fire_move`).
+- **Blooood!:** "Running, any time" -> NEW `self_running`.
+- **The 9 recharge reducers:** *"We should go one by one, maybe the other effects of those active abilities are more
+  important."* This is a review for a later round.
+
+**Arithmetic.**
+
+- **Rows / families:** 750 rows / keys, unchanged; 60 families; charge_only 5 -> 4.
+- **Tests:** harness 139 full suite **6,049 checks / 0 failures**, run twice byte-identical. RED 8/8.
+- **Install:** pack md5 `76cc9ff49ac96ac6ee89fa12372576b1`.
