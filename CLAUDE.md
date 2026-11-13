@@ -206,7 +206,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   two formations can have box edges 0.5 m apart with centres 15 m apart.
 - There is NO radius, depth or bounding box read in the API. ordered_width() (the ORDERED formation's frontage, metres)
   exists; depth is only an estimate (width, men, the game's unit_spacings table: gamedata\wh3\unit_spacings.tsv).
-  The air drop still uses its one documented constant.
+  The air drop still uses its one documented constant. Field (2026-11-13): ordered_width() answers on enemies too.
 - `ordered_position()` is the destination, usable as a heading source, unreliable for units
   that are attacking.
 - `HealthPercent` returns a 0..1 fraction, not 0..100.
@@ -317,12 +317,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
-- THE MAP PROBE (round 145, read-only, awaiting a battle): every 2 s the log gets MAP rows (both sides: centre,
-  officer, bearing, ordered_width, men, hp, strategic_value, infantry, class, visibility, melee, moving, flying).
-  strategic_value() and is_visible_to_alliance() were never read before; ordered_width() never on enemies. Read a battle
-  with tools\analyze_map_log.py <log> --from <offset> (readability, value vs cost, footprints, 10/15/20 m blobs).
-  No trigger uses it until the user designs one. The bearing direction (sin b, cos b) is an assumption to check.
-
+- THE MAP PROBE (round 145, read-only; battle 1 read 2026-11-13, docs\WH3_map_probe_battle1.md): every 2 s the log
+  gets MAP rows for both sides. Field facts: every read answers on BOTH sides (ordered_width included) except
+  position_of_officer() (0%); is_visible_to_alliance(bm:get_player_alliance()) works (living enemies hidden in fog
+  read 0; dead units read 0); strategic_value() is a live value near the unit's cost at full strength, falling with
+  men and health, 0 when dead; bearing b faces (sin b, cos b) on X/Z (median 8.6 deg off the travel direction);
+  is_infantry() AND unit_class() call Fell Bats, Devils, the Varghulf and the Zombie Dragon infantry: an infantry
+  test needs the generated large set and not-flying too; dead units stay in both lists with men=0. The biggest
+  blob was the enemy mobbing one of OUR units: any blob trigger needs the friendly check. Read a battle with
+  tools\analyze_map_log.py <log> --from <offset>. No trigger uses the map until the user designs one.
 - Game data moved out of Temp on 2026-11-01 (round 124): `gamedata\wh3\` regenerated from the
   installed game, drift recorded in `gamedata\DRIFT_2026-11-01.md` (no mod constant moved).
   Earlier rounds' builders and harnesses still name Temp; they are history, not re-run.

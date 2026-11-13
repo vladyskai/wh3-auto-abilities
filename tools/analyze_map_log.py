@@ -29,6 +29,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gamedata_paths as GP  # noqa: E402
+import gen_unit_size_keys as SZ  # noqa: E402
 
 ROW = re.compile(r"MAP t=(?P<t>[\d.]+) side=(?P<side>[PE]) (?P<rest>.*)$")
 END = re.compile(r"MAP_END t=(?P<t>[\d.]+) own=(?P<own>\d+) enemy=(?P<en>\d+) alliance=(?P<al>\S+)")
@@ -66,7 +67,8 @@ def load_tables():
                 sp[r["key"]] = (float(r["close_formation_spacing_horizontal"]), float(r["close_formation_spacing_vertical"]))
             except (KeyError, ValueError):
                 pass
-    return spacing_of, cost_of, men_of, sp
+    large, _single = SZ.derive()
+    return spacing_of, cost_of, men_of, sp, set(large)
 
 
 def num(v):
@@ -98,7 +100,7 @@ def parse(lines):
 
 
 def footprint(d, T):
-    spacing_of, cost_of, men_of, sp = T
+    spacing_of, cost_of, men_of, sp, large = T
     w = num(d.get("width"))
     men = num(d.get("men_alive"))
     h_v = sp.get(spacing_of.get(d.get("type", ""), ""))
@@ -107,6 +109,10 @@ def footprint(d, T):
     if men <= 1 or w < 3:
         r = max(w, 2.0)
         return r, r, "single"
+    # field 2026-11-13: vehicles, monsters and cavalry blocks are not ranked infantry (land ships came out 575 m
+    # deep); their footprint is taken as square (width x width)
+    if not str(d.get("class", "")).startswith("inf") or d.get("type") in large:
+        return w, w, "square (not ranked infantry)"
     if h_v is None:
         h_v = (1.5, 1.6)
         how = "est (default spacing)"
@@ -136,8 +142,17 @@ def samples(d, T, n=5):
     return out
 
 
-def blobs(rows, T, R):
-    enemy = [d for d in rows if d["side"] == "E" and d.get("inf") == "1" and d.get("vis") != "0"]
+def is_infantry(d, T):
+    # field 2026-11-13: is_infantry() and unit_class() both say infantry for Fell Bats, Devils of Swartzhafen, the
+    # Varghulf and the Zombie Dragon. Infantry here = an infantry class, NOT in the generated large set, not flying,
+    # at least 10 soldiers alive.
+    men = num(d.get("men_alive")) or 0
+    return (str(d.get("class", "")).startswith("inf") and d.get("type") not in T[4]
+            and d.get("fly") != "1" and men >= 10)
+
+
+def blobs(rows, T, R, safe=False):
+    enemy = [d for d in rows if d["side"] == "E" and is_infantry(d, T) and d.get("vis") != "0"]
     ours = [d for d in rows if d["side"] == "P"]
     pts_e = [(d, samples(d, T)) for d in enemy]
     pts_o = [p for d in ours for p in samples(d, T)]
@@ -160,13 +175,15 @@ def blobs(rows, T, R):
                 got += inside
                 units.append("%s(%d)" % (d.get("type", "?").split("_")[-1], round(inside)))
         friendly = sum(m for px, pz, m in pts_o if math.hypot(px - cx, pz - cz) <= R + 5)
+        if safe and friendly >= 1:
+            continue
         if best is None or got > best[0]:
             best = (got, cx, cz, units, friendly)
     return best
 
 
 def report(snaps, ends, T):
-    spacing_of, cost_of, men_of, sp = T
+    spacing_of, cost_of, men_of, sp, large = T
     L = ["# Battlefield map probe report", ""]
     allrows = [d for rows in snaps.values() for d in rows]
     L.append("Snapshots: %d; rows: %d (ours %d, enemy %d). Alliance read: %s." % (
@@ -219,12 +236,12 @@ def report(snaps, ends, T):
         L.append("| %s | %s | %.1f | %s | %.1f | %s |" % (k[0], k[1], fp[0], d.get("men_alive"), fp[1], fp[2]))
     L += ["", "## 4. Blobs: the best circle each snapshot (enemy infantry soldiers inside; ours within R + 5 m)", "",
           "Bearing assumption: facing (sin b, cos b) on X/Z.", ""]
-    for R in RADII:
-        L += ["### Radius %d m" % R, "", "| t (s) | Enemy soldiers inside | Units | Centre (x, z) | Ours near |",
-              "|---:|---:|---|---|---:|"]
+    for R, safe in [(r, False) for r in RADII] + [(r, True) for r in RADII]:
+        L += ["### Radius %d m%s" % (R, " - SAFE (none of ours within R + 5 m)" if safe else ""), "",
+              "| t (s) | Enemy soldiers inside | Units | Centre (x, z) | Ours near |", "|---:|---:|---|---|---:|"]
         rowsR = []
         for t, rows in snaps.items():
-            b = blobs(rows, T, R)
+            b = blobs(rows, T, R, safe)
             if b is not None and b[0] >= 1:
                 rowsR.append((t, b))
         for t, b in sorted(rowsR, key=lambda tb: -tb[1][0])[:15]:
