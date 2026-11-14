@@ -109,3 +109,25 @@ blocks, 6 s) for the card values, then re-checked after two more 20 s stretches 
 Conclusion: the engine does not keep the live melee attack, melee defence or leadership of a unit as a stored
 number within three pointers of it; it computes them when the card (or the AI) asks. Live hit points and men are
 stored and exact. The remaining route to live melee stats is the active-modifier list plus the game's own sum.
+
+## Whole-memory leadership scan (battle 2, 2026-11-14)
+
+Empire Spearmen (Shields), ours, selected, fighting the enemy's Spearmen RoR. `tools/memprobe/rscan.py` scans ALL
+writable memory for floats in a RANGE (card value +-0.5, so a rounded stored value is not missed).
+
+| Card leadership | Candidates |
+|---|---|
+| 75 (first scan 74.5..75.5) | 59,393 |
+| 75 (after 15 s) | 59,052 |
+| 64 | 16 |
+| 64, 64 | 16 |
+| 69 | 16: all 16 read exactly 69.0 |
+
+All 16 are whole numbers and every one sits in the same pattern, `value, 120, -55` (a stat bar: value, bar top,
+bar bottom), surrounded by UI text (`CcoComponentunit_card`, `button_flame`, sprite and texture names;
+`tools/memprobe/around.py`). They are the interface's copies of the displayed number, not the engine's leadership.
+
+Conclusion: no float within +-0.5 of the card's leadership exists anywhere in memory except the UI's copies. If the
+engine stores a unit's morale, it stores it on another scale (or as an integer, not scanned) and computes the
+card's number from it. Next possible step: an unknown-value "changed / unchanged" scan of the memory blocks around
+the unit objects, which is not limited to the card's scale.
