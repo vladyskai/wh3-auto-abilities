@@ -91,3 +91,21 @@ of the unit. Most likely the engine computes them when asked, from the base valu
 (the card's tooltip lists them: "Unit rank: 1", "Very tired: -9"). `[[obj+170]+2A8]+2BC` holds -9.0 on all three
 readings and may be the fatigue modifier (unproven). Reaching the live values would need either a deeper search
 (three or more pointers) or reading the modifier list and repeating the game's own sum.
+
+## Deeper search (three pointers), same battle, 2026-11-14
+
+`tools/memprobe/bfs.py` searched every block up to three pointers from the sword Marauders' handle (36,290
+blocks, 6 s) for the card values, then re-checked after two more 20 s stretches of fighting (card: leadership
+14 -> 4 -> 4; melee attack 23 or 25, melee defence 26, armour 11, charge 13 unchanged).
+
+- Leadership: 757 -> 13 -> 10 paths followed 14 -> 4. NONE of them resolves from any of the other five units
+  (`tools/memprobe/cross.py`): they lead to data kept for the SELECTED unit only (most likely the card's own UI),
+  not to a field of the unit.
+- Melee attack / defence / armour / charge: hundreds of paths keep the value because the card did not change.
+  Followed from all six units, no melee-defence path gives a sensible value on every unit; the few attack / armour
+  / charge paths that resolve everywhere give table constants (equal for the two Skaven unit types), not live stats.
+- The -9.0 at `[[obj+170]+2A8]+2BC` resolves on the selected unit only: also selected-unit data.
+
+Conclusion: the engine does not keep the live melee attack, melee defence or leadership of a unit as a stored
+number within three pointers of it; it computes them when the card (or the AI) asks. Live hit points and men are
+stored and exact. The remaining route to live melee stats is the active-modifier list plus the game's own sum.
