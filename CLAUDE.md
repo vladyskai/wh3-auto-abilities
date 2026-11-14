@@ -320,7 +320,8 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 - MEMORY READING (round 147, 2026-11-14, docs\WH3_round147_address_probe.md): tools\memprobe\memprobe.py reads
   Warhammer3.exe memory READ-ONLY (no admin needed; about 9 s per full scan). Unit HP = 4-byte int equal to the card.
   Cheat Engine pointer paths all died after a game restart. Round 147 logs addr=<tostring(handle)> on every MAP row;
-  awaiting a battle from byte 536,901,626 (restart the game first). Claude can press keys (P pauses) but not click.
+  battle 1 read: addr= is the engine's unit object; [obj+8]: +80 max HP, +A4 men alive, +208/+210 x/z,
+  +228 width; [[obj+8]+280]+5CC CURRENT HP (all 6 units, both sides). Claude can press keys (P pauses) but not click.
 
 - THE MAP PROBE (round 145, read-only; battle 1 read 2026-11-13, docs\WH3_map_probe_battle1.md): every 2 s the log
   gets MAP rows for both sides. Field facts: every read answers on BOTH sides (ordered_width included) except

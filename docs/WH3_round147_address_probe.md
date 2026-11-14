@@ -42,3 +42,29 @@ Then: read the `addr=` values; if they are addresses, point memprobe at one and 
 points (the card number) inside the object or one pointer away. Unknown and decisive: whether
 `tostring` on CA's handle shows an address at all, and whether the handle holds a pointer to the
 engine's unit.
+
+## Field result, battle 1 (2026-11-14, log from byte 536,901,626)
+
+Custom battle: 2 Slaanesh Marauder units (ours) against 4 Skaven infantry units.
+
+- `addr=` reads `battle.unit_(000000015CC7C590)`: a real address, the same on every row of a unit. Offset 0 of
+  that object points into Warhammer3.exe (a C++ vtable), so it is the engine's own unit object.
+- One pointer behind it, `[obj+8]`, the same layout for all 6 units, ours and the enemy's:
+
+| Field | Meaning | Proof |
+|---|---|---|
+| `[[obj+8]+280]+5CC` (int) | CURRENT hit points | 6/6 units within about 1% of the mod's `hp=` x max (4781/9360 = 0.511 vs 0.52, ...); the same final offset 5CC as Cheat Engine's battle-1 chain |
+| `[obj+8]+80`, `+84` (int) | MAXIMUM hit points | = men x (entity hit_points + bonus_hit_points) from the game tables, exact for 3 unit types; never moved in the fight |
+| `[obj+8]+A4`, `+184` (int) | men alive | fell live in the fight (Marauders 120 -> 81, Skavenslaves 180 -> 110), equal to the log's `men=` |
+| `[obj+8]+A0` (int) | 128 / 256, unknown (slot capacity?) | not checked |
+| `[obj+8]+208`, `+210` (float) | position x / z | equal to the log |
+| `[obj+8]+228` (float) | ordered width | equal to the log |
+
+Tools (all READ-ONLY): `tools/memprobe/peek.py` (look at an object), `fields.py` / `near.py` / `near2.py`
+(find a known value in an object up to two pointers deep), `watch.py` (record the fields every second from the
+log's addresses).
+
+Not yet known: whether the offsets survive a game restart (they should: they are offsets inside the engine's
+own objects, not addresses), whether they survive a game PATCH (likely not; re-find with the tools), other stats
+(leadership, fatigue, ability cooldowns), and how the mod would READ these values back (an outside file read by
+Lua `io`, untested).
