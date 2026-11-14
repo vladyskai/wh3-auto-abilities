@@ -131,3 +131,23 @@ Conclusion: no float within +-0.5 of the card's leadership exists anywhere in me
 engine stores a unit's morale, it stores it on another scale (or as an integer, not scanned) and computes the
 card's number from it. Next possible step: an unknown-value "changed / unchanged" scan of the memory blocks around
 the unit objects, which is not limited to the card's scale.
+
+## Unknown-scale leadership scan (battle 2, 2026-11-14)
+
+`tools/memprobe/uscan.py` snapshotted EVERY 4-byte slot in the 26,476 blocks reachable within three pointers of
+the selected Spearmen's handle (25.5 million slots, about 1 s), dropped 1.6 million that move while paused, kept
+the 2.5 million that changed when the card first changed, and recorded their values over 8 steps while the card
+read 69, 69, 66, 66, 66, 62, 60, 67 (read exactly from one of the UI copies). `ufit.py` ranks every slot by how
+well its history is a straight-line function of the card's (any scale, either sign; small integers read as floats
+are tiny numbers that also stay linear, so integer storage is covered too).
+
+- 28 perfect fits (r = 1.0000) on four scales: the card value itself; value / 120 (the bar fill); (value + 55) / 175
+  (the bar fill from its -55 bottom); (value - 18) / 3 (unexplained).
+- Followed from the ENEMY unit's handle, none of the 28 resolves at all (`ucross.py`): all are data kept for the
+  selected unit only (the card and its bars). Looser fits (r > 0.9, 9,031 slots over 8 samples) are noise; the 234
+  that resolve on the enemy give 0 or denormal values.
+
+Conclusion: within three pointers of the unit there is no per-unit value, on any linear scale, that follows the
+leadership the card shows. Together with the whole-memory scan (only UI copies on the card's scale), the live
+leadership is either computed when asked or kept in a structure the unit does not point to within three steps
+(for example a separate morale system).
