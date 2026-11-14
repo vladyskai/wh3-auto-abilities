@@ -43,3 +43,24 @@ used exactly that address + 0x8.
 The user subscribes to memreader Plus and enables it in the launcher (rule 6: Claude adds no mods), restarts the
 game, and fights a battle with a real melee. Log offset before it: 555,628,705. Pass criteria: one `present` row;
 `mr_men` = `men=`; `mr_hp` / max = `hp=`; `mr_lead` = the card when read; no POLL ERROR, no `failed` row.
+
+## Field result, battle 1 (2026-11-14, log from byte 555,628,705)
+
+A large Empire mirror battle: 40 units of ours, 42 of the enemy's (characters, infantry, cavalry, war wagons, land
+ships, steam tanks), 110 snapshots, 8,800 MAP rows. Checked with `tools/check_memreader_log.py`.
+
+- `MEMREADER present version=1.2000000476837` once (memreader Plus reports memreader 1.2 compatibility). No
+  `read failed`, no `off`, no POLL ERROR. Every row was read (0 rows with ? or -).
+- **Men: 8,800 / 8,800 exact** (`mr_men` = the engine's `men=`), both sides.
+- **Hit points: 8,480 / 8,800 within 0.005** of the engine's `hp=` (mr_hp divided by the unit's mr_hp while hp=1.00).
+  The 320 others are almost all memory HIGHER than `hp=` (319 of 320), mostly scattered single snapshots
+  (up to 0.08), so the two reads most likely sample a unit at slightly different moments of damage. Two units
+  are off more often: the War Wagon RoR (79/110) and Ulrika's warhorse (50/110), both by a small positive amount,
+  which suggests their `hp=` uses a different total (unexplained). Round 147 showed the memory value equals the
+  unit CARD exactly.
+- **Leadership: plausible on every unit.** Units that never break hold flat values (Flagellants 110, Gotrek 100,
+  steam tanks and the land ship 110, its RoR copies 100); every other unit moves (up to 91 changes) and units that
+  broke go NEGATIVE (lowest -40, a War Wagon RoR; many infantry between -1 and -36), as the Cheat Engine table
+  said ("signed current leadership"). No card was compared in this battle; round 147 matched the card 4 times.
+
+Verdict: the memreader probe works in a real battle, on both sides, for every unit type in it, with no errors.
