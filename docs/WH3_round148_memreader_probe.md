@@ -64,3 +64,27 @@ ships, steam tanks), 110 snapshots, 8,800 MAP rows. Checked with `tools/check_me
   said ("signed current leadership"). No card was compared in this battle; round 147 matched the card 4 times.
 
 Verdict: the memreader probe works in a real battle, on both sides, for every unit type in it, with no errors.
+
+## All card stats: wide search (battle 2, 2026-11-14, outside reader)
+
+`tools/memprobe/wide.py` reads the engine unit object `[handle+8]` up to 0x8000 bytes plus every block it points to
+(up to 0x8000 each), saves every offset holding each card value of the selected unit (Huntsman General), and keeps
+the ones that follow the card; `score.py` checks candidates on all 80 units against land_units.
+
+Card readings (General): start: HP 3908, armour 45, leadership 79, speed 36, MA 43, MD 40, WS 360, charge 30, ammo 45,
+range 180, missile strength 500. In melee: HP 3695, leadership 51, speed 34, MA 41, ammo 42 (rest unchanged). Later:
+HP 3490, leadership 33 (rest unchanged).
+
+| Stat | Result |
+|---|---|
+| Hit points | LIVE `[[u+8]+0x280]+0x5CC` (card 3908 / 3695 / 3490) |
+| Men | LIVE `[u+8]+0xA4` |
+| Leadership | LIVE `[u+8]+0x3B78` int (also `+0x3B7C`) (79 / 51 / 33) |
+| Ammunition | LIVE `[u+8]+0x3D90` int = TOTAL shots left across all men (Long Rifles 768 = 32 x 24; General 42 = card); 0 for melee units |
+| Melee attack | BASE only: `[u+8]+0x37F0` float (43 while the card read 41). No live copy anywhere in the object or one pointer away (2,060 candidates -> 0): computed when asked |
+| Speed | not found: the one candidate that followed 36 -> 34 is another unit's melee attack field (coincidence) |
+| Melee defence, charge, missile strength, ammo at start | BASE: `+0x3820`, `+0x379C`, `+0x38F8`, `+0x373C` floats; 80/80 units equal their land_units value |
+| Armour, weapon strength, range | undetermined: the card never changed during the test |
+
+The base block (`[u+8]+0x3730..0x3A90`) holds one record per stat (a -100 floor, the value, then 1.0 / 0.1 multipliers);
+the same layout as round 147's `[[u+8]+0x280]+0x850` block.
