@@ -180,3 +180,28 @@ the memreader repository (https://github.com/Cpecific/twwh2-memreader).
    2021-11-03); the Warhammer 3 Workshop versions were not readable (HTTP 429), so their API and battle support are
    unverified. Using it means another mod and a DLL written into the game folder: the user's decision (rule 6).
 4. The same table also hooks spell cooldowns and charges (no offsets published in the visible posts).
+
+## memreader Plus (read 2026-11-14)
+
+Sources: https://steamcommunity.com/sharedfiles/filedetails/?id=3811098873 and https://github.com/PKozdra/memreader_plus
+(MIT, source public, GitHub builds every release; the Workshop .pack is the same file as the release).
+
+- Workshop: 89,038 subscribers, 64 dependent items, updated 4 Nov (v0.15.2); the author expects it NOT to need updates
+  between game versions (it finds code by byte patterns). Built on Cpecific's memreader for WH2 and WH3.
+- What the mod would get, from Lua: `ud_topointer(handle)` (the address CA's tostring already shows us), `read_pointer`,
+  `read_int32`, `read_float`, `read_chain(p, off1, off2, ...)` (nil on a NULL), `read_struct`, plus call() / hook() /
+  hook_site() (run Lua when the game calls one of its own functions) and find_pattern() (byte signatures, survives patches
+  that do not touch that code). Plain reads cost about 0.12 microseconds.
+- It works in battle: hooks and callbacks are re-registered per mode ("frontend, campaign, battle"), crash reports list
+  the modes a script used it in, and "Derpy's Third-Person Battles (MEMREADER+)" is a battle mod built on it.
+- It confirms our layout: "In WH3 a script interface userdata holds 8 bytes: the address of the *_SCRIPT_INTERFACE
+  object"; the game object sits inside it (campaign interfaces at +0x10; for battle.unit we found +0x08).
+- Costs and risks: it writes `twwh3-memreader_plus.dll` next to Warhammer3.exe (a file in the game folder, not a game
+  file); unsigned DLL, so Smart App Control blocks it and some antivirus (McAfee) flagged a new release; a wrong read
+  is a Lua error, a crash inside a hook crashes the game; any mod using it would REQUIRE every user to subscribe to it.
+- A general fact it documents: Lua numbers in the game are 32-bit floats (integers exact only up to 16,777,216), and
+  CA's string.find is replaced by a plain-text UTF-8 version (matches the mod's own ban on string.find).
+
+With it, the mod could read [handle+8]+0x3B78 (current leadership), [[handle+8]+0x280]+0x5CC (current HP) and
+[handle+8]+0xA4 (men) itself, every poll, with no outside program. Whether to depend on it is the user's decision
+(rule 6: no other mods are added or removed without the user).
