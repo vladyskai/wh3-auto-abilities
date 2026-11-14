@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `1d2b92d73019956836328a35dd2ade5c`, 1,488,123 bytes
-  (round 146, 2026-11-13: the blob trigger, 77 exploding enemy-unit attacks). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `a45b916dd168ed2543786931448cdfc6`, 1,488,943 bytes
+  (round 147, 2026-11-14: the read-only address probe, addr= on every MAP row). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261113_blob_trigger_harness145/build_and_install146.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261114_addr_probe_harness146/build_and_install147.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness145: 6,339 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness146: 6,350 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -316,6 +316,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 `grounded-citations` for cited claims; `python-desktop-gui` for a viewer window.
 
 ## 9. OPEN ITEMS
+
+- MEMORY READING (round 147, 2026-11-14, docs\WH3_round147_address_probe.md): tools\memprobe\memprobe.py reads
+  Warhammer3.exe memory READ-ONLY (no admin needed; about 9 s per full scan). Unit HP = 4-byte int equal to the card.
+  Cheat Engine pointer paths all died after a game restart. Round 147 logs addr=<tostring(handle)> on every MAP row;
+  awaiting a battle from byte 536,901,626 (restart the game first). Claude can press keys (P pauses) but not click.
 
 - THE MAP PROBE (round 145, read-only; battle 1 read 2026-11-13, docs\WH3_map_probe_battle1.md): every 2 s the log
   gets MAP rows for both sides. Field facts: every read answers on BOTH sides (ordered_width included) except
