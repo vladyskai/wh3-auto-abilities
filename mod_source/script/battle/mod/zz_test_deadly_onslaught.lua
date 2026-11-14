@@ -1307,7 +1307,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_apocalyptic_charge",
 		keys = { "wh_pro04_unit_abilities_apocalyptic_charge" },
 		ox = 0, oy = 0 },
-	{ marker = "magic_prayer", name = "Arcane Hymn", trigger = "melee_unwavering",
+	{ marker = "magic_prayer", name = "Arcane Hymn", trigger = "when_ready",
 		badge = "zz_auto_badge_magic_prayer",
 		keys = { "wh3_cp1_character_abilities_magic_prayer" },
 		ox = 0, oy = 0 },
@@ -1346,7 +1346,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc29_lord_abilities_bastet" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "black_periapt", name = "Black Periapt", trigger = "melee_unwavering",
+	{ marker = "black_periapt", name = "Black Periapt", trigger = "when_ready",
 		badge = "zz_auto_badge_black_periapt",
 		keys = { "wh_main_item_abilities_black_periapt" },
 		ox = 0, oy = 0 },
@@ -1390,7 +1390,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_book_of_arkhan",
 		keys = { "wh_main_spell_bound_book_of_arkhan" },
 		ox = 0, oy = 0 },
-	{ marker = "book_of_hoeth", name = "Book of Hoeth", trigger = "melee_unwavering",
+	{ marker = "book_of_hoeth", name = "Book of Hoeth", trigger = "when_ready",
 		badge = "zz_auto_badge_book_of_hoeth",
 		keys = { "wh2_main_item_abilities_book_of_hoeth" },
 		ox = 0, oy = 0 },
@@ -2046,7 +2046,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_eternal_vigour",
 		keys = { "wh3_dlc29_character_abilities_eternal_vigour" },
 		ox = 0, oy = 0 },
-	{ marker = "extra_ingredients", name = "Extra Ingredients", trigger = "melee_unwavering",
+	{ marker = "extra_ingredients", name = "Extra Ingredients", trigger = "when_ready",
 		badge = "zz_auto_badge_extra_ingredients",
 		keys = { "wh3_main_character_abilities_extra_ingredients" },
 		ox = 0, oy = 0 },
@@ -2245,7 +2245,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc27_character_abilities_iron_hand_captain" },
 		ally_range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "jagged_dagger", name = "Jagged Dagger", trigger = "melee_unwavering",
+	{ marker = "jagged_dagger", name = "Jagged Dagger", trigger = "when_ready",
 		badge = "zz_auto_badge_jagged_dagger",
 		keys = { "wh_dlc03_item_abilities_jagged_dagger" },
 		ox = 0, oy = 0 },
@@ -2258,7 +2258,7 @@ local ABILITIES = {
 		keys = { "wh3_main_character_abilities_locus_of_change" },
 		aura_real = 55,
 		ox = 0, oy = 0 },
-	{ marker = "locus_of_conjuration", name = "Locus of Conjuration", trigger = "melee_unwavering",
+	{ marker = "locus_of_conjuration", name = "Locus of Conjuration", trigger = "when_ready",
 		badge = "zz_auto_badge_locus_of_conjuration",
 		keys = { "wh3_main_character_abilities_locus_of_conjuration" },
 		ox = 0, oy = 0 },
@@ -2373,7 +2373,7 @@ local ABILITIES = {
 		keys = { "wh2_dlc16_character_abilities_muster_of_malevolents" },
 		range_real = 75,
 		ox = 0, oy = 0 },
-	{ marker = "neferras_scrolls_of_mighty_incantations", name = "Neferra's Scrolls of Mighty Incantations", trigger = "melee_unwavering",
+	{ marker = "neferras_scrolls_of_mighty_incantations", name = "Neferra's Scrolls of Mighty Incantations", trigger = "when_ready",
 		badge = "zz_auto_badge_neferras_scrolls_of_mighty_incantations",
 		keys = { "wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations" },
 		ox = 0, oy = 0 },
@@ -2465,7 +2465,7 @@ local ABILITIES = {
 		keys = { "wh2_dlc11_lord_abilities_power_siphon" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "power_stone", name = "Power Stone", trigger = "melee_unwavering",
+	{ marker = "power_stone", name = "Power Stone", trigger = "when_ready",
 		badge = "zz_auto_badge_power_stone",
 		keys = { "wh_main_item_abilities_power_stone" },
 		ox = 0, oy = 0 },
@@ -2484,7 +2484,7 @@ local ABILITIES = {
 		range_real = 100,
 		target_class = "commander",
 		ox = 0, oy = 0 },
-	{ marker = "prismatic_amplifier", name = "Prismatic Amplifier", trigger = "melee_unwavering",
+	{ marker = "prismatic_amplifier", name = "Prismatic Amplifier", trigger = "when_ready",
 		badge = "zz_auto_badge_prismatic_amplifier",
 		keys = { "wh3_main_item_abilities_prismatic_amplifier" },
 		ox = 0, oy = 0 },
@@ -2547,7 +2547,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_sceptre_of_stability",
 		keys = { "wh_main_item_abilities_sceptre_of_stability" },
 		ox = 0, oy = 0 },
-	{ marker = "scroll_of_destiny", name = "Scroll of Destiny", trigger = "melee_unwavering",
+	{ marker = "scroll_of_destiny", name = "Scroll of Destiny", trigger = "when_ready",
 		badge = "zz_auto_badge_scroll_of_destiny",
 		keys = { "wh3_main_item_abilities_scroll_of_destiny" },
 		ox = 0, oy = 0 },
@@ -2591,11 +2591,11 @@ local ABILITIES = {
 		badge = "zz_auto_badge_skjalandirs_fall",
 		keys = { "wh3_dlc23_character_abilities_skjalandirs_fall" },
 		ox = 0, oy = 0 },
-	{ marker = "skull_of_rarkos", name = "Skull of Rarkos", trigger = "melee_unwavering",
+	{ marker = "skull_of_rarkos", name = "Skull of Rarkos", trigger = "when_ready",
 		badge = "zz_auto_badge_skull_of_rarkos",
 		keys = { "wh_dlc03_item_abilities_skull_of_rarkos" },
 		ox = 0, oy = 0 },
-	{ marker = "snowflake_pendant", name = "Snowflake Pendant", trigger = "melee_unwavering",
+	{ marker = "snowflake_pendant", name = "Snowflake Pendant", trigger = "when_ready",
 		badge = "zz_auto_badge_snowflake_pendant",
 		keys = { "wh3_main_item_abilities_snowflake_pendant" },
 		ox = 0, oy = 0 },
@@ -2627,19 +2627,19 @@ local ABILITIES = {
 		badge = "zz_auto_badge_staff_of_tomorrow",
 		keys = { "wh3_main_weapon_abilities_staff_of_tomorrow" },
 		ox = 0, oy = 0 },
-	{ marker = "staff_of_volans", name = "Staff of Volans", trigger = "melee_unwavering",
+	{ marker = "staff_of_volans", name = "Staff of Volans", trigger = "when_ready",
 		badge = "zz_auto_badge_staff_of_volans",
 		keys = { "wh_main_item_abilities_staff_of_volans" },
 		ox = 0, oy = 0 },
-	{ marker = "staff_of_wu_xing", name = "Staff of Wu Xing", trigger = "melee_unwavering",
+	{ marker = "staff_of_wu_xing", name = "Staff of Wu Xing", trigger = "when_ready",
 		badge = "zz_auto_badge_staff_of_wu_xing",
 		keys = { "wh3_main_item_abilities_staff_of_wu_xing" },
 		ox = 0, oy = 0 },
-	{ marker = "starwood_staff", name = "Starwood Staff", trigger = "melee_unwavering",
+	{ marker = "starwood_staff", name = "Starwood Staff", trigger = "when_ready",
 		badge = "zz_auto_badge_starwood_staff",
 		keys = { "wh2_main_item_abilities_starwood_staff" },
 		ox = 0, oy = 0 },
-	{ marker = "stave_of_avelorn", name = "Stave of Avelorn", trigger = "melee_unwavering",
+	{ marker = "stave_of_avelorn", name = "Stave of Avelorn", trigger = "when_ready",
 		badge = "zz_auto_badge_stave_of_avelorn",
 		keys = { "wh2_dlc10_item_abilities_stave_of_avelorn" },
 		ox = 0, oy = 0 },
@@ -2684,7 +2684,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc27_character_abilities_the_black_tongue" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "the_chromatic_tome", name = "The Chromatic Tome", trigger = "melee_unwavering",
+	{ marker = "the_chromatic_tome", name = "The Chromatic Tome", trigger = "when_ready",
 		badge = "zz_auto_badge_the_chromatic_tome",
 		keys = { "wh3_main_item_abilities_the_chromatic_tome" },
 		ox = 0, oy = 0 },
@@ -2806,7 +2806,7 @@ local ABILITIES = {
 		keys = { "wh2_main_mount_abilities_unholy_clamour" },
 		aura_real = -1,
 		ox = 0, oy = 0 },
-	{ marker = "unlimited_power", name = "Unlimited Power!", trigger = "melee_unwavering",
+	{ marker = "unlimited_power", name = "Unlimited Power!", trigger = "when_ready",
 		badge = "zz_auto_badge_unlimited_power",
 		keys = { "wh2_dlc12_lord_abilities_unlimited_power" },
 		ox = 0, oy = 0 },
@@ -2870,7 +2870,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc29_item_abilities_warpstiletto" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "warpstone_tokens", name = "Warpstone Tokens", trigger = "melee_unwavering",
+	{ marker = "warpstone_tokens", name = "Warpstone Tokens", trigger = "when_ready",
 		badge = "zz_auto_badge_warpstone_tokens",
 		keys = { "wh3_dlc29_item_abilities_warpstone_tokens" },
 		ox = 0, oy = 0 },
@@ -2904,7 +2904,7 @@ local ABILITIES = {
 		keys = { "wh3_dlc29_hero_abilities_whispering_mist" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "whispering_skull", name = "Whispering Skull", trigger = "melee_unwavering",
+	{ marker = "whispering_skull", name = "Whispering Skull", trigger = "when_ready",
 		badge = "zz_auto_badge_whispering_skull",
 		keys = { "wh3_dlc29_item_abilities_whispering_skull" },
 		ox = 0, oy = 0 },
@@ -2917,7 +2917,7 @@ local ABILITIES = {
 		keys = { "wh3_main_lord_abilities_willing_prey" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "winds_of_change", name = "Winds of Change", trigger = "melee_unwavering",
+	{ marker = "winds_of_change", name = "Winds of Change", trigger = "when_ready",
 		badge = "zz_auto_badge_winds_of_change",
 		keys = { "wh3_main_daemon_body_abilities_winds_of_change" },
 		ox = 0, oy = 0 },
@@ -17462,6 +17462,15 @@ function FOURTH.map_rows(tick)
 			end
 		end
 	end
+	-- ROUND 150: our army's Winds of Magic (user 2026-11-14: "let's read those reserves")
+	local wc, wr, wrr = "?", "?", "?"
+	local ok_a, army = pcall(function() return bm:get_player_army() end)
+	if ok_a and army ~= nil then
+		wc = FOURTH.map_num(function() return army:winds_of_magic_current() end, "%.1f")
+		wr = FOURTH.map_num(function() return army:winds_of_magic_reserve() end, "%.1f")
+		wrr = FOURTH.map_num(function() return army:winds_of_magic_remaining_recharge_rate() end, "%.3f")
+	end
+	rows[#rows + 1] = "WINDS t=" .. t .. " current=" .. wc .. " reserve=" .. wr .. " recharge_rate=" .. wrr
 	rows[#rows + 1] = "MAP_END t=" .. t .. " own=" .. n_own .. " enemy=" .. n_en
 		.. " alliance=" .. ((alliance ~= nil) and "1" or "?")
 	return rows
@@ -17549,6 +17558,10 @@ function FOURTH.blob_shape(u)
 	local r = math.rad(b)
 	local s = { unit = u, x = x, z = z, fx = math.sin(r), fz = math.cos(r), w = w, d = depth, men = men, inf = inf }
 	s.rx, s.rz = s.fz, -s.fx
+	-- ROUND 150: the type and the live value per soldier (strategic_value / men; nil when unreadable)
+	s.t = t
+	local ok_v, sv = pcall(function() return u:strategic_value() end)
+	if ok_v and type(sv) == "number" and sv > 0 then s.vps = sv / men end
 	-- the 9 outline points (4 corners, 4 edge middles, the centre): the closest distance between two rectangles
 	-- is always reached at one of them
 	s.pts = {}
@@ -17657,21 +17670,72 @@ function FOURTH.blob_score(tgt, m, r)
 	return got, units
 end
 
--- the best safe target for this caster: shape, score, units, friendly gap; nil when none passes
-function FOURTH.blob_pick(unit, m, r)
-	local reach = r + FOURTH.BLOB_MARGIN_M
-	local best, bs, bu, bg = nil, nil, nil, nil
-	for i = 1, #m.enemies do
-		local e = m.enemies[i]
-		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) then
-			local g = FOURTH.blob_friend_gap(e, m, reach)
-			if g == nil or g > reach then
-				local sc, un = FOURTH.blob_score(e, m, r)
-				if best == nil or sc > bs then best, bs, bu, bg = e, sc, un, g end
+-- ROUND 150 (user ruling 2026-11-14: "Most value destroyed").
+FOURTH.BLOB_AP_ARMOUR_MIN = 50   -- an AP-heavy attack never targets armour below this (user ruling 2026-11-14)
+FOURTH.ARMOUR_TAKES = 0.0075     -- base damage lost per armour point: the engine removes a random armour/2..armour %,
+                                 -- 0.75 x armour % on average
+
+-- the share of one soldier of block e that one hit of this blast kills (1 when the type or the damage is unknown)
+function FOURTH.blob_kill(e, dmg)
+	local def = e.t and FOURTH.UNIT_DEF[e.t]
+	if def == nil or dmg == nil then return 1 end
+	local a = math.min(def[1], 100)
+	return math.min(1, (dmg[1] * (1 - FOURTH.ARMOUR_TAKES * a) + dmg[2]) / def[2])
+end
+
+-- the enemy value a blast of radius r centred on the target destroys: the 19 circle points, each adding every enemy
+-- block's soldier density x the point's share of the area x the share of a soldier killed x its value per soldier
+-- (1 when the value read failed)
+function FOURTH.blob_value(tgt, m, r, dmg)
+	local share = math.pi * r * r / #FOURTH.BLOB_RING
+	local v = 0
+	for k = 1, #FOURTH.BLOB_RING do
+		local px = tgt.x + FOURTH.BLOB_RING[k][1] * r
+		local pz = tgt.z + FOURTH.BLOB_RING[k][2] * r
+		for i = 1, #m.enemies do
+			local e = m.enemies[i]
+			if FOURTH.blob_rect_gap(px, pz, e) == 0 then
+				v = v + e.density * share * FOURTH.blob_kill(e, dmg) * (e.vps or 1)
 			end
 		end
 	end
-	return best, bs, bu, bg
+	return v
+end
+
+-- may this attack aim at block e at all? an AP-heavy attack needs armour of at least BLOB_AP_ARMOUR_MIN
+function FOURTH.blob_ap_ok(e, dmg)
+	if dmg == nil or dmg[3] ~= 1 then return true end
+	local def = e.t and FOURTH.UNIT_DEF[e.t]
+	return def ~= nil and def[1] >= FOURTH.BLOB_AP_ARMOUR_MIN
+end
+
+-- the best safe target for this caster: shape, soldiers, units, friendly gap, value; nil when none passes. A candidate
+-- must be allowed (armour rule), safe, and reach the density line on its own; the most value destroyed wins.
+function FOURTH.blob_pick(unit, m, r, key)
+	local reach = r + FOURTH.BLOB_MARGIN_M
+	local need = FOURTH.blob_need(r)
+	local dmg = key and FOURTH.BLOB_DMG[key]
+	local best, bs, bu, bg, bv = nil, nil, nil, nil, nil
+	for i = 1, #m.enemies do
+		local e = m.enemies[i]
+		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg) then
+			local g = FOURTH.blob_friend_gap(e, m, reach)
+			if g == nil or g > reach then
+				local sc, un = FOURTH.blob_score(e, m, r)
+				if sc >= need then
+					local v = FOURTH.blob_value(e, m, r, dmg)
+					if best == nil or v > bv or (v == bv and sc > bs) then best, bs, bu, bg, bv = e, sc, un, g, v end
+				end
+			end
+		end
+	end
+	return best, bs, bu, bg, bv
+end
+
+-- standing still: is_moving() must read exactly false (user ruling 2026-11-14; a cast stops a moving caster)
+function FOURTH.blob_still(unit)
+	local ok, mv = pcall(function() return unit:is_moving() end)
+	return ok and mv == false
 end
 
 -- the pre-cast re-check: the map is rebuilt and the chosen enemy must still be the same kind of target
@@ -17689,6 +17753,10 @@ function FOURTH.blob_still_ok(enemy, unit)
 			local reach = r + FOURTH.BLOB_MARGIN_M
 			local g = FOURTH.blob_friend_gap(e, m, reach)
 			if g ~= nil and g <= reach then return false end
+			-- ROUND 150: the caster still standing, the armour rule still met
+			if not FOURTH.blob_still(unit) then return false end
+			local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
+			if not FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key]) then return false end
 			local sc = FOURTH.blob_score(e, m, r)
 			return sc >= FOURTH.blob_need(r)
 		end
@@ -17702,9 +17770,11 @@ function FOURTH.evaluate_enemy_blob(unit, routing)
 	local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
 	local r = key and FOURTH.BLAST_R[key]
 	if r == nil then return nil end
+	-- ROUND 150: never while the caster moves (the cast would stop it)
+	if not FOURTH.blob_still(unit) then return nil end
 	local m = FOURTH.blob_map(false)
 	if #m.enemies == 0 then return nil end
-	local tgt, sc, un, gap = FOURTH.blob_pick(unit, m, r)
+	local tgt, sc, un, gap, val = FOURTH.blob_pick(unit, m, r, key)
 	local need = FOURTH.blob_need(r)
 	if tgt == nil or sc < need then return nil end
 	local etype = "enemy"
@@ -17715,10 +17785,36 @@ function FOURTH.evaluate_enemy_blob(unit, routing)
 	FOURTH.eg_caster_su = FOURTH.eg_fresh_caster_su(unit)
 	FOURTH.cast_target = tgt.unit
 	local d = FOURTH.eg_enemy_gap(unit, tgt.unit)
-	return string.format("infantry blob (targeting %s): %d enemy soldiers in the %sm blast (line %d), %d unit(s);"
-		.. " ours %s; distance %sm bound %sm", etype, math.floor(sc + 0.5), tostring(r), need, un,
+	local def = tgt.t and FOURTH.UNIT_DEF[tgt.t]
+	return string.format("infantry blob (targeting %s): value destroyed %.0f (armour %s, %.0f%% of a soldier per hit,"
+		.. " value %s per soldier); %d enemy soldiers in the %sm blast (line %d), %d unit(s);"
+		.. " ours %s; distance %sm bound %sm", etype, val or 0, def and tostring(def[1]) or "?",
+		100 * FOURTH.blob_kill(tgt, key and FOURTH.BLOB_DMG[key]), tgt.vps and string.format("%.1f", tgt.vps) or "?",
+		math.floor(sc + 0.5), tostring(r), need, un,
 		(gap ~= nil) and string.format("%.1fm away (needs > %sm)", gap, tostring(r + FOURTH.BLOB_MARGIN_M)) or "not near",
 		(d ~= nil) and string.format("%.1f", d) or "?", tostring(FOURTH.eg_range_m))
+end
+
+-- GENERATED by tools/gen_blob_tables.py (round 150) from projectiles, projectiles_explosions, unit_spec_abil,
+-- land_units, unit_armour_types and battle_entities (the build refuses a pack whose tables differ). Do not hand-edit.
+FOURTH.BLOB_DMG_TEXT = "wh2_dlc09_weapon_abilities_venom_staff=0,61,1;wh2_dlc10_unit_abilities_frost_breath=36,20,0;wh2_dlc10_unit_abilities_frost_wyrm_breath=36,20,0;wh2_dlc10_weapon_abilities_the_moonbow=0,145,1;wh2_dlc11_character_abilities_cackle_fruit=60,30,0;wh2_dlc11_character_abilities_pyromaniac=24,12,0;wh2_dlc11_hero_abilities_bomb_throw=60,30,0;wh2_dlc12_weapon_abilities_storm_daemon=0,24,1;wh2_dlc13_character_abilities_big_boom=60,200,1;wh2_dlc13_lord_abilities_arrows_of_aqshy=72,0,0;wh2_dlc13_lord_abilities_executioner=0,50,1;wh2_dlc13_lord_abilities_fire_arrow=72,0,0;wh2_dlc13_weapon_abilities_amber_bow=30,65,1;wh2_dlc14_character_abilities_cracklebomb=60,20,0;wh2_dlc14_spell_bound_warpfireball=144,0,0;wh2_dlc15_character_abilities_goggly_glare=55,25,0;wh2_dlc15_hero_abilities_swamp_breath=0,54,0;wh2_dlc15_spell_bound_gaze_of_nagash=30,65,1;wh2_dlc15_unit_abilities_noxious_breath_imrik=40,15,0;wh2_dlc15_unit_abilities_sun_dragon_breath_imrik=62,25,0;wh2_dlc16_item_abilities_dart_of_doom=0,100,1;wh2_dlc16_item_abilities_eagle_quiver=0,30,1;wh2_dlc16_unit_abilities_volley_of_kurnous=0,30,1;wh2_dlc17_hero_abilities_cinderblast_shell=72,0,0;wh2_main_character_abilities_volley_of_dark_arrows=0,150,1;wh2_main_character_abilities_volley_of_high_arrows=0,150,1;wh2_main_hero_abilities_doomrocket=52,26,0;wh2_main_spell_bound_hand_of_gods=20,45,1;wh2_main_unit_abilities_dark_fire_of_chaos=17,29,1;wh2_main_unit_abilities_death_shriek=12,31,1;wh2_main_unit_abilities_fiery_breath=36,20,0;wh2_main_unit_abilities_moon_dragons_breath=37,20,0;wh2_main_unit_abilities_noxious_breath=36,15,0;wh2_main_unit_abilities_pestilential_breath=37,20,0;wh2_main_unit_abilities_soporific_breath=36,17,0;wh2_main_unit_abilities_star_dragons_breath=19,31,1;wh2_main_unit_abilities_sun_dragons_breath=31,15,0;wh2_main_weapon_abilities_bow_of_the_seafarer=0,26,1;wh2_main_weapon_bound_reaver_bow=0,45,1;wh3_dlc23_spell_bound_burning_wrath=144,0,0;wh3_dlc23_unit_abilities_flaming_breath=36,20,0;wh3_dlc24_hero_abilities_windblade=144,0,0;wh3_dlc24_item_abilities_wind_bow=30,10,1;wh3_dlc24_lord_abilities_spirit_bear=144,56,0;wh3_dlc24_lord_abilities_spirit_bear_upgrade=144,56,0;wh3_dlc24_lord_abilities_taals_judgement=30,65,0;wh3_dlc24_unit_abilities_ice_breath=36,20,0;wh3_dlc25_character_abilities_mercurial_shot=25,50,1;wh3_dlc25_lord_abilities_cinderblast_cluster_bomb=50,125,1;wh3_dlc25_unit_abilities_coruscating_blast=20,65,1;wh3_dlc25_unit_abilities_spear_of_grungni=15,75,1;wh3_dlc25_unit_abilities_unspeakable_foulness=36,15,0;wh3_dlc25_weapon_abilities_experimental_explosive=40,20,0;wh3_dlc26_character_abilities_sting_of_snagla=0,150,1;wh3_dlc27_spell_bound_fireball_upgraded=144,72,0;wh3_dlc27_spell_heavens_chain_lightning_bound=5,15,1;wh3_dlc27_spell_heavens_chain_lightning_bound_unit=5,15,1;wh3_dlc27_unit_abilities_flaming_breath=35,25,0;wh3_dlc29_hero_active_bilespurter=20,75,1;wh3_dlc29_lord_abilities_lamentation_of_despair_upgraded=0,69,0;wh3_dlc29_lord_abilities_shadowblood=35,100,1;wh3_dlc29_lord_active_pestilent_torrent=19,38,1;wh3_dlc29_unit_abilities_the_gaze_of_dust=30,90,1;wh3_main_character_abilities_fire_breath=31,15,0;wh3_main_character_abilities_ice_shard=0,30,1;wh3_main_lord_abilities_bellow_of_endless_fury=36,20,1;wh3_main_lord_abilities_bellow_of_fury=36,20,0;wh3_main_unit_abilities_elemental_breath=36,20,1;wh_dlc03_spell_bound_the_amber_spear=0,108,1;wh_dlc05_hero_abilities_arrow_of_kurnous=0,150,1;wh_dlc05_item_abilities_hail_of_doom_arrow=0,45,1;wh_dlc05_lord_abilities_lamentation_of_despair=0,57,0;wh_dlc06_spell_bound_vindictive_glare=55,25,0;wh_dlc06_weapon_abilities_skarsniks_prodder=0,68,1;wh_dlc08_lord_abilities_copious_vomit=0,27,0;wh_main_spell_bound_fireball=144,0,0;wh_main_spell_light_shems_burning_gaze_bound=20,45,1"
+FOURTH.UNIT_DEF_TEXT = "wh2_dlc09_tmb_inf_cairn_wraiths=0,112;wh2_dlc09_tmb_inf_crypt_ghouls=30,75;wh2_dlc09_tmb_inf_nehekhara_warriors_0=45,76;wh2_dlc09_tmb_inf_nehekhara_warriors_ror=0,73;wh2_dlc09_tmb_inf_skeleton_archers_0=20,57;wh2_dlc09_tmb_inf_skeleton_archers_ror=30,57;wh2_dlc09_tmb_inf_skeleton_spearmen_0=20,61;wh2_dlc09_tmb_inf_skeleton_spearmen_ror=45,61;wh2_dlc09_tmb_inf_skeleton_warriors_0=20,61;wh2_dlc09_tmb_inf_skeleton_warriors_0_summoned=20,61;wh2_dlc09_tmb_inf_spirit_host=0,46;wh2_dlc09_tmb_inf_tomb_guard_0=55,82;wh2_dlc09_tmb_inf_tomb_guard_1=55,82;wh2_dlc09_tmb_inf_tomb_guard_ror=70,82;wh2_dlc09_tmb_mon_carrion_0=20,210;wh2_dlc09_tmb_mon_dire_wolves=0,76;wh2_dlc09_tmb_mon_fell_bats=20,70;wh2_dlc10_def_inf_blades_of_the_blood_queen_ror_0=100,84;wh2_dlc10_def_inf_sisters_of_slaughter=5,75;wh2_dlc10_def_inf_sisters_of_the_singing_doom_ror_0=5,65;wh2_dlc10_def_inf_the_bolt_fiends_ror_0=30,63;wh2_dlc10_def_inf_the_hellebronai_ror_0=40,63;wh2_dlc10_dwf_inf_giant_slayers=0,130;wh2_dlc10_hef_inf_dryads_0=60,70;wh2_dlc10_hef_inf_everqueens_court_guards_ror_0=40,84;wh2_dlc10_hef_inf_keepers_of_the_flame_ror_0=110,84;wh2_dlc10_hef_inf_shadow_walkers_0=30,94;wh2_dlc10_hef_inf_shadow_warriors_0=30,80;wh2_dlc10_hef_inf_sisters_of_avelorn_0=40,84;wh2_dlc10_hef_inf_the_grey_ror_0=30,80;wh2_dlc10_hef_inf_the_scions_of_mathlann_ror_0=40,63;wh2_dlc10_hef_inf_the_silverpelts_ror_0=90,80;wh2_dlc10_hef_inf_the_storm_riders_ror_0=40,68;wh2_dlc11_cst_inf_deck_gunners_0=15,108;wh2_dlc11_cst_inf_deck_gunners_0_summoned=15,108;wh2_dlc11_cst_inf_deck_gunners_ror_0=0,108;wh2_dlc11_cst_inf_depth_guard_0=90,130;wh2_dlc11_cst_inf_depth_guard_1=90,130;wh2_dlc11_cst_inf_depth_guard_ror_0=90,130;wh2_dlc11_cst_inf_sartosa_free_company_0=25,66;wh2_dlc11_cst_inf_sartosa_militia_0=25,61;wh2_dlc11_cst_inf_syreens=0,112;wh2_dlc11_cst_inf_zombie_deckhands_mob_0=15,75;wh2_dlc11_cst_inf_zombie_deckhands_mob_1=15,75;wh2_dlc11_cst_inf_zombie_deckhands_mob_necrofex_summoned_0=15,75;wh2_dlc11_cst_inf_zombie_deckhands_mob_ror_0=15,75;wh2_dlc11_cst_inf_zombie_deckhands_mob_summoned_0=15,75;wh2_dlc11_cst_inf_zombie_gunnery_mob_0=15,63;wh2_dlc11_cst_inf_zombie_gunnery_mob_1=15,63;wh2_dlc11_cst_inf_zombie_gunnery_mob_2=15,63;wh2_dlc11_cst_inf_zombie_gunnery_mob_3=15,63;wh2_dlc11_cst_inf_zombie_gunnery_mob_ror_0=15,63;wh2_dlc11_cst_inf_zombie_gunnery_mob_summoned_0=15,63;wh2_dlc11_cst_mon_fell_bats=0,70;wh2_dlc11_cst_mon_scurvy_dogs=0,76;wh2_dlc11_vmp_inf_crossbowmen=20,69;wh2_dlc11_vmp_inf_handgunners=20,75;wh2_dlc12_lzd_inf_saurus_warriors_ror_0=75,102;wh2_dlc12_lzd_inf_skink_red_crested_0=30,67;wh2_dlc12_lzd_inf_skink_red_crested_ror_0=30,67;wh2_dlc12_lzd_inf_temple_guards_ror_0=85,107;wh2_dlc12_lzd_mon_salamander_pack_0=80,130;wh2_dlc12_lzd_mon_salamander_pack_0_blessed=80,148;wh2_dlc12_lzd_mon_salamander_pack_ror_0=80,130;wh2_dlc12_skv_art_warplock_jezzails_ror_tech_lab_0=70,123;wh2_dlc12_skv_inf_clanrats_ror_0=25,60;wh2_dlc12_skv_inf_plague_monk_censer_bearer_ror_0=10,80;wh2_dlc12_skv_inf_ratling_gun_0=70,123;wh2_dlc12_skv_inf_ratling_gun_ror_0=70,123;wh2_dlc12_skv_inf_ratling_gun_ror_tech_lab_0=70,123;wh2_dlc12_skv_inf_stormvermin_ror_0=90,62;wh2_dlc12_skv_inf_warpfire_thrower_ror_tech_lab_0=70,123;wh2_dlc12_skv_inf_warplock_jezzails_0=70,123;wh2_dlc12_skv_inf_warplock_jezzails_ror_0=70,123;wh2_dlc13_emp_inf_archers_0=20,69;wh2_dlc13_emp_inf_archers_ror_0=20,69;wh2_dlc13_emp_inf_crossbowmen_ror_0=20,69;wh2_dlc13_emp_inf_greatswords_ror_0=95,76;wh2_dlc13_emp_inf_halberdiers_ror_0=30,73;wh2_dlc13_emp_inf_handgunners_ror_0=20,69;wh2_dlc13_emp_inf_huntsmen_0=25,69;wh2_dlc13_emp_inf_huntsmen_ror_0=25,69;wh2_dlc13_emp_inf_spearmen_ror_0=70,69;wh2_dlc13_emp_inf_swordsmen_ror_0=30,69;wh2_dlc13_lzd_mon_razordon_pack_0=90,130;wh2_dlc13_lzd_mon_razordon_pack_0_blessed=110,148;wh2_dlc13_lzd_mon_razordon_pack_ror_0=90,130;wh2_dlc13_lzd_mon_razordon_pack_summoned_0=90,130;wh2_dlc14_def_inf_harpies_ror_0=15,87;wh2_dlc14_skv_inf_death_runners_ror_0=20,80;wh2_dlc14_skv_inf_eshin_triads_0=20,80;wh2_dlc14_skv_inf_eshin_triads_ror_0=20,80;wh2_dlc14_skv_inf_eshin_triads_ror_summoned_0=20,80;wh2_dlc14_skv_inf_poison_wind_mortar_0=70,328;wh2_dlc14_skv_inf_poison_wind_mortar_ror_0=70,328;wh2_dlc14_skv_inf_stormvermin_1_summoned=90,62;wh2_dlc14_skv_inf_warp_grinder_0=70,184;wh2_dlc15_hef_inf_archers_ror_0=40,63;wh2_dlc15_hef_inf_mistwalkers_faithbearers_0=80,73;wh2_dlc15_hef_inf_mistwalkers_sentinels_0=80,68;wh2_dlc15_hef_inf_mistwalkers_skyhawks_0=80,82;wh2_dlc15_hef_inf_mistwalkers_spireguard_0=80,80;wh2_dlc15_hef_inf_rangers_0=30,63;wh2_dlc15_hef_inf_silverin_guard_0=75,68;wh2_dlc15_hef_mon_war_lions_of_chrace_0=35,264;wh2_dlc15_hef_mon_war_lions_of_chrace_ror_0=35,264;wh2_dlc16_skv_mon_wolf_rats_0=15,83;wh2_dlc16_skv_mon_wolf_rats_0_summoned=15,83;wh2_dlc16_skv_mon_wolf_rats_1=15,83;wh2_dlc16_skv_mon_wolf_rats_1_summoned=15,83;wh2_dlc16_wef_inf_bladesingers_0=15,84;wh2_dlc16_wef_inf_dryads_0_summoned=60,70;wh2_dlc16_wef_inf_dryads_ror_0=60,70;wh2_dlc16_wef_inf_malicious_dryads_0=60,70;wh2_dlc16_wef_mon_cave_bats=0,70;wh2_dlc16_wef_mon_giant_spiders_0=70,98;wh2_dlc16_wef_mon_harpies_0=15,87;wh2_dlc16_wef_mon_hawks_0=15,182;wh2_dlc16_wef_mon_spider_hatchlings_0=45,73;wh2_dlc16_wef_mon_wolves_0=15,143;wh2_dlc17_bst_inf_centigors_ror_1=35,98;wh2_dlc17_emp_inf_prisoners_0=0,56;wh2_dlc17_lzd_inf_chameleon_stalkers_0=40,66;wh2_dlc17_lzd_inf_chameleon_stalkers_0_blessed=40,106;wh2_main_def_inf_black_ark_corsairs_0=80,69;wh2_main_def_inf_black_ark_corsairs_1=80,69;wh2_main_def_inf_black_guard_0=100,90;wh2_main_def_inf_bleakswords_0=40,63;wh2_main_def_inf_darkshards_0=30,63;wh2_main_def_inf_darkshards_1=30,63;wh2_main_def_inf_dreadspears_0=40,63;wh2_main_def_inf_har_ganeth_executioners_0=100,84;wh2_main_def_inf_harpies=15,87;wh2_main_def_inf_shades_0=30,84;wh2_main_def_inf_shades_1=30,84;wh2_main_def_inf_shades_2=30,84;wh2_main_def_inf_witch_elves_0=5,65;wh2_main_hef_inf_archers_0=15,63;wh2_main_hef_inf_archers_1=40,63;wh2_main_hef_inf_gate_guard=50,68;wh2_main_hef_inf_lothern_sea_guard_0=40,68;wh2_main_hef_inf_lothern_sea_guard_1=40,68;wh2_main_hef_inf_phoenix_guard=110,84;wh2_main_hef_inf_spearmen_0=40,63;wh2_main_hef_inf_swordmasters_of_hoeth_0=100,84;wh2_main_hef_inf_white_lions_of_chrace_0=90,80;wh2_main_lzd_cav_cold_ones_feral_0=90,157;wh2_main_lzd_cav_cold_ones_feral_0_summoned=90,157;wh2_main_lzd_inf_chameleon_skinks_0=30,54;wh2_main_lzd_inf_chameleon_skinks_blessed_0=30,65;wh2_main_lzd_inf_saurus_spearmen_0=60,102;wh2_main_lzd_inf_saurus_spearmen_1=60,102;wh2_main_lzd_inf_saurus_spearmen_blessed_1=70,115;wh2_main_lzd_inf_saurus_warriors_0=60,102;wh2_main_lzd_inf_saurus_warriors_1=60,102;wh2_main_lzd_inf_saurus_warriors_blessed_1=60,115;wh2_main_lzd_inf_skink_cohort_0=30,50;wh2_main_lzd_inf_skink_cohort_1=30,50;wh2_main_lzd_inf_skink_cohort_1_blessed=30,56;wh2_main_lzd_inf_skink_skirmishers_0=30,50;wh2_main_lzd_inf_skink_skirmishers_blessed_0=30,58;wh2_main_lzd_inf_temple_guards=85,107;wh2_main_lzd_inf_temple_guards_blessed=95,120;wh2_main_skv_inf_clanrat_spearmen_0=25,60;wh2_main_skv_inf_clanrat_spearmen_1=25,60;wh2_main_skv_inf_clanrats_0=25,60;wh2_main_skv_inf_clanrats_0_summoned=25,60;wh2_main_skv_inf_clanrats_0_summoned_small=25,60;wh2_main_skv_inf_clanrats_1=25,60;wh2_main_skv_inf_death_globe_bombardiers=100,76;wh2_main_skv_inf_death_runners_0=20,80;wh2_main_skv_inf_death_runners_0_summoned=20,80;wh2_main_skv_inf_gutter_runner_slingers_0=20,58;wh2_main_skv_inf_gutter_runner_slingers_1=20,58;wh2_main_skv_inf_gutter_runners_0=20,58;wh2_main_skv_inf_gutter_runners_1=20,58;wh2_main_skv_inf_night_runners_0=10,56;wh2_main_skv_inf_night_runners_1=10,56;wh2_main_skv_inf_plague_monk_censer_bearer=10,80;wh2_main_skv_inf_plague_monks=10,76;wh2_main_skv_inf_plague_monks_summoned=10,76;wh2_main_skv_inf_poison_wind_globadiers=100,76;wh2_main_skv_inf_skavenslave_slingers_0=0,48;wh2_main_skv_inf_skavenslave_spearmen_0=0,50;wh2_main_skv_inf_skavenslave_spearmen_0_summoned=0,50;wh2_main_skv_inf_skavenslaves_0=0,50;wh2_main_skv_inf_stormvermin_0=90,62;wh2_main_skv_inf_stormvermin_0_quest=90,62;wh2_main_skv_inf_stormvermin_0_summoned=90,62;wh2_main_skv_inf_stormvermin_1=90,62;wh2_main_skv_inf_warpfire_thrower=70,123;wh2_twa03_def_mon_wolves_0=15,143;wh3_cp1_cth_inf_iron_claw_guandao=60,110;wh3_cp1_cth_inf_iron_claw_guandao_summoned=60,110;wh3_cp1_cth_inf_stalkers_throwing_disc=15,100;wh3_cp1_cth_inf_tiger_warriors_dual_axe=30,100;wh3_dlc20_chs_inf_aspiring_champions_mtze_ror=120,565;wh3_dlc20_chs_inf_chaos_marauders_mkho=35,78;wh3_dlc20_chs_inf_chaos_marauders_mkho_dualweapons=35,78;wh3_dlc20_chs_inf_chaos_marauders_mnur=15,85;wh3_dlc20_chs_inf_chaos_marauders_mnur_greatweapons=15,85;wh3_dlc20_chs_inf_chaos_marauders_msla=15,78;wh3_dlc20_chs_inf_chaos_marauders_msla_hellscourges=15,78;wh3_dlc20_chs_inf_chaos_marauders_mtze=15,78;wh3_dlc20_chs_inf_chaos_marauders_mtze_spears=15,78;wh3_dlc20_chs_inf_chaos_warriors_mnur=100,98;wh3_dlc20_chs_inf_chaos_warriors_mnur_greatweapons=100,98;wh3_dlc20_chs_inf_chaos_warriors_msla=100,90;wh3_dlc20_chs_inf_chaos_warriors_msla_hellscourges=100,90;wh3_dlc20_chs_inf_chaos_warriors_mtze=100,90;wh3_dlc20_chs_inf_chaos_warriors_mtze_halberds=100,90;wh3_dlc20_chs_inf_chosen_mkho=130,131;wh3_dlc20_chs_inf_chosen_mkho_dualweapons=130,131;wh3_dlc20_chs_inf_chosen_mnur=120,143;wh3_dlc20_chs_inf_chosen_mnur_greatweapons=120,143;wh3_dlc20_chs_inf_chosen_msla=120,131;wh3_dlc20_chs_inf_chosen_msla_hellscourges=120,131;wh3_dlc20_chs_inf_chosen_mtze=120,131;wh3_dlc20_chs_inf_chosen_mtze_halberds=120,131;wh3_dlc20_chs_inf_forsaken_mkho=100,100;wh3_dlc20_chs_inf_forsaken_msla=85,100;wh3_dlc23_chd_inf_chaos_dwarf_blunderbusses=85,77;wh3_dlc23_chd_inf_chaos_dwarf_blunderbusses_ror=100,85;wh3_dlc23_chd_inf_chaos_dwarf_warriors=85,82;wh3_dlc23_chd_inf_chaos_dwarf_warriors_great_weapons=85,82;wh3_dlc23_chd_inf_chaos_dwarf_warriors_ror=85,82;wh3_dlc23_chd_inf_goblin_labourers=0,50;wh3_dlc23_chd_inf_hobgoblin_archers=25,58;wh3_dlc23_chd_inf_hobgoblin_cutthroats=25,58;wh3_dlc23_chd_inf_hobgoblin_cutthroats_summoned=25,58;wh3_dlc23_chd_inf_hobgoblin_sneaky_gits=25,58;wh3_dlc23_chd_inf_infernal_guard=100,90;wh3_dlc23_chd_inf_infernal_guard_fireglaives=100,85;wh3_dlc23_chd_inf_infernal_guard_great_weapons=100,90;wh3_dlc23_chd_inf_infernal_ironsworn=125,106;wh3_dlc23_chd_inf_infernal_ironsworn_ror=125,106;wh3_dlc23_chd_inf_orc_labourers=0,76;wh3_dlc24_cth_inf_dragon_guard_crossbowmen_ror=95,88;wh3_dlc24_cth_inf_onyx_crowmen=15,87;wh3_dlc24_cth_inf_onyx_crowmen_ror=15,87;wh3_dlc24_ksl_inf_akshina_ambushers=30,77;wh3_dlc24_ksl_inf_akshina_ambushers_ror=30,77;wh3_dlc24_ksl_inf_kislevite_warriors=30,70;wh3_dlc24_ksl_inf_streltsi_ror=70,83;wh3_dlc24_tze_inf_centigors_great_weapons=35,112;wh3_dlc24_tze_inf_pink_horrors_ror=25,90;wh3_dlc24_tze_inf_tzaangors=50,80;wh3_dlc24_tze_mon_screamers_ror=30,305;wh3_dlc25_dwf_inf_doomseekers=0,280;wh3_dlc25_dwf_inf_doomseekers_ror=0,280;wh3_dlc25_dwf_inf_hammerers_grudge_unit=100,100;wh3_dlc25_dwf_inf_irondrakes_0_grudge_unit=125,128;wh3_dlc25_dwf_inf_longbeards_1_grudge_unit=100,86;wh3_dlc25_dwf_inf_miners_1_summoned=80,76;wh3_dlc25_dwf_inf_quarrellers_1_grudge_unit=80,70;wh3_dlc25_dwf_inf_slayer_pirates=0,108;wh3_dlc25_dwf_inf_slayer_pirates_ror=0,108;wh3_dlc25_dwf_inf_slayers_grudge_unit=0,108;wh3_dlc25_dwf_inf_thunderers_grudge_rakers=80,71;wh3_dlc25_dwf_inf_thunderers_ror=80,71;wh3_dlc25_emp_inf_hochland_long_rifles=20,120;wh3_dlc25_emp_inf_hochland_long_rifles_ror=60,120;wh3_dlc25_emp_inf_nuln_ironsides=60,104;wh3_dlc25_emp_inf_nuln_ironsides_morr=90,104;wh3_dlc25_emp_inf_spearmen_shields_ror=30,69;wh3_dlc25_emp_mon_hawks_summoned=15,182;wh3_dlc25_nur_inf_nurglings_summoned=0,155;wh3_dlc25_nur_inf_pestigors=25,88;wh3_dlc26_chs_inf_chosen_mkho_ror=130,131;wh3_dlc26_grn_inf_black_orcs_shield=110,135;wh3_dlc26_grn_inf_rugluds_armoured_orcs=70,82;wh3_dlc26_grn_inf_squig_herd_0_summoned=50,133;wh3_dlc26_kho_inf_khorngors=60,80;wh3_dlc26_kho_inf_skullreapers=60,158;wh3_dlc26_kho_inf_wrathmongers=70,315;wh3_dlc26_kho_inf_wrathmongers_ror=70,315;wh3_dlc26_ogr_inf_pigback_riders=15,72;wh3_dlc26_ogr_inf_pigback_riders_ror=35,72;wh3_dlc26_ogr_mon_blood_vultures=10,120;wh3_dlc27_hef_inf_militia_qb=15,24;wh3_dlc27_hef_inf_ships_company=30,63;wh3_dlc27_hef_inf_ships_company_ror=30,63;wh3_dlc27_hef_inf_swordmasters_of_hoeth_ror=100,84;wh3_dlc27_nor_inf_chaos_marauders_great_weapons_ror=15,85;wh3_dlc27_nor_inf_marauder_bearmen=45,112;wh3_dlc27_nor_inf_marauder_bearmen_greatweapons=45,112;wh3_dlc27_sla_inf_chaos_furies_summoned=25,88;wh3_dlc27_sla_inf_devotees_of_slaanesh=30,88;wh3_dlc27_sla_inf_devotees_of_slaanesh_crossbows=30,88;wh3_dlc27_sla_inf_slaangors=30,75;wh3_dlc27_sla_inf_vengeful_furies_summoned=25,88;wh3_dlc29_chs_inf_chaos_warriors_mnur_summoned_small=100,98;wh3_dlc29_chs_inf_chosen_mnur_ror=120,143;wh3_dlc29_chs_inf_flayerkin=15,94;wh3_dlc29_chs_inf_putrid_blightkings_axe_shield=120,370;wh3_dlc29_chs_inf_putrid_blightkings_dual_axe=120,370;wh3_dlc29_chs_inf_putrid_blightkings_dual_axe_ror=80,370;wh3_dlc29_chs_inf_putrid_blightkings_great_weapons=120,370;wh3_dlc29_cst_inf_zombie_pirate_gunnery_mob_bombers_summoned=15,63;wh3_dlc29_emp_inf_hunting_hounds=15,75;wh3_dlc29_emp_inf_hunting_hounds_ror=15,75;wh3_dlc29_emp_inf_teutogen_guard=95,123;wh3_dlc29_emp_inf_teutogen_guard_ror=95,123;wh3_dlc29_emp_inf_warriors_of_ulric=30,66;wh3_dlc29_emp_inf_wolf_kin=30,73;wh3_dlc29_skv_inf_clanrat_spearmen_vermintide=25,30;wh3_dlc29_skv_inf_clanrats_vermintide=25,30;wh3_dlc29_skv_inf_deathvermin_ror=90,62;wh3_dlc29_skv_inf_poison_wind_mortar_0_summoned=70,328;wh3_dlc29_skv_inf_pusbags=0,43;wh3_dlc29_skv_inf_skavenslave_slingers_vermintide=0,24;wh3_dlc29_skv_inf_skavenslave_spearmen_vermintide=0,25;wh3_dlc29_skv_inf_skavenslaves_vermintide=0,25;wh3_dlc29_tmb_inf_nehekhara_warriors_0_summoned=45,76;wh3_dlc29_vmp_inf_grave_guard_0_the_awakening=90,82;wh3_dlc29_vmp_inf_grave_guard_1_the_awakening=90,82;wh3_dlc29_vmp_inf_grave_guard_2_the_awakening=90,82;wh3_dlc29_vmp_inf_lahmian_handmaidens_death=50,208;wh3_dlc29_vmp_inf_lahmian_handmaidens_shadow=50,208;wh3_dlc29_vmp_inf_skeleton_warriors_0_raise_legion=20,61;wh3_dlc29_vmp_inf_skeleton_warriors_0_raise_legion_upgraded=20,61;wh3_dlc29_vmp_inf_skeleton_warriors_0_the_awakening=20,61;wh3_dlc29_vmp_inf_spirit_host=0,46;wh3_dlc29_vmp_inf_spirit_host_summoned=0,46;wh3_dlc29_vmp_inf_zombies_raise_legion=0,77;wh3_main_cth_inf_ancestral_warriors_summoned_0=0,107;wh3_main_cth_inf_crane_gunners_0=30,135;wh3_main_cth_inf_dragon_guard_0=95,88;wh3_main_cth_inf_dragon_guard_crossbowmen_0=95,88;wh3_main_cth_inf_grenadiers=40,69;wh3_main_cth_inf_iron_hail_gunners_0=30,69;wh3_main_cth_inf_jade_warrior_crossbowmen_0=70,69;wh3_main_cth_inf_jade_warrior_crossbowmen_1=70,69;wh3_main_cth_inf_jade_warriors_0=70,69;wh3_main_cth_inf_jade_warriors_1=70,69;wh3_main_cth_inf_peasant_archers_0=15,54;wh3_main_cth_inf_peasant_spearmen_1=15,56;wh3_main_dae_inf_chaos_furies_0=25,88;wh3_main_dae_inf_chaos_furies_summoned_0=25,88;wh3_main_grn_inf_goblins_sword_shield=25,56;wh3_main_grn_inf_orc_boyz_spear_shield=30,81;wh3_main_kho_inf_bloodletters_0=35,80;wh3_main_kho_inf_bloodletters_1=40,92;wh3_main_kho_inf_bloodletters_summoned_0=35,80;wh3_main_kho_inf_chaos_furies_0=25,88;wh3_main_kho_inf_chaos_warhounds_0=25,76;wh3_main_kho_inf_chaos_warriors_0=110,90;wh3_main_kho_inf_chaos_warriors_1=110,90;wh3_main_kho_inf_chaos_warriors_2=110,90;wh3_main_ksl_inf_armoured_kossars_0=80,82;wh3_main_ksl_inf_armoured_kossars_1=80,82;wh3_main_ksl_inf_ice_guard_0=50,88;wh3_main_ksl_inf_ice_guard_1=50,88;wh3_main_ksl_inf_kossars_0=15,71;wh3_main_ksl_inf_kossars_1=15,71;wh3_main_ksl_inf_kossars_tutorial_0=15,71;wh3_main_ksl_inf_kossars_tutorial_1=80,82;wh3_main_ksl_inf_streltsi_0=70,83;wh3_main_ksl_inf_tzar_guard_0=90,110;wh3_main_ksl_inf_tzar_guard_1=90,110;wh3_main_ksl_mon_snow_leopard_0=20,3180;wh3_main_ksl_mon_snow_leopard_summoned_0=20,3180;wh3_main_ksl_mon_snow_leopard_summoned_1=20,3480;wh3_main_ksl_mon_snow_leopard_summoned_2=20,3780;wh3_main_monster_feral_bears=15,458;wh3_main_monster_feral_ice_bears=15,558;wh3_main_nur_inf_chaos_furies_0=25,88;wh3_main_nur_inf_forsaken_0=85,109;wh3_main_nur_inf_nurglings_0=0,155;wh3_main_nur_inf_nurglings_summoned_0=0,155;wh3_main_nur_inf_plaguebearers_0=30,116;wh3_main_nur_inf_plaguebearers_1=35,132;wh3_main_nur_inf_plaguebearers_1_summoned=35,132;wh3_main_nur_inf_plaguebearers_summoned_0=30,116;wh3_main_nur_mon_plague_toads_0=50,258;wh3_main_nur_mon_rot_flies_0=50,516;wh3_main_ogr_inf_gnoblars_0=15,56;wh3_main_ogr_inf_gnoblars_1=15,56;wh3_main_ogr_inf_gnoblars_flingers=15,56;wh3_main_pro_kho_inf_bloodletters_0=60,80;wh3_main_pro_kho_inf_chaos_furies_0=20,129;wh3_main_pro_kho_inf_chaos_warhounds_0=15,76;wh3_main_pro_kho_inf_chaos_warriors_0=100,90;wh3_main_pro_ksl_inf_armoured_kossars_0=80,82;wh3_main_pro_ksl_inf_armoured_kossars_1=80,82;wh3_main_pro_ksl_inf_kossars_0=15,71;wh3_main_pro_ksl_inf_kossars_1=15,71;wh3_main_pro_ksl_inf_streltsi_0=70,83;wh3_main_pro_ksl_inf_tzar_guard_0=90,110;wh3_main_pro_tze_inf_blue_horrors_0=5,48;wh3_main_pro_tze_inf_pink_horrors_0=15,80;wh3_main_pro_tze_mon_screamers_0=20,272;wh3_main_sla_inf_chaos_furies_0=25,88;wh3_main_sla_inf_daemonette_0=10,68;wh3_main_sla_inf_daemonette_1=15,77;wh3_main_sla_inf_daemonette_summoned_0=10,68;wh3_main_sla_inf_marauders_0=15,78;wh3_main_sla_inf_marauders_1=15,78;wh3_main_sla_inf_marauders_2=15,78;wh3_main_tze_cav_doom_knights_0=120,245;wh3_main_tze_inf_blue_horrors_0=5,48;wh3_main_tze_inf_blue_horrors_summoned_0=5,48;wh3_main_tze_inf_chaos_furies_0=25,88;wh3_main_tze_inf_forsaken_0=85,100;wh3_main_tze_inf_pink_horrors_0=25,80;wh3_main_tze_inf_pink_horrors_1=35,90;wh3_main_tze_inf_pink_horrors_summoned_0=25,80;wh3_main_tze_mon_screamers_0=30,305;wh3_main_vmp_inf_grave_guard_2=90,82;wh3_twa06_cth_inf_dragon_guard_ror_0=95,88;wh3_twa06_kho_inf_bloodletters_ror_0=60,92;wh3_twa06_ksl_inf_tzar_guard_ror_0=90,110;wh3_twa06_nur_inf_plaguebearers_ror_0=35,132;wh3_twa06_sla_inf_daemonette_ror_0=15,77;wh3_twa06_tze_inf_pink_horrors_ror_0=35,90;wh3_twa07_tze_cav_doom_knights_ror_0=120,245;wh3_twa10_cth_inf_peasant_archers_ror=15,54;wh3_twa10_ksl_inf_armoured_kossars_ror=80,82;wh3_twa10_nur_inf_nurglings_ror=0,155;wh3_twa10_ogr_inf_gnoblars_ror=15,56;wh3_twa10_sla_inf_marauders_spears_ror=15,78;wh3_twa10_tze_inf_blue_horrors_ror=5,48;wh_dlc01_chs_inf_chaos_warriors_2=100,90;wh_dlc01_chs_inf_chosen_2=120,131;wh_dlc01_chs_inf_forsaken_0=85,100;wh_dlc03_bst_inf_bestigor_herd_0=95,100;wh_dlc03_bst_inf_centigors_0=35,112;wh_dlc03_bst_inf_centigors_1=35,98;wh_dlc03_bst_inf_centigors_2=35,112;wh_dlc03_bst_inf_chaos_warhounds_0=15,76;wh_dlc03_bst_inf_chaos_warhounds_1=15,76;wh_dlc03_bst_inf_gor_herd_0=15,80;wh_dlc03_bst_inf_gor_herd_1=15,80;wh_dlc03_bst_inf_ungor_herd_1=15,56;wh_dlc03_bst_inf_ungor_raiders_0=15,53;wh_dlc03_bst_inf_ungor_spearmen_0=15,56;wh_dlc03_bst_inf_ungor_spearmen_1=15,56;wh_dlc04_emp_inf_flagellants_0=0,73;wh_dlc04_emp_inf_free_company_militia_0=25,61;wh_dlc04_emp_inf_sigmars_sons_0=30,74;wh_dlc04_emp_inf_silver_bullets_0=20,69;wh_dlc04_emp_inf_stirlands_revenge_0=25,61;wh_dlc04_emp_inf_tattersouls_0=0,73;wh_dlc04_vmp_inf_feasters_in_the_dusk_0=30,75;wh_dlc04_vmp_inf_konigstein_stalkers_0=80,61;wh_dlc04_vmp_inf_sternsmen_0=90,82;wh_dlc04_vmp_inf_tithe_0=15,77;wh_dlc04_vmp_mon_direpack_0=0,76;wh_dlc05_bst_mon_harpies_0=15,87;wh_dlc05_wef_inf_deepwood_scouts_0=15,69;wh_dlc05_wef_inf_deepwood_scouts_1=15,69;wh_dlc05_wef_inf_deepwood_scouts_1_qb=15,69;wh_dlc05_wef_inf_dryads_0=60,70;wh_dlc05_wef_inf_eternal_guard_0=40,72;wh_dlc05_wef_inf_eternal_guard_1=40,72;wh_dlc05_wef_inf_eternal_guard_1_qb=40,72;wh_dlc05_wef_inf_glade_guard_0=15,66;wh_dlc05_wef_inf_glade_guard_1=15,66;wh_dlc05_wef_inf_glade_guard_1_qb=15,66;wh_dlc05_wef_inf_glade_guard_2=15,66;wh_dlc05_wef_inf_wardancers_0=15,68;wh_dlc05_wef_inf_wardancers_1=15,68;wh_dlc05_wef_inf_waywatchers_0=15,94;wh_dlc05_wef_inf_wildwood_rangers_0=40,84;wh_dlc06_chs_inf_aspiring_champions_0=120,616;wh_dlc06_dwf_inf_bugmans_rangers_0=40,80;wh_dlc06_dwf_inf_dragonback_slayers_0=0,108;wh_dlc06_dwf_inf_ekrund_miners_0=80,76;wh_dlc06_dwf_inf_norgrimlings_ironbreakers_0=125,96;wh_dlc06_dwf_inf_norgrimlings_irondrakes_0=125,128;wh_dlc06_dwf_inf_old_grumblers_0=100,86;wh_dlc06_dwf_inf_peak_gate_guard_0=100,100;wh_dlc06_dwf_inf_rangers_0=40,68;wh_dlc06_dwf_inf_rangers_1=40,68;wh_dlc06_dwf_inf_ulthars_raiders_0=40,68;wh_dlc06_dwf_inf_warriors_dragonfire_pass_0=85,78;wh_dlc06_grn_inf_da_eight_peaks_loonies_0=15,56;wh_dlc06_grn_inf_da_rusty_arrers_0=15,54;wh_dlc06_grn_inf_da_warlords_boyz_0=15,56;wh_dlc06_grn_inf_krimson_killerz_0=110,135;wh_dlc06_grn_inf_nasty_skulkers_0=15,52;wh_dlc06_grn_inf_squig_explosive_0=50,668;wh_dlc06_grn_inf_squig_herd_0=50,133;wh_dlc06_grn_mon_spider_hatchlings_0=45,73;wh_dlc06_grn_mon_spider_hatchlings_0_summoned=45,73;wh_dlc07_brt_inf_battle_pilgrims_0=30,69;wh_dlc07_brt_inf_foot_squires_0=70,69;wh_dlc07_brt_inf_men_at_arms_1=30,65;wh_dlc07_brt_inf_men_at_arms_2=30,65;wh_dlc07_brt_inf_peasant_bowmen_1=15,54;wh_dlc07_brt_inf_peasant_bowmen_2=15,54;wh_dlc07_brt_inf_peasant_mob_0=15,54;wh_dlc07_brt_inf_spearmen_at_arms_1=30,65;wh_dlc08_nor_inf_marauder_berserkers_0=15,102;wh_dlc08_nor_inf_marauder_champions_0=80,96;wh_dlc08_nor_inf_marauder_champions_1=80,96;wh_dlc08_nor_inf_marauder_hunters_0=15,67;wh_dlc08_nor_inf_marauder_hunters_1=15,67;wh_dlc08_nor_inf_marauder_spearman_0=15,78;wh_dlc08_nor_mon_marauder_warwolves_0=15,143;wh_dlc29_vmp_inf_cairn_wraiths_summoned=0,112;wh_dlc29_vmp_inf_cairn_wraiths_summoned_upgraded_0=0,112;wh_dlc29_vmp_inf_cairn_wraiths_summoned_upgraded_1=0,112;wh_main_brt_inf_men_at_arms=30,66;wh_main_brt_inf_peasant_bowmen=15,54;wh_main_brt_inf_spearmen_at_arms=30,65;wh_main_chs_inf_chaos_marauders_0=15,78;wh_main_chs_inf_chaos_marauders_1=15,78;wh_main_chs_inf_chaos_warriors_0=100,90;wh_main_chs_inf_chaos_warriors_1=100,90;wh_main_chs_inf_chosen_0=120,131;wh_main_chs_inf_chosen_1=120,131;wh_main_chs_mon_chaos_warhounds_0=15,76;wh_main_chs_mon_chaos_warhounds_1=15,76;wh_main_dwf_inf_dwarf_warrior_0=85,78;wh_main_dwf_inf_dwarf_warrior_1=85,78;wh_main_dwf_inf_hammerers=100,100;wh_main_dwf_inf_ironbreakers=125,96;wh_main_dwf_inf_irondrakes_0=125,128;wh_main_dwf_inf_irondrakes_2=125,128;wh_main_dwf_inf_longbeards=100,86;wh_main_dwf_inf_longbeards_1=100,86;wh_main_dwf_inf_miners_0=80,76;wh_main_dwf_inf_miners_1=80,76;wh_main_dwf_inf_quarrellers_0=80,70;wh_main_dwf_inf_quarrellers_1=80,70;wh_main_dwf_inf_slayers=0,108;wh_main_dwf_inf_thunderers_0=80,71;wh_main_emp_inf_crossbowmen=20,69;wh_main_emp_inf_greatswords=95,76;wh_main_emp_inf_halberdiers=30,73;wh_main_emp_inf_handgunners=20,69;wh_main_emp_inf_spearmen_0=30,69;wh_main_emp_inf_spearmen_1=30,69;wh_main_emp_inf_swordsmen=30,69;wh_main_grn_inf_black_orcs=110,135;wh_main_grn_inf_goblin_archers=25,51;wh_main_grn_inf_goblin_spearmen=25,56;wh_main_grn_inf_night_goblin_archers=15,54;wh_main_grn_inf_night_goblin_fanatics=15,56;wh_main_grn_inf_night_goblin_fanatics_1=15,54;wh_main_grn_inf_night_goblins=15,56;wh_main_grn_inf_orc_arrer_boyz=30,77;wh_main_grn_inf_orc_big_uns=50,108;wh_main_grn_inf_orc_boyz=30,81;wh_main_grn_inf_savage_orc_arrer_boyz=0,77;wh_main_grn_inf_savage_orc_big_uns=0,108;wh_main_grn_inf_savage_orcs=0,81;wh_main_nor_inf_chaos_marauders_0=15,78;wh_main_nor_inf_chaos_marauders_1=15,78;wh_main_nor_mon_chaos_warhounds_0=15,76;wh_main_nor_mon_chaos_warhounds_1=15,76;wh_main_vmp_inf_cairn_wraiths=0,112;wh_main_vmp_inf_crypt_ghouls=30,75;wh_main_vmp_inf_crypt_ghouls_summoned=30,75;wh_main_vmp_inf_grave_guard_0=90,82;wh_main_vmp_inf_grave_guard_0_summoned=90,82;wh_main_vmp_inf_grave_guard_1=90,82;wh_main_vmp_inf_skeleton_warriors_0=20,61;wh_main_vmp_inf_skeleton_warriors_0_summoned=20,61;wh_main_vmp_inf_skeleton_warriors_1=20,61;wh_main_vmp_inf_zombie=0,77;wh_main_vmp_inf_zombie_summoned=0,77;wh_main_vmp_mon_dire_wolves=0,76;wh_main_vmp_mon_fell_bats=0,70;wh_pro03_vmp_cha_krell_0=100,4000;wh_pro03_vmp_cha_krell_campaign_0=100,4000;wh_pro03_vmp_cha_krell_campaign_1=100,4000;wh_pro03_vmp_cha_krell_campaign_2=100,5000;wh_pro03_vmp_cha_krell_campaign_3=100,5000;wh_pro03_vmp_cha_krell_campaign_4=100,5660;wh_pro04_brt_inf_battle_pilgrims_ror_0=30,69;wh_pro04_brt_inf_foot_squires_ror_0=80,69;wh_pro04_bst_inf_bestigor_herd_ror_0=95,100;wh_pro04_bst_inf_centigors_ror_0=70,112;wh_pro04_bst_inf_gor_herd_ror_0=35,80;wh_pro04_bst_inf_ungor_spearmen_ror_0=15,56;wh_pro04_chs_inf_chaos_warriors_ror_0=100,90;wh_pro04_chs_inf_forsaken_ror_0=85,109;wh_pro04_nor_inf_chaos_marauders_ror_0=15,78;wh_pro04_nor_inf_marauder_berserkers_ror_0=35,102;wh_pro04_nor_mon_marauder_warwolves_ror_0=15,76;wh_pro04_wef_inf_eternal_guard_ror_0=40,72;wh_pro04_wef_inf_wardancers_ror_0=15,68;wh_pro04_wef_inf_waywatchers_ror_0=15,94;wh_pro04_wef_inf_wildwood_rangers_ror_0=40,84;wh_twa03_def_inf_squig_explosive_0=50,668"
+FOURTH.BLOB_DMG = {}
+FOURTH.UNIT_DEF = {}
+function FOURTH.load_value_tables()
+	for k, b, a, h in string.gmatch(FOURTH.BLOB_DMG_TEXT, "([^;=]+)=([%d%.]+),([%d%.]+),(%d)") do
+		FOURTH.BLOB_DMG[k] = { tonumber(b), tonumber(a), tonumber(h) }
+	end
+	for k, a, hp in string.gmatch(FOURTH.UNIT_DEF_TEXT, "([^;=]+)=([%d%.]+),([%d%.]+)") do
+		FOURTH.UNIT_DEF[k] = { tonumber(a), tonumber(hp) }
+	end
+end
+FOURTH.load_value_tables()
+
+-- ROUND 150 (user ruling 2026-11-14, Winds of Magic abilities: "All when ready"): no condition at all; the shared
+-- gates (armed, ready, charge hold, 2 s guard) decide when it fires.
+function FOURTH.evaluate_when_ready(unit, routing)
+	return "when ready (Winds of Magic), cast on self"
 end
 
 FOURTH.evaluators = {
@@ -17824,6 +17920,8 @@ FOURTH.evaluators = {
 	enemy_wavering = FOURTH.evaluate_enemy_wavering,
 	-- ROUND 146
 	enemy_blob = FOURTH.evaluate_enemy_blob,
+	-- ROUND 150
+	when_ready = FOURTH.evaluate_when_ready,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -17915,7 +18013,8 @@ FOURTH.TRIGGER_TIP = {
 	health_aura_self_undead = "When armed, fires when this unit or a non-living friendly unit in its aura is hurt",
 	ally_hurt_melee = "When armed, fires on the most hurt friendly unit in range that is in melee",
 	enemy_wavering = "When armed, fires on the closest wavering enemy in range",
-	enemy_blob = "When armed, fires at the densest enemy infantry in range when the blast hits enough soldiers and none of ours are near",
+	enemy_blob = "When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near",
+	when_ready = "When armed, fires as soon as it is ready",
 	melee_or_shooting_into_melee = "When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee",
 	ally_warmachine_heal = "When armed, fires on the lowest-health war machine ally in range that is at or below 75% health",
 	ally_hellforged_heal = "When armed, fires on the lowest-health Hell-Forged ally in range that is at or below 75% health",
