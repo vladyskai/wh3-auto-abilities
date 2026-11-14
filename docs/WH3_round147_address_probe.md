@@ -68,3 +68,26 @@ Not yet known: whether the offsets survive a game restart (they should: they are
 own objects, not addresses), whether they survive a game PATCH (likely not; re-find with the tools), other stats
 (leadership, fatigue, ability cooldowns), and how the mod would READ these values back (an outside file read by
 Lua `io`, untested).
+
+## Field result, live stats (same battle, 2026-11-14)
+
+Three readings of the sword Marauders' card (paused each time, the unit in melee in between):
+
+| Card | Reading 1 | Reading 2 | Reading 3 | Memory |
+|---|---|---|---|---|
+| Hit points | 4691 | 3969 | 3136 | `[[obj+8]+280]+5CC` read 4691, 3969, 3136: EXACT, live |
+| Men | 81 | 70 | 56 | `[obj+8]+A4`: exact, live |
+| Melee attack | 26 (34 base +1 rank -9 very tired) | 26 | 23 or 25 | base 34 at `[[obj+8]+280]+850`; no live field found |
+| Melee defence | 29 | 29 | 26 | base 28 at `+880`; no live field found |
+| Leadership | 26 | 33 | 14 | base 60 at `+8B0`; no live field found |
+| Armour / charge | 14 / 14 | 14 / 14 | 11 / 13 | not searched |
+
+Method: every float path up to two pointers deep from the unit handle that held the card value was kept, then
+re-checked after the card changed (`tools/memprobe/pattern.py`, `track.py`). Melee attack 33 -> 7 -> 0 tracking
+candidates, melee defence 7 -> 6 -> 0, leadership 25 -> 0 and 6 -> 0.
+
+Reading: the LIVE melee attack, melee defence and leadership are not stored as a plain float within two pointers
+of the unit. Most likely the engine computes them when asked, from the base value plus a list of active modifiers
+(the card's tooltip lists them: "Unit rank: 1", "Very tired: -9"). `[[obj+170]+2A8]+2BC` holds -9.0 on all three
+readings and may be the fatigue modifier (unproven). Reaching the live values would need either a deeper search
+(three or more pointers) or reading the modifier list and repeating the game's own sum.
