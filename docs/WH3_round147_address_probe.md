@@ -151,3 +151,32 @@ Conclusion: within three pointers of the unit there is no per-unit value, on any
 leadership the card shows. Together with the whole-memory scan (only UI copies on the card's scale), the live
 leadership is either computed when asked or kept in a structure the unit does not point to within three steps
 (for example a separate morale system).
+
+## Online research, and the live leadership FOUND (2026-11-14)
+
+Sources read (web): the FearLess Cheat Engine thread for Warhammer 3 9.0.x
+(https://fearlessrevolution.com/viewtopic.php?t=29553) and its merged v2.0 table (05-Nov-2026, audited on 9.0.5);
+the memreader repository (https://github.com/Cpecific/twwh2-memreader).
+
+1. The table's "Minimum Leadership" hook (the battle troop-update hook, MOTU) comments its own field:
+   `cmp [rcx+00003B78],eax  // signed current leadership`, written to raise a floor while it leaves "base leadership,
+   state flags, HP and other units intact". Our deep scans missed it because they read only the first 0x1000 bytes
+   of each block, and 0x3B78 is past that.
+2. Checked in our battle 2: `[handle+8]+0x3B78` (int32, the SAME engine unit object as max HP +80 and men +A4):
+
+| Card (UI copy) | Ours `[h+8]+3B78` | Enemy `[h+8]+3B78` |
+|---|---|---|
+| 67 | 67 | 53 |
+| 67 | 67 | 53 |
+| 60 | 60 | 53 |
+| 60 | 60 | 44 |
+
+   Exact on every reading, it changed with the card, and the enemy's moved on its own (`tools/memprobe/lead.py`).
+   It is SIGNED: the table notes that negative morale exists.
+3. memreader (Cpecific; Workshop items "Memreader (win64)" 2789863945 and "memreader Plus (win64 / Proton)"
+   3811098873 on the Warhammer 3 Workshop): a DLL that game Lua loads with `require`, giving Lua `read_pointer`,
+   `read_int32`, `read_float` and `ud_topointer(userdata)` (the address behind a script handle). It would let the
+   MOD read these fields itself, with no outside program. The GitHub repo is Warhammer 2 era (last commit
+   2021-11-03); the Warhammer 3 Workshop versions were not readable (HTTP 429), so their API and battle support are
+   unverified. Using it means another mod and a DLL written into the game folder: the user's decision (rule 6).
+4. The same table also hooks spell cooldowns and charges (no offsets published in the visible posts).
