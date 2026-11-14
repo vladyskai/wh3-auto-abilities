@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `a45b916dd168ed2543786931448cdfc6`, 1,488,943 bytes
-  (round 147, 2026-11-14: the read-only address probe, addr= on every MAP row). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `31d0ebcdd242188da2fb9f470ada7306`, 1,492,562 bytes
+  (round 148, 2026-11-14: the optional read-only memreader probe, mr_lead/mr_hp/mr_men on every MAP row). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261114_addr_probe_harness146/build_and_install147.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261114_memreader_probe_harness147/build_and_install148.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness146: 6,350 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness147: 6,369 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -316,6 +316,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 `grounded-citations` for cited claims; `python-desktop-gui` for a viewer window.
 
 ## 9. OPEN ITEMS
+
+- MEMREADER PROBE (round 148, docs\WH3_round148_memreader_probe.md): optional dependency on the Workshop mod memreader
+  Plus (the USER enables it; never Claude). Reads [ud_topointer(u)+8]+0x3B78 leadership, [[..+8]+0x280]+0x5CC HP and
+  [..+8]+0xA4 men on the MAP rows only; read-only (build gate). Awaiting a battle from byte 555,628,705. Live
+  leadership is a signed int at [unit+8]+0x3B78 (source: a public FearLess CE table); live melee attack/defence not found.
 
 - MEMORY READING (round 147, 2026-11-14, docs\WH3_round147_address_probe.md): tools\memprobe\memprobe.py reads
   Warhammer3.exe memory READ-ONLY (no admin needed; about 9 s per full scan). Unit HP = 4-byte int equal to the card.
