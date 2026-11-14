@@ -5079,7 +5079,10 @@ local function is_armed(unit, marker)
 	if not ok_id or raw_id == nil then return false end
 	local ui_id = unit_slot(raw_id)
 	local per = armed[ui_id]
-	return per ~= nil and per[marker] == true
+	if per ~= nil and per[marker] ~= nil then return per[marker] == true end
+	-- ROUND 151: an ability whose trigger family starts ARMED (user ruling 2026-11-14) is on until clicked off
+	local a = ability_for(marker)
+	return a ~= nil and a.default_on == true
 end
 
 -- The unit behind the current selection, or nil while nothing is selected.
@@ -17596,7 +17599,7 @@ function FOURTH.blob_map(fresh)
 		pcall(function() FOURTH.map_alliance = bm:get_player_alliance() end)
 	end
 	local alliance = FOURTH.map_alliance
-	local m = { ours = {}, enemies = {}, alliance = (alliance ~= nil) }
+	local m = { ours = {}, enemies = {}, large = {}, alliance = (alliance ~= nil) }
 	for i = 1, #(tracked_units or {}) do
 		local u = tracked_units[i] and tracked_units[i].unit
 		if u ~= nil then
@@ -17615,9 +17618,20 @@ function FOURTH.blob_map(fresh)
 				if e ~= nil then
 					local ok_v, vis = pcall(function() return e:is_visible_to_alliance(alliance) end)
 					local ok_f, fly = pcall(function() return e:is_currently_flying() end)
-					if ok_v and vis == true and not (ok_f and fly == true) then
+					if ok_v and vis == true then
 						local s = FOURTH.blob_shape(e)
-						if s ~= nil and s.inf and s.men >= FOURTH.BLOB_MIN_MEN then m.enemies[#m.enemies + 1] = s end
+						if s ~= nil and s.inf and s.men >= FOURTH.BLOB_MIN_MEN and not (ok_f and fly == true) then
+							m.enemies[#m.enemies + 1] = s
+						elseif s ~= nil and s.t ~= nil and FOURTH.class_keys.large[s.t] == true then
+							-- ROUND 151: the LARGE enemies (flying ones too), for the prefer-central attacks
+							local ok_h, hf = pcall(function() return e:unary_hitpoints() end)
+							if ok_h and type(hf) == "number" then s.hp_frac = hf end
+							local ok_i, m0 = pcall(function() return e:initial_number_of_men() end)
+							if ok_i and type(m0) == "number" and m0 > 0 then s.men0 = m0 end
+							local ok_s, sv = pcall(function() return e:strategic_value() end)
+							if ok_s and type(sv) == "number" then s.sv = sv end
+							m.large[#m.large + 1] = s
+						end
 					end
 				end
 			end
@@ -17705,17 +17719,21 @@ end
 -- may this attack aim at block e at all? an AP-heavy attack needs armour of at least BLOB_AP_ARMOUR_MIN
 function FOURTH.blob_ap_ok(e, dmg)
 	if dmg == nil or dmg[3] ~= 1 then return true end
-	local def = e.t and FOURTH.UNIT_DEF[e.t]
+	local def = e.t and (FOURTH.UNIT_DEF[e.t] or FOURTH.LARGE_DEF[e.t])   -- ROUND 151: large targets too
 	return def ~= nil and def[1] >= FOURTH.BLOB_AP_ARMOUR_MIN
 end
 
 -- the best safe target for this caster: shape, soldiers, units, friendly gap, value; nil when none passes. A candidate
 -- must be allowed (armour rule), safe, and reach the density line on its own; the most value destroyed wins.
+-- ROUND 151 (user ruling 2026-11-14, breaths: "Prefer 90 now"): a BREATH takes, among the candidates within
+-- BREATH_VALUE_BAND of the best value, the one whose side faces it - the line of fire closest to 90 degrees off the
+-- target's facing (its front runs along the breath).
+FOURTH.BREATH_VALUE_BAND = 0.8   -- user ruling 2026-11-14: "within 20% of the best value"
 function FOURTH.blob_pick(unit, m, r, key)
 	local reach = r + FOURTH.BLOB_MARGIN_M
 	local need = FOURTH.blob_need(r)
 	local dmg = key and FOURTH.BLOB_DMG[key]
-	local best, bs, bu, bg, bv = nil, nil, nil, nil, nil
+	local cands, bv = {}, nil
 	for i = 1, #m.enemies do
 		local e = m.enemies[i]
 		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg) then
@@ -17724,12 +17742,99 @@ function FOURTH.blob_pick(unit, m, r, key)
 				local sc, un = FOURTH.blob_score(e, m, r)
 				if sc >= need then
 					local v = FOURTH.blob_value(e, m, r, dmg)
-					if best == nil or v > bv or (v == bv and sc > bs) then best, bs, bu, bg, bv = e, sc, un, g, v end
+					cands[#cands + 1] = { e, sc, un, g, v }
+					if bv == nil or v > bv then bv = v end
 				end
 			end
 		end
 	end
-	return best, bs, bu, bg, bv
+	if bv == nil then return nil end
+	local shot = key and FOURTH.BLOB_SHOT[key]
+	local cx, cz = nil, nil
+	if shot ~= nil and shot[6] == 1 then
+		pcall(function()
+			local p = unit:position()
+			cx, cz = p:get_x(), p:get_z()
+		end)
+	end
+	local best, bcos = nil, nil
+	for i = 1, #cands do
+		local c = cands[i]
+		if cx ~= nil then
+			if c[5] >= FOURTH.BREATH_VALUE_BAND * bv then
+				local dx, dz = c[1].x - cx, c[1].z - cz
+				local len = math.sqrt(dx * dx + dz * dz)
+				local cs = 1
+				if len > 0 then cs = math.abs((dx * c[1].fx + dz * c[1].fz) / len) end
+				if best == nil or cs < bcos or (cs == bcos and c[5] > best[5]) then best, bcos = c, cs end
+			end
+		elseif best == nil or c[5] > best[5] or (c[5] == best[5] and c[2] > best[2]) then
+			best = c
+		end
+	end
+	return best[1], best[2], best[3], best[4], best[5]
+end
+
+-- ROUND 151: the value a cast takes from a LARGE target (all its shots hit it: projectile and blast damage after
+-- armour, bonus vs large included, against the unit's current hit points, times its live value); nil when unknown
+function FOURTH.blob_large_value(e, key)
+	local shot = key and FOURTH.BLOB_SHOT[key]
+	local dmg = key and FOURTH.BLOB_DMG[key]
+	local def = e.t and FOURTH.LARGE_DEF[e.t]
+	if shot == nil or dmg == nil or def == nil or e.sv == nil or e.sv <= 0 then return nil end
+	local af = 1 - FOURTH.ARMOUR_TAKES * math.min(def[1], 100)
+	local per = (shot[2] + shot[4]) * af + shot[3] + dmg[1] * af + dmg[2]
+	local men0 = e.men0 or e.men
+	local cur = def[2] * men0 * (e.hp_frac or (e.men / men0))
+	if cur <= 0 then return nil end
+	return e.sv * math.min(1, shot[1] * per / cur)
+end
+
+-- ROUND 151: the best safe large target in range (allowed by the armour rule): shape, value, friendly gap
+function FOURTH.blob_pick_large(unit, m, r, key)
+	local reach = r + FOURTH.BLOB_MARGIN_M
+	local dmg = key and FOURTH.BLOB_DMG[key]
+	local best, bv, bg = nil, nil, nil
+	for i = 1, #m.large do
+		local e = m.large[i]
+		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg) then
+			local g = FOURTH.blob_friend_gap(e, m, reach)
+			if g == nil or g > reach then
+				local v = FOURTH.blob_large_value(e, key)
+				if v ~= nil and (bv == nil or v > bv) then best, bv, bg = e, v, g end
+			end
+		end
+	end
+	return best, bv, bg
+end
+
+-- ROUND 151: the hold - a visible large enemy ANYWHERE that this cast would take more value from than the best
+-- infantry target now
+function FOURTH.blob_large_hold(m, key, inf_value)
+	local dmg = key and FOURTH.BLOB_DMG[key]
+	for i = 1, #m.large do
+		local e = m.large[i]
+		if FOURTH.blob_ap_ok(e, dmg) then
+			local v = FOURTH.blob_large_value(e, key)
+			if v ~= nil and v > inf_value then return true, e end
+		end
+	end
+	return false, nil
+end
+
+-- ROUND 151: the game's own usage rules - grounded (the caster must be flying) and engaged_in_melee
+function FOURTH.blob_usage_ok(unit, key)
+	local shot = key and FOURTH.BLOB_SHOT[key]
+	if shot == nil then return true end
+	if shot[7] == 1 then
+		local ok, fly = pcall(function() return unit:is_currently_flying() end)
+		if not (ok and fly == true) then return false end
+	end
+	if shot[8] == 1 then
+		local ok, mel = pcall(function() return unit:is_in_melee() end)
+		if not (ok and mel == false) then return false end
+	end
+	return true
 end
 
 -- standing still: is_moving() must read exactly false (user ruling 2026-11-14; a cast stops a moving caster)
@@ -17745,6 +17850,23 @@ function FOURTH.blob_still_ok(enemy, unit)
 	local m = FOURTH.blob_map(true)
 	local id = nil
 	pcall(function() id = tostring(enemy:unique_ui_id()) end)
+	-- ROUND 151: a large target is re-checked in the large list (standing, usage rules, safe, armour rule)
+	if FOURTH.blob_kind == "large" then
+		local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
+		if not FOURTH.blob_still(unit) or not FOURTH.blob_usage_ok(unit, key) then return false end
+		for i = 1, #m.large do
+			local e = m.large[i]
+			local eid = nil
+			pcall(function() eid = tostring(e.unit:unique_ui_id()) end)
+			if eid ~= nil and eid == id then
+				local reach = r + FOURTH.BLOB_MARGIN_M
+				local g = FOURTH.blob_friend_gap(e, m, reach)
+				if g ~= nil and g <= reach then return false end
+				return FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key])
+			end
+		end
+		return false
+	end
 	for i = 1, #m.enemies do
 		local e = m.enemies[i]
 		local eid = nil
@@ -17766,34 +17888,70 @@ end
 
 function FOURTH.evaluate_enemy_blob(unit, routing)
 	FOURTH.eg_mode = "blob"
+	FOURTH.blob_kind = nil
 	if routing then return nil end
 	local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
 	local r = key and FOURTH.BLAST_R[key]
 	if r == nil then return nil end
 	-- ROUND 150: never while the caster moves (the cast would stop it)
 	if not FOURTH.blob_still(unit) then return nil end
+	-- ROUND 151: the game's own usage rules (grounded, in melee)
+	if not FOURTH.blob_usage_ok(unit, key) then return nil end
 	local m = FOURTH.blob_map(false)
-	if #m.enemies == 0 then return nil end
-	local tgt, sc, un, gap, val = FOURTH.blob_pick(unit, m, r, key)
-	local need = FOURTH.blob_need(r)
-	if tgt == nil or sc < need then return nil end
+	local shot = FOURTH.BLOB_SHOT[key]
+	local central = (shot ~= nil and shot[5] == 1)
+	local tgt, sc, un, gap, val, kind = nil, nil, nil, nil, nil, nil
+	-- ROUND 151: LARGE FIRST for the prefer-central attacks
+	if central and #m.large > 0 then
+		local lt, lv, lg = FOURTH.blob_pick_large(unit, m, r, key)
+		if lt ~= nil then tgt, val, gap, kind = lt, lv, lg, "large" end
+	end
+	if tgt == nil then
+		if #m.enemies == 0 then return nil end
+		tgt, sc, un, gap, val = FOURTH.blob_pick(unit, m, r, key)
+		if tgt == nil or sc < FOURTH.blob_need(r) then return nil end
+		-- ROUND 151: THE HOLD - a more valuable large enemy anywhere on the field keeps this cast for it
+		if central then
+			local hold, le = FOURTH.blob_large_hold(m, key, val or 0)
+			if hold then
+				local last = FOURTH.blob_hold_said[key]
+				if last == nil or tick_count - last >= 40 then
+					FOURTH.blob_hold_said[key] = tick_count
+					local lt2 = "large"
+					pcall(function() lt2 = tostring(le.unit:type()) end)
+					log("  " .. tostring(FOURTH.eg_marker) .. " HOLD: a large enemy (" .. lt2 .. ") is worth more than the best"
+						.. " infantry target (value " .. string.format("%.0f", val or 0) .. ") - saving the cast for it")
+				end
+				return nil
+			end
+		end
+		kind = "infantry"
+	end
 	local etype = "enemy"
 	pcall(function() etype = tostring(tgt.unit:type()) end)
 	FOURTH.blob_r = r
+	FOURTH.blob_kind = kind
 	FOURTH.eg_enemy = tgt.unit
 	FOURTH.eg_arm = "blob"
 	FOURTH.eg_caster_su = FOURTH.eg_fresh_caster_su(unit)
 	FOURTH.cast_target = tgt.unit
 	local d = FOURTH.eg_enemy_gap(unit, tgt.unit)
+	if kind == "large" then
+		return string.format("large target first (targeting %s): value destroyed %.0f of %s; ours %s; distance %sm bound %sm",
+			etype, val or 0, tgt.sv and string.format("%.0f", tgt.sv) or "?",
+			(gap ~= nil) and string.format("%.1fm away (needs > %sm)", gap, tostring(r + FOURTH.BLOB_MARGIN_M)) or "not near",
+			(d ~= nil) and string.format("%.1f", d) or "?", tostring(FOURTH.eg_range_m))
+	end
 	local def = tgt.t and FOURTH.UNIT_DEF[tgt.t]
 	return string.format("infantry blob (targeting %s): value destroyed %.0f (armour %s, %.0f%% of a soldier per hit,"
 		.. " value %s per soldier); %d enemy soldiers in the %sm blast (line %d), %d unit(s);"
 		.. " ours %s; distance %sm bound %sm", etype, val or 0, def and tostring(def[1]) or "?",
 		100 * FOURTH.blob_kill(tgt, key and FOURTH.BLOB_DMG[key]), tgt.vps and string.format("%.1f", tgt.vps) or "?",
-		math.floor(sc + 0.5), tostring(r), need, un,
+		math.floor(sc + 0.5), tostring(r), FOURTH.blob_need(r), un,
 		(gap ~= nil) and string.format("%.1fm away (needs > %sm)", gap, tostring(r + FOURTH.BLOB_MARGIN_M)) or "not near",
 		(d ~= nil) and string.format("%.1f", d) or "?", tostring(FOURTH.eg_range_m))
 end
+FOURTH.blob_hold_said = {}
 
 -- GENERATED by tools/gen_blob_tables.py (round 150) from projectiles, projectiles_explosions, unit_spec_abil,
 -- land_units, unit_armour_types and battle_entities (the build refuses a pack whose tables differ). Do not hand-edit.
@@ -17815,6 +17973,68 @@ FOURTH.load_value_tables()
 -- gates (armed, ready, charge hold, 2 s guard) decide when it fires.
 function FOURTH.evaluate_when_ready(unit, routing)
 	return "when ready (Winds of Magic), cast on self"
+end
+
+-- GENERATED by tools/gen_blob_tables.py (round 151) from unit_spec_abil, projectiles, unit_abilities,
+-- special_ability_to_invalid_usage_flags, land_units, mounts, unit_armour_types and battle_entities (the build
+-- refuses a pack whose tables differ). Do not hand-edit.
+FOURTH.BLOB_SHOT_TEXT = "wh2_dlc09_weapon_abilities_venom_staff=2,0,100,0,1,0,0,0;wh2_dlc10_unit_abilities_frost_breath=12,54,32,0,1,1,0,1;wh2_dlc10_unit_abilities_frost_wyrm_breath=12,54,32,0,1,1,1,1;wh2_dlc10_weapon_abilities_the_moonbow=1,0,672,0,1,0,0,0;wh2_dlc11_character_abilities_cackle_fruit=1,1,0,0,0,0,0,1;wh2_dlc11_character_abilities_pyromaniac=1,1,0,0,0,0,0,1;wh2_dlc11_hero_abilities_bomb_throw=1,1,0,0,0,0,0,1;wh2_dlc12_weapon_abilities_storm_daemon=1,0,764,0,1,0,0,0;wh2_dlc13_character_abilities_big_boom=1,0,1,0,0,0,0,1;wh2_dlc13_lord_abilities_arrows_of_aqshy=2,285,150,75,1,0,0,0;wh2_dlc13_lord_abilities_executioner=1,200,420,240,0,0,0,0;wh2_dlc13_lord_abilities_fire_arrow=1,320,210,133,1,0,0,0;wh2_dlc13_weapon_abilities_amber_bow=5,50,115,60,0,0,0,0;wh2_dlc14_character_abilities_cracklebomb=1,1,0,0,0,0,0,1;wh2_dlc14_spell_bound_warpfireball=1,350,150,0,1,0,0,0;wh2_dlc15_character_abilities_goggly_glare=10,65,25,44,0,0,0,0;wh2_dlc15_hero_abilities_swamp_breath=4,150,66,0,1,1,0,1;wh2_dlc15_spell_bound_gaze_of_nagash=5,30,75,50,0,0,0,0;wh2_dlc15_unit_abilities_noxious_breath_imrik=15,77,32,0,1,1,1,1;wh2_dlc15_unit_abilities_sun_dragon_breath_imrik=15,112,62,0,1,1,1,1;wh2_dlc16_item_abilities_dart_of_doom=1,0,500,0,1,0,0,0;wh2_dlc16_item_abilities_eagle_quiver=2,200,250,0,1,0,0,0;wh2_dlc16_unit_abilities_volley_of_kurnous=1,16,16,0,0,0,0,0;wh2_dlc17_hero_abilities_cinderblast_shell=1,320,210,133,1,0,0,0;wh2_main_character_abilities_volley_of_dark_arrows=3,0,120,0,0,0,0,0;wh2_main_character_abilities_volley_of_high_arrows=3,0,120,0,0,0,0,0;wh2_main_hero_abilities_doomrocket=1,52,26,0,1,0,0,0;wh2_main_spell_bound_hand_of_gods=15,20,50,33,0,0,0,0;wh2_main_unit_abilities_dark_fire_of_chaos=15,32,50,0,1,1,1,1;wh2_main_unit_abilities_death_shriek=4,58,172,0,1,1,0,1;wh2_main_unit_abilities_fiery_breath=12,54,32,0,1,1,0,1;wh2_main_unit_abilities_moon_dragons_breath=15,68,41,0,1,1,1,1;wh2_main_unit_abilities_noxious_breath=15,77,32,0,1,1,1,1;wh2_main_unit_abilities_pestilential_breath=15,73,27,0,1,1,1,1;wh2_main_unit_abilities_soporific_breath=15,63,27,0,1,1,1,1;wh2_main_unit_abilities_star_dragons_breath=15,32,50,0,1,1,1,1;wh2_main_unit_abilities_sun_dragons_breath=15,55,22,0,1,1,1,1;wh2_main_weapon_abilities_bow_of_the_seafarer=3,0,75,0,0,0,0,0;wh2_main_weapon_bound_reaver_bow=10,1,0,0,0,0,0,0;wh3_dlc23_spell_bound_burning_wrath=1,350,150,0,1,0,0,0;wh3_dlc23_unit_abilities_flaming_breath=8,54,32,0,1,1,1,1;wh3_dlc24_hero_abilities_windblade=1,350,150,0,1,0,0,0;wh3_dlc24_item_abilities_wind_bow=6,25,75,0,1,0,0,0;wh3_dlc24_lord_abilities_spirit_bear=1,350,150,0,1,0,0,0;wh3_dlc24_lord_abilities_spirit_bear_upgrade=1,350,150,0,1,0,0,0;wh3_dlc24_lord_abilities_taals_judgement=2,285,150,75,1,0,0,0;wh3_dlc24_unit_abilities_ice_breath=12,60,40,0,1,1,0,0;wh3_dlc25_character_abilities_mercurial_shot=1,100,200,0,1,0,0,0;wh3_dlc25_lord_abilities_cinderblast_cluster_bomb=1,10,25,0,1,0,0,0;wh3_dlc25_unit_abilities_coruscating_blast=12,50,125,0,1,1,1,1;wh3_dlc25_unit_abilities_spear_of_grungni=1,250,1500,500,1,0,0,0;wh3_dlc25_unit_abilities_unspeakable_foulness=15,77,32,0,1,0,0,0;wh3_dlc25_weapon_abilities_experimental_explosive=1,50,20,0,0,0,0,1;wh3_dlc26_character_abilities_sting_of_snagla=1,200,200,0,1,0,0,0;wh3_dlc27_spell_bound_fireball_upgraded=1,350,300,0,1,0,0,0;wh3_dlc27_spell_heavens_chain_lightning_bound=1,10,10,0,0,0,0,0;wh3_dlc27_spell_heavens_chain_lightning_bound_unit=1,10,10,0,0,0,0,0;wh3_dlc27_unit_abilities_flaming_breath=8,36,22,0,1,1,0,0;wh3_dlc29_hero_active_bilespurter=1,70,210,0,1,0,0,0;wh3_dlc29_lord_abilities_lamentation_of_despair_upgraded=9,100,20,0,0,0,0,0;wh3_dlc29_lord_abilities_shadowblood=1,75,75,50,1,0,0,0;wh3_dlc29_lord_active_pestilent_torrent=12,42,84,0,1,0,0,0;wh3_dlc29_unit_abilities_the_gaze_of_dust=1,495,855,0,1,0,0,0;wh3_main_character_abilities_fire_breath=4,66,33,0,1,1,0,1;wh3_main_character_abilities_ice_shard=1,165,385,0,1,0,0,0;wh3_main_lord_abilities_bellow_of_endless_fury=11,32,50,0,1,0,0,1;wh3_main_lord_abilities_bellow_of_fury=8,54,32,0,1,0,0,1;wh3_main_unit_abilities_elemental_breath=7,48,72,0,1,1,0,1;wh_dlc03_spell_bound_the_amber_spear=1,150,350,0,1,0,0,0;wh_dlc05_hero_abilities_arrow_of_kurnous=3,80,80,0,0,0,0,0;wh_dlc05_item_abilities_hail_of_doom_arrow=10,1,0,0,0,0,0,0;wh_dlc05_lord_abilities_lamentation_of_despair=8,85,15,0,0,0,0,0;wh_dlc06_spell_bound_vindictive_glare=5,65,25,44,0,0,0,0;wh_dlc06_weapon_abilities_skarsniks_prodder=1,0,432,0,1,0,0,0;wh_dlc08_lord_abilities_copious_vomit=11,75,33,0,1,0,0,0;wh_main_spell_bound_fireball=1,350,150,0,1,0,0,0;wh_main_spell_light_shems_burning_gaze_bound=5,20,50,33,0,0,0,0"
+FOURTH.LARGE_DEF_TEXT = "wh2_dlc09_tmb_cav_necropolis_knights_0=110,311;wh2_dlc09_tmb_cav_necropolis_knights_1=110,311;wh2_dlc09_tmb_cav_necropolis_knights_ror=110,440;wh2_dlc09_tmb_cha_arkhan_2=110,5604;wh2_dlc09_tmb_cha_khalida_1=110,5943;wh2_dlc09_tmb_cha_khalida_2=80,6163;wh2_dlc09_tmb_cha_khatep_2=80,5016;wh2_dlc09_tmb_cha_necrotect_1=80,4816;wh2_dlc09_tmb_cha_settra_2=110,7404;wh2_dlc09_tmb_cha_settra_3=95,10016;wh2_dlc09_tmb_cha_tomb_king_2=80,5804;wh2_dlc09_tmb_cha_tomb_king_3=95,9816;wh2_dlc09_tmb_cha_tomb_prince_2=80,5216;wh2_dlc09_tmb_mon_carrion_ror=45,540;wh2_dlc09_tmb_mon_crypt_horrors=30,622;wh2_dlc09_tmb_mon_heirotitan_0=100,12620;wh2_dlc09_tmb_mon_khemrian_warsphinx_0=95,9628;wh2_dlc09_tmb_mon_morghast_archai=100,758;wh2_dlc09_tmb_mon_morghast_harbingers=80,758;wh2_dlc09_tmb_mon_necrosphinx_0=100,8960;wh2_dlc09_tmb_mon_necrosphinx_ror=100,9780;wh2_dlc09_tmb_mon_sepulchral_stalkers_0=80,440;wh2_dlc09_tmb_mon_sepulchral_stalkers_ror=80,440;wh2_dlc09_tmb_mon_tomb_scorpion_0=90,6020;wh2_dlc09_tmb_mon_ushabti_0=90,508;wh2_dlc09_tmb_mon_ushabti_0_summoned=90,508;wh2_dlc09_tmb_mon_ushabti_1=90,508;wh2_dlc09_tmb_mon_ushabti_ror=90,508;wh2_dlc09_tmb_veh_skeleton_archer_chariot_0=80,554;wh2_dlc09_tmb_veh_skeleton_chariot_0=80,554;wh2_dlc09_tmb_veh_skeleton_chariot_0_summoned=80,554;wh2_dlc10_def_cha_crone_5=80,5476;wh2_dlc10_def_cha_supreme_sorceress_beasts_4=80,5276;wh2_dlc10_def_cha_supreme_sorceress_beasts_5=90,8332;wh2_dlc10_def_cha_supreme_sorceress_dark_4=80,5276;wh2_dlc10_def_cha_supreme_sorceress_dark_5=90,8332;wh2_dlc10_def_cha_supreme_sorceress_death_4=80,5276;wh2_dlc10_def_cha_supreme_sorceress_death_5=90,8332;wh2_dlc10_def_cha_supreme_sorceress_fire_4=80,5276;wh2_dlc10_def_cha_supreme_sorceress_fire_5=90,8332;wh2_dlc10_def_cha_supreme_sorceress_shadow_4=80,5276;wh2_dlc10_def_cha_supreme_sorceress_shadow_5=90,8332;wh2_dlc10_def_mon_chill_of_sontar_ror_0=60,10400;wh2_dlc10_def_mon_feral_manticore_0=45,5103;wh2_dlc10_def_mon_kharibdyss_0=60,10400;wh2_dlc10_def_mon_war_hydra_boss=90,15000;wh2_dlc10_hef_cha_alarielle_the_radiant_3=30,5080;wh2_dlc10_hef_cha_mage_heavens_2=110,4156;wh2_dlc10_hef_cha_mage_shadows_2=110,4156;wh2_dlc10_hef_mon_treekin_0=90,548;wh2_dlc10_hef_mon_treeman_0=110,9828;wh2_dlc10_lzd_mon_carnosaur_boss=95,15850;wh2_dlc10_nor_mon_phoenix_flamespyre_boss=30,16850;wh2_dlc10_skv_mon_hell_pit_abomination_boss=100,17100;wh2_dlc11_cst_cav_deck_droppers_0=15,184;wh2_dlc11_cst_cav_deck_droppers_1=15,184;wh2_dlc11_cst_cav_deck_droppers_2=15,184;wh2_dlc11_cst_cav_deck_droppers_ror_0=15,184;wh2_dlc11_cst_cha_aranessa_1=120,5216;wh2_dlc11_cst_cha_cylostra_direfin_1=150,9862;wh2_dlc11_cst_cha_gunnery_wight_1=120,4980;wh2_dlc11_cst_cha_luthor_harkon_1=80,8497;wh2_dlc11_cst_cha_mourngul_haunter=40,6568;wh2_dlc11_cst_cha_vampire_fleet_admiral_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_admiral_death_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_admiral_deeps_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_admiral_female_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_admiral_female_death_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_admiral_female_deeps_1=120,4980;wh2_dlc11_cst_cha_vampire_fleet_captain_1=120,4580;wh2_dlc11_cst_cha_vampire_fleet_captain_death_1=120,4580;wh2_dlc11_cst_cha_vampire_fleet_captain_deeps_1=120,4580;wh2_dlc11_cst_inf_count_noctilus_1=75,9875;wh2_dlc11_cst_mon_animated_hulks_0=30,602;wh2_dlc11_cst_mon_bloated_corpse_0=0,1608;wh2_dlc11_cst_mon_mournguls_0=30,560;wh2_dlc11_cst_mon_mournguls_ror_0=30,560;wh2_dlc11_cst_mon_necrofex_colossus_0=75,9475;wh2_dlc11_cst_mon_necrofex_colossus_ror_0=75,9475;wh2_dlc11_cst_mon_rotting_leviathan_0=150,9862;wh2_dlc11_cst_mon_rotting_prometheans_0=120,660;wh2_dlc11_cst_mon_rotting_prometheans_gunnery_mob_0=120,668;wh2_dlc11_cst_mon_rotting_prometheans_gunnery_mob_ror=120,668;wh2_dlc11_cst_mon_rotting_prometheans_summoned_0=120,660;wh2_dlc11_cst_mon_terrorgheist=80,8289;wh2_dlc11_def_cha_lokhir_fellheart_1=90,8444;wh2_dlc11_vmp_cha_bloodline_blood_dragon_lord_3=90,8244;wh2_dlc11_vmp_cha_bloodline_lahmian_lord_3=90,8244;wh2_dlc11_vmp_cha_bloodline_necrarch_lord_3=90,7744;wh2_dlc11_vmp_cha_bloodline_strigoi_lord_1=80,8297;wh2_dlc11_vmp_cha_bloodline_von_carstein_lord_3=90,8244;wh2_dlc11_vmp_mon_varghulf_summoned=40,8248;wh2_dlc12_lzd_cav_ripperdactyl_riders_0=45,625;wh2_dlc12_lzd_cav_ripperdactyl_riders_0_blessed=65,716;wh2_dlc12_lzd_cav_ripperdactyl_riders_ror_0=45,625;wh2_dlc12_lzd_cav_terradon_riders_0_tlaqua=15,372;wh2_dlc12_lzd_cav_terradon_riders_1_tlaqua=15,372;wh2_dlc12_lzd_cav_terradon_riders_ror_0=15,372;wh2_dlc12_lzd_cha_skink_chief_red_crested_1=80,4380;wh2_dlc12_lzd_cha_skink_chief_red_crested_2=50,4380;wh2_dlc12_lzd_cha_skink_chief_red_crested_3=130,9864;wh2_dlc12_lzd_cha_skink_priest_beasts_4=130,9864;wh2_dlc12_lzd_cha_skink_priest_heavens_4=130,9864;wh2_dlc12_lzd_cha_tehenhauin_2=75,4956;wh2_dlc12_lzd_cha_tehenhauin_3=130,10084;wh2_dlc12_lzd_cha_tiktaqto_1=30,4408;wh2_dlc12_lzd_lzd_cha_kroak_0=45,6794;wh2_dlc12_lzd_lzd_cha_kroak_0_boss=45,6794;wh2_dlc12_lzd_mon_ancient_salamander_0=95,6168;wh2_dlc12_lzd_mon_ancient_salamander_0_blessed=95,7092;wh2_dlc12_lzd_mon_ancient_stegadon_1=130,9862;wh2_dlc12_lzd_mon_ancient_stegadon_ror_0=130,9862;wh2_dlc12_lzd_mon_bastiladon_3=140,7706;wh2_dlc12_skv_cha_ikit_claw_2=110,6328;wh2_dlc13_emp_veh_steam_tank_driver_ror_0=160,9070;wh2_dlc13_emp_veh_war_wagon_0=80,1136;wh2_dlc13_emp_veh_war_wagon_1=80,1136;wh2_dlc13_emp_veh_war_wagon_ror_0=80,1136;wh2_dlc13_huntmarshall_veh_obsinite_gyrocopter_0=120,374;wh2_dlc13_lzd_cha_kroxigor_ancient_0=120,6368;wh2_dlc13_lzd_cha_nakai_0=120,7368;wh2_dlc13_lzd_cha_slann_mage_priest_beasts_0=45,6544;wh2_dlc13_lzd_cha_slann_mage_priest_death_0=45,6544;wh2_dlc13_lzd_cha_slann_mage_priest_fire_0=45,6544;wh2_dlc13_lzd_cha_slann_mage_priest_life_0=45,6544;wh2_dlc13_lzd_cha_slann_mage_priest_metal_0=45,6544;wh2_dlc13_lzd_cha_slann_mage_priest_shadows_0=45,6544;wh2_dlc13_lzd_mon_dread_saurian_0=120,14992;wh2_dlc13_lzd_mon_dread_saurian_1=120,15000;wh2_dlc13_lzd_mon_dread_saurian_ror_0=120,15000;wh2_dlc13_lzd_mon_sacred_kroxigors_0=100,562;wh2_dlc13_lzd_mon_sacred_kroxigors_0_blessed=140,645;wh2_dlc13_lzd_mon_sacred_kroxigors_ror_0=100,562;wh2_dlc14_brt_cha_henri_le_massif_3=90,6164;wh2_dlc14_def_cav_scourgerunner_chariot_0=80,1182;wh2_dlc14_def_cav_scourgerunner_chariot_ror_0=80,1182;wh2_dlc14_def_cha_high_beastmaster_1=80,5216;wh2_dlc14_def_cha_high_beastmaster_2=80,5476;wh2_dlc14_def_cha_master_4=110,5098;wh2_dlc14_def_mon_bloodwrack_medusa_0=30,6420;wh2_dlc14_def_mon_bloodwrack_medusa_ror_0=30,6420;wh2_dlc14_def_veh_bloodwrack_shrine_0=80,7092;wh2_dlc15_grn_cha_grom_the_paunch_0=100,5732;wh2_dlc15_grn_cha_night_goblin_warboss_0_big=25,5948;wh2_dlc15_grn_cha_river_troll_hag_0=50,5619;wh2_dlc15_grn_mon_arachnarok_spider_waaagh_0=120,9973;wh2_dlc15_grn_mon_feral_hydra_waaagh_0=60,10400;wh2_dlc15_grn_mon_river_trolls_0=40,494;wh2_dlc15_grn_mon_river_trolls_ror_0=40,494;wh2_dlc15_grn_mon_rogue_idol_0=150,16000;wh2_dlc15_grn_mon_rogue_idol_ror_0=150,16000;wh2_dlc15_grn_mon_rogue_idol_summoned_0=150,16000;wh2_dlc15_grn_mon_stone_trolls_0=70,494;wh2_dlc15_grn_mon_wyvern_waaagh_0=60,6640;wh2_dlc15_grn_veh_snotling_pump_wagon_0=50,408;wh2_dlc15_grn_veh_snotling_pump_wagon_flappas_0=50,408;wh2_dlc15_grn_veh_snotling_pump_wagon_roller_0=60,508;wh2_dlc15_grn_veh_snotling_pump_wagon_ror_0=50,408;wh2_dlc15_hef_cha_alastar_1=110,5480;wh2_dlc15_hef_cha_archmage_beasts_2=110,4456;wh2_dlc15_hef_cha_archmage_beasts_3=30,5080;wh2_dlc15_hef_cha_archmage_beasts_4=70,8444;wh2_dlc15_hef_cha_archmage_death_2=110,4456;wh2_dlc15_hef_cha_archmage_death_3=30,5080;wh2_dlc15_hef_cha_archmage_death_4=70,8444;wh2_dlc15_hef_cha_archmage_fire_2=110,4456;wh2_dlc15_hef_cha_archmage_fire_3=30,5080;wh2_dlc15_hef_cha_archmage_fire_4=70,8444;wh2_dlc15_hef_cha_archmage_heavens_2=110,4456;wh2_dlc15_hef_cha_archmage_heavens_3=30,5080;wh2_dlc15_hef_cha_archmage_heavens_4=70,8444;wh2_dlc15_hef_cha_archmage_high_2=110,4456;wh2_dlc15_hef_cha_archmage_high_3=30,5080;wh2_dlc15_hef_cha_archmage_high_4=70,8444;wh2_dlc15_hef_cha_archmage_life_2=110,4456;wh2_dlc15_hef_cha_archmage_life_3=30,5080;wh2_dlc15_hef_cha_archmage_life_4=70,8444;wh2_dlc15_hef_cha_archmage_light_2=110,4456;wh2_dlc15_hef_cha_archmage_light_3=30,5080;wh2_dlc15_hef_cha_archmage_light_4=70,8444;wh2_dlc15_hef_cha_archmage_metal_2=110,4456;wh2_dlc15_hef_cha_archmage_metal_3=30,5080;wh2_dlc15_hef_cha_archmage_metal_4=70,8444;wh2_dlc15_hef_cha_archmage_shadows_2=110,4456;wh2_dlc15_hef_cha_archmage_shadows_3=30,5080;wh2_dlc15_hef_cha_archmage_shadows_4=70,8444;wh2_dlc15_hef_cha_eltharion_the_grim_2=100,6684;wh2_dlc15_hef_cha_imrik_2=90,9578;wh2_dlc15_hef_cha_mage_beasts_2=110,4156;wh2_dlc15_hef_cha_mage_death_2=110,4156;wh2_dlc15_hef_cha_mage_fire_2=110,4156;wh2_dlc15_hef_cha_mage_fire_3=70,7124;wh2_dlc15_hef_cha_mage_metal_2=110,4156;wh2_dlc15_hef_cha_prince_6=80,6112;wh2_dlc15_hef_cha_princess_6=80,6112;wh2_dlc15_hef_cha_teclis_2=50,6906;wh2_dlc15_hef_inf_mistwalkers_griffon_knights_0=80,2858;wh2_dlc15_hef_mon_arcane_phoenix_0=50,6898;wh2_dlc15_hef_mon_arcane_phoenix_ror_0=50,6898;wh2_dlc15_hef_mon_black_dragon_imrik=100,10824;wh2_dlc15_hef_mon_black_dragon_imrik_boss=100,14868;wh2_dlc15_hef_mon_forest_dragon_0=60,7508;wh2_dlc15_hef_mon_forest_dragon_imrik=80,8408;wh2_dlc15_hef_mon_forest_dragon_imrik_boss=80,13468;wh2_dlc15_hef_mon_moon_dragon_imrik=85,9904;wh2_dlc15_hef_mon_moon_dragon_imrik_boss=85,14278;wh2_dlc15_hef_mon_star_dragon_imrik=110,11166;wh2_dlc15_hef_mon_star_dragon_imrik_boss=110,15308;wh2_dlc15_hef_mon_sun_dragon_imrik=80,8460;wh2_dlc15_hef_mon_sun_dragon_imrik_boss=80,13848;wh2_dlc15_hef_veh_lion_chariot_of_chrace_0=80,1616;wh2_dlc16_skv_cha_chieftain_1=70,6099;wh2_dlc16_skv_cha_ghoritch_0=70,7708;wh2_dlc16_skv_cha_ghoritch_0_boss=70,7708;wh2_dlc16_skv_cha_packmaster_2=40,6011;wh2_dlc16_skv_cha_throt_the_unclean_2=45,6617;wh2_dlc16_skv_cha_warlord_2=60,6024;wh2_dlc16_skv_mon_brood_horror_0=40,6009;wh2_dlc16_skv_mon_hell_pit_abomination_ror_0=50,12100;wh2_dlc16_skv_mon_rat_ogre_mutant=30,6508;wh2_dlc16_skv_mon_rat_ogre_mutant_ror_0=30,6508;wh2_dlc16_skv_mon_rat_ogres_ror_0=30,483;wh2_dlc16_skv_mon_rat_ogres_summoned=30,483;wh2_dlc16_wef_cha_ancient_treeman_coeddil_0=110,10328;wh2_dlc16_wef_cha_ariel_0=30,6660;wh2_dlc16_wef_cha_malicious_ancient_treeman_beasts_0=110,9828;wh2_dlc16_wef_cha_malicious_ancient_treeman_life_0=110,9828;wh2_dlc16_wef_cha_malicious_ancient_treeman_shadows_0=110,9828;wh2_dlc16_wef_cha_sisters_of_twilight_0=50,4780;wh2_dlc16_wef_cha_sisters_of_twilight_1=60,7680;wh2_dlc16_wef_cha_spellweaver_beasts_3=30,4980;wh2_dlc16_wef_cha_spellweaver_dark_3=30,4980;wh2_dlc16_wef_cha_spellweaver_high_3=30,4980;wh2_dlc16_wef_cha_spellweaver_life_3=30,4980;wh2_dlc16_wef_cha_spellweaver_shadows_3=30,4980;wh2_dlc16_wef_mon_ceithin_har_summoned=70,7116;wh2_dlc16_wef_mon_feral_manticore=45,5103;wh2_dlc16_wef_mon_gwindalor_summoned=60,4848;wh2_dlc16_wef_mon_malicious_treekin_0=90,548;wh2_dlc16_wef_mon_malicious_treeman_0=110,9828;wh2_dlc16_wef_mon_zoats=60,526;wh2_dlc16_wef_mon_zoats_ror_0=60,526;wh2_dlc17_bst_cav_tuskgor_chariot_0=80,1402;wh2_dlc17_bst_cha_beastlord_2=80,5524;wh2_dlc17_bst_cha_bray_shaman_beasts_2=80,4440;wh2_dlc17_bst_cha_bray_shaman_death_2=80,4440;wh2_dlc17_bst_cha_bray_shaman_shadows_2=80,4440;wh2_dlc17_bst_cha_bray_shaman_wild_2=80,4440;wh2_dlc17_bst_cha_doombull_0=100,6668;wh2_dlc17_bst_cha_khazrak_one_eye_2=100,5756;wh2_dlc17_bst_cha_taurox_the_brass_bull_0=130,7368;wh2_dlc17_bst_cha_wargor_1=100,5124;wh2_dlc17_bst_cha_wargor_2=80,4924;wh2_dlc17_bst_mon_ghorgon_0=50,10888;wh2_dlc17_bst_mon_ghorgon_boss_0=70,10888;wh2_dlc17_bst_mon_ghorgon_ror_0=70,10888;wh2_dlc17_bst_mon_jabberslythe_0=60,9220;wh2_dlc17_bst_mon_jabberslythe_ror_0=60,9220;wh2_dlc17_dwf_cha_thorek_ironbrow_1=120,6628;wh2_dlc17_dwf_mon_carnosaur_thorek_0=95,7944;wh2_dlc17_lzd_cha_skink_oracle_troglodon_0=95,7528;wh2_dlc17_lzd_mon_carnosaur_ror_0=95,7944;wh2_dlc17_lzd_mon_coatl_0=70,7620;wh2_dlc17_lzd_mon_coatl_ror_0=70,7620;wh2_dlc17_lzd_mon_dread_saurian_qb_boss=120,50008;wh2_dlc17_lzd_mon_troglodon_0=95,7520;wh2_dlc17_lzd_mon_troglodon_ror_0=95,7520;wh2_main_def_cav_cold_one_chariot=110,1512;wh2_main_def_cha_dreadlord_4=90,8444;wh2_main_def_cha_dreadlord_female_4=90,8444;wh2_main_def_cha_malekith_1=110,4980;wh2_main_def_cha_malekith_2=110,5716;wh2_main_def_cha_malekith_3=90,8444;wh2_main_def_mon_black_dragon=90,8324;wh2_main_def_mon_war_hydra_0=60,10400;wh2_main_hef_cav_ithilmar_chariot=110,1402;wh2_main_hef_cav_tiranoc_chariot=80,1182;wh2_main_hef_cha_alastar_3=60,4856;wh2_main_hef_cha_alastar_4=80,6876;wh2_main_hef_cha_alastar_5=90,9444;wh2_main_hef_cha_mage_high_4=110,4156;wh2_main_hef_cha_mage_life_4=110,4156;wh2_main_hef_cha_mage_light_4=110,4156;wh2_main_hef_cha_noble_3=60,4768;wh2_main_hef_cha_noble_4=110,4980;wh2_main_hef_cha_prince_3=60,4856;wh2_main_hef_cha_prince_4=80,7124;wh2_main_hef_cha_prince_5=90,9444;wh2_main_hef_cha_princess_3=50,4856;wh2_main_hef_cha_princess_4=70,8444;wh2_main_hef_cha_princess_5=90,9444;wh2_main_hef_mon_great_eagle=30,4663;wh2_main_hef_mon_great_eagle_summoned=30,4663;wh2_main_hef_mon_moon_dragon=70,8324;wh2_main_hef_mon_phoenix_flamespyre=30,5828;wh2_main_hef_mon_phoenix_frostheart=80,6598;wh2_main_hef_mon_star_dragon=90,9424;wh2_main_hef_mon_sun_dragon=70,7008;wh2_main_lzd_cav_terradon_riders_0=15,372;wh2_main_lzd_cav_terradon_riders_0_blessed=15,425;wh2_main_lzd_cav_terradon_riders_1=15,372;wh2_main_lzd_cav_terradon_riders_blessed_1=15,422;wh2_main_lzd_cha_kroq_gar_1=95,8676;wh2_main_lzd_cha_lord_mazdamundi_0=45,7544;wh2_main_lzd_cha_lord_mazdamundi_1=130,10084;wh2_main_lzd_cha_saurus_old_blood_2=95,8560;wh2_main_lzd_cha_saurus_scar_veteran_1=100,4636;wh2_main_lzd_cha_saurus_scar_veteran_2=95,7952;wh2_main_lzd_cha_skink_chief_1=30,4008;wh2_main_lzd_cha_skink_chief_2=110,9212;wh2_main_lzd_cha_skink_chief_3=130,9864;wh2_main_lzd_cha_skink_priest_beasts_1=30,3692;wh2_main_lzd_cha_skink_priest_beasts_2=110,9212;wh2_main_lzd_cha_skink_priest_beasts_3=130,9864;wh2_main_lzd_cha_skink_priest_heavens_1=30,3692;wh2_main_lzd_cha_skink_priest_heavens_2=110,9212;wh2_main_lzd_cha_skink_priest_heavens_3=130,9864;wh2_main_lzd_cha_slann_mage_priest_campaign_0=45,6544;wh2_main_lzd_cha_slann_mage_priest_heavens_0=45,6544;wh2_main_lzd_cha_slann_mage_priest_high_0=45,6544;wh2_main_lzd_cha_slann_mage_priest_life_0_qb=45,6544;wh2_main_lzd_cha_slann_mage_priest_light_0=45,6544;wh2_main_lzd_mon_ancient_stegadon=130,9862;wh2_main_lzd_mon_ancient_stegadon_blessed=130,11339;wh2_main_lzd_mon_bastiladon_0=140,7698;wh2_main_lzd_mon_bastiladon_1=140,7706;wh2_main_lzd_mon_bastiladon_2=140,7706;wh2_main_lzd_mon_bastiladon_blessed_2=155,8691;wh2_main_lzd_mon_carnosaur_0=95,7944;wh2_main_lzd_mon_carnosaur_blessed_0=95,8468;wh2_main_lzd_mon_kroxigors=100,510;wh2_main_lzd_mon_kroxigors_blessed=100,574;wh2_main_lzd_mon_stegadon_0=110,9040;wh2_main_lzd_mon_stegadon_1=110,9212;wh2_main_lzd_mon_stegadon_blessed_1=110,10554;wh2_main_skv_cha_warlord_1=70,6384;wh2_main_skv_mon_hell_pit_abomination=50,12100;wh2_main_skv_mon_hell_pit_abomination_summoned=50,12100;wh2_main_skv_mon_rat_ogres=30,483;wh2_pro06_tmb_mon_bone_giant_0=80,12620;wh2_twa01_grn_cha_goblin_great_shaman_3=120,9973;wh2_twa02_wef_cha_glade_captain_2=50,4768;wh2_twa03_def_cha_rakarth_1=90,5716;wh2_twa03_def_cha_rakarth_2=80,5476;wh2_twa03_def_cha_rakarth_3=90,8444;wh2_twa03_def_mon_war_mammoth_0=50,12988;wh2_twa04_bst_cha_great_bray_shaman_beasts_1=100,5040;wh2_twa04_bst_cha_great_bray_shaman_beasts_2=80,4840;wh2_twa04_bst_cha_great_bray_shaman_death_1=100,5040;wh2_twa04_bst_cha_great_bray_shaman_death_2=80,4840;wh2_twa04_bst_cha_great_bray_shaman_shadows_1=100,5040;wh2_twa04_bst_cha_great_bray_shaman_shadows_2=80,4840;wh2_twa04_bst_cha_great_bray_shaman_wild_1=100,5040;wh2_twa04_bst_cha_great_bray_shaman_wild_2=80,4840;wh3_cp1_cth_mon_celestial_lion_summoned=80,6176;wh3_cp1_tze_cha_qb_exalted_lord_of_change_boss=50,10828;wh3_dlc20_chs_cav_chaos_chariot_mkho=120,1402;wh3_dlc20_chs_cav_chaos_chariot_mnur=110,1541;wh3_dlc20_chs_cav_chaos_chariot_msla=110,1402;wh3_dlc20_chs_cav_chaos_chariot_mtze=110,1402;wh3_dlc20_chs_cha_chaos_lord_mkho_gorebeast_chariot=130,5678;wh3_dlc20_chs_cha_chaos_lord_msla_chaos_chariot=110,5440;wh3_dlc20_chs_cha_chaos_sorcerer_death_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_fire_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_lord_death_mnur_warshrine=60,12706;wh3_dlc20_chs_cha_chaos_sorcerer_lord_death_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_lord_fire_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_lord_metal_mtze_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_lord_metal_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_lord_nurgle_mnur_warshrine=60,12706;wh3_dlc20_chs_cha_chaos_sorcerer_lord_shadows_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_lord_tzeentch_mtze_warshrine=60,11550;wh3_dlc20_chs_cha_chaos_sorcerer_metal_mtze_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_metal_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_shadows_msla_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_shadows_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_slaanesh_msla_warshrine=60,11250;wh3_dlc20_chs_cha_chaos_sorcerer_tzeentch_mtze_warshrine=60,11250;wh3_dlc20_chs_cha_cultist_msla_warshrine=60,11250;wh3_dlc20_chs_cha_daemon_prince=30,7600;wh3_dlc20_chs_cha_daemon_prince_mkho=60,7600;wh3_dlc20_chs_cha_daemon_prince_mnur=30,8360;wh3_dlc20_chs_cha_daemon_prince_msla=30,7600;wh3_dlc20_chs_cha_daemon_prince_mtze=30,7600;wh3_dlc20_chs_cha_exalted_hero_mkho_gorebeast_chariot=130,5028;wh3_dlc20_chs_cha_exalted_hero_mnur_chaos_chariot=110,5348;wh3_dlc20_chs_mon_giant_mnur_ror=50,13882;wh3_dlc20_chs_mon_warshrine=60,11250;wh3_dlc20_chs_mon_warshrine_mkho=70,11250;wh3_dlc20_chs_mon_warshrine_mnur=60,12376;wh3_dlc20_chs_mon_warshrine_msla=60,11250;wh3_dlc20_chs_mon_warshrine_mtze=60,11250;wh3_dlc20_kho_cha_cultist_mkho_warshrine=70,11250;wh3_dlc20_nur_cha_cultist_mnur_warshrine=60,12376;wh3_dlc20_tze_cha_cultist_mtze_warshrine=60,11250;wh3_dlc23_chd_cav_bull_centaurs_axe=50,616;wh3_dlc23_chd_cav_bull_centaurs_dual_axe=50,616;wh3_dlc23_chd_cav_bull_centaurs_dual_axe_ror=50,616;wh3_dlc23_chd_cav_bull_centaurs_greatweapons=50,616;wh3_dlc23_chd_cha_bull_centaur_taurruk=70,6280;wh3_dlc23_chd_cha_daemonsmith_sorcerer_death_bale_taurus=70,8266;wh3_dlc23_chd_cha_daemonsmith_sorcerer_death_great_taurus=60,6676;wh3_dlc23_chd_cha_daemonsmith_sorcerer_death_lammasu=60,6056;wh3_dlc23_chd_cha_daemonsmith_sorcerer_fire_bale_taurus=70,8266;wh3_dlc23_chd_cha_daemonsmith_sorcerer_fire_great_taurus=60,6676;wh3_dlc23_chd_cha_daemonsmith_sorcerer_fire_lammasu=60,6056;wh3_dlc23_chd_cha_daemonsmith_sorcerer_hashut_bale_taurus=70,8266;wh3_dlc23_chd_cha_daemonsmith_sorcerer_hashut_great_taurus=60,6676;wh3_dlc23_chd_cha_daemonsmith_sorcerer_hashut_lammasu=60,6056;wh3_dlc23_chd_cha_daemonsmith_sorcerer_metal_bale_taurus=70,8266;wh3_dlc23_chd_cha_daemonsmith_sorcerer_metal_great_taurus=60,6676;wh3_dlc23_chd_cha_daemonsmith_sorcerer_metal_lammasu=60,6056;wh3_dlc23_chd_cha_drazhoath_the_ashen_bale_taurus_cinderbreath=80,8664;wh3_dlc23_chd_cha_overseer_great_taurus=60,6676;wh3_dlc23_chd_cha_overseer_lammasu=60,6056;wh3_dlc23_chd_cha_sorcerer_prophet_death_bale_taurus=70,8266;wh3_dlc23_chd_cha_sorcerer_prophet_death_great_taurus=60,6676;wh3_dlc23_chd_cha_sorcerer_prophet_death_lammasu=60,6056;wh3_dlc23_chd_cha_sorcerer_prophet_fire_bale_taurus=70,8266;wh3_dlc23_chd_cha_sorcerer_prophet_fire_great_taurus=60,6676;wh3_dlc23_chd_cha_sorcerer_prophet_fire_lammasu=60,6056;wh3_dlc23_chd_cha_sorcerer_prophet_hashut_bale_taurus=70,8266;wh3_dlc23_chd_cha_sorcerer_prophet_hashut_great_taurus=60,6676;wh3_dlc23_chd_cha_sorcerer_prophet_hashut_lammasu=60,6056;wh3_dlc23_chd_cha_sorcerer_prophet_metal_bale_taurus=70,8266;wh3_dlc23_chd_cha_sorcerer_prophet_metal_great_taurus=60,6676;wh3_dlc23_chd_cha_sorcerer_prophet_metal_lammasu=60,6056;wh3_dlc23_chd_cha_zhatan_the_black_great_taurus=60,6676;wh3_dlc23_chd_cha_zhatan_the_black_lammasu=60,6856;wh3_dlc23_chd_mon_bale_taurus=60,8258;wh3_dlc23_chd_mon_great_taurus=50,6668;wh3_dlc23_chd_mon_kdaai_destroyer=120,10240;wh3_dlc23_chd_mon_kdaai_fireborn=80,492;wh3_dlc23_chd_mon_kdaai_fireborn_summoned=80,492;wh3_dlc23_chd_mon_lammasu=45,6048;wh3_dlc23_chd_veh_dreadquake_mortar=70,520;wh3_dlc23_chd_veh_iron_daemon=120,520;wh3_dlc23_chd_veh_iron_daemon_1dreadquake=120,520;wh3_dlc23_chd_veh_iron_daemon_3payload_qb=120,1520;wh3_dlc23_chd_veh_iron_daemon_ror=120,520;wh3_dlc23_chd_veh_iron_daemon_ror_1dreadquake=120,520;wh3_dlc23_chd_veh_skullcracker=120,520;wh3_dlc23_chd_veh_skullcracker_1dreadquake=120,520;wh3_dlc24_chs_cha_chaos_lord_mtze_chaos_chariot=110,5440;wh3_dlc24_chs_cha_exalted_hero_mtze_chaos_chariot=110,5348;wh3_dlc24_cth_cha_astromancer_great_moon_bird=40,7306;wh3_dlc24_cth_cha_celestial_general_yang_celestial_lion=80,6584;wh3_dlc24_cth_cha_gate_master_warhorse=115,4536;wh3_dlc24_cth_cha_saytang_the_watcher=100,12620;wh3_dlc24_cth_cha_yuan_bo_dragon=100,8424;wh3_dlc24_cth_mon_celestial_lion=80,6176;wh3_dlc24_cth_mon_great_moon_bird=40,7298;wh3_dlc24_cth_mon_jade_lion=90,5808;wh3_dlc24_cth_mon_jet_lion=90,5808;wh3_dlc24_cth_veh_zhangu_war_drum=80,6200;wh3_dlc24_cth_veh_zhangu_war_drum_ror=95,6200;wh3_dlc24_ksl_cha_hag_witch_beast=30,4616;wh3_dlc24_ksl_cha_hag_witch_death=30,4616;wh3_dlc24_ksl_cha_hag_witch_hag=30,4616;wh3_dlc24_ksl_cha_hag_witch_shadow=30,4616;wh3_dlc24_ksl_cha_ice_witch_ice_frost_wyrm=90,8138;wh3_dlc24_ksl_cha_ice_witch_tempest_frost_wyrm=90,8138;wh3_dlc24_ksl_cha_katarin_frost_wyrm=90,8362;wh3_dlc24_ksl_cha_katarin_ice_court_sled=110,7276;wh3_dlc24_ksl_mon_frost_wyrm=90,7980;wh3_dlc24_ksl_mon_incarnate_elemental_of_beasts=50,9008;wh3_dlc24_ksl_mon_incarnate_elemental_of_beasts_summoned=50,9008;wh3_dlc24_tze_mon_cockatrice=35,6120;wh3_dlc24_tze_mon_flamers_changebringers=10,268;wh3_dlc24_tze_mon_mutalith_vortex_beast=70,8088;wh3_dlc24_tze_mon_mutalith_vortex_beast_ror=70,8088;wh3_dlc25_bst_mon_jabberslythe_qb_boss=100,30008;wh3_dlc25_chs_cha_chaos_lord_mnur_chaos_chariot=110,5982;wh3_dlc25_chs_cha_chaos_sorcerer_death_mnur_warshrine=80,12373;wh3_dlc25_chs_cha_chaos_sorcerer_nurgle_mnur_warshrine=60,12373;wh3_dlc25_dwf_veh_gyrocopter_1_grudge_unit=100,354;wh3_dlc25_dwf_veh_gyrocopter_summoned_0=100,354;wh3_dlc25_dwf_veh_thunderbarge=80,11336;wh3_dlc25_dwf_veh_thunderbarge_grungni=80,12356;wh3_dlc25_dwf_veh_thunderbarge_grungni_mp=80,12356;wh3_dlc25_emp_cha_elspeth_von_draken_carmine_dragon=70,8230;wh3_dlc25_emp_cha_master_engineer_steam_tank=160,9070;wh3_dlc25_emp_mon_incarnate_elemental_of_beasts_summoned=50,9008;wh3_dlc25_emp_veh_marienburg_land_ship=90,10018;wh3_dlc25_emp_veh_marienburg_land_ship_morr=90,10018;wh3_dlc25_emp_veh_marienburg_land_ship_ror=90,10018;wh3_dlc25_emp_veh_steam_tank_volley_gun=160,9070;wh3_dlc25_grn_mon_arachnarok_spider_boss=120,9973;wh3_dlc25_grn_mon_rogue_idol_qb_boss=150,20008;wh3_dlc25_hef_mon_sun_dragon_boss=80,13848;wh3_dlc25_nur_cha_bray_shaman_wild_chieftain_razorgor_chariot=100,4640;wh3_dlc25_nur_cha_bray_shaman_wild_chieftain_tuskgor_chariot=80,4440;wh3_dlc25_nur_cha_epidemius=80,8000;wh3_dlc25_nur_cha_exalted_great_unclean_one_nurgle_qb_boss=50,10008;wh3_dlc25_nur_cha_exalted_hero_chieftain_chaos_chariot=110,5864;wh3_dlc25_nur_cha_exalted_hero_chieftain_chaos_dragon=70,7444;wh3_dlc25_nur_cha_fimir_balefiend_shadow_chieftain=70,5040;wh3_dlc25_nur_cha_skin_wolf_werekin_chieftain=70,6040;wh3_dlc25_nur_cha_tamurkhan=60,8500;wh3_dlc25_nur_cha_tamurkhan_bubebolos=60,13970;wh3_dlc25_nur_inf_plague_ogres=50,632;wh3_dlc25_nur_inf_plague_ogres_great_weapons=50,632;wh3_dlc25_nur_mon_bile_trolls=60,542;wh3_dlc25_nur_mon_soul_grinder_0_ror=90,8188;wh3_dlc25_nur_mon_toad_dragon=60,13970;wh3_dlc26_grn_cav_mangler_squig=40,1538;wh3_dlc26_grn_cha_savage_orc_great_shaman_wyvern=60,6648;wh3_dlc26_grn_mon_arachnarok_spider_flinger=120,9973;wh3_dlc26_grn_mon_colossal_squig=60,8654;wh3_dlc26_grn_mon_colossal_squig_ror=60,8654;wh3_dlc26_grn_mon_wyvern_summoned=60,6640;wh3_dlc26_kho_cha_bloodspeaker_warshrine=70,11550;wh3_dlc26_kho_cha_scyla_anfingrimm=50,7270;wh3_dlc26_kho_cha_skulltaker_bloodthrone=130,6956;wh3_dlc26_kho_mon_bloodbeast_of_khorne=40,516;wh3_dlc26_kho_mon_slaughterbrute=70,9888;wh3_dlc26_kho_mon_spawn_of_khorne_0_summoned=30,548;wh3_dlc26_kho_veh_skullcannon_ror=110,4700;wh3_dlc26_ogr_cha_bragg_the_gutsman=50,7472;wh3_dlc26_ogr_cha_bruiser=100,6216;wh3_dlc26_ogr_cha_butcher_death=30,5508;wh3_dlc26_ogr_cha_butcher_heavens=30,5508;wh3_dlc26_ogr_cha_golgfag_maneater=80,7808;wh3_dlc26_ogr_cha_paymaster=40,6850;wh3_dlc26_ogr_cha_slaughtermaster_death=40,6508;wh3_dlc26_ogr_cha_slaughtermaster_heavens=40,6508;wh3_dlc26_ogr_inf_eshin_maneater_ror=40,6516;wh3_dlc26_ogr_inf_golgfags_maneaters=80,650;wh3_dlc26_ogr_mon_thundertusk=100,10116;wh3_dlc26_ogr_mon_yhetees=40,518;wh3_dlc26_ogr_mon_yhetees_ror=40,548;wh3_dlc27_bst_mon_ghorgon_boss=50,14868;wh3_dlc27_bst_mon_jabberslythe_boss=60,14868;wh3_dlc27_chd_mon_bale_taurus_boss=60,13848;wh3_dlc27_chd_mon_lammasu_boss=45,13848;wh3_dlc27_chs_cha_daemon_prince_mkho_qb=100,11600;wh3_dlc27_chs_cha_exalted_hero_msla_chaos_chariot=110,5348;wh3_dlc27_chs_cha_sorcerer_lord_shadows_msla_warshrine=60,11250;wh3_dlc27_chs_cha_sorcerer_lord_slaanesh_msla_warshrine=60,11250;wh3_dlc27_chs_feral_manticore_boss=45,13848;wh3_dlc27_cth_mon_celestial_lion_boss=80,13848;wh3_dlc27_def_mon_black_dragon_boss=90,14868;wh3_dlc27_hef_cha_caradryan_ashtari=80,7006;wh3_dlc27_hef_cha_caradryan_chariot=110,5406;wh3_dlc27_hef_cha_mist_mage_eagle=60,4768;wh3_dlc27_hef_cha_mist_mage_skycutter=80,6452;wh3_dlc27_hef_cha_sea_helm_eagle=60,4856;wh3_dlc27_hef_cha_sea_helm_skycutter=80,6452;wh3_dlc27_hef_cha_sea_lord_aislinn_dragon=90,9450;wh3_dlc27_hef_cha_sea_lord_aislinn_skycutter=80,6752;wh3_dlc27_hef_inf_oceanids=0,590;wh3_dlc27_hef_inf_oceanids_split_up_summoned=0,590;wh3_dlc27_hef_inf_oceanids_summoned=0,590;wh3_dlc27_hef_mon_merwyrm=70,12600;wh3_dlc27_hef_mon_merwyrm_ror=70,12600;wh3_dlc27_hef_mon_merwyrm_summoned=70,12600;wh3_dlc27_hef_mon_sea_elemental=0,10400;wh3_dlc27_hef_veh_skycutter_bolt_thrower=80,1540;wh3_dlc27_hef_veh_skycutter_bows=80,1532;wh3_dlc27_hef_veh_skycutter_ror=80,1632;wh3_dlc27_lzd_mon_dread_saurian_boss=120,14992;wh3_dlc27_nor_cav_chaos_chariot_ror=90,1376;wh3_dlc27_nor_cha_beorg_bearstruck=90,6170;wh3_dlc27_nor_cha_fimir_noble=110,5440;wh3_dlc27_nor_cha_great_shaman_sorcerer_death_chariot=90,4424;wh3_dlc27_nor_cha_great_shaman_sorcerer_death_mammoth=80,13604;wh3_dlc27_nor_cha_great_shaman_sorcerer_fire_chariot=90,4424;wh3_dlc27_nor_cha_great_shaman_sorcerer_fire_mammoth=80,13604;wh3_dlc27_nor_cha_great_shaman_sorcerer_metal_chariot=90,4424;wh3_dlc27_nor_cha_great_shaman_sorcerer_metal_mammoth=80,13604;wh3_dlc27_nor_cha_sayl_the_faithless_chariot=90,4698;wh3_dlc27_nor_cha_sayl_the_faithless_mammoth=80,13774;wh3_dlc27_nor_cha_shaman_sorcerer_death_2_summoned=90,4124;wh3_dlc27_nor_cha_shaman_sorcerer_fire_2_summoned=90,4124;wh3_dlc27_nor_cha_shaman_sorcerer_metal_2_summoned=90,4124;wh3_dlc27_nor_mon_chimera=80,6390;wh3_dlc27_nor_mon_chimera_boss=80,9260;wh3_dlc27_nor_mon_chimera_ror=80,6390;wh3_dlc27_nor_mon_cursd_ettin=35,14320;wh3_dlc27_nor_mon_cursd_ettin_runecaller=35,11820;wh3_dlc27_nor_mon_dread_maw=80,9640;wh3_dlc27_nor_mon_dread_maw_underground=80,9640;wh3_dlc27_nur_mon_toad_dragon_boss=60,14868;wh3_dlc27_ogr_mon_thundertusk_boss=100,14876;wh3_dlc27_sla_cha_dechala=15,6808;wh3_dlc27_sla_mon_champions_of_slaanesh=60,490;wh3_dlc27_sla_mon_champions_of_slaanesh_ror=60,490;wh3_dlc27_sla_mon_giant_spawn_of_sla_summoned_i=30,8008;wh3_dlc27_sla_mon_preyton=60,7289;wh3_dlc27_sla_mon_preyton_boss=60,13848;wh3_dlc27_sla_mon_preyton_ror=60,7289;wh3_dlc27_sla_veh_seeker_chariot_ror=50,1232;wh3_dlc27_tmb_mon_carrion_boss=50,11208;wh3_dlc27_tze_mon_cockatrice_boss=35,13848;wh3_dlc29_chs_cha_bloab_bilespurter=60,9100;wh3_dlc29_chs_cha_glottkin=60,16292;wh3_dlc29_chs_cha_gutrot_spume_warshrine=60,12790;wh3_dlc29_chs_cha_morbidex_tripletongue=60,10110;wh3_dlc29_chs_cha_orghotts_whippermaw=80,10600;wh3_dlc29_chs_mon_basilisk=70,7800;wh3_dlc29_chs_mon_chaos_siege_giant=110,12620;wh3_dlc29_chs_mon_giant_spined_chaos_beast=60,6780;wh3_dlc29_chs_mon_giant_spined_chaos_beast_ror=60,6780;wh3_dlc29_cst_cha_vampire_fleet_admiral_female_undeath_rotting_promethean=120,4980;wh3_dlc29_cst_cha_vampire_fleet_admiral_undeath_rotting_promethean=120,4980;wh3_dlc29_cst_cha_vampire_fleet_captain_undeath_rotting_promethean=120,4580;wh3_dlc29_cst_mon_mournguls_0_summoned=30,560;wh3_dlc29_cst_mon_necrofex_colossus_0_summoned=75,9475;wh3_dlc29_cst_mon_rotting_prometheans_gunnery_mob_summoned=120,668;wh3_dlc29_emp_cha_boris_todbringer_toddy_3=100,6835;wh3_dlc29_emp_veh_celestial_hurricanum_0=55,6436;wh3_dlc29_skv_cha_lord_skrolk_cauldron=60,6876;wh3_dlc29_skv_cha_plague_priest_cauldron=60,5876;wh3_dlc29_skv_cha_skreech_verminking=55,8848;wh3_dlc29_skv_cha_thanquol_boneripper_warpfire_braziers=90,7808;wh3_dlc29_skv_cha_thanquol_boneripper_warpfire_projectors=70,7808;wh3_dlc29_skv_cha_verminlord_corruptor=30,8188;wh3_dlc29_skv_cha_verminlord_deceiver=30,8188;wh3_dlc29_skv_cha_verminlord_warbringer=50,8848;wh3_dlc29_skv_cha_verminlord_warpseer=30,8188;wh3_dlc29_skv_mon_brood_horror_0_summoned=40,6009;wh3_dlc29_skv_mon_stormfiend_doomflayer_gauntlets=90,731;wh3_dlc29_skv_mon_stormfiend_grinderfists=90,731;wh3_dlc29_skv_mon_stormfiend_ratling_cannons=70,731;wh3_dlc29_skv_mon_stormfiend_shock_gauntlets=90,731;wh3_dlc29_skv_mon_stormfiend_warpfire_projectors=70,731;wh3_dlc29_skv_mon_stormfiend_windlaunchers=70,731;wh3_dlc29_skv_mon_stormfiends_ratling_cannons_ror=70,731;wh3_dlc29_skv_veh_cauldron_of_a_thousand_poxes=60,5408;wh3_dlc29_tmb_cha_arkhan_dread_abyssal=90,6544;wh3_dlc29_tmb_cha_arkhan_the_black_skeleton_chariot_mp=110,5604;wh3_dlc29_tmb_cha_liche_high_priest_death_skeleton_chariot=80,5804;wh3_dlc29_tmb_cha_liche_high_priest_light_skeleton_chariot=80,5804;wh3_dlc29_tmb_cha_liche_high_priest_nehekhara_skeleton_chariot=80,5804;wh3_dlc29_tmb_cha_liche_high_priest_shadow_skeleton_chariot=80,5804;wh3_dlc29_tmb_cha_tomb_herald_skeleton_chariot=80,4904;wh3_dlc29_tmb_mon_khemrian_warsphinx_0_summoned=95,9628;wh3_dlc29_tmb_mon_khemric_titan=120,15000;wh3_dlc29_tmb_mon_khemric_titan_ror=120,15000;wh3_dlc29_tmb_mon_khemric_titan_summoned=120,15000;wh3_dlc29_tmb_mon_ushabti_ror_sepulchrex=90,508;wh3_dlc29_tmb_veh_skeleton_archer_chariot_0_summoned=80,554;wh3_dlc29_vmp_cha_dieter_helsnicht_undead_manticore=80,5516;wh3_dlc29_vmp_cha_mannfred_von_carstein_dread_abyssal=90,7016;wh3_dlc29_vmp_cha_mannfred_von_carstein_zombie_dragon_mp=90,8244;wh3_dlc29_vmp_cha_nagash=100,9408;wh3_dlc29_vmp_cha_nagash_vampire_lord_zombie_dragon=90,8244;wh3_dlc29_vmp_cha_neferata_dread_abyssal=90,6544;wh3_dlc29_vmp_cha_neferata_zombie_dragon=90,8244;wh3_dlc29_vmp_cha_neferata_zombie_dragon_mp=90,8244;wh3_dlc29_vmp_mon_morghast_archai=100,758;wh3_dlc29_vmp_mon_morghast_archai_ror=100,758;wh3_dlc29_vmp_mon_morghast_archai_summon=100,758;wh3_dlc29_vmp_mon_morghast_harbingers=80,758;wh3_dlc29_vmp_mon_terrorgheist_summoned=80,8289;wh3_dlc29_vmp_mon_zombie_dragon=90,8236;wh3_dlc29_vmp_mon_zombie_dragon_summoned=90,8236;wh3_main_cth_art_fire_rain_rocket_battery_0=20,64;wh3_main_cth_art_grand_cannon_0=20,64;wh3_main_cth_cha_alchemist_2=30,6516;wh3_main_cth_cha_astromancer_2=80,6616;wh3_main_cth_cha_iron_dragon_1=100,8424;wh3_main_cth_cha_lord_magistrate_2=30,7016;wh3_main_cth_cha_storm_dragon_1=100,8424;wh3_main_cth_mon_terracotta_sentinel_0=100,12620;wh3_main_cth_veh_sky_junk_0=80,10016;wh3_main_cth_veh_sky_lantern_0=30,6016;wh3_main_cth_veh_war_compass_0=80,6200;wh3_main_dae_cha_be_lakor_0=45,9304;wh3_main_dae_cha_daemon_prince_0=20,8588;wh3_main_dae_cha_daemon_prince_MP=30,8288;wh3_main_dae_cha_daemon_prince_khorne_0=30,8588;wh3_main_dae_cha_daemon_prince_khorne_MP=90,8588;wh3_main_dae_cha_daemon_prince_nurgle_0=30,8588;wh3_main_dae_cha_daemon_prince_nurgle_MP=60,9588;wh3_main_dae_cha_daemon_prince_slaanesh_0=30,8588;wh3_main_dae_cha_daemon_prince_slaanesh_MP=50,7828;wh3_main_dae_cha_daemon_prince_tzeentch_0=30,8588;wh3_main_dae_cha_daemon_prince_tzeentch_MP=50,7728;wh3_main_ie_nor_cha_exalted_great_unclean_one_burplesmirk_spewpit=50,13620;wh3_main_kho_cav_gorebeast_chariot=130,1616;wh3_main_kho_cha_bloodreaper_2=110,5156;wh3_main_kho_cha_exalted_bloodthirster_0=90,8588;wh3_main_kho_cha_herald_of_khorne_2=110,5556;wh3_main_kho_cha_skarbrand_0=90,9448;wh3_main_kho_mon_bloodthirster_0=70,7732;wh3_main_kho_mon_bloodthirster_summoned_0=70,7732;wh3_main_kho_mon_khornataurs_0=70,544;wh3_main_kho_mon_khornataurs_1=70,544;wh3_main_kho_mon_soul_grinder_0=90,8188;wh3_main_kho_mon_spawn_of_khorne_0=30,548;wh3_main_kho_veh_blood_shrine_0=110,4696;wh3_main_kho_veh_skullcannon_0=110,4700;wh3_main_ksl_mon_elemental_bear_0=90,10988;wh3_main_ksl_mon_elemental_bear_summoned_0=90,10988;wh3_main_ksl_veh_heavy_war_sled_0=110,1616;wh3_main_ksl_veh_light_war_sled_0=50,1466;wh3_main_nur_cha_exalted_great_unclean_one_death_0=50,13620;wh3_main_nur_cha_exalted_great_unclean_one_nurgle_0=50,13620;wh3_main_nur_cha_herald_of_nurgle_death_1=80,6716;wh3_main_nur_cha_herald_of_nurgle_nurgle_1=80,6716;wh3_main_nur_cha_ku_gath_plaguefather_0=70,14840;wh3_main_nur_cha_plagueridden_death_1=80,6316;wh3_main_nur_cha_plagueridden_nurgle_1=80,6316;wh3_main_nur_mon_beast_of_nurgle_0=50,6388;wh3_main_nur_mon_great_unclean_one_0=50,12360;wh3_main_nur_mon_great_unclean_one_summoned_0=50,12360;wh3_main_nur_mon_soul_grinder_0=90,8188;wh3_main_nur_mon_spawn_of_nurgle_0=10,602;wh3_main_nur_mon_spawn_of_nurgle_0_summoned=10,602;wh3_main_ogr_cav_crushers_0=130,740;wh3_main_ogr_cav_crushers_1=120,740;wh3_main_ogr_cav_mournfang_cavalry_0=90,648;wh3_main_ogr_cav_mournfang_cavalry_1=100,648;wh3_main_ogr_cav_mournfang_cavalry_2=90,648;wh3_main_ogr_cha_butcher_beasts_0=30,5508;wh3_main_ogr_cha_butcher_great_maw_0=30,5508;wh3_main_ogr_cha_firebelly_0=30,5508;wh3_main_ogr_cha_greasus_goldtooth_0=55,8488;wh3_main_ogr_cha_hunter_0=30,5508;wh3_main_ogr_cha_hunter_1=110,10070;wh3_main_ogr_cha_skrag_the_slaughterer_0=40,7208;wh3_main_ogr_cha_slaughtermaster_beasts_0=40,6508;wh3_main_ogr_cha_slaughtermaster_great_maw_0=40,6508;wh3_main_ogr_cha_tyrant_0=90,7008;wh3_main_ogr_feral_manticore_summoned=45,5103;wh3_main_ogr_inf_ironguts_0=100,580;wh3_main_ogr_inf_leadbelchers_0=50,308;wh3_main_ogr_inf_maneaters_0=40,580;wh3_main_ogr_inf_maneaters_1=50,580;wh3_main_ogr_inf_maneaters_2=40,580;wh3_main_ogr_inf_maneaters_3=40,580;wh3_main_ogr_inf_maneaters_summoned_0=40,580;wh3_main_ogr_inf_ogres_0=30,333;wh3_main_ogr_inf_ogres_1=30,333;wh3_main_ogr_inf_ogres_2=40,333;wh3_main_ogr_mon_giant_0=50,12620;wh3_main_ogr_mon_gorgers_0=15,654;wh3_main_ogr_mon_gorgers_summoned_0=15,654;wh3_main_ogr_mon_stonehorn_0=110,9616;wh3_main_ogr_mon_stonehorn_1=110,9616;wh3_main_ogr_veh_gnoblar_scraplauncher_0=80,4596;wh3_main_ogr_veh_ironblaster_0=90,6096;wh3_main_pro_kho_cha_bloodreaper_2=110,5156;wh3_main_pro_kho_cha_herald_of_khorne_2=110,5556;wh3_main_pro_kho_inf_flesh_hounds_of_khorne_simaergul_0=30,4000;wh3_main_pro_ksl_cha_slavin_0=80,14104;wh3_main_pro_ksl_mon_elemental_bear_ror_0=90,10988;wh3_main_pro_tze_cha_herald_of_tzeentch_tzeentch_2=20,5380;wh3_main_pro_tze_mon_flamers_0=10,257;wh3_main_sla_cha_alluress_shadow_2=50,4576;wh3_main_sla_cha_alluress_shadow_3=50,6076;wh3_main_sla_cha_alluress_slaanesh_2=50,4576;wh3_main_sla_cha_alluress_slaanesh_3=50,6076;wh3_main_sla_cha_exalted_keeper_of_secrets_shadow_0=15,7828;wh3_main_sla_cha_exalted_keeper_of_secrets_slaanesh_0=15,7828;wh3_main_sla_cha_herald_of_slaanesh_shadow_2=50,4976;wh3_main_sla_cha_herald_of_slaanesh_shadow_3=50,6476;wh3_main_sla_cha_herald_of_slaanesh_slaanesh_2=50,4976;wh3_main_sla_cha_herald_of_slaanesh_slaanesh_3=50,6476;wh3_main_sla_cha_nkari_0=15,8048;wh3_main_sla_mon_fiends_of_slaanesh_0=30,508;wh3_main_sla_mon_keeper_of_secrets_0=15,7720;wh3_main_sla_mon_keeper_of_secrets_summoned_0=15,7720;wh3_main_sla_mon_soul_grinder_0=90,8188;wh3_main_sla_mon_spawn_of_slaanesh_0=10,548;wh3_main_sla_veh_exalted_seeker_chariot_0=50,5676;wh3_main_sla_veh_hellflayer_0=50,1462;wh3_main_sla_veh_seeker_chariot_0=50,1232;wh3_main_tze_cha_exalted_lord_of_change_metal_0=30,7828;wh3_main_tze_cha_exalted_lord_of_change_tzeentch_0=30,7828;wh3_main_tze_cha_herald_of_tzeentch_metal_2=35,5380;wh3_main_tze_cha_herald_of_tzeentch_tzeentch_2=35,5380;wh3_main_tze_cha_iridescent_horror_metal_2=35,4980;wh3_main_tze_cha_iridescent_horror_tzeentch_2=35,4980;wh3_main_tze_cha_kairos_fateweaver_0=50,8048;wh3_main_tze_mon_exalted_flamer_0=10,3180;wh3_main_tze_mon_flamers_0=10,257;wh3_main_tze_mon_lord_of_change_0=30,7028;wh3_main_tze_mon_lord_of_change_summoned_0=30,7028;wh3_main_tze_mon_soul_grinder_0=90,8188;wh3_main_tze_mon_spawn_of_tzeentch_0=10,548;wh3_main_tze_veh_burning_chariot_0=20,4980;wh3_pro10_tze_cha_daemon_prince_of_tzeentch=10,21458;wh3_pro12_kho_cha_karanak=50,4850;wh3_survival_dae_cha_be_lakor_01=45,25748;wh3_survival_dae_cha_be_lakor_02=45,20600;wh3_survival_kho_cha_bloodreaper=110,10296;wh3_survival_kho_cha_daemon_prince_of_khorne=10,21458;wh3_survival_kho_cha_exalted_bloodthirster=90,8588;wh3_survival_kho_cha_exalted_bloodthirster_0=90,17998;wh3_survival_nur_cha_daemon_prince_of_nurgle=10,21458;wh3_survival_nur_cha_exalted_great_unclean_one_nurgle=50,13620;wh3_survival_nur_cha_exalted_great_unclean_one_nurgle_01=50,13620;wh3_survival_sla_cha_alluress_shadow=50,11136;wh3_survival_sla_cha_daemon_prince_of_slaanesh=10,21458;wh3_survival_sla_cha_exalted_keeper_of_secrets_slaanesh=15,7828;wh3_survival_tze_cha_daemon_prince_of_tzeentch=10,21458;wh3_survival_tze_cha_exalted_lord_of_change_tzeentch=30,7828;wh3_survival_tze_cha_iridescent_horror_metal=35,8512;wh3_twa06_ogr_inf_maneaters_ror_0=40,580;wh3_twa07_ogr_cav_crushers_ror_0=120,740;wh3_twa08_cth_mon_terracotta_sentinel_0_ror=100,12620;wh3_twa08_kho_mon_bloodthirster_0_ror=70,7732;wh3_twa08_ksl_mon_elemental_bear_0_ror=90,10988;wh3_twa08_nur_mon_great_unclean_one_0_ror=50,12360;wh3_twa08_ogr_mon_stonehorn_0_ror=110,9616;wh3_twa08_sla_mon_keeper_of_secrets_0_ror=15,7720;wh3_twa08_tze_mon_lord_of_change_0_ror=90,7028;wh_dlc01_chs_cav_gorebeast_chariot=130,1616;wh_dlc01_chs_cha_chaos_lord_10=80,5476;wh_dlc01_chs_cha_chaos_lord_2=70,8444;wh_dlc01_chs_cha_chaos_lord_9=110,5640;wh_dlc01_chs_cha_chaos_sorcerer_death_8=110,4384;wh_dlc01_chs_cha_chaos_sorcerer_fire_8=110,4384;wh_dlc01_chs_cha_chaos_sorcerer_lord_death_10=70,8316;wh_dlc01_chs_cha_chaos_sorcerer_lord_death_7=110,4464;wh_dlc01_chs_cha_chaos_sorcerer_lord_death_8=110,4664;wh_dlc01_chs_cha_chaos_sorcerer_lord_death_9=80,5276;wh_dlc01_chs_cha_chaos_sorcerer_lord_fire_10=70,8316;wh_dlc01_chs_cha_chaos_sorcerer_lord_fire_7=110,4464;wh_dlc01_chs_cha_chaos_sorcerer_lord_fire_8=110,4664;wh_dlc01_chs_cha_chaos_sorcerer_lord_fire_9=80,5276;wh_dlc01_chs_cha_chaos_sorcerer_lord_metal_10=70,8316;wh_dlc01_chs_cha_chaos_sorcerer_lord_metal_7=110,4464;wh_dlc01_chs_cha_chaos_sorcerer_lord_metal_8=110,4664;wh_dlc01_chs_cha_chaos_sorcerer_lord_metal_9=80,5276;wh_dlc01_chs_cha_chaos_sorcerer_lord_shadows_3=80,5276;wh_dlc01_chs_cha_chaos_sorcerer_lord_shadows_4=70,8316;wh_dlc01_chs_cha_chaos_sorcerer_metal_8=110,4384;wh_dlc01_chs_cha_chaos_sorcerer_shadows_3=80,5112;wh_dlc01_chs_cha_exalted_hero_10=80,5276;wh_dlc01_chs_cha_exalted_hero_8=110,4664;wh_dlc01_chs_cha_kholek=95,8988;wh_dlc01_chs_cha_qb_lord_of_change_0=30,7028;wh_dlc01_chs_mon_dragon_ogre=60,616;wh_dlc01_chs_mon_dragon_ogre_shaggoth=70,8588;wh_dlc01_chs_mon_trolls_1=110,494;wh_dlc01_nor_cha_chaos_sorcerer_lord_2=90,4296;wh_dlc03_bst_cav_razorgor_chariot_0=100,1512;wh_dlc03_bst_cha_beastlord_1=100,5724;wh_dlc03_bst_cha_bray_shaman_beasts_1=100,4640;wh_dlc03_bst_cha_bray_shaman_death_1=100,4640;wh_dlc03_bst_cha_bray_shaman_shadows_1=100,4640;wh_dlc03_bst_cha_bray_shaman_wild_1=100,4640;wh_dlc03_bst_cha_gorebull_0=100,5868;wh_dlc03_bst_cha_khazrak_one_eye_1=100,5956;wh_dlc03_bst_feral_manticore=45,5103;wh_dlc03_bst_inf_cygor_0=50,9800;wh_dlc03_bst_inf_cygor_0_summoned=50,9800;wh_dlc03_bst_inf_minotaurs_0=35,544;wh_dlc03_bst_inf_minotaurs_1=45,544;wh_dlc03_bst_inf_minotaurs_2=35,544;wh_dlc03_bst_mon_chaos_spawn_0=10,548;wh_dlc03_bst_mon_chaos_spawn_0_summoned=10,548;wh_dlc03_bst_mon_giant_0=50,12620;wh_dlc03_emp_cha_boris_todbringer_3=100,6835;wh_dlc03_emp_cha_wizard_beasts_3=50,5736;wh_dlc04_emp_cha_volkmar_the_grim_1=100,6616;wh_dlc04_emp_veh_templehof_luminark_0=60,4616;wh_dlc04_vmp_cha_strigoi_ghoul_king_1=80,8297;wh_dlc04_vmp_mon_devils_swartzhafen_0=10,395;wh_dlc05_bst_mon_chaos_spawn_0_boss=10,548;wh_dlc05_vmp_cha_red_duke_3=90,8244;wh_dlc05_wef_cav_hawk_riders_0=15,190;wh_dlc05_wef_cha_ancient_treeman_0=110,9828;wh_dlc05_wef_cha_durthu_0=110,10328;wh_dlc05_wef_cha_female_glade_lord_2=50,4856;wh_dlc05_wef_cha_female_glade_lord_2_qb=50,5584;wh_dlc05_wef_cha_female_glade_lord_3=60,7624;wh_dlc05_wef_cha_glade_lord_2=50,4856;wh_dlc05_wef_cha_glade_lord_3=60,7624;wh_dlc05_wef_cha_orion_0=30,7436;wh_dlc05_wef_cha_spellsinger_beasts_2=30,4680;wh_dlc05_wef_cha_spellsinger_life_2=30,4680;wh_dlc05_wef_cha_spellsinger_shadows_2=30,4680;wh_dlc05_wef_forest_dragon_0=60,7508;wh_dlc05_wef_mon_great_eagle_0=30,4663;wh_dlc05_wef_mon_treekin_0=90,548;wh_dlc05_wef_mon_treeman_0=110,9828;wh_dlc06_chs_cha_chaos_sorcerer_death_9=80,5112;wh_dlc06_chs_cha_chaos_sorcerer_fire_9=80,5112;wh_dlc06_chs_cha_chaos_sorcerer_metal_9=80,5112;wh_dlc06_chs_feral_manticore=45,5103;wh_dlc06_dwf_cha_runelord_1=120,5552;wh_dlc06_dwf_veh_skyhammer_0=100,1062;wh_dlc06_grn_cav_teef_robbers_0=45,528;wh_dlc06_grn_mon_venom_queen_0=120,9973;wh_dlc07_brt_cav_royal_hippogryph_knights_0=90,676;wh_dlc07_brt_cha_alberic_bordeleaux_3=90,6604;wh_dlc07_brt_inf_grail_reliquae_0=40,3474;wh_dlc08_bst_mon_cygor_boss=50,11768;wh_dlc08_chs_cha_chaos_lord_2_qb=70,5240;wh_dlc08_chs_mon_dragon_ogre_shaggoth_boss=70,16790;wh_dlc08_chs_mon_dragon_ogre_shaggoth_minor_boss=70,8588;wh_dlc08_grn_mon_arachnarok_spider_boss=120,9973;wh_dlc08_grn_mon_giant_boss=50,16498;wh_dlc08_nor_cav_marauder_warwolves_chariot_0=90,1496;wh_dlc08_nor_cha_arzik_0=30,8176;wh_dlc08_nor_cha_fimir_balefiend_fire_0=65,5040;wh_dlc08_nor_cha_fimir_balefiend_shadow_0=65,5040;wh_dlc08_nor_cha_kihar_0=70,6900;wh_dlc08_nor_cha_shaman_sorcerer_death_2=90,4124;wh_dlc08_nor_cha_shaman_sorcerer_fire_2=90,4124;wh_dlc08_nor_cha_shaman_sorcerer_metal_2=90,4124;wh_dlc08_nor_cha_skin_wolf_werekin_0=70,5040;wh_dlc08_nor_cha_throgg_0=55,8008;wh_dlc08_nor_cha_wulfrik_2=100,5792;wh_dlc08_nor_cha_wulfrik_3=80,14104;wh_dlc08_nor_feral_manticore=45,5103;wh_dlc08_nor_mon_fimir_0=110,514;wh_dlc08_nor_mon_fimir_1=110,514;wh_dlc08_nor_mon_frost_wyrm_0=70,7120;wh_dlc08_nor_mon_frost_wyrm_boss=70,12656;wh_dlc08_nor_mon_frost_wyrm_ror_0=70,7120;wh_dlc08_nor_mon_norscan_giant_0=50,12620;wh_dlc08_nor_mon_norscan_ice_trolls_0=60,494;wh_dlc08_nor_mon_skinwolves_0=15,309;wh_dlc08_nor_mon_skinwolves_1=70,309;wh_dlc08_nor_mon_war_mammoth_0=50,12988;wh_dlc08_nor_mon_war_mammoth_1=80,14104;wh_dlc08_nor_mon_war_mammoth_2=80,14144;wh_dlc08_nor_mon_war_mammoth_boss=50,3408;wh_dlc08_nor_mon_war_mammoth_ror_1=50,2692;wh_dlc08_vmp_mon_terrorgheist_boss=80,7544;wh_dlc08_wef_forest_dragon_boss=80,11208;wh_dlc08_wef_mon_treeman_boss=110,3280;wh_main_brt_cha_king_louen_leoncoeur_1=90,6640;wh_main_brt_cha_king_louen_leoncoeur_4=90,6404;wh_main_brt_cha_lord_2=90,6304;wh_main_bst_feral_manticore_summoned=45,5103;wh_main_chs_cav_chaos_chariot=110,1402;wh_main_chs_cha_chaos_lord_8=110,5440;wh_main_chs_cha_chaos_sorcerer_death_7=110,4156;wh_main_chs_cha_chaos_sorcerer_fire_7=110,4156;wh_main_chs_cha_chaos_sorcerer_metal_7=110,4156;wh_main_chs_cha_exalted_hero_7=110,4864;wh_main_chs_cha_lord_of_change_0=40,8048;wh_main_chs_mon_chaos_spawn=10,548;wh_main_chs_mon_chaos_spawn_summoned=10,548;wh_main_chs_mon_giant=50,12620;wh_main_chs_mon_trolls=40,494;wh_main_dwf_cha_high_king_thorgrim_grudgebearer_1=125,8208;wh_main_dwf_veh_gyrobomber=100,1062;wh_main_dwf_veh_gyrocopter_0=100,354;wh_main_dwf_veh_gyrocopter_1=100,354;wh_main_emp_cha_general_3=90,6384;wh_main_emp_cha_karl_franz_1=100,6836;wh_main_emp_veh_luminark_of_hysh_0=60,4616;wh_main_emp_veh_steam_tank_driver=160,9070;wh_main_grn_cav_goblin_wolf_chariot=45,528;wh_main_grn_cha_azhag_the_slaughterer_1=70,7008;wh_main_grn_cha_goblin_big_boss_4=45,4341;wh_main_grn_cha_goblin_great_shaman_2=45,4214;wh_main_grn_cha_orc_warboss_1=70,6648;wh_main_grn_mon_arachnarok_spider_0=120,9973;wh_main_grn_mon_giant=50,12620;wh_main_grn_mon_giant_qb_tall_roff=50,12620;wh_main_grn_mon_trolls=40,494;wh_main_nor_cav_chaos_chariot=90,1402;wh_main_nor_cha_marauder_chieftan_2=90,4964;wh_main_nor_cha_marauder_chieftan_3=80,14104;wh_main_nor_mon_chaos_trolls=40,494;wh_main_vmp_cha_mannfred_von_carstein_3=90,8244;wh_main_vmp_cha_vampire_lord_3=90,8244;wh_main_vmp_mon_crypt_horrors=30,622;wh_main_vmp_mon_crypt_horrors_summoned=30,622;wh_main_vmp_mon_terrorgheist=80,8289;wh_main_vmp_mon_terrorgheist_qb=80,8289;wh_main_vmp_mon_vargheists=10,395;wh_main_vmp_mon_varghulf=40,8248;wh_main_vmp_veh_black_coach=60,5956;wh_pro04_bst_inf_cygor_ror_0=50,9800;wh_pro04_bst_inf_minotaurs_ror_0=45,544;wh_pro04_chs_mon_chaos_spawn_ror_0=10,548;wh_pro04_chs_mon_dragon_ogre_ror_0=60,616;wh_pro04_nor_mon_fimir_ror_0=110,514;wh_pro04_nor_mon_skinwolves_ror_0=70,309;wh_pro04_nor_mon_war_mammoth_ror_0=80,14104;wh_pro04_wef_mon_treekin_ror_0=90,548"
+FOURTH.BLOB_SHOT = {}
+FOURTH.LARGE_DEF = {}
+function FOURTH.load_large_tables()
+	for k, n, b, a, l, c, br, g, me in string.gmatch(FOURTH.BLOB_SHOT_TEXT,
+		"([^;=]+)=(%d+),([%d%.]+),([%d%.]+),([%d%.]+),(%d),(%d),(%d),(%d)") do
+		FOURTH.BLOB_SHOT[k] = { tonumber(n), tonumber(b), tonumber(a), tonumber(l), tonumber(c), tonumber(br),
+			tonumber(g), tonumber(me) }
+	end
+	for k, a, hp in string.gmatch(FOURTH.LARGE_DEF_TEXT, "([^;=]+)=([%d%.]+),([%d%.]+)") do
+		FOURTH.LARGE_DEF[k] = { tonumber(a), tonumber(hp) }
+	end
+end
+FOURTH.load_large_tables()
+
+-- ============================================================================
+-- ROUND 151 - THE TRIGGER FAMILIES THAT START ARMED (user ruling 2026-11-14): the no-condition Winds of
+-- Magic abilities, the in-melee / on-charge self-casts ("a no brainer"), protection and last stand, morale
+-- saves, heals and ammo refills. A badge click still switches each off (the explicit choice wins).
+-- ============================================================================
+FOURTH.DEFAULT_ON_TRIGGERS = {
+	when_ready = true,
+	melee_unwavering = true,
+	charge_or_melee = true,
+	charge_only = true,
+	charge = true,
+	melee = true,
+	melee_health75 = true,
+	melee_skip_commanders = true,
+	glorious_death = true,
+	under_fire = true,
+	melee_or_under_fire = true,
+	self_last_stand = true,
+	wavering_self = true,
+	wavering_aura = true,
+	wavering_self_or_ally = true,
+	wavering_ally_range = true,
+	ally_wavering = true,
+	melee_or_wavering_aura = true,
+	ushoran_health = true,
+	health_below_15 = true,
+	health_aura_self = true,
+	health_aura_self_undead = true,
+	health_aura_ally = true,
+	ally_heal = true,
+	health_aura_ground = true,
+	ally_ammo_low = true,
+	self_out_of_ammo = true,
+}
+
+-- the armed state of a (unit slot, marker) pair: the explicit switch, else the family default
+function FOURTH.armed_slot(slot, marker)
+	local per = armed[slot]
+	if per ~= nil and per[marker] ~= nil then return per[marker] == true end
+	local a = ability_for(marker)
+	return a ~= nil and a.default_on == true
 end
 
 FOURTH.evaluators = {
@@ -18029,6 +18249,10 @@ FOURTH.TRIGGER_TIP = {
 for _, ability in ipairs(ABILITIES) do
 	ability.evaluate = FOURTH.evaluators[ability.trigger]
 	ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]
+	-- ROUND 151: the family default. ZZ_AUTO_TEST_NO_DEFAULTS is a TEST-ONLY global the harness sets for
+	-- its older worlds (which arm by clicking); the game never defines it, so the defaults always apply there.
+	ability.default_on = (FOURTH.DEFAULT_ON_TRIGGERS[ability.trigger] == true)
+		and ZZ_AUTO_TEST_NO_DEFAULTS ~= true
 	-- CLASS A (harness 97): an entry's REAL target_intercept_range (range_real)
 	-- maps to its own named 70% bound (FOURTH.ENEMY_CAST). Entries without it
 	-- (the self/ally triggers) leave range_m nil - never read for them.
@@ -20117,6 +20341,88 @@ local function set_auto_for_unit(ui_id, marker, value)
 	apply_ability_feedback(marker)   -- the letter on the badge - the only feedback now
 end
 
+-- ============================================================================
+-- ROUND 151 - THE ALL BADGE (user ruling 2026-11-14: "ALL badge per unit"). One extra badge, built on the ui tick
+-- with the ability badges' template and steps, left of the wheel's left slot; it shows "ALL" while any ability badge
+-- is shown. A click acts on every selected unit: when every ability of ours it owns is armed, all are disarmed;
+-- otherwise all are armed.
+-- ============================================================================
+FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
+FOURTH.ALL_DX = -48          -- left of the wheel's left slot (WHEEL_SLOT[6]), in the ability badges' offset frame
+FOURTH.all_state = { badge = nil, attempts = 0, shown = false }
+
+function FOURTH.all_badge_tick()
+	local st = FOURTH.all_state
+	local any = false
+	for _, ability in ipairs(active_abilities_list()) do
+		local s = ability_state[ability.marker]
+		if s ~= nil and s.badge_shown == true then
+			any = true
+			break
+		end
+	end
+	if st.badge == nil then
+		if not any or badge_parent == nil or st.attempts >= MAX_BADGE_ATTEMPTS then return end
+		st.attempts = st.attempts + 1
+		local ok, err = pcall(function()
+			st.badge = UIComponent(badge_parent:CreateComponent(FOURTH.ALL_BADGE_ID, "ui/templates/zz_auto_badge"))
+			if st.badge == nil then error("CreateComponent returned nothing", 0) end
+			st.badge:SetDockingPoint(0)
+			st.badge:Resize(36, 24)
+			for i = 0, 4 do st.badge:SetImagePath("ui/zz_auto/blank.png", i) end
+			local ok_text = write_badge_letter(st, "ALL")
+			if not ok_text then error("SetText raised", 0) end
+			st.badge:SetVisible(false)
+			st.badge:SetDockingPoint(8)
+			local slot = WHEEL_SLOT[6]
+			st.badge:SetDockOffset(BADGE_X + (slot[1] - WHEEL_TOP_X) + FOURTH.ALL_DX, BADGE_Y + (slot[2] - WHEEL_TOP_Y))
+			badge_parent:Layout()
+		end)
+		if not ok then
+			discard_badge(st)
+			FOURTH.all_said("ALL badge: create attempt raised: " .. tostring(err))
+			return
+		end
+		st.shown = false
+		FOURTH.all_said("ALL badge: created left of the wheel")
+	end
+	if st.shown ~= any then
+		st.shown = any
+		pcall(function() st.badge:SetVisible(any) end)
+	end
+end
+
+function FOURTH.all_click()
+	local targets = {}
+	for i = 1, #selected_ui_ids do
+		if selected_ui_ids[i] ~= nil then targets[#targets + 1] = selected_ui_ids[i] end
+	end
+	if #targets == 0 then
+		if selection_callback_alive or selected_unit_id == nil then
+			FOURTH.all_said("ALL click ignored: no unit selected")
+			return
+		end
+		targets[1] = selected_unit_id
+	end
+	local todo, all_on = {}, true
+	for i = 1, #targets do
+		for _, entry in ipairs(owned_abilities_by_unit[tostring(targets[i])] or {}) do
+			todo[#todo + 1] = { targets[i], entry.marker }
+			if not FOURTH.armed_slot(unit_slot(targets[i]), entry.marker) then all_on = false end
+		end
+	end
+	if #todo == 0 then
+		FOURTH.all_said("ALL click: the selected unit(s) own none of our abilities")
+		return
+	end
+	local value = not all_on
+	for i = 1, #todo do set_auto_for_unit(todo[i][1], todo[i][2], value) end
+	FOURTH.all_said("ALL click: " .. tostring(#todo) .. " ability switch(es) on " .. tostring(#targets)
+		.. " unit(s) -> " .. (value and "ON" or "OFF"))
+end
+
+function FOURTH.all_said(text) log(text) end
+
 -- Find the ability icon. Round 18 showed the engine's own highlight path
 -- (battle_orders/orders_parent/behaviour_parent) is the fire-at-will/skirmish row: for Boris
 -- all three slots report an EMPTY ability key, so Deadly Onslaught is not there. So scan the
@@ -20838,6 +21144,11 @@ core:add_listener(
 		-- never touched). With no unit selected the click does nothing but
 		-- say so.
 		if string.sub(clicked_id, 1, 8) == "zz_auto_" then
+			-- ROUND 151: the ALL badge arms / disarms every ability of ours on the selected unit(s)
+			if clicked_id == FOURTH.ALL_BADGE_ID then
+				FOURTH.all_click()
+				return
+			end
 			local ability = ability_for_badge(clicked_id)
 			if ability == nil then
 				log("badge click on '" .. clicked_id
@@ -20905,7 +21216,7 @@ core:add_listener(
 				local unit = units_by_ui_id[tostring(single_id)]
 				local arm_slot = unit_slot(single_id)
 				local per = armed[arm_slot]
-				local was_armed = per ~= nil and per[ability.marker] == true
+				local was_armed = FOURTH.armed_slot(arm_slot, ability.marker)   -- ROUND 151: the default counts
 				local ok_t, unit_type = pcall(function() return unit:type() end)
 				log("click: " .. ability.marker .. " badge -> selected unit "
 					.. tostring(single_id) .. " ('" .. tostring(ok_t and unit_type or "?")
@@ -20934,7 +21245,7 @@ core:add_listener(
 			local all_armed = true
 			for i = 1, #owners do
 				local per = armed[unit_slot(owners[i])]
-				if per == nil or per[ability.marker] ~= true then
+				if not FOURTH.armed_slot(unit_slot(owners[i]), ability.marker) then   -- ROUND 151: the default counts
 					all_armed = false
 				end
 			end
@@ -22055,6 +22366,8 @@ local function ui_tick()
 	-- Per ability: judge ITS marker and show/hide/letter ITS own badge.
 	local onslaught_confirmed = false
 	local active_dropped = false    -- item 1.4: a stale claim died this tick - the set shrank
+	-- ROUND 151: the ALL badge (created and shown with the ability badges)
+	pcall(FOURTH.all_badge_tick)
 
 	for _, ability in ipairs(active_abilities_list()) do
 		local state = ability_state[ability.marker]

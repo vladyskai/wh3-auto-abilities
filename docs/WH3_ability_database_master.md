@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-14 22:40 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-14 23:29 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -548,7 +548,7 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 
 ### `enemy_blob` — 77 entries / 77 keys
 
-With the caster STANDING STILL: among the safe visible enemy INFANTRY units in range (an inf_* class, not in the generated large set, not flying, at least 10 men; no soldier of ours within the blast radius + 10 m; the blast covering at least half of a packed block), the one whose blast destroys the most enemy VALUE (soldiers covered x the share of a soldier killed after armour, against hit points x live value per soldier). AP-heavy attacks never target armour below 50. Casts on that enemy; re-checked before the cast.
+With the caster STANDING STILL and the game's usage rules met (flying where it must not be grounded, out of melee where it must be): the 53 prefer_central_targets attacks hit a safe visible LARGE enemy in range first (the most value lost) and HOLD while a large enemy anywhere is worth more than the best infantry target; otherwise the safe visible enemy INFANTRY unit whose blast destroys the most value (at least half a packed block in the blast; AP-heavy attacks never at armour below 50; breaths prefer a side-on target within 20% of the best value). Casts on that enemy; re-checked before the cast.
 
 **Plain English (the sentence the mod ships in that ability's tooltip):** *When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near.*
 

@@ -62,6 +62,7 @@
 "wh2_dlc15_item_abilities_lucky_banner",
 "wh2_dlc15_item_abilities_vine_dragon_scale",
 "wh2_dlc15_lord_abilities_da_great_un_iz_ere",
+"wh2_dlc15_lord_abilities_dragonhorn",
 "wh2_dlc15_lord_abilities_lord_of_dragons",
 "wh2_dlc15_unit_abilities_mimic_cold_blooded",
 "wh2_dlc15_unit_abilities_mimic_grom_waaagh",
@@ -324,6 +325,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 164,
+"logs_read": 165,
 "made": "2026-11-14"
 }
