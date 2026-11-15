@@ -2043,6 +2043,63 @@ local ABILITIES = {
 		keys = { "wh_main_spell_light_shems_burning_gaze_bound" },
 		range_real = 250,
 		ox = 0, oy = 0 },
+	{ marker = "blast", name = "Blast", trigger = "enemy_large_shot",
+		badge = "zz_auto_badge_blast",
+		keys = { "wh2_dlc10_item_bound_blast" },
+		range_real = 100,
+		ox = 0, oy = 0 },
+	{ marker = "damned_pistol", name = "Damned Pistol", trigger = "enemy_large_shot",
+		badge = "zz_auto_badge_damned_pistol",
+		keys = { "wh3_main_weapon_abilities_godkiller_pistol" },
+		range_real = 100,
+		ox = 0, oy = 0 },
+	{ marker = "hunting_spear", name = "Hunting Spear", trigger = "enemy_large_shot",
+		badge = "zz_auto_badge_hunting_spear",
+		keys = { "wh_dlc03_weapon_abilities_hunting_spear" },
+		range_real = 200,
+		ox = 0, oy = 0 },
+	{ marker = "master_rune_of_flight", name = "Master Rune of Flight", trigger = "enemy_large_shot",
+		badge = "zz_auto_badge_master_rune_of_flight",
+		keys = { "wh2_dlc17_rune_abilities_master_rune_of_flight" },
+		range_real = 100,
+		ox = 0, oy = 0 },
+	{ marker = "schalkains_teeth", name = "Schalkain's Teeth", trigger = "enemy_large_shot",
+		badge = "zz_auto_badge_schalkains_teeth",
+		keys = { "wh3_dlc27_item_abilities_schalkains_teeth" },
+		range_real = 200,
+		ox = 0, oy = 0 },
+	{ marker = "dead_eye", name = "Dead Eye", trigger = "enemy_single_shot",
+		badge = "zz_auto_badge_dead_eye",
+		keys = { "wh3_dlc26_character_abilities_dead_eye" },
+		range_real = 150,
+		target_class = "single",
+		ox = 0, oy = 0 },
+	{ marker = "focused_shot", name = "Focused Shot", trigger = "enemy_single_shot",
+		badge = "zz_auto_badge_focused_shot",
+		keys = { "wh2_dlc13_lord_abilities_kill_shot" },
+		range_real = 250,
+		target_class = "single",
+		ox = 0, oy = 0 },
+	{ marker = "crippling_throw", name = "Crippling Throw", trigger = "enemy_melee_or_fast",
+		badge = "zz_auto_badge_crippling_throw",
+		keys = { "wh3_main_character_abilities_crippling_throw" },
+		range_real = 120,
+		ox = 0, oy = 0 },
+	{ marker = "golden_blowpipe", name = "The Golden Blowpipe of P'Toohee", trigger = "enemy_melee_or_fast",
+		badge = "zz_auto_badge_golden_blowpipe",
+		keys = { "wh2_dlc17_weapon_abilities_the_golden_blowpipe_of_ptoohee" },
+		range_real = 200,
+		ox = 0, oy = 0 },
+	{ marker = "spear_of_kurnous", name = "Spear of Kurnous", trigger = "enemy_melee_or_shooting",
+		badge = "zz_auto_badge_spear_of_kurnous",
+		keys = { "wh_dlc05_weapon_abilities_spear_of_kurnous" },
+		range_real = 200,
+		ox = 0, oy = 0 },
+	{ marker = "bolt_storm", name = "Bolt Storm", trigger = "enemy_infantry_shot",
+		badge = "zz_auto_badge_bolt_storm",
+		keys = { "wh3_main_weapon_abilities_nuku_chos_crossbow" },
+		range_real = 250,
+		ox = 0, oy = 0 },
 	{ marker = "restock", name = "Restock!", trigger = "ally_ammo_low",
 		badge = "zz_auto_badge_restock",
 		keys = { "wh2_dlc17_hero_abilities_more_powder_generic" },
@@ -4120,6 +4177,11 @@ local ABILITIES = {
 -- next attempt in the same log).
 local charge_gate = {
 	hold_s = {
+		-- ROUND 156: the magic missiles with more than one use (recharge_time)
+		["wh3_main_character_abilities_crippling_throw"] = 90,
+		["wh3_main_weapon_abilities_godkiller_pistol"] = 120,
+		["wh2_dlc13_lord_abilities_kill_shot"] = 120,
+		["wh3_dlc27_item_abilities_schalkains_teeth"] = 90,
 		-- ROUND 146: the blob attacks with more than one use (recharge_time)
 		["wh2_dlc09_weapon_abilities_venom_staff"] = 30,
 		["wh2_dlc10_unit_abilities_frost_breath"] = 60,
@@ -4407,6 +4469,13 @@ local charge_gate = {
 -- wind-up are not listed and keep the plain 2 s guard.
 local cast_gate = {
 	wind_up_s = {
+		-- ROUND 156: the magic missiles' wind-ups (unit_spec_abil wind_up_time)
+		["wh3_main_weapon_abilities_nuku_chos_crossbow"] = 1,
+		["wh3_main_character_abilities_crippling_throw"] = 3,
+		["wh3_main_weapon_abilities_godkiller_pistol"] = 2.3,
+		["wh3_dlc26_character_abilities_dead_eye"] = 5,
+		["wh2_dlc13_lord_abilities_kill_shot"] = 5,
+		["wh2_dlc17_weapon_abilities_the_golden_blowpipe_of_ptoohee"] = 2.5,
 		-- ROUND 146: the blob attacks' wind-ups (unit_spec_abil wind_up_time)
 		["wh2_dlc09_weapon_abilities_venom_staff"] = 1,
 		["wh2_dlc10_unit_abilities_frost_breath"] = 1,
@@ -6014,6 +6083,7 @@ FOURTH.ENEMY_CAST_R250 = 175   -- ROUND 146: blob attacks, floor(250 x 0.70)
 FOURTH.ENEMY_CAST_R350 = 245   -- ROUND 146: blob attacks, floor(350 x 0.70)
 FOURTH.ENEMY_CAST_R400 = 280   -- ROUND 146: blob attacks, floor(400 x 0.70)
 FOURTH.ENEMY_CAST_R600 = 420   -- ROUND 146: blob attacks, floor(600 x 0.70)
+FOURTH.ENEMY_CAST_R120 = 84   -- ROUND 156: Crippling Throw, floor(120 x 0.70)
 FOURTH.ENEMY_CAST_R30  = 21
 FOURTH.ENEMY_CAST_R35  = 24
 FOURTH.ENEMY_CAST_R45  = 31
@@ -6051,6 +6121,7 @@ FOURTH.ENEMY_CAST = {
 	[350]  = FOURTH.ENEMY_CAST_R350,
 	[400]  = FOURTH.ENEMY_CAST_R400,
 	[600]  = FOURTH.ENEMY_CAST_R600,
+	[120]  = FOURTH.ENEMY_CAST_R120,
 	[150] = FOURTH.ENEMY_CAST_R150,
 	[180] = FOURTH.ENEMY_CAST_R180,
 	[200] = FOURTH.ENEMY_CAST_R200,
@@ -6420,6 +6491,9 @@ local function attempt_activation(script_unit, unit, ability_key, target)
 		elseif eg_mode_now == "blob" then
 			-- ROUND 146: the blob trigger - the map is rebuilt and the target must still be safe and dense
 			cond_now = FOURTH.blob_still_ok(enemy, unit)
+		elseif eg_mode_now == "shot" then
+			-- ROUND 156: the magic missiles - the map is rebuilt; the target must still qualify and be safe
+			cond_now = FOURTH.shot_still_ok(enemy, unit)
 		end
 		local cmdr_now = false
 		if FOURTH.eg_noncommander then
@@ -14913,6 +14987,8 @@ function FOURTH.eg_class_ok(enemy)
 	if cls == "not_undead" then return FOURTH.class_keys.undead[t] ~= true end
 	if cls == "missile" then return FOURTH.class_keys.missile[t] == true end
 	if cls == "large" then return FOURTH.class_keys.large[t] == true end
+	-- ROUND 156: Dead Eye and Focused Shot (the game's unit_is_not_single_entity): the GENERATED single set
+	if cls == "single" then return FOURTH.class_keys.single[t] == true end
 	if cls == "large_single" then
 		return FOURTH.class_keys.large[t] == true and FOURTH.class_keys.single[t] == true
 	end
@@ -15766,71 +15842,72 @@ FOURTH.RECHARGE_TEXT = ""
 	.. " wh2_dlc12_lord_abilities_drop_sphere_of_tepok_upgraded=5 wh2_dlc12_lord_abilities_focus_instincts=130 wh2_dlc12_lord_abilities_master_of_the_skies=91 wh2_dlc12_lord_abilities_unlimited_power=116 wh2_dlc12_lord_abilities_warriors_crest=120 wh2_dlc12_unit_abilities_refuse_to_die=80"
 	.. " wh2_dlc12_unit_abilities_shield_of_chaqua=115 wh2_dlc12_unit_abilities_toad_rage=78 wh2_dlc12_weapon_abilities_storm_daemon=120 wh2_dlc13_character_abilities_big_boom=120 wh2_dlc13_character_abilities_patch_up=97 wh2_dlc13_character_ability_hunters_call=152"
 	.. " wh2_dlc13_character_ability_ishas_rain=129 wh2_dlc13_item_abilities_shield_of_aeons=143 wh2_dlc13_lord_abilities_arrows_of_aqshy=90 wh2_dlc13_lord_abilities_aura_of_inertia=114 wh2_dlc13_lord_abilities_executioner=90 wh2_dlc13_lord_abilities_fire_arrow=90"
-	.. " wh2_dlc13_lord_abilities_funnel_of_flame=123 wh2_dlc13_lord_abilities_hail_of_fire=112 wh2_dlc13_lord_abilities_hunters_snare=101 wh2_dlc13_lord_abilities_hunters_trap=112 wh2_dlc13_lord_abilities_miasma_of_despair=106 wh2_dlc13_lord_abilities_monstrous_strength=125"
-	.. " wh2_dlc13_lord_abilities_oil_flask=90 wh2_dlc13_lord_abilities_primal_roar=145 wh2_dlc13_lord_abilities_rock_of_itza=84 wh2_dlc13_weapon_abilities_amber_bow=120 wh2_dlc13_weapon_abilities_averland_runefang=153 wh2_dlc13_weapon_abilities_drakwald_runefang=159"
-	.. " wh2_dlc13_weapon_abilities_hochland_runefang=144 wh2_dlc13_weapon_abilities_mace_of_ulumak=144 wh2_dlc13_weapon_abilities_nordland_runefang=142 wh2_dlc13_weapon_abilities_ostermark_runefang=147 wh2_dlc13_weapon_abilities_ostland_runefang=158 wh2_dlc13_weapon_abilities_talabecland_runefang=161"
-	.. " wh2_dlc13_weapon_abilities_wissenland_runefang=149 wh2_dlc14_character_abilities_cracklebomb=90 wh2_dlc14_lord_abilities_beastslaver=94 wh2_dlc14_lord_abilities_bloodstorm=69 wh2_dlc14_lord_abilities_halo_of_maidenly_wrath=123 wh2_dlc14_lord_abilities_looming_dread=121"
-	.. " wh2_dlc14_lord_abilities_the_blood_price=112 wh2_dlc14_lord_abilities_the_daemons_curse=154 wh2_dlc14_lord_abilities_whiplash=111 wh2_dlc14_spell_bound_warpfireball=60 wh2_dlc14_weapon_abilities_sword_of_lyonesse=144 wh2_dlc15_character_abilities_goggly_glare=60"
-	.. " wh2_dlc15_character_abilities_sausage_busta=156 wh2_dlc15_character_abilities_they_needs_stabbin=89 wh2_dlc15_hero_abilities_mither=75 wh2_dlc15_hero_abilities_swamp_breath=60 wh2_dlc15_item_abilities_armour_of_caledor=200 wh2_dlc15_item_abilities_azhags_ard_armour=158"
-	.. " wh2_dlc15_item_abilities_helm_of_yvresse=137 wh2_dlc15_item_abilities_lucky_banner=145 wh2_dlc15_item_abilities_vine_dragon_scale=134 wh2_dlc15_lord_abilities_da_great_un_iz_ere=111 wh2_dlc15_lord_abilities_dont_even_try_it=108 wh2_dlc15_lord_abilities_dragonhorn=136"
-	.. " wh2_dlc15_lord_abilities_fermented_fungi=105 wh2_dlc15_lord_abilities_lord_of_dragons=112 wh2_dlc15_lord_abilities_smash_em_faster=120 wh2_dlc15_lord_abilities_youre_next=114 wh2_dlc15_spell_bound_gaze_of_nagash=90 wh2_dlc15_unit_abilities_arachneruption=92"
-	.. " wh2_dlc15_unit_abilities_mighty_roar=115 wh2_dlc15_unit_abilities_mimic_cold_blooded=100 wh2_dlc15_unit_abilities_mimic_feint_and_riposte=118 wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith=140 wh2_dlc15_unit_abilities_mimic_grom_waaagh=138 wh2_dlc15_unit_abilities_mimic_ruinshelter=150"
-	.. " wh2_dlc15_unit_abilities_mimic_waaagh=108 wh2_dlc15_unit_abilities_noxious_breath_imrik=60 wh2_dlc15_unit_abilities_rock_bottom=46 wh2_dlc15_unit_abilities_sun_dragon_breath_imrik=60 wh2_dlc15_weapon_abilities_axe_of_grom=149 wh2_dlc15_weapon_abilities_fangsword_of_eltharion=151"
-	.. " wh2_dlc15_weapon_abilities_star_lance=149 wh2_dlc16_character_abilities_blight_of_terrors=110 wh2_dlc16_character_abilities_muster_of_malevolents=105 wh2_dlc16_character_abilities_pageant_of_shrikes=110 wh2_dlc16_hero_abilities_evisceration=94 wh2_dlc16_hero_abilities_shock_collar=84"
-	.. " wh2_dlc16_hero_abilities_warp_frenzy=119 wh2_dlc16_item_abilities_dart_of_doom=120 wh2_dlc16_item_abilities_dreaming_ring_i=73 wh2_dlc16_item_abilities_dreaming_ring_ii=103 wh2_dlc16_item_abilities_dreaming_ring_iii=137 wh2_dlc16_item_abilities_eagle_quiver=120"
-	.. " wh2_dlc16_item_abilities_twilight_horn_i=93 wh2_dlc16_lord_abilities_remouldered=144 wh2_dlc16_lord_abilities_roused_to_wrath_2=91 wh2_dlc16_spell_bound_earth_blood=67 wh2_dlc16_spell_bound_flesh_to_stone=109 wh2_dlc16_unit_abilities_fluid_injection=82"
-	.. " wh2_dlc16_unit_abilities_warp_lightning_rod=65 wh2_dlc16_weapon_abilities_creature_killer=158 wh2_dlc16_weapon_abilities_dragon_spear=145 wh2_dlc17_character_abilities_hunter_of_champions_upgraded=114 wh2_dlc17_hero_abilities_cinderblast_shell=90 wh2_dlc17_hero_abilities_more_powder_generic=70"
-	.. " wh2_dlc17_lord_abilities_barbed_knuckle_boxing=119 wh2_dlc17_lord_abilities_brass_body=161 wh2_dlc17_lord_abilities_rune_of_doom=136 wh2_dlc17_rune_abilities_master_rune_of_breaking=235 wh2_dlc17_rune_abilities_master_rune_of_slowness=225 wh2_dlc17_rune_abilities_master_rune_of_speed=220"
-	.. " wh2_dlc17_rune_abilities_rune_of_breaking=153 wh2_dlc17_rune_abilities_rune_of_slowness=150 wh2_dlc17_rune_abilities_rune_of_speed=150 wh2_dlc17_spell_bound_savage_dominion=121 wh2_dlc17_spell_bound_shield_of_thorns=120 wh2_dlc17_spell_bound_urannons_thunderbolt=94"
-	.. " wh2_dlc17_spell_bound_urannons_thunderbolt_upgraded=34 wh2_dlc17_unit_abilities_primeval_roar=91 wh2_main_character_abilities_assassins_trophy=89 wh2_main_character_abilities_cold_blooded=100 wh2_main_character_abilities_shield_of_the_old_ones=107 wh2_main_character_abilities_volley_of_dark_arrows=90"
-	.. " wh2_main_character_abilities_volley_of_high_arrows=90 wh2_main_character_abilities_witchbrew=114 wh2_main_item_abilities_aura_of_quetzl=115 wh2_main_item_abilities_blade_of_bel_korhadris=128 wh2_main_item_abilities_book_of_hoeth=126 wh2_main_item_abilities_cube_of_darkness=78"
-	.. " wh2_main_item_abilities_pearl_of_infinite_bleakness=104 wh2_main_item_abilities_plaque_of_dominion=80 wh2_main_item_abilities_scrying_stone=90 wh2_main_item_abilities_starwood_staff=113 wh2_main_item_abilities_the_guiding_eye=78 wh2_main_item_abilities_the_horn_of_kygor=110"
-	.. " wh2_main_item_abilities_the_tricksters_pendant=76 wh2_main_lord_abilities_feint_and_reposte=118 wh2_main_lord_abilities_potion_of_charoi=69 wh2_main_lord_abilities_sacred_spawning_of_xhotl=80 wh2_main_lord_abilities_trophy_heads=126 wh2_main_mount_abilities_unholy_clamour=138"
-	.. " wh2_main_spell_bound_black_staff=110 wh2_main_spell_bound_embers_of_the_phoenix=118 wh2_main_spell_bound_hand_of_gods=120 wh2_main_spell_bound_radiant_gem_of_hoeth=70 wh2_main_spell_bound_rod_of_the_storm=94 wh2_main_spell_bound_the_seerstaff_of_saphery=82"
-	.. " wh2_main_spell_bound_tome_of_furion=67 wh2_main_spell_bound_wand_of_the_kharaidon=127 wh2_main_spell_bound_whip_of_agony=121 wh2_main_unit_abilities_dark_fire_of_chaos=60 wh2_main_unit_abilities_death_shriek=60 wh2_main_unit_abilities_fiery_breath=60"
-	.. " wh2_main_unit_abilities_fury_of_khaine=118 wh2_main_unit_abilities_moon_dragons_breath=60 wh2_main_unit_abilities_noxious_breath=60 wh2_main_unit_abilities_pestilential_breath=60 wh2_main_unit_abilities_revivification_crystal=80 wh2_main_unit_abilities_soporific_breath=60"
-	.. " wh2_main_unit_abilities_star_dragons_breath=60 wh2_main_unit_abilities_sun_dragons_breath=60 wh2_main_unit_abilities_wake_of_fire=0 wh2_main_weapon_abilities_bow_of_the_seafarer=90 wh2_main_weapon_abilities_dwarf_gouger=156 wh2_main_weapon_abilities_hydra_blade=158"
-	.. " wh2_main_weapon_bound_reaver_bow=90 wh2_pro08_character_abilities_gotrek_doom=142 wh2_pro08_character_abilities_helping_hand=142 wh2_pro08_weapon_abilities_karaghul=148 wh2_pro08_weapon_abilities_rune_axe_of_gotrek=156 wh2_twa03_weapon_abilities_whip_of_agony=149"
-	.. " wh3_cp1_character_abilities_magic_prayer=147 wh3_cp1_character_abilities_offense_prayer=160 wh3_cp1_character_abilities_protection_prayer=152 wh3_cp1_character_abilities_terrifying_presence=148 wh3_cp1_lord_abilities_guiding_strike=119 wh3_cp1_lord_abilities_hidden_huntress=80"
-	.. " wh3_cp1_lord_abilities_hidden_huntress_upgraded=110 wh3_cp1_lord_abilities_mastered_strike=154 wh3_cp1_lord_abilities_predatory_instincts=115 wh3_cp1_weapon_abilities_blades_of_shang_yang=152 wh3_cp1_weapon_abilities_tyrants_talon=147 wh3_dlc20_item_abilities_daemonshield=133"
-	.. " wh3_dlc20_item_abilities_pestilent_potions=145 wh3_dlc20_item_abilities_rod_of_torment=97 wh3_dlc20_item_abilities_the_armour_of_morkar=149 wh3_dlc20_lord_abilities_tempest_rage=156 wh3_dlc20_lord_abilities_temptator=139 wh3_dlc20_unit_abilities_storm_rage=114"
-	.. " wh3_dlc20_weapon_abilities_aether_sword=117 wh3_dlc20_weapon_abilities_daemonblade=152 wh3_dlc20_weapon_abilities_rapier_of_ecstasy=107 wh3_dlc20_weapon_abilities_sliverslash=146 wh3_dlc23_bound_abilities_breath_of_hatred=121 wh3_dlc23_character_abilities_breath_of_hatred=121"
-	.. " wh3_dlc23_character_abilities_reforge=79 wh3_dlc23_character_abilities_skjalandirs_fall=159 wh3_dlc23_character_abilities_sword_dance=143 wh3_dlc23_hero_abilities_crooked_dice=120 wh3_dlc23_hero_abilities_get_tha_gitz!=125 wh3_dlc23_item_abilities_ancestral_vengeance=130"
-	.. " wh3_dlc23_item_abilities_armour_of_gazrakh=168 wh3_dlc23_item_abilities_morgrims_eye=152 wh3_dlc23_item_abilities_rune_of_thungni=160 wh3_dlc23_lord_abilities_flame_and_shadow=95 wh3_dlc23_lord_abilities_sadistic_snare=153 wh3_dlc23_spell_bound_burning_wrath=30"
-	.. " wh3_dlc23_unit_abilities_flaming_breath=90 wh3_dlc23_unit_abilities_more_power=148 wh3_dlc23_weapon_abilities_black_hammer_of_hashut=152 wh3_dlc23_weapon_abilities_dagger_of_malice=137 wh3_dlc23_weapon_abilities_dark_mace=120 wh3_dlc23_weapon_abilities_silver_dagger=152"
-	.. " wh3_dlc23_weapon_abilities_spell_wrought_sceptre=140 wh3_dlc23_weapon_abilities_the_graven_sceptre=144 wh3_dlc24_character_abilities_bastions_defenders=120 wh3_dlc24_character_abilities_change_or_die=112 wh3_dlc24_character_abilities_colossal_strike=122 wh3_dlc24_character_abilities_colossal_strike_summoned=122"
-	.. " wh3_dlc24_character_abilities_fury_of_the_land=155 wh3_dlc24_character_abilities_giant_leap=125 wh3_dlc24_character_abilities_tacticians_rally=74 wh3_dlc24_character_abilities_tacticians_stand_your_ground=108 wh3_dlc24_character_abilities_watched_by_the_watcher=180 wh3_dlc24_hero_abilities_thorns_aura=150"
-	.. " wh3_dlc24_hero_abilities_vorozhejas_foresight=145 wh3_dlc24_hero_abilities_windblade=120 wh3_dlc24_hero_abilities_znarkharjas_ward=116 wh3_dlc24_item_abilities_blessed_helm_of_the_oblast=120 wh3_dlc24_item_abilities_book_of_secrets=110 wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch=153"
-	.. " wh3_dlc24_item_abilities_wind_bow=120 wh3_dlc24_lord_abilities_gulyas=143 wh3_dlc24_lord_abilities_lord_of_grand_cathay=136 wh3_dlc24_lord_abilities_spirit_bear=120 wh3_dlc24_lord_abilities_spirit_bear_upgrade=120 wh3_dlc24_lord_abilities_taals_judgement=90"
-	.. " wh3_dlc24_unit_abilities_fearsome_roar=115 wh3_dlc24_unit_abilities_howl_of_the_great_beast=115 wh3_dlc24_unit_abilities_ice_breath=60 wh3_dlc24_unit_abilities_mark_of_yin=148 wh3_dlc24_unit_abilities_nan_gau_grenades=70 wh3_dlc24_unit_abilities_pack_trap=100"
-	.. " wh3_dlc24_unit_bound_missile_mirror=62 wh3_dlc24_unit_passive_petrifying_gaze=152 wh3_dlc24_weapon_abilities_dragons_fang=140 wh3_dlc24_weapon_abilities_ursuns_claw=137 wh3_dlc25_abilities_restock_gunnery_school=70 wh3_dlc25_character_abilities_children_of_the_forest=91"
-	.. " wh3_dlc25_character_abilities_get_em=101 wh3_dlc25_character_abilities_kettles_call=121 wh3_dlc25_character_abilities_mercurial_shot=90 wh3_dlc25_character_abilities_pigeon_bomb=132 wh3_dlc25_character_abilities_sands_of_sickness=145 wh3_dlc25_character_abilities_surprise_squig=61"
-	.. " wh3_dlc25_hero_abilities_titan_headsman=119 wh3_dlc25_item_abilities_ominous_powder=150 wh3_dlc25_item_abilities_stormlance=152 wh3_dlc25_item_abilities_the_gold_standard=103 wh3_dlc25_lord_abilities_cinderblast_cluster_bomb=120 wh3_dlc25_lord_abilities_darkwalker=150"
-	.. " wh3_dlc25_lord_abilities_deranged_munitions=120 wh3_dlc25_lord_abilities_deranged_munitions_upgraded=120 wh3_dlc25_lord_abilities_glorious_death=160 wh3_dlc25_lord_abilities_nemesis_crown=130 wh3_dlc25_lord_abilities_nurgles_favoured_son=160 wh3_dlc25_lord_abilities_rot_or_die=108"
-	.. " wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school=126 wh3_dlc25_unit_abilities_coruscating_blast=120 wh3_dlc25_unit_abilities_full_power=118 wh3_dlc25_unit_abilities_gyrobomber_fire_bomb=4 wh3_dlc25_unit_abilities_gyrocopter_bomb_anti_large=0 wh3_dlc25_unit_abilities_thunderbarge_fire_bomb=4"
-	.. " wh3_dlc25_unit_abilities_unspeakable_foulness=60 wh3_dlc25_weapon_abilities_axes_of_kadrin=141 wh3_dlc25_weapon_abilities_experimental_explosive=120 wh3_dlc25_weapon_abilities_liarsbane=88 wh3_dlc25_weapon_abilities_makaissons_persuader=137 wh3_dlc25_weapon_abilities_sword_of_filth=140"
-	.. " wh3_dlc25_weapon_abilities_the_black_cleaver=156 wh3_dlc25_weapon_abilities_the_father_of_blades=123 wh3_dlc26_character_abilities_bloody_onslaught=128 wh3_dlc26_character_abilities_cash_cascade=150 wh3_dlc26_character_abilities_crimson_juggernaut=145 wh3_dlc26_character_abilities_da_boss_as_a_plan=110"
-	.. " wh3_dlc26_character_abilities_empowering_shrooms=125 wh3_dlc26_character_abilities_headhunt=121 wh3_dlc26_character_abilities_inevitable_horror=153 wh3_dlc26_character_abilities_inventory_of_hatchlings=121 wh3_dlc26_character_abilities_inventory_of_hatchlings_upgraded=61 wh3_dlc26_character_abilities_mumbo_jumbo_chant=150"
-	.. " wh3_dlc26_character_abilities_orcs_are_da_best=117 wh3_dlc26_character_abilities_puncture=128 wh3_dlc26_character_abilities_spider_web_attack=138 wh3_dlc26_character_abilities_sting_of_snagla=120 wh3_dlc26_character_abilities_were_you_goin=115 wh3_dlc26_item_abilities_bugmans_xxxxxx=138"
-	.. " wh3_dlc26_lord_abilities_blood_sacrifice=70 wh3_dlc26_lord_abilities_gaze_of_khorne=122 wh3_dlc26_lord_abilities_gorger_onslaught_upgraded=91 wh3_dlc26_lord_abilities_pilgrimage_of_skulls=141 wh3_dlc26_lord_abilities_wild_abandon=115 wh3_dlc26_unit_abilities_eat_da_runts=100"
-	.. " wh3_dlc26_unit_abilities_marked_for_eatin=149 wh3_dlc26_unit_abilities_net_dem_up=108 wh3_dlc26_unit_abilities_waaagh_in_combat=108 wh3_dlc26_weapon_abilities_bloodstorm_blades=155 wh3_dlc26_weapon_abilities_fangspike=149 wh3_dlc26_weapon_abilities_great_gutgouger=142"
-	.. " wh3_dlc26_weapon_abilities_morglor_the_mangler=143 wh3_dlc26_weapon_abilities_the_slayer_sword=142 wh3_dlc27_character_abilities_captain_of_the_phoenix_guard=163 wh3_dlc27_character_abilities_iron_hand_captain=162 wh3_dlc27_character_abilities_master_of_mists=178 wh3_dlc27_character_abilities_master_of_mists_custom=156"
-	.. " wh3_dlc27_character_abilities_slezuzus_voice=146 wh3_dlc27_character_abilities_the_black_tongue=141 wh3_dlc27_hero_abilities_favoured_by_the_matriarch=116 wh3_dlc27_item_abilities_bear_fang_talisman=115 wh3_dlc27_item_abilities_eagle_feather_torc=130 wh3_dlc27_item_abilities_elixir_of_damnation=139"
-	.. " wh3_dlc27_item_abilities_null_stone=155 wh3_dlc27_lord_abilities_quicksilver_strike=89 wh3_dlc27_spell_bound_acquiescence=85 wh3_dlc27_spell_bound_enfeebling_foe=77 wh3_dlc27_spell_bound_fireball_upgraded=60 wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness=126"
-	.. " wh3_dlc27_spell_heavens_chain_lightning_bound=55 wh3_dlc27_unit_abilities_consuming_hatred=145 wh3_dlc27_unit_abilities_elfish_healing_herbs=117 wh3_dlc27_unit_abilities_flaming_breath=90 wh3_dlc27_weapon_abilities_tenebrous_forge_hammer=114 wh3_dlc27_weapon_abilities_the_phoenix_blade=141"
-	.. " wh3_dlc29_ability_bound_prayer_winters_chill=110 wh3_dlc29_character_abilities_eternal_vigour=146 wh3_dlc29_character_active_mark_of_the_monster=122 wh3_dlc29_hero_abilities_blood_chalice=98 wh3_dlc29_hero_abilities_coat_in_blood=107 wh3_dlc29_hero_abilities_whispering_mist=122"
-	.. " wh3_dlc29_hero_active_bilespurter=60 wh3_dlc29_hero_active_dispatch_the_swarm_attack=144 wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded=84 wh3_dlc29_hero_active_dispatch_the_swarm_protect=150 wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded=90 wh3_dlc29_hero_active_ghostly_howl=98"
-	.. " wh3_dlc29_hero_active_glory_seeker=144 wh3_dlc29_hero_active_glory_seeker_upgraded=156 wh3_dlc29_hero_active_nurgling_birth=92 wh3_dlc29_hero_active_nurgling_birth_upgraded=92 wh3_dlc29_hero_active_overseer_of_the_unseen=155 wh3_dlc29_hero_active_tendrils_of_the_sea=144"
-	.. " wh3_dlc29_item_abilities_armour_of_the_burrows=155 wh3_dlc29_item_abilities_black_axe_of_krell=151 wh3_dlc29_item_abilities_crimson_blade=150 wh3_dlc29_item_abilities_doom_glaive=147 wh3_dlc29_item_abilities_enhanced_skavenbrew=150 wh3_dlc29_item_abilities_icon_of_the_king=136"
-	.. " wh3_dlc29_item_abilities_morikhane_the_black_armour=134 wh3_dlc29_item_abilities_warpstiletto=140 wh3_dlc29_item_abilities_warpstone_tokens=146 wh3_dlc29_item_abilities_whispering_skull=107 wh3_dlc29_item_abilities_wristbands_of_black_gold=82 wh3_dlc29_item_active_mark_of_the_plague_fleet=150"
-	.. " wh3_dlc29_item_active_ottos_scythe=148 wh3_dlc29_item_active_rot_pocked_axe=144 wh3_dlc29_item_active_the_rotaxes=150 wh3_dlc29_lord_abilities_bastet=109 wh3_dlc29_lord_abilities_doom_lord=160 wh3_dlc29_lord_abilities_gaze_of_usirian=105"
-	.. " wh3_dlc29_lord_abilities_hellish_vigour=115 wh3_dlc29_lord_abilities_hellish_vigour_upgraded=145 wh3_dlc29_lord_abilities_lamentation_of_despair_upgraded=90 wh3_dlc29_lord_abilities_lightning_reflexes=110 wh3_dlc29_lord_abilities_shadowblood=120 wh3_dlc29_lord_abilities_transfix=145"
-	.. " wh3_dlc29_lord_abilities_verminous_fury=180 wh3_dlc29_lord_abilities_warpstone_addiction=153 wh3_dlc29_lord_abilities_will_of_the_verminking=149 wh3_dlc29_lord_active_commanding_presence=80 wh3_dlc29_lord_active_pestilent_torrent=90 wh3_dlc29_spell_bound_curse_of_years=82"
-	.. " wh3_dlc29_spell_bound_eye_gouger=114 wh3_dlc29_spell_bound_eye_jabber=114 wh3_dlc29_spell_bound_invocation_of_nehek=48 wh3_dlc29_spell_bound_okkams_mindrazor=78 wh3_dlc29_spell_bound_prayer_ferocious_battle_howl=75 wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric=145"
-	.. " wh3_dlc29_spell_bound_prayer_ferocious_winters_chill=110 wh3_dlc29_spell_bound_prayer_fury_of_ulric=115 wh3_dlc29_spell_bound_prayer_winters_chill=110 wh3_dlc29_spell_bound_soulblight=65 wh3_dlc29_spell_bound_storm_hammer=150 wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness=45"
-	.. " wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded=45 wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust=42 wh3_dlc29_spell_bound_warp_lightning=35 wh3_dlc29_unit_abilities_battle_of_wills=140 wh3_dlc29_unit_abilities_entice=144 wh3_dlc29_unit_abilities_lightning_strike=46"
-	.. " wh3_dlc29_unit_abilities_meteor_strike=56 wh3_dlc29_unit_abilities_of_warp_and_ruin=152 wh3_dlc29_unit_abilities_the_gaze_of_dust=120 wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain=140 wh3_dlc29_weapon_abilities_legbiter=155 wh3_dlc29_weapon_active_hammer_axe_of_skoll=145"
-	.. " wh3_main_banner_abilities_banner_of_hellfire=137 wh3_main_character_abilities_dazs_song_of_winter_sunlight=100 wh3_main_character_abilities_enchanted_metallurgy=72 wh3_main_character_abilities_enchanted_metallurgy_flaming=104 wh3_main_character_abilities_enchanted_metallurgy_piercing=104 wh3_main_character_abilities_enchanted_metallurgy_poison=102"
+	.. " wh2_dlc13_lord_abilities_funnel_of_flame=123 wh2_dlc13_lord_abilities_hail_of_fire=112 wh2_dlc13_lord_abilities_hunters_snare=101 wh2_dlc13_lord_abilities_hunters_trap=112 wh2_dlc13_lord_abilities_kill_shot=120 wh2_dlc13_lord_abilities_miasma_of_despair=106"
+	.. " wh2_dlc13_lord_abilities_monstrous_strength=125 wh2_dlc13_lord_abilities_oil_flask=90 wh2_dlc13_lord_abilities_primal_roar=145 wh2_dlc13_lord_abilities_rock_of_itza=84 wh2_dlc13_weapon_abilities_amber_bow=120 wh2_dlc13_weapon_abilities_averland_runefang=153"
+	.. " wh2_dlc13_weapon_abilities_drakwald_runefang=159 wh2_dlc13_weapon_abilities_hochland_runefang=144 wh2_dlc13_weapon_abilities_mace_of_ulumak=144 wh2_dlc13_weapon_abilities_nordland_runefang=142 wh2_dlc13_weapon_abilities_ostermark_runefang=147 wh2_dlc13_weapon_abilities_ostland_runefang=158"
+	.. " wh2_dlc13_weapon_abilities_talabecland_runefang=161 wh2_dlc13_weapon_abilities_wissenland_runefang=149 wh2_dlc14_character_abilities_cracklebomb=90 wh2_dlc14_lord_abilities_beastslaver=94 wh2_dlc14_lord_abilities_bloodstorm=69 wh2_dlc14_lord_abilities_halo_of_maidenly_wrath=123"
+	.. " wh2_dlc14_lord_abilities_looming_dread=121 wh2_dlc14_lord_abilities_the_blood_price=112 wh2_dlc14_lord_abilities_the_daemons_curse=154 wh2_dlc14_lord_abilities_whiplash=111 wh2_dlc14_spell_bound_warpfireball=60 wh2_dlc14_weapon_abilities_sword_of_lyonesse=144"
+	.. " wh2_dlc15_character_abilities_goggly_glare=60 wh2_dlc15_character_abilities_sausage_busta=156 wh2_dlc15_character_abilities_they_needs_stabbin=89 wh2_dlc15_hero_abilities_mither=75 wh2_dlc15_hero_abilities_swamp_breath=60 wh2_dlc15_item_abilities_armour_of_caledor=200"
+	.. " wh2_dlc15_item_abilities_azhags_ard_armour=158 wh2_dlc15_item_abilities_helm_of_yvresse=137 wh2_dlc15_item_abilities_lucky_banner=145 wh2_dlc15_item_abilities_vine_dragon_scale=134 wh2_dlc15_lord_abilities_da_great_un_iz_ere=111 wh2_dlc15_lord_abilities_dont_even_try_it=108"
+	.. " wh2_dlc15_lord_abilities_dragonhorn=136 wh2_dlc15_lord_abilities_fermented_fungi=105 wh2_dlc15_lord_abilities_lord_of_dragons=112 wh2_dlc15_lord_abilities_smash_em_faster=120 wh2_dlc15_lord_abilities_youre_next=114 wh2_dlc15_spell_bound_gaze_of_nagash=90"
+	.. " wh2_dlc15_unit_abilities_arachneruption=92 wh2_dlc15_unit_abilities_mighty_roar=115 wh2_dlc15_unit_abilities_mimic_cold_blooded=100 wh2_dlc15_unit_abilities_mimic_feint_and_riposte=118 wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith=140 wh2_dlc15_unit_abilities_mimic_grom_waaagh=138"
+	.. " wh2_dlc15_unit_abilities_mimic_ruinshelter=150 wh2_dlc15_unit_abilities_mimic_waaagh=108 wh2_dlc15_unit_abilities_noxious_breath_imrik=60 wh2_dlc15_unit_abilities_rock_bottom=46 wh2_dlc15_unit_abilities_sun_dragon_breath_imrik=60 wh2_dlc15_weapon_abilities_axe_of_grom=149"
+	.. " wh2_dlc15_weapon_abilities_fangsword_of_eltharion=151 wh2_dlc15_weapon_abilities_star_lance=149 wh2_dlc16_character_abilities_blight_of_terrors=110 wh2_dlc16_character_abilities_muster_of_malevolents=105 wh2_dlc16_character_abilities_pageant_of_shrikes=110 wh2_dlc16_hero_abilities_evisceration=94"
+	.. " wh2_dlc16_hero_abilities_shock_collar=84 wh2_dlc16_hero_abilities_warp_frenzy=119 wh2_dlc16_item_abilities_dart_of_doom=120 wh2_dlc16_item_abilities_dreaming_ring_i=73 wh2_dlc16_item_abilities_dreaming_ring_ii=103 wh2_dlc16_item_abilities_dreaming_ring_iii=137"
+	.. " wh2_dlc16_item_abilities_eagle_quiver=120 wh2_dlc16_item_abilities_twilight_horn_i=93 wh2_dlc16_lord_abilities_remouldered=144 wh2_dlc16_lord_abilities_roused_to_wrath_2=91 wh2_dlc16_spell_bound_earth_blood=67 wh2_dlc16_spell_bound_flesh_to_stone=109"
+	.. " wh2_dlc16_unit_abilities_fluid_injection=82 wh2_dlc16_unit_abilities_warp_lightning_rod=65 wh2_dlc16_weapon_abilities_creature_killer=158 wh2_dlc16_weapon_abilities_dragon_spear=145 wh2_dlc17_character_abilities_hunter_of_champions_upgraded=114 wh2_dlc17_hero_abilities_cinderblast_shell=90"
+	.. " wh2_dlc17_hero_abilities_more_powder_generic=70 wh2_dlc17_lord_abilities_barbed_knuckle_boxing=119 wh2_dlc17_lord_abilities_brass_body=161 wh2_dlc17_lord_abilities_rune_of_doom=136 wh2_dlc17_rune_abilities_master_rune_of_breaking=235 wh2_dlc17_rune_abilities_master_rune_of_flight=120"
+	.. " wh2_dlc17_rune_abilities_master_rune_of_slowness=225 wh2_dlc17_rune_abilities_master_rune_of_speed=220 wh2_dlc17_rune_abilities_rune_of_breaking=153 wh2_dlc17_rune_abilities_rune_of_slowness=150 wh2_dlc17_rune_abilities_rune_of_speed=150 wh2_dlc17_spell_bound_savage_dominion=121"
+	.. " wh2_dlc17_spell_bound_shield_of_thorns=120 wh2_dlc17_spell_bound_urannons_thunderbolt=94 wh2_dlc17_spell_bound_urannons_thunderbolt_upgraded=34 wh2_dlc17_unit_abilities_primeval_roar=91 wh2_dlc17_weapon_abilities_the_golden_blowpipe_of_ptoohee=120 wh2_main_character_abilities_assassins_trophy=89"
+	.. " wh2_main_character_abilities_cold_blooded=100 wh2_main_character_abilities_shield_of_the_old_ones=107 wh2_main_character_abilities_volley_of_dark_arrows=90 wh2_main_character_abilities_volley_of_high_arrows=90 wh2_main_character_abilities_witchbrew=114 wh2_main_item_abilities_aura_of_quetzl=115"
+	.. " wh2_main_item_abilities_blade_of_bel_korhadris=128 wh2_main_item_abilities_book_of_hoeth=126 wh2_main_item_abilities_cube_of_darkness=78 wh2_main_item_abilities_pearl_of_infinite_bleakness=104 wh2_main_item_abilities_plaque_of_dominion=80 wh2_main_item_abilities_scrying_stone=90"
+	.. " wh2_main_item_abilities_starwood_staff=113 wh2_main_item_abilities_the_guiding_eye=78 wh2_main_item_abilities_the_horn_of_kygor=110 wh2_main_item_abilities_the_tricksters_pendant=76 wh2_main_lord_abilities_feint_and_reposte=118 wh2_main_lord_abilities_potion_of_charoi=69"
+	.. " wh2_main_lord_abilities_sacred_spawning_of_xhotl=80 wh2_main_lord_abilities_trophy_heads=126 wh2_main_mount_abilities_unholy_clamour=138 wh2_main_spell_bound_black_staff=110 wh2_main_spell_bound_embers_of_the_phoenix=118 wh2_main_spell_bound_hand_of_gods=120"
+	.. " wh2_main_spell_bound_radiant_gem_of_hoeth=70 wh2_main_spell_bound_rod_of_the_storm=94 wh2_main_spell_bound_the_seerstaff_of_saphery=82 wh2_main_spell_bound_tome_of_furion=67 wh2_main_spell_bound_wand_of_the_kharaidon=127 wh2_main_spell_bound_whip_of_agony=121"
+	.. " wh2_main_unit_abilities_dark_fire_of_chaos=60 wh2_main_unit_abilities_death_shriek=60 wh2_main_unit_abilities_fiery_breath=60 wh2_main_unit_abilities_fury_of_khaine=118 wh2_main_unit_abilities_moon_dragons_breath=60 wh2_main_unit_abilities_noxious_breath=60"
+	.. " wh2_main_unit_abilities_pestilential_breath=60 wh2_main_unit_abilities_revivification_crystal=80 wh2_main_unit_abilities_soporific_breath=60 wh2_main_unit_abilities_star_dragons_breath=60 wh2_main_unit_abilities_sun_dragons_breath=60 wh2_main_unit_abilities_wake_of_fire=0"
+	.. " wh2_main_weapon_abilities_bow_of_the_seafarer=90 wh2_main_weapon_abilities_dwarf_gouger=156 wh2_main_weapon_abilities_hydra_blade=158 wh2_main_weapon_bound_reaver_bow=90 wh2_pro08_character_abilities_gotrek_doom=142 wh2_pro08_character_abilities_helping_hand=142"
+	.. " wh2_pro08_weapon_abilities_karaghul=148 wh2_pro08_weapon_abilities_rune_axe_of_gotrek=156 wh2_twa03_weapon_abilities_whip_of_agony=149 wh3_cp1_character_abilities_magic_prayer=147 wh3_cp1_character_abilities_offense_prayer=160 wh3_cp1_character_abilities_protection_prayer=152"
+	.. " wh3_cp1_character_abilities_terrifying_presence=148 wh3_cp1_lord_abilities_guiding_strike=119 wh3_cp1_lord_abilities_hidden_huntress=80 wh3_cp1_lord_abilities_hidden_huntress_upgraded=110 wh3_cp1_lord_abilities_mastered_strike=154 wh3_cp1_lord_abilities_predatory_instincts=115"
+	.. " wh3_cp1_weapon_abilities_blades_of_shang_yang=152 wh3_cp1_weapon_abilities_tyrants_talon=147 wh3_dlc20_item_abilities_daemonshield=133 wh3_dlc20_item_abilities_pestilent_potions=145 wh3_dlc20_item_abilities_rod_of_torment=97 wh3_dlc20_item_abilities_the_armour_of_morkar=149"
+	.. " wh3_dlc20_lord_abilities_tempest_rage=156 wh3_dlc20_lord_abilities_temptator=139 wh3_dlc20_unit_abilities_storm_rage=114 wh3_dlc20_weapon_abilities_aether_sword=117 wh3_dlc20_weapon_abilities_daemonblade=152 wh3_dlc20_weapon_abilities_rapier_of_ecstasy=107"
+	.. " wh3_dlc20_weapon_abilities_sliverslash=146 wh3_dlc23_bound_abilities_breath_of_hatred=121 wh3_dlc23_character_abilities_breath_of_hatred=121 wh3_dlc23_character_abilities_reforge=79 wh3_dlc23_character_abilities_skjalandirs_fall=159 wh3_dlc23_character_abilities_sword_dance=143"
+	.. " wh3_dlc23_hero_abilities_crooked_dice=120 wh3_dlc23_hero_abilities_get_tha_gitz!=125 wh3_dlc23_item_abilities_ancestral_vengeance=130 wh3_dlc23_item_abilities_armour_of_gazrakh=168 wh3_dlc23_item_abilities_morgrims_eye=152 wh3_dlc23_item_abilities_rune_of_thungni=160"
+	.. " wh3_dlc23_lord_abilities_flame_and_shadow=95 wh3_dlc23_lord_abilities_sadistic_snare=153 wh3_dlc23_spell_bound_burning_wrath=30 wh3_dlc23_unit_abilities_flaming_breath=90 wh3_dlc23_unit_abilities_more_power=148 wh3_dlc23_weapon_abilities_black_hammer_of_hashut=152"
+	.. " wh3_dlc23_weapon_abilities_dagger_of_malice=137 wh3_dlc23_weapon_abilities_dark_mace=120 wh3_dlc23_weapon_abilities_silver_dagger=152 wh3_dlc23_weapon_abilities_spell_wrought_sceptre=140 wh3_dlc23_weapon_abilities_the_graven_sceptre=144 wh3_dlc24_character_abilities_bastions_defenders=120"
+	.. " wh3_dlc24_character_abilities_change_or_die=112 wh3_dlc24_character_abilities_colossal_strike=122 wh3_dlc24_character_abilities_colossal_strike_summoned=122 wh3_dlc24_character_abilities_fury_of_the_land=155 wh3_dlc24_character_abilities_giant_leap=125 wh3_dlc24_character_abilities_tacticians_rally=74"
+	.. " wh3_dlc24_character_abilities_tacticians_stand_your_ground=108 wh3_dlc24_character_abilities_watched_by_the_watcher=180 wh3_dlc24_hero_abilities_thorns_aura=150 wh3_dlc24_hero_abilities_vorozhejas_foresight=145 wh3_dlc24_hero_abilities_windblade=120 wh3_dlc24_hero_abilities_znarkharjas_ward=116"
+	.. " wh3_dlc24_item_abilities_blessed_helm_of_the_oblast=120 wh3_dlc24_item_abilities_book_of_secrets=110 wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch=153 wh3_dlc24_item_abilities_wind_bow=120 wh3_dlc24_lord_abilities_gulyas=143 wh3_dlc24_lord_abilities_lord_of_grand_cathay=136"
+	.. " wh3_dlc24_lord_abilities_spirit_bear=120 wh3_dlc24_lord_abilities_spirit_bear_upgrade=120 wh3_dlc24_lord_abilities_taals_judgement=90 wh3_dlc24_unit_abilities_fearsome_roar=115 wh3_dlc24_unit_abilities_howl_of_the_great_beast=115 wh3_dlc24_unit_abilities_ice_breath=60"
+	.. " wh3_dlc24_unit_abilities_mark_of_yin=148 wh3_dlc24_unit_abilities_nan_gau_grenades=70 wh3_dlc24_unit_abilities_pack_trap=100 wh3_dlc24_unit_bound_missile_mirror=62 wh3_dlc24_unit_passive_petrifying_gaze=152 wh3_dlc24_weapon_abilities_dragons_fang=140"
+	.. " wh3_dlc24_weapon_abilities_ursuns_claw=137 wh3_dlc25_abilities_restock_gunnery_school=70 wh3_dlc25_character_abilities_children_of_the_forest=91 wh3_dlc25_character_abilities_get_em=101 wh3_dlc25_character_abilities_kettles_call=121 wh3_dlc25_character_abilities_mercurial_shot=90"
+	.. " wh3_dlc25_character_abilities_pigeon_bomb=132 wh3_dlc25_character_abilities_sands_of_sickness=145 wh3_dlc25_character_abilities_surprise_squig=61 wh3_dlc25_hero_abilities_titan_headsman=119 wh3_dlc25_item_abilities_ominous_powder=150 wh3_dlc25_item_abilities_stormlance=152"
+	.. " wh3_dlc25_item_abilities_the_gold_standard=103 wh3_dlc25_lord_abilities_cinderblast_cluster_bomb=120 wh3_dlc25_lord_abilities_darkwalker=150 wh3_dlc25_lord_abilities_deranged_munitions=120 wh3_dlc25_lord_abilities_deranged_munitions_upgraded=120 wh3_dlc25_lord_abilities_glorious_death=160"
+	.. " wh3_dlc25_lord_abilities_nemesis_crown=130 wh3_dlc25_lord_abilities_nurgles_favoured_son=160 wh3_dlc25_lord_abilities_rot_or_die=108 wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school=126 wh3_dlc25_unit_abilities_coruscating_blast=120 wh3_dlc25_unit_abilities_full_power=118"
+	.. " wh3_dlc25_unit_abilities_gyrobomber_fire_bomb=4 wh3_dlc25_unit_abilities_gyrocopter_bomb_anti_large=0 wh3_dlc25_unit_abilities_thunderbarge_fire_bomb=4 wh3_dlc25_unit_abilities_unspeakable_foulness=60 wh3_dlc25_weapon_abilities_axes_of_kadrin=141 wh3_dlc25_weapon_abilities_experimental_explosive=120"
+	.. " wh3_dlc25_weapon_abilities_liarsbane=88 wh3_dlc25_weapon_abilities_makaissons_persuader=137 wh3_dlc25_weapon_abilities_sword_of_filth=140 wh3_dlc25_weapon_abilities_the_black_cleaver=156 wh3_dlc25_weapon_abilities_the_father_of_blades=123 wh3_dlc26_character_abilities_bloody_onslaught=128"
+	.. " wh3_dlc26_character_abilities_cash_cascade=150 wh3_dlc26_character_abilities_crimson_juggernaut=145 wh3_dlc26_character_abilities_da_boss_as_a_plan=110 wh3_dlc26_character_abilities_dead_eye=120 wh3_dlc26_character_abilities_empowering_shrooms=125 wh3_dlc26_character_abilities_headhunt=121"
+	.. " wh3_dlc26_character_abilities_inevitable_horror=153 wh3_dlc26_character_abilities_inventory_of_hatchlings=121 wh3_dlc26_character_abilities_inventory_of_hatchlings_upgraded=61 wh3_dlc26_character_abilities_mumbo_jumbo_chant=150 wh3_dlc26_character_abilities_orcs_are_da_best=117 wh3_dlc26_character_abilities_puncture=128"
+	.. " wh3_dlc26_character_abilities_spider_web_attack=138 wh3_dlc26_character_abilities_sting_of_snagla=120 wh3_dlc26_character_abilities_were_you_goin=115 wh3_dlc26_item_abilities_bugmans_xxxxxx=138 wh3_dlc26_lord_abilities_blood_sacrifice=70 wh3_dlc26_lord_abilities_gaze_of_khorne=122"
+	.. " wh3_dlc26_lord_abilities_gorger_onslaught_upgraded=91 wh3_dlc26_lord_abilities_pilgrimage_of_skulls=141 wh3_dlc26_lord_abilities_wild_abandon=115 wh3_dlc26_unit_abilities_eat_da_runts=100 wh3_dlc26_unit_abilities_marked_for_eatin=149 wh3_dlc26_unit_abilities_net_dem_up=108"
+	.. " wh3_dlc26_unit_abilities_waaagh_in_combat=108 wh3_dlc26_weapon_abilities_bloodstorm_blades=155 wh3_dlc26_weapon_abilities_fangspike=149 wh3_dlc26_weapon_abilities_great_gutgouger=142 wh3_dlc26_weapon_abilities_morglor_the_mangler=143 wh3_dlc26_weapon_abilities_the_slayer_sword=142"
+	.. " wh3_dlc27_character_abilities_captain_of_the_phoenix_guard=163 wh3_dlc27_character_abilities_iron_hand_captain=162 wh3_dlc27_character_abilities_master_of_mists=178 wh3_dlc27_character_abilities_master_of_mists_custom=156 wh3_dlc27_character_abilities_slezuzus_voice=146 wh3_dlc27_character_abilities_the_black_tongue=141"
+	.. " wh3_dlc27_hero_abilities_favoured_by_the_matriarch=116 wh3_dlc27_item_abilities_bear_fang_talisman=115 wh3_dlc27_item_abilities_eagle_feather_torc=130 wh3_dlc27_item_abilities_elixir_of_damnation=139 wh3_dlc27_item_abilities_null_stone=155 wh3_dlc27_item_abilities_schalkains_teeth=90"
+	.. " wh3_dlc27_lord_abilities_quicksilver_strike=89 wh3_dlc27_spell_bound_acquiescence=85 wh3_dlc27_spell_bound_enfeebling_foe=77 wh3_dlc27_spell_bound_fireball_upgraded=60 wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness=126 wh3_dlc27_spell_heavens_chain_lightning_bound=55"
+	.. " wh3_dlc27_unit_abilities_consuming_hatred=145 wh3_dlc27_unit_abilities_elfish_healing_herbs=117 wh3_dlc27_unit_abilities_flaming_breath=90 wh3_dlc27_weapon_abilities_tenebrous_forge_hammer=114 wh3_dlc27_weapon_abilities_the_phoenix_blade=141 wh3_dlc29_ability_bound_prayer_winters_chill=110"
+	.. " wh3_dlc29_character_abilities_eternal_vigour=146 wh3_dlc29_character_active_mark_of_the_monster=122 wh3_dlc29_hero_abilities_blood_chalice=98 wh3_dlc29_hero_abilities_coat_in_blood=107 wh3_dlc29_hero_abilities_whispering_mist=122 wh3_dlc29_hero_active_bilespurter=60"
+	.. " wh3_dlc29_hero_active_dispatch_the_swarm_attack=144 wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded=84 wh3_dlc29_hero_active_dispatch_the_swarm_protect=150 wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded=90 wh3_dlc29_hero_active_ghostly_howl=98 wh3_dlc29_hero_active_glory_seeker=144"
+	.. " wh3_dlc29_hero_active_glory_seeker_upgraded=156 wh3_dlc29_hero_active_nurgling_birth=92 wh3_dlc29_hero_active_nurgling_birth_upgraded=92 wh3_dlc29_hero_active_overseer_of_the_unseen=155 wh3_dlc29_hero_active_tendrils_of_the_sea=144 wh3_dlc29_item_abilities_armour_of_the_burrows=155"
+	.. " wh3_dlc29_item_abilities_black_axe_of_krell=151 wh3_dlc29_item_abilities_crimson_blade=150 wh3_dlc29_item_abilities_doom_glaive=147 wh3_dlc29_item_abilities_enhanced_skavenbrew=150 wh3_dlc29_item_abilities_icon_of_the_king=136 wh3_dlc29_item_abilities_morikhane_the_black_armour=134"
+	.. " wh3_dlc29_item_abilities_warpstiletto=140 wh3_dlc29_item_abilities_warpstone_tokens=146 wh3_dlc29_item_abilities_whispering_skull=107 wh3_dlc29_item_abilities_wristbands_of_black_gold=82 wh3_dlc29_item_active_mark_of_the_plague_fleet=150 wh3_dlc29_item_active_ottos_scythe=148"
+	.. " wh3_dlc29_item_active_rot_pocked_axe=144 wh3_dlc29_item_active_the_rotaxes=150 wh3_dlc29_lord_abilities_bastet=109 wh3_dlc29_lord_abilities_doom_lord=160 wh3_dlc29_lord_abilities_gaze_of_usirian=105 wh3_dlc29_lord_abilities_hellish_vigour=115"
+	.. " wh3_dlc29_lord_abilities_hellish_vigour_upgraded=145 wh3_dlc29_lord_abilities_lamentation_of_despair_upgraded=90 wh3_dlc29_lord_abilities_lightning_reflexes=110 wh3_dlc29_lord_abilities_shadowblood=120 wh3_dlc29_lord_abilities_transfix=145 wh3_dlc29_lord_abilities_verminous_fury=180"
+	.. " wh3_dlc29_lord_abilities_warpstone_addiction=153 wh3_dlc29_lord_abilities_will_of_the_verminking=149 wh3_dlc29_lord_active_commanding_presence=80 wh3_dlc29_lord_active_pestilent_torrent=90 wh3_dlc29_spell_bound_curse_of_years=82 wh3_dlc29_spell_bound_eye_gouger=114"
+	.. " wh3_dlc29_spell_bound_eye_jabber=114 wh3_dlc29_spell_bound_invocation_of_nehek=48 wh3_dlc29_spell_bound_okkams_mindrazor=78 wh3_dlc29_spell_bound_prayer_ferocious_battle_howl=75 wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric=145 wh3_dlc29_spell_bound_prayer_ferocious_winters_chill=110"
+	.. " wh3_dlc29_spell_bound_prayer_fury_of_ulric=115 wh3_dlc29_spell_bound_prayer_winters_chill=110 wh3_dlc29_spell_bound_soulblight=65 wh3_dlc29_spell_bound_storm_hammer=150 wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness=45 wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded=45"
+	.. " wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust=42 wh3_dlc29_spell_bound_warp_lightning=35 wh3_dlc29_unit_abilities_battle_of_wills=140 wh3_dlc29_unit_abilities_entice=144 wh3_dlc29_unit_abilities_lightning_strike=46 wh3_dlc29_unit_abilities_meteor_strike=56"
+	.. " wh3_dlc29_unit_abilities_of_warp_and_ruin=152 wh3_dlc29_unit_abilities_the_gaze_of_dust=120 wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain=140 wh3_dlc29_weapon_abilities_legbiter=155 wh3_dlc29_weapon_active_hammer_axe_of_skoll=145 wh3_main_banner_abilities_banner_of_hellfire=137"
+	.. " wh3_main_character_abilities_crippling_throw=90 wh3_main_character_abilities_dazs_song_of_winter_sunlight=100 wh3_main_character_abilities_enchanted_metallurgy=72 wh3_main_character_abilities_enchanted_metallurgy_flaming=104 wh3_main_character_abilities_enchanted_metallurgy_piercing=104 wh3_main_character_abilities_enchanted_metallurgy_poison=102"
 	.. " wh3_main_character_abilities_extra_ingredients=121 wh3_main_character_abilities_fire_breath=60 wh3_main_character_abilities_flame_incarnate=114 wh3_main_character_abilities_ice_shard=90 wh3_main_character_abilities_locus_of_abjuration=115 wh3_main_character_abilities_locus_of_beguilement=112"
 	.. " wh3_main_character_abilities_locus_of_change=130 wh3_main_character_abilities_locus_of_conjuration=110 wh3_main_character_abilities_locus_of_fecundity=101 wh3_main_character_abilities_locus_of_fury=107 wh3_main_character_abilities_locus_of_grace=112 wh3_main_character_abilities_locus_of_swiftness=130"
 	.. " wh3_main_character_abilities_locus_of_transmogrification=100 wh3_main_character_abilities_locus_of_virulence=115 wh3_main_character_abilities_locus_of_wrath=115 wh3_main_character_abilities_no_escape=104 wh3_main_character_abilities_salyaks_lullaby=105 wh3_main_character_abilities_silence_the_prey=90"
@@ -15848,31 +15925,31 @@ FOURTH.RECHARGE_TEXT = ""
 	.. " wh3_main_pro_character_abilities_heroic_killing_blow_2=120 wh3_main_pro_character_abilities_ursuns_roar=80 wh3_main_pro_character_abilities_ursuns_roar_1=90 wh3_main_pro_character_abilities_ursuns_roar_2=90 wh3_main_pro_character_abilities_ursuns_roar_3=90 wh3_main_spell_bound_ancestral_warriors=130"
 	.. " wh3_main_spell_bound_cascading_fire_cloak=79 wh3_main_spell_bound_earth_blood=67 wh3_main_spell_bound_enfeebling_foe=77 wh3_main_spell_bound_harmonic_convergence=87 wh3_main_spell_bound_phas_protection=82 wh3_main_spell_bound_plague_of_rust=104"
 	.. " wh3_main_spell_slaanesh_hysterical_frenzy_bound=71 wh3_main_unit_abilities_elemental_breath=60 wh3_main_unit_abilities_sky_junk_bomb=31 wh3_main_weapon_abilities_axe_of_tor=94 wh3_main_weapon_abilities_banespear=141 wh3_main_weapon_abilities_frost_shard_glaive=150"
-	.. " wh3_main_weapon_abilities_sceptre_of_titans=141 wh3_main_weapon_abilities_skars_kraken_killer=149 wh3_main_weapon_abilities_soulnetter=146 wh3_main_weapon_abilities_staff_of_tomorrow=149 wh3_main_weapon_abilities_the_eternal_blade=141 wh3_main_weapon_abilities_the_tenderiser=115"
-	.. " wh3_main_weapon_abilities_the_traitors_sword=100 wh3_main_weapon_abilities_torment_blade=78 wh3_main_weapon_abilities_ursuns_claws=79 wh3_main_weapon_abilities_witstealer_sword=137 wh3_pro12_hero_abilities_prey_of_the_blood_god=142 wh3_twa07_spell_bound_call_of_tor=97"
-	.. " wh3_twa07_unit_abilities_searing_torrent=60 wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror=77 wh3_twa08_spell_bound_searing_doom=68 wh3_twa08_unit_abilities_glacial_defence=81 wh_dlc01_item_passive_helm_of_many_eyes=112 wh_dlc01_weapon_abilities_starcrusher=163"
-	.. " wh_dlc01_weapon_abilities_the_slayer_of_kings=145 wh_dlc03_character_abilities_apocalyptic_vision=108 wh_dlc03_character_abilities_blood_lust=93 wh_dlc03_character_abilities_call_of_violence=74 wh_dlc03_character_abilities_deadly_onslaught=121 wh_dlc03_character_abilities_foe_seeker=85"
-	.. " wh_dlc03_item_abilities_chalice_of_dark_rain=179 wh_dlc03_item_abilities_horn_of_the_first_beast=155 wh_dlc03_item_abilities_jagged_dagger=91 wh_dlc03_item_abilities_skull_of_rarkos=154 wh_dlc03_spell_bound_the_amber_spear=90 wh_dlc03_weapon_abilities_axe_of_men=166"
-	.. " wh_dlc03_weapon_abilities_scourge=155 wh_dlc04_item_abilities_the_carstein_ring=142 wh_dlc04_item_abilities_the_liber_noctus=153 wh_dlc04_lord_abilities_beguile=134 wh_dlc04_spell_bound_hammer_of_sigmar_upgraded=140 wh_dlc04_spell_bound_net_of_amyntok=110"
-	.. " wh_dlc04_spell_bound_shield_of_faith_upgraded=170 wh_dlc04_spell_bound_soulfire_upgraded=127 wh_dlc05_character_abilities_prey_of_anath_raema=106 wh_dlc05_hero_abilities_arrow_of_kurnous=90 wh_dlc05_item_abilities_hail_of_doom_arrow=90 wh_dlc05_item_abilities_horn_of_the_wild_hunt=144"
-	.. " wh_dlc05_lord_abilities_lamentation_of_despair=90 wh_dlc05_spell_bound_shield_of_thorns=120 wh_dlc05_weapon_abilities_el_syf=114 wh_dlc05_weapon_abilities_hawks_talon=90 wh_dlc05_weapon_abilities_the_bow_of_loren=60 wh_dlc06_lord_abilities_mighty_oath_stone=115"
-	.. " wh_dlc06_lord_abilities_revenge_incarnate=153 wh_dlc06_lord_abilities_spite_of_da_bad_moon=110 wh_dlc06_rune_abilities_master_rune_of_negation=220 wh_dlc06_rune_abilities_master_rune_of_oath_and_steel=224 wh_dlc06_spell_bound_vindictive_glare=60 wh_dlc06_unit_abilities_marked_by_ulthar=148"
-	.. " wh_dlc06_unit_abilities_maternal_instinct=61 wh_dlc06_unit_abilities_skyhammer_bomb=1 wh_dlc06_unit_abilities_skyhammer_fire_bomb=1 wh_dlc06_unit_abilities_smoke_bomb=111 wh_dlc06_unit_abilities_the_loons_of_eight_peaks=42 wh_dlc06_weapon_abilities_skarsniks_prodder=120"
-	.. " wh_dlc07_character_abilities_heroic_killing_blow=115 wh_dlc07_hero_abilities_dolorous_blade=153 wh_dlc07_item_abilities_chalice_of_potions=127 wh_dlc07_lord_abilities_favour_of_the_fay=134 wh_dlc07_lord_abilities_lions_shield=112 wh_dlc08_character_abilities_hunter_of_champions=114"
-	.. " wh_dlc08_item_abilities_arachnarok_eggs=61 wh_dlc08_item_abilities_great_horn_of_dragon_ogre=140 wh_dlc08_item_abilities_terrorgheist_skull=164 wh_dlc08_item_abilities_the_wintertooth_crown=144 wh_dlc08_lord_abilities_copious_vomit=60 wh_dlc08_lord_abilities_fight_or_die=108"
-	.. " wh_dlc08_lord_abilities_seduction_of_the_serpent=107 wh_dlc08_spell_bound_death_doom_and_darkness=126 wh_dlc08_weapon_abilities_stinky_giant_club=177 wh_dlc08_weapon_abilities_sword_of_torgald=164 wh_main_character_abilities_blood_lust=93 wh_main_character_abilities_deadly_onslaught=121"
-	.. " wh_main_character_abilities_foe_seeker=85 wh_main_character_abilities_foe_seeker_summoned=85 wh_main_character_abilities_get_back_ere=74 wh_main_character_abilities_heroic_killing_blow=115 wh_main_character_abilities_magical_animus=74 wh_main_character_abilities_rally=74"
-	.. " wh_main_character_abilities_red_fury=121 wh_main_character_abilities_stand_or_die=108 wh_main_character_abilities_stand_your_ground=108 wh_main_character_abilities_undeath_resurgent=108 wh_main_character_abilities_waaagh=120 wh_main_hero_abilities_accusation=125"
-	.. " wh_main_hero_abilities_ballistics_calibration=112 wh_main_hero_abilities_faiths_bastion=82 wh_main_hero_abilities_immortal_will=73 wh_main_hero_abilities_slippery=85 wh_main_item_abilities_black_periapt=147 wh_main_item_abilities_channelling_staff=89"
-	.. " wh_main_item_abilities_cloak_of_mists_and_shadows=149 wh_main_item_abilities_crown_of_command=120 wh_main_item_abilities_forbidden_rod=113 wh_main_item_abilities_opal_amulet=82 wh_main_item_abilities_pendant_of_slaanesh=85 wh_main_item_abilities_sceptre_of_stability=82"
-	.. " wh_main_item_abilities_skull_wand_of_kaloth=147 wh_main_item_abilities_staff_of_volans=150 wh_main_item_abilities_tricksters_shard=106 wh_main_item_abilities_van_horstmanns_speculum=106 wh_main_item_abilities_wand_of_jet=117 wh_main_lord_abilities_lord_of_the_storm=101"
-	.. " wh_main_lord_abilities_master_of_the_black_arts=105 wh_main_rune_abilities_rune_of_negation=144 wh_main_rune_abilities_rune_of_oath_and_steel=164 wh_main_spell_bound_book_of_arkhan=85 wh_main_spell_bound_fireball=60 wh_main_spell_bound_hammer_of_sigmar=85"
-	.. " wh_main_spell_bound_piercing_bolts_of_burning=128 wh_main_spell_bound_shield_of_faith=115 wh_main_spell_bound_soulfire=97 wh_main_spell_bound_staff_of_damnation=115 wh_main_spell_light_shems_burning_gaze_bound=60 wh_main_unit_abilities_blooood=78"
-	.. " wh_main_unit_abilities_boom=105 wh_main_unit_abilities_entrenchment=134 wh_main_unit_abilities_gyrobomber_bomb=0 wh_main_unit_abilities_gyrocopter_bomb=0 wh_main_unit_abilities_killing_blow=73 wh_main_unit_abilities_spinning_loons=42"
-	.. " wh_main_weapon_abilities_axe_of_dargo=149 wh_main_weapon_abilities_charmed_shield=77 wh_main_weapon_abilities_filth_mace=120 wh_main_weapon_abilities_ghal_maraz=159 wh_main_weapon_abilities_gitsnik=153 wh_main_weapon_abilities_hellfire_sword=132"
-	.. " wh_main_weapon_abilities_helm_of_discord=115 wh_main_weapon_abilities_runefang=153 wh_main_weapon_abilities_sword_of_anti_heroes=130 wh_main_weapon_abilities_the_hammer_of_karak_drazh=140 wh_main_weapon_abilities_the_mace_of_helsturm=130 wh_main_weapon_abilities_the_reikland_runefang=159"
-	.. " wh_main_weapon_abilities_the_sword_of_couronne=158 wh_main_weapon_abilities_tormentor_sword=99 wh_pro01_lord_abilities_flash_bomb=106 wh_pro01_weapon_abilities_rune_axe_of_grombrindal=152 wh_pro02_item_abilities_blood_chalice_of_bathori=146 wh_pro04_unit_abilities_apocalyptic_charge=150"
-	.. " wh_pro04_unit_abilities_enrage=112 wh_pro04_unit_abilities_warp_gaze=102"
+	.. " wh3_main_weapon_abilities_godkiller_pistol=120 wh3_main_weapon_abilities_nuku_chos_crossbow=90 wh3_main_weapon_abilities_sceptre_of_titans=141 wh3_main_weapon_abilities_skars_kraken_killer=149 wh3_main_weapon_abilities_soulnetter=146 wh3_main_weapon_abilities_staff_of_tomorrow=149"
+	.. " wh3_main_weapon_abilities_the_eternal_blade=141 wh3_main_weapon_abilities_the_tenderiser=115 wh3_main_weapon_abilities_the_traitors_sword=100 wh3_main_weapon_abilities_torment_blade=78 wh3_main_weapon_abilities_ursuns_claws=79 wh3_main_weapon_abilities_witstealer_sword=137"
+	.. " wh3_pro12_hero_abilities_prey_of_the_blood_god=142 wh3_twa07_spell_bound_call_of_tor=97 wh3_twa07_unit_abilities_searing_torrent=60 wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror=77 wh3_twa08_spell_bound_searing_doom=68 wh3_twa08_unit_abilities_glacial_defence=81"
+	.. " wh_dlc01_item_passive_helm_of_many_eyes=112 wh_dlc01_weapon_abilities_starcrusher=163 wh_dlc01_weapon_abilities_the_slayer_of_kings=145 wh_dlc03_character_abilities_apocalyptic_vision=108 wh_dlc03_character_abilities_blood_lust=93 wh_dlc03_character_abilities_call_of_violence=74"
+	.. " wh_dlc03_character_abilities_deadly_onslaught=121 wh_dlc03_character_abilities_foe_seeker=85 wh_dlc03_item_abilities_chalice_of_dark_rain=179 wh_dlc03_item_abilities_horn_of_the_first_beast=155 wh_dlc03_item_abilities_jagged_dagger=91 wh_dlc03_item_abilities_skull_of_rarkos=154"
+	.. " wh_dlc03_spell_bound_the_amber_spear=90 wh_dlc03_weapon_abilities_axe_of_men=166 wh_dlc03_weapon_abilities_hunting_spear=120 wh_dlc03_weapon_abilities_scourge=155 wh_dlc04_item_abilities_the_carstein_ring=142 wh_dlc04_item_abilities_the_liber_noctus=153"
+	.. " wh_dlc04_lord_abilities_beguile=134 wh_dlc04_spell_bound_hammer_of_sigmar_upgraded=140 wh_dlc04_spell_bound_net_of_amyntok=110 wh_dlc04_spell_bound_shield_of_faith_upgraded=170 wh_dlc04_spell_bound_soulfire_upgraded=127 wh_dlc05_character_abilities_prey_of_anath_raema=106"
+	.. " wh_dlc05_hero_abilities_arrow_of_kurnous=90 wh_dlc05_item_abilities_hail_of_doom_arrow=90 wh_dlc05_item_abilities_horn_of_the_wild_hunt=144 wh_dlc05_lord_abilities_lamentation_of_despair=90 wh_dlc05_spell_bound_shield_of_thorns=120 wh_dlc05_weapon_abilities_el_syf=114"
+	.. " wh_dlc05_weapon_abilities_hawks_talon=90 wh_dlc05_weapon_abilities_spear_of_kurnous=120 wh_dlc05_weapon_abilities_the_bow_of_loren=60 wh_dlc06_lord_abilities_mighty_oath_stone=115 wh_dlc06_lord_abilities_revenge_incarnate=153 wh_dlc06_lord_abilities_spite_of_da_bad_moon=110"
+	.. " wh_dlc06_rune_abilities_master_rune_of_negation=220 wh_dlc06_rune_abilities_master_rune_of_oath_and_steel=224 wh_dlc06_spell_bound_vindictive_glare=60 wh_dlc06_unit_abilities_marked_by_ulthar=148 wh_dlc06_unit_abilities_maternal_instinct=61 wh_dlc06_unit_abilities_skyhammer_bomb=1"
+	.. " wh_dlc06_unit_abilities_skyhammer_fire_bomb=1 wh_dlc06_unit_abilities_smoke_bomb=111 wh_dlc06_unit_abilities_the_loons_of_eight_peaks=42 wh_dlc06_weapon_abilities_skarsniks_prodder=120 wh_dlc07_character_abilities_heroic_killing_blow=115 wh_dlc07_hero_abilities_dolorous_blade=153"
+	.. " wh_dlc07_item_abilities_chalice_of_potions=127 wh_dlc07_lord_abilities_favour_of_the_fay=134 wh_dlc07_lord_abilities_lions_shield=112 wh_dlc08_character_abilities_hunter_of_champions=114 wh_dlc08_item_abilities_arachnarok_eggs=61 wh_dlc08_item_abilities_great_horn_of_dragon_ogre=140"
+	.. " wh_dlc08_item_abilities_terrorgheist_skull=164 wh_dlc08_item_abilities_the_wintertooth_crown=144 wh_dlc08_lord_abilities_copious_vomit=60 wh_dlc08_lord_abilities_fight_or_die=108 wh_dlc08_lord_abilities_seduction_of_the_serpent=107 wh_dlc08_spell_bound_death_doom_and_darkness=126"
+	.. " wh_dlc08_weapon_abilities_stinky_giant_club=177 wh_dlc08_weapon_abilities_sword_of_torgald=164 wh_main_character_abilities_blood_lust=93 wh_main_character_abilities_deadly_onslaught=121 wh_main_character_abilities_foe_seeker=85 wh_main_character_abilities_foe_seeker_summoned=85"
+	.. " wh_main_character_abilities_get_back_ere=74 wh_main_character_abilities_heroic_killing_blow=115 wh_main_character_abilities_magical_animus=74 wh_main_character_abilities_rally=74 wh_main_character_abilities_red_fury=121 wh_main_character_abilities_stand_or_die=108"
+	.. " wh_main_character_abilities_stand_your_ground=108 wh_main_character_abilities_undeath_resurgent=108 wh_main_character_abilities_waaagh=120 wh_main_hero_abilities_accusation=125 wh_main_hero_abilities_ballistics_calibration=112 wh_main_hero_abilities_faiths_bastion=82"
+	.. " wh_main_hero_abilities_immortal_will=73 wh_main_hero_abilities_slippery=85 wh_main_item_abilities_black_periapt=147 wh_main_item_abilities_channelling_staff=89 wh_main_item_abilities_cloak_of_mists_and_shadows=149 wh_main_item_abilities_crown_of_command=120"
+	.. " wh_main_item_abilities_forbidden_rod=113 wh_main_item_abilities_opal_amulet=82 wh_main_item_abilities_pendant_of_slaanesh=85 wh_main_item_abilities_sceptre_of_stability=82 wh_main_item_abilities_skull_wand_of_kaloth=147 wh_main_item_abilities_staff_of_volans=150"
+	.. " wh_main_item_abilities_tricksters_shard=106 wh_main_item_abilities_van_horstmanns_speculum=106 wh_main_item_abilities_wand_of_jet=117 wh_main_lord_abilities_lord_of_the_storm=101 wh_main_lord_abilities_master_of_the_black_arts=105 wh_main_rune_abilities_rune_of_negation=144"
+	.. " wh_main_rune_abilities_rune_of_oath_and_steel=164 wh_main_spell_bound_book_of_arkhan=85 wh_main_spell_bound_fireball=60 wh_main_spell_bound_hammer_of_sigmar=85 wh_main_spell_bound_piercing_bolts_of_burning=128 wh_main_spell_bound_shield_of_faith=115"
+	.. " wh_main_spell_bound_soulfire=97 wh_main_spell_bound_staff_of_damnation=115 wh_main_spell_light_shems_burning_gaze_bound=60 wh_main_unit_abilities_blooood=78 wh_main_unit_abilities_boom=105 wh_main_unit_abilities_entrenchment=134"
+	.. " wh_main_unit_abilities_gyrobomber_bomb=0 wh_main_unit_abilities_gyrocopter_bomb=0 wh_main_unit_abilities_killing_blow=73 wh_main_unit_abilities_spinning_loons=42 wh_main_weapon_abilities_axe_of_dargo=149 wh_main_weapon_abilities_charmed_shield=77"
+	.. " wh_main_weapon_abilities_filth_mace=120 wh_main_weapon_abilities_ghal_maraz=159 wh_main_weapon_abilities_gitsnik=153 wh_main_weapon_abilities_hellfire_sword=132 wh_main_weapon_abilities_helm_of_discord=115 wh_main_weapon_abilities_runefang=153"
+	.. " wh_main_weapon_abilities_sword_of_anti_heroes=130 wh_main_weapon_abilities_the_hammer_of_karak_drazh=140 wh_main_weapon_abilities_the_mace_of_helsturm=130 wh_main_weapon_abilities_the_reikland_runefang=159 wh_main_weapon_abilities_the_sword_of_couronne=158 wh_main_weapon_abilities_tormentor_sword=99"
+	.. " wh_pro01_lord_abilities_flash_bomb=106 wh_pro01_weapon_abilities_rune_axe_of_grombrindal=152 wh_pro02_item_abilities_blood_chalice_of_bathori=146 wh_pro04_unit_abilities_apocalyptic_charge=150 wh_pro04_unit_abilities_enrage=112 wh_pro04_unit_abilities_warp_gaze=102"
 FOURTH.RECHARGE_S = {}
 function FOURTH.load_recharge()
 	for k, v in string.gmatch(FOURTH.RECHARGE_TEXT, "([%w_]+)=(%d+)") do
@@ -16398,6 +16475,7 @@ function FOURTH.blob_shape(u)
 	s.t = t
 	local ok_v, sv = pcall(function() return u:strategic_value() end)
 	if ok_v and type(sv) == "number" and sv > 0 then s.vps = sv / men end
+	if ok_v and type(sv) == "number" then s.value = sv end   -- ROUND 156: the whole unit's live value
 	-- the 9 outline points (4 corners, 4 edge middles, the centre): the closest distance between two rectangles
 	-- is always reached at one of them
 	s.pts = {}
@@ -16432,7 +16510,8 @@ function FOURTH.blob_map(fresh)
 		pcall(function() FOURTH.map_alliance = bm:get_player_alliance() end)
 	end
 	local alliance = FOURTH.map_alliance
-	local m = { ours = {}, enemies = {}, large = {}, alliance = (alliance ~= nil) }
+	-- ROUND 156: m.all = EVERY visible enemy shape (flying ones too), for the magic-missile pickers
+	local m = { ours = {}, enemies = {}, large = {}, all = {}, alliance = (alliance ~= nil) }
 	for i = 1, #(tracked_units or {}) do
 		local u = tracked_units[i] and tracked_units[i].unit
 		if u ~= nil then
@@ -16453,6 +16532,7 @@ function FOURTH.blob_map(fresh)
 					local ok_f, fly = pcall(function() return e:is_currently_flying() end)
 					if ok_v and vis == true then
 						local s = FOURTH.blob_shape(e)
+						if s ~= nil then m.all[#m.all + 1] = s end   -- ROUND 156
 						if s ~= nil and s.inf and s.men >= FOURTH.BLOB_MIN_MEN and not (ok_f and fly == true) then
 							m.enemies[#m.enemies + 1] = s
 						elseif s ~= nil and s.t ~= nil and FOURTH.class_keys.large[s.t] == true then
@@ -16847,6 +16927,225 @@ function FOURTH.armed_slot(slot, marker)
 	return a ~= nil and a.default_on == true
 end
 
+-- ============================================================================
+-- ROUND 156 - THE MAGIC MISSILES (open batch 4, user rulings 2026-11-15).
+--   enemy_large_shot ("Large first, then armour"; Blast, Damned Pistol, Hunting
+--     Spear, Master Rune of Flight, Schalkain's Teeth): the visible LARGE enemy
+--     in range with the highest live value (strategic_value); when none
+--     qualifies, the visible enemy infantry with the highest armour (the
+--     GENERATED UNIT_DEF table; an unknown armour never qualifies; ties: the
+--     higher value per soldier). Caster out of melee.
+--   enemy_single_shot ("Most valuable single"; Dead Eye, Focused Shot): the
+--     single-entity enemy (lords, heroes, single monsters) in range with the
+--     highest live value; a shot whose projectile has more bonus against large
+--     than against infantry (Focused Shot) takes a LARGE one first. Caster
+--     standing still (5 s wind-up) and out of melee.
+--   enemy_infantry_shot ("Most valuable infantry"; Bolt Storm): the visible
+--     enemy infantry (10+ men, not flying) in range with the highest live value
+--     per soldier. Caster standing still and out of melee.
+--   Every map target is SAFE: none of our units' rectangles within SHOT_SAFE_M
+--     of its rectangle (the shots can hit our own units: can_damage_allies).
+--   enemy_melee_or_fast ("Split by effect"; Crippling Throw, the Golden
+--     Blowpipe: they slow the target, rule 10): the closest enemy in range that
+--     is fighting in melee, else a fast enemy closing on our units.
+--   enemy_melee_or_shooting (Spear of Kurnous: blinded, accuracy and melee
+--     stats): the closest enemy in melee, else the closest shooting enemy
+--     missile unit.
+--   The game's own engaged_in_melee usage rule and min_range come from the
+--   GENERATED SHOT table. The pick is re-checked before the cast.
+-- ============================================================================
+FOURTH.SHOT_SAFE_M = 10   -- user ruling 2026-11-15: none of our units within 10 m of the target (not a range constant)
+FOURTH.shot_kind = nil
+FOURTH.shot_still_needed = nil
+-- GENERATED by tools/gen_shot_tables.py from unit_spec_abil, projectiles and the invalid-usage flags (the
+-- build refuses a pack whose table differs from the game data). Do not hand-edit.
+FOURTH.SHOT_TEXT = "wh2_dlc10_item_bound_blast=0,0,0;wh2_dlc13_lord_abilities_kill_shot=0,1,0;wh2_dlc17_rune_abilities_master_rune_of_flight=0,0,5;wh2_dlc17_weapon_abilities_the_golden_blowpipe_of_ptoohee=0,0,5;wh3_dlc26_character_abilities_dead_eye=0,0,0;wh3_dlc27_item_abilities_schalkains_teeth=0,0,0;wh3_main_character_abilities_crippling_throw=1,0,0;wh3_main_weapon_abilities_godkiller_pistol=0,0,0;wh3_main_weapon_abilities_nuku_chos_crossbow=1,0,0;wh_dlc03_weapon_abilities_hunting_spear=0,0,0;wh_dlc05_weapon_abilities_spear_of_kurnous=0,0,0"
+FOURTH.SHOT = {}
+function FOURTH.load_shot_table()   -- a function, so the loop adds no main-chunk locals
+	for k, a, b, c in string.gmatch(FOURTH.SHOT_TEXT, "([^;=]+)=(%d),(%d),([%d%.]+)") do
+		FOURTH.SHOT[k] = { tonumber(a), tonumber(b), tonumber(c) }
+	end
+end
+FOURTH.load_shot_table()
+
+-- the current entry's SHOT row { no_melee, prefer_large, min_range } (nil when it has none)
+function FOURTH.shot_info()
+	local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
+	return key and FOURTH.SHOT[key]
+end
+
+-- the caster may cast: out of melee (an exact false), and standing still when the family needs it
+function FOURTH.shot_caster_ok(unit, still)
+	local ok, mel = pcall(function() return unit:is_in_melee() end)
+	if not (ok and mel == false) then return false end
+	if still and not FOURTH.blob_still(unit) then return false end
+	return true
+end
+
+-- the game's min_range: an enemy closer than it cannot be targeted (an unreadable distance fails)
+function FOURTH.shot_min_ok(unit, enemy)
+	local info = FOURTH.shot_info()
+	if info == nil or info[3] <= 0 then return true end
+	local gap = FOURTH.eg_enemy_gap(unit, enemy)
+	return gap ~= nil and gap >= info[3]
+end
+
+-- a map candidate: the entry's class, in the bound, past the minimum range, and safe
+function FOURTH.shot_cand_ok(unit, e, m)
+	if not (FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit)
+		and FOURTH.shot_min_ok(unit, e.unit)) then
+		return false
+	end
+	local g = FOURTH.blob_friend_gap(e, m, FOURTH.SHOT_SAFE_M)
+	return g == nil or g > FOURTH.SHOT_SAFE_M
+end
+
+-- the best map target of one kind ("large", "armour", "single", "infantry"); large_only limits "single" to large
+-- units. Returns the shape and its score (value, armour or value per soldier).
+function FOURTH.shot_pick(unit, m, kind, large_only)
+	local list = m.all
+	if kind == "armour" or kind == "infantry" then list = m.enemies end
+	local best, bs, bs2 = nil, nil, nil
+	for i = 1, #list do
+		local e = list[i]
+		local ok_kind, s1, s2 = true, 0, 0
+		if kind == "large" then
+			ok_kind = (e.t ~= nil and FOURTH.class_keys.large[e.t] == true)
+			s1 = e.value or 0
+		elseif kind == "single" then
+			ok_kind = (e.t ~= nil and FOURTH.class_keys.single[e.t] == true)
+				and (not large_only or FOURTH.class_keys.large[e.t] == true)
+			s1 = e.value or 0
+		elseif kind == "armour" then
+			local def = e.t and FOURTH.UNIT_DEF[e.t]
+			ok_kind = (def ~= nil)
+			s1 = def and def[1] or 0
+			s2 = e.vps or 0
+		else
+			s1 = e.vps or 0
+		end
+		if ok_kind and FOURTH.shot_cand_ok(unit, e, m) then
+			if best == nil or s1 > bs or (s1 == bs and s2 > bs2) then best, bs, bs2 = e, s1, s2 end
+		end
+	end
+	return best, bs
+end
+
+-- the chosen map target becomes the cast target (the pre-cast re-check reads shot_kind / shot_still_needed)
+function FOURTH.shot_take(unit, e, kind, still)
+	FOURTH.shot_kind = kind
+	FOURTH.shot_still_needed = still
+	FOURTH.eg_enemy = e.unit
+	FOURTH.eg_arm = "shot"
+	FOURTH.eg_caster_su = FOURTH.eg_fresh_caster_su(unit)
+	FOURTH.cast_target = e.unit
+end
+
+-- the pre-cast re-check: the caster still may cast, and the chosen enemy is still a safe target of the same kind
+function FOURTH.shot_still_ok(enemy, unit)
+	local kind = FOURTH.shot_kind
+	if kind == nil then return false end
+	if not FOURTH.shot_caster_ok(unit, FOURTH.shot_still_needed) then return false end
+	local m = FOURTH.blob_map(true)
+	local id = nil
+	pcall(function() id = tostring(enemy:unique_ui_id()) end)
+	if id == nil then return false end
+	local list = m.all
+	if kind == "armour" or kind == "infantry" then list = m.enemies end
+	for i = 1, #list do
+		local e = list[i]
+		local eid = nil
+		pcall(function() eid = tostring(e.unit:unique_ui_id()) end)
+		if eid == id then
+			if kind == "large" and not (e.t ~= nil and FOURTH.class_keys.large[e.t] == true) then return false end
+			if kind == "single" and not (e.t ~= nil and FOURTH.class_keys.single[e.t] == true) then return false end
+			if kind == "armour" and not (e.t ~= nil and FOURTH.UNIT_DEF[e.t] ~= nil) then return false end
+			return FOURTH.shot_cand_ok(unit, e, m)
+		end
+	end
+	return false
+end
+
+-- the game's engaged_in_melee usage rule for the throws (the caster must be out of melee)
+function FOURTH.shot_usage_ok(unit)
+	local info = FOURTH.shot_info()
+	if info == nil or info[1] ~= 1 then return true end
+	local ok, mel = pcall(function() return unit:is_in_melee() end)
+	return ok and mel == false
+end
+
+-- clear a pick a later arm overrides
+function FOURTH.shot_clear()
+	FOURTH.eg_enemy, FOURTH.eg_arm, FOURTH.eg_caster_su, FOURTH.cast_target = nil, nil, nil, nil
+end
+
+function FOURTH.evaluate_enemy_large_shot(unit, routing)
+	FOURTH.eg_mode = "shot"
+	FOURTH.shot_kind = nil
+	if routing or not FOURTH.shot_caster_ok(unit, false) then return false end
+	local m = FOURTH.blob_map(false)
+	local e, s = FOURTH.shot_pick(unit, m, "large", false)
+	local kind = "large"
+	if e == nil then
+		e, s = FOURTH.shot_pick(unit, m, "armour", false)
+		kind = "armour"
+	end
+	if e == nil then return false end
+	FOURTH.shot_take(unit, e, kind, false)
+	return true
+end
+
+function FOURTH.evaluate_enemy_single_shot(unit, routing)
+	FOURTH.eg_mode = "shot"
+	FOURTH.shot_kind = nil
+	if routing or not FOURTH.shot_caster_ok(unit, true) then return false end
+	local m = FOURTH.blob_map(false)
+	local info = FOURTH.shot_info()
+	local e, s = nil, nil
+	if info ~= nil and info[2] == 1 then e, s = FOURTH.shot_pick(unit, m, "single", true) end
+	if e == nil then e, s = FOURTH.shot_pick(unit, m, "single", false) end
+	if e == nil then return false end
+	FOURTH.shot_take(unit, e, "single", true)
+	return true
+end
+
+function FOURTH.evaluate_enemy_infantry_shot(unit, routing)
+	FOURTH.eg_mode = "shot"
+	FOURTH.shot_kind = nil
+	if routing or not FOURTH.shot_caster_ok(unit, true) then return false end
+	local m = FOURTH.blob_map(false)
+	local e, s = FOURTH.shot_pick(unit, m, "infantry", false)
+	if e == nil then return false end
+	FOURTH.shot_take(unit, e, "infantry", true)
+	return true
+end
+
+-- Crippling Throw and the Golden Blowpipe: the closest enemy in melee, else a fast enemy closing on our units
+function FOURTH.evaluate_enemy_melee_or_fast(unit, routing)
+	if routing or not FOURTH.shot_usage_ok(unit) then return false end
+	local r = FOURTH.evaluate_enemy_melee(unit, routing)
+	if r and FOURTH.shot_min_ok(unit, FOURTH.eg_enemy) then return r end
+	FOURTH.shot_clear()
+	FOURTH.eg_melee_only = nil
+	r = FOURTH.evaluate_enemy_fast_near_ally(unit, routing)
+	if r and FOURTH.shot_min_ok(unit, FOURTH.eg_enemy) then return r end
+	FOURTH.shot_clear()
+	return false
+end
+
+-- Spear of Kurnous: the closest enemy in melee, else the closest shooting enemy missile unit
+function FOURTH.evaluate_enemy_melee_or_shooting(unit, routing)
+	if routing or not FOURTH.shot_usage_ok(unit) then return false end
+	local r = FOURTH.evaluate_enemy_melee(unit, routing)
+	if r and FOURTH.shot_min_ok(unit, FOURTH.eg_enemy) then return r end
+	FOURTH.shot_clear()
+	FOURTH.eg_melee_only = nil
+	r = FOURTH.evaluate_enemy_missile_shooting(unit, routing)
+	if r and FOURTH.shot_min_ok(unit, FOURTH.eg_enemy) then return r end
+	FOURTH.shot_clear()
+	return false
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -16939,6 +17238,12 @@ FOURTH.evaluators = {
 	self_moving = FOURTH.evaluate_self_moving,
 	-- ROUND 143
 	enemy_ground_shooting = FOURTH.evaluate_enemy_ground_shooting,
+	-- ROUND 156
+	enemy_large_shot = FOURTH.evaluate_enemy_large_shot,
+	enemy_single_shot = FOURTH.evaluate_enemy_single_shot,
+	enemy_infantry_shot = FOURTH.evaluate_enemy_infantry_shot,
+	enemy_melee_or_fast = FOURTH.evaluate_enemy_melee_or_fast,
+	enemy_melee_or_shooting = FOURTH.evaluate_enemy_melee_or_shooting,
 	-- ROUND 144
 	self_last_stand = FOURTH.evaluate_self_last_stand,
 	self_out_of_ammo = FOURTH.evaluate_self_out_of_ammo,
@@ -17033,6 +17338,11 @@ FOURTH.TRIGGER_TIP = {
 	self_shooting_healthy = "When armed, fires when this unit is shooting and above half health",
 	self_moving = "When armed, fires when this unit is moving",
 	enemy_ground_shooting = "When armed, fires on the ground under the closest enemy missile unit in range that is shooting",
+	enemy_large_shot = "When armed, fires on the most valuable large enemy in range with none of yours near it, otherwise on the most armoured enemy infantry",
+	enemy_single_shot = "When armed and standing still, fires on the most valuable single-entity enemy in range (lord, hero or monster) with none of yours near it",
+	enemy_infantry_shot = "When armed and standing still, fires on the enemy infantry in range worth the most per soldier, with none of yours near it",
+	enemy_melee_or_fast = "When armed, fires on the closest enemy in range that is fighting in melee, otherwise on a fast enemy closing on your units",
+	enemy_melee_or_shooting = "When armed, fires on the closest enemy in range that is fighting in melee, otherwise on the closest enemy missile unit that is shooting",
 	self_last_stand = "When armed, fires when this unit is at 10% health or less while in melee or under fire",
 	self_out_of_ammo = "When armed, fires when this unit has no ammunition left",
 	health_aura_self_undead = "When armed, fires when this unit or a non-living friendly unit in its aura is hurt",
