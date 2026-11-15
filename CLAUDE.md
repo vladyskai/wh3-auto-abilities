@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `04ed9fcfe08ef13b800d6810f61e4629`, 1,586,283 bytes
-  (round 153, 2026-11-15: no trash targets unless 3 packed blocks; the ALL badge for any selection, moved, with a tooltip). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `4d95eaa03f3d773c9f9bcf166bd96db9`, 1,588,799 bytes
+  (round 154, 2026-11-15: the ALL control is the game's round toggle button with the abilities icon; zz_all_* console hooks). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,7 +140,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 153): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
+Current roster (round 154): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
 Wheel audit (workbook v41): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 854 implemented,
 269 not implemented among the included (27 of them skipped by user decision). Open (never decided): 68
 (the 33 non-exploding group B attacks, Dead Eye and Focused Shot, group E).
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_trash_all_harness152/build_and_install153.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_all_button_harness153/build_and_install154.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness152: 6,473 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness153: 6,505 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -328,7 +328,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   clicking need the TEST-ONLY global ZZ_AUTO_TEST_NO_DEFAULTS (load_world sets it unless W.defaults_on). The ALL
   badge (zz_auto_badge_all; round 151 put it off-screen at (-1007,-105); round 152 at (-880, 8) landed as predicted;
   round 153: (-855, -28), the middle of the cloth, shown for ANY selection owning our abilities, with a pcall'd
-  SetTooltipText tooltip - still to be confirmed in game) arms/disarms all of the selected units'
+  SetTooltipText tooltip (confirmed in game, and the click on 7 units); ROUND 154: the GAME'S round_small_button_toggle
+  (38 x 38, ui3.pack) with icon_abilities.png (ui2.pack) in image 0, no letters, PRESSED while every owned ability is
+  armed (only a wrong state family is corrected: hover looks stay), at (-855, -21) as an estimate. The user places it
+  in battle from the Lua Console (Modding Development Tools: Lua Console, workshop 2791799449, van_devtools.pack;
+  Shift+F3): zz_all_nudge(dx, dy) / zz_all_set(x, y) / zz_all_where() log 'ALL POS x,y'; bake the last one) arms/disarms all of the selected units'
   abilities; the mock counts it apart (W.all_badge_created). Main chunk is near Lua's 200-local limit (about 190):
   add new state as FOURTH fields or ability-entry fields, never new file-level locals.
 - WINDS OF MAGIC (round 150): the 21 pure winds abilities fire when ready (when_ready). The pool is NOT full at battle
@@ -350,7 +354,7 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   test needs the generated large set and not-flying too; dead units stay in both lists with men=0. The biggest
   blob was the enemy mobbing one of OUR units: any blob trigger needs the friendly check. Read a battle with
   tools\analyze_map_log.py <log> --from <offset>.
-- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 668,831,712): the
+- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 675,107,621): the
   target is the one whose blast destroys the most enemy VALUE (soldiers covered x share killed after armour vs hit
   points, generated tables BLOB_DMG / UNIT_DEF x live strategic_value per soldier); AP-heavy attacks (38) never target
   armour below 50; the caster must be standing (is_moving() false: an aimed cast STOPS a moving caster, field
@@ -363,8 +367,9 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 - Game data moved out of Temp on 2026-11-01 (round 124): `gamedata\wh3\` regenerated from the
   installed game, drift recorded in `gamedata\DRIFT_2026-11-01.md` (no mod constant moved).
   Earlier rounds' builders and harnesses still name Temp; they are history, not re-run.
-  `gamedata\wh3_layouts\` is empty (lost to Temp before the move): re-extract from `ui3.pack`
-  before the next layout patch.
+  `gamedata\wh3_layouts\` holds vanilla UI files pulled on demand by `tools\extract_ui_layouts.py` (list <regex> /
+  get <pack> <path>; one RPFM session per call, the server exits after each); round 154 pulled the round button
+  templates, hud_battle and icons. Re-extract before the next layout patch.
 - The inventory's in-wheel rule omits `source_type = passive`. Two castable keys hide there:
   Grombrindal Has No Fear (a visible wheel button in the 2026-10-28 log) and Scry Orb. They need
   inventory rows at the next sign-off.

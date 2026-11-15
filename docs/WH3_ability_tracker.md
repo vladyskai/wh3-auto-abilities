@@ -7569,3 +7569,17 @@ byte-identical; RED 10/10. Pack md5 `0cc4a722865e4b5514e4716c9813b232`.
 
 **Arithmetic.** No count change. Harness 152: 6,473 checks / 0 failures, twice byte-identical; RED 6/6. Pack md5
 `04ed9fcfe08ef13b800d6810f61e4629`.
+
+
+### 10.32 Round 154 - the ALL control becomes the game's own round button (2026-11-15)
+
+**Field (round 153 UI test, log from byte 668,831,712):** the tooltip shows; "ALL click: 16 ability switch(es) on 7
+unit(s)" turned ON, OFF, ON. The user: the spot is still not perfect, and the look "feels like it's there, but it
+shouldn't be there".
+
+**Ruling (2026-11-15): "Game round button".** The ALL control is the game's round_small_button_toggle with the gold fist
+abilities icon, pressed while every ability of the selection is on A. It starts at (-855, -21), an estimate; the user
+places it from the Lua Console with zz_all_nudge / zz_all_set / zz_all_where.
+
+**Arithmetic.** No count change; no workbook version (v41 stays). Harness 153: 6,505 checks / 0 failures, twice
+byte-identical; RED 6/6. Pack md5 `4d95eaa03f3d773c9f9bcf166bd96db9`.

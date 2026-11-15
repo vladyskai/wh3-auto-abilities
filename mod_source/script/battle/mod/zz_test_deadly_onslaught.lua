@@ -20343,9 +20343,19 @@ end
 FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
 -- ROUND 152: the user's screenshot (2026-11-15) - below the portrait, right of the camera button. The offset was
 -- calibrated from the top-slot badge (-865,-209) and the bottom-right-slot badge (-799,-37) in that screenshot.
-FOURTH.ALL_OX, FOURTH.ALL_OY = -855, -28   -- ROUND 153: the middle of the cloth (the user's second screenshot)
+-- ROUND 154: the game's round button is 38 x 38 (the text badge was 36 x 24): the same centre, 7 lower. An ESTIMATE:
+-- the user tunes it in battle with the Lua Console hooks below and the tuned pair replaces this line.
+FOURTH.ALL_OX, FOURTH.ALL_OY = -855, -21
 FOURTH.ALL_TIP = "ALL: arm or disarm every automatic ability of the selected unit(s). If any of them is on M, "
-	.. "all go to A (automatic); if all are already on A, all go to M (manual)."
+	.. "all go to A (automatic); if all are already on A, all go to M (manual). The button stays pressed while all "
+	.. "of them are on A."
+-- ROUND 154 (user ruling 2026-11-15, "Game round button"): the game's own bronze round toggle button (the camera
+-- button's family, 38 x 38, ui3.pack) with the game's own abilities icon (the gold fist, ui2.pack); no letters.
+FOURTH.ALL_TEMPLATE = "ui/templates/round_small_button_toggle"
+FOURTH.ALL_ICON = "ui/skins/default/icon_abilities.png"
+-- the toggle's pressed family of states (the engine moves between them on hover and press by itself)
+FOURTH.ALL_PRESSED = { selected = true, selected_hover = true, selected_down = true, selected_down_off = true,
+	selected_inactive = true }
 FOURTH.all_state = { badge = nil, attempts = 0, shown = false }
 
 function FOURTH.all_badge_tick()
@@ -20357,13 +20367,10 @@ function FOURTH.all_badge_tick()
 		if not any or badge_parent == nil or st.attempts >= MAX_BADGE_ATTEMPTS then return end
 		st.attempts = st.attempts + 1
 		local ok, err = pcall(function()
-			st.badge = UIComponent(badge_parent:CreateComponent(FOURTH.ALL_BADGE_ID, "ui/templates/zz_auto_badge"))
+			st.badge = UIComponent(badge_parent:CreateComponent(FOURTH.ALL_BADGE_ID, FOURTH.ALL_TEMPLATE))
 			if st.badge == nil then error("CreateComponent returned nothing", 0) end
 			st.badge:SetDockingPoint(0)
-			st.badge:Resize(36, 24)
-			for i = 0, 4 do st.badge:SetImagePath("ui/zz_auto/blank.png", i) end
-			local ok_text = write_badge_letter(st, "ALL")
-			if not ok_text then error("SetText raised", 0) end
+			st.badge:SetImagePath(FOURTH.ALL_ICON, 0)   -- ROUND 154: image 0 is the button's icon
 			-- ROUND 153: the hover tooltip (a template without tooltip support simply shows none)
 			pcall(function() st.badge:SetTooltipText(FOURTH.ALL_TIP, true) end)
 			st.badge:SetVisible(false)
@@ -20383,6 +20390,51 @@ function FOURTH.all_badge_tick()
 		st.shown = any
 		pcall(function() st.badge:SetVisible(any) end)
 	end
+	if any then FOURTH.all_sync_pressed(st) end
+end
+
+-- ROUND 154: the button looks pressed exactly while every ability of ours the selection owns is armed. Only a
+-- WRONG family is corrected, so the engine's own hover and press looks are left alone.
+function FOURTH.all_armed_now()
+	local targets, n = FOURTH.all_targets(), 0
+	for i = 1, #targets do
+		for _, entry in ipairs(owned_abilities_by_unit[tostring(targets[i])] or {}) do
+			n = n + 1
+			if not FOURTH.armed_slot(unit_slot(targets[i]), entry.marker) then return false end
+		end
+	end
+	return n > 0
+end
+
+function FOURTH.all_sync_pressed(st)
+	local want = FOURTH.all_armed_now()
+	local ok, cur = pcall(function() return st.badge:CurrentState() end)
+	if not ok then return end
+	if want ~= (FOURTH.ALL_PRESSED[tostring(cur)] == true) then
+		pcall(function() st.badge:SetState(want and "selected" or "active") end)
+	end
+end
+
+-- ROUND 154: in-battle tuning of the ALL button from the Lua Console (Shift+F3; the Modding Development Tools: Lua
+-- Console mod), like the ability badges' zz_badge_nudge. Each call moves it at once and reports "ALL POS x,y".
+--   zz_all_nudge(dx, dy)   move by dx right, dy down (negative = left / up)
+--   zz_all_set(x, y)       put it at x,y
+--   zz_all_where()         report where it is
+function zz_all_set(x, y)
+	FOURTH.ALL_OX, FOURTH.ALL_OY = tonumber(x) or FOURTH.ALL_OX, tonumber(y) or FOURTH.ALL_OY
+	local st = FOURTH.all_state
+	if st.badge ~= nil then pcall(function() st.badge:SetDockOffset(FOURTH.ALL_OX, FOURTH.ALL_OY) end) end
+	local m = "ALL POS " .. tostring(FOURTH.ALL_OX) .. "," .. tostring(FOURTH.ALL_OY)
+	FOURTH.all_said(m)
+	return m
+end
+
+function zz_all_nudge(dx, dy)
+	return zz_all_set(FOURTH.ALL_OX + (tonumber(dx) or 0), FOURTH.ALL_OY + (tonumber(dy) or 0))
+end
+
+function zz_all_where()
+	return zz_all_set(FOURTH.ALL_OX, FOURTH.ALL_OY)
 end
 
 -- ROUND 153: the selected units the ALL badge acts on (the engine's selection; the tracker only when the selection
