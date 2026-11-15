@@ -7609,6 +7609,8 @@ before the round-145 map existed; no user decision.
   the target) and NEW `enemy_melee_or_shooting` (Spear of Kurnous: blinded, accuracy and melee stats).
 - **Bolt Storm:** "Most valuable infantry" -> NEW `enemy_infantry_shot`, standing still.
 - **Safety** (in the approved options): none of our units within 10 m of a map target; the caster out of melee.
+- **Large includes cavalry** (the generated large set): asked after the build whether the AP shots should prefer
+  monsters; ruling "Keep as is".
 
 **Arithmetic.**
 

@@ -74,7 +74,7 @@ All 11 start on M, like every enemy-targeted ability.
 
 **Noted, not changed: what "large" covers.** The game's large set includes cavalry and chariots, not only monsters. A
 valuable cavalry unit can therefore beat a single monster on "highest live value". The shot still hits one model.
-Tell Claude if you want monsters preferred.
+User ruling 2026-11-15, asked after the build: "Keep as is".
 
 ## 4. The proof
 

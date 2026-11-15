@@ -325,7 +325,7 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   live strategic_value) and FOURTH.SHOT_SAFE_M = 10 (none of ours within 10 m of the target); enemy_melee_or_fast and
   enemy_melee_or_shooting chain the existing pickers. GENERATED FOURTH.SHOT_TEXT (tools\gen_shot_tables.py:
   engaged_in_melee usage, prefer-large, min_range). New target class "single". NOTE: the generated large set includes
-  cavalry and chariots, so 'most valuable large' can pick cavalry over a monster (told the user; not changed).
+  cavalry and chariots, so 'most valuable large' can pick cavalry over a monster (user ruling 2026-11-15: "Keep as is").
   tools\fact_sheet_open.py prints any ability's game facts; tools\list_open_abilities.py lists the open ones.
 - ROUNDS 151-152 (2026-11-14/15): the 53 prefer_central_targets blob attacks hit a safe, NON-FLYING large enemy in
   range first; the whole-map hold is GONE (round 152: it silenced every breath all battle); the game's usage rules
