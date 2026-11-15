@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `4075645f56fcec8c08d10d53106fcf00`, 1,605,250 bytes
-  (round 156, 2026-11-15: the 11 magic missiles on 5 new families). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c387bc7df174378acbaaa443eabe9894`, 1,614,693 bytes
+  (round 157, 2026-11-15: the 10 single-target drains and the 2 Emperor's Executioners on 2 new families). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,10 +140,10 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 156): 810 ABILITIES entries / 865 ability keys / 80 trigger evaluator families.
-Wheel audit (workbook v42): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 865 implemented,
-258 not implemented among the included (27 of them skipped by user decision). Open (never decided): 57
-(24 group B attacks: direct damage, chains, hexes, Storm of the Night; the 33 group E explosions and whirlwinds).
+Current roster (round 157): 822 ABILITIES entries / 877 ability keys / 82 trigger evaluator families.
+Wheel audit (workbook v43): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 877 implemented,
+246 not implemented among the included (27 of them skipped by user decision). Open (never decided): 45
+(12 group B: the area drains, the hexes, Storm of the Night; the 33 group E explosions and whirlwinds).
 
 ## 3. BUILD AND INSTALL
 
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_magic_missiles_harness155/build_and_install156.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_drains_harness156/build_and_install157.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness155: 6,579 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness156: 6,618 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -289,7 +289,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v42_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v42.py`, verified by `tools\verify_xlsx_v42.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v43_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v43.py`, verified by `tools\verify_xlsx_v43.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -319,6 +319,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 157 (2026-11-15): the 10 single-target DRAINS (max_damaged_entities = 1) on NEW enemy_single_drain ("Most
+  valuable single" + "Standing still"; no 10 m margin: a direct effect cannot hit our units) and the Emperor's
+  Executioner on NEW enemy_execute ("At the execute line": GENERATED FOURTH.EXEC_TEXT from execute_ratio, 20% base
+  Lord/Hero only, 33% upgrade single entities). shot_pick / shot_cand_ok / shot_take take a trailing nosafe flag.
+  The SHOT table now covers 23 keys (gen_shot_tables.FAMILIES).
 - ROUND 156 (2026-11-15): THE MAGIC MISSILES, 11 entries on 5 NEW families (rulings: AP shots "Large first, then
   armour", snipers "Most valuable single", throws "Split by effect", Bolt Storm "Most valuable infantry"):
   enemy_large_shot / enemy_single_shot / enemy_infantry_shot use the map's NEW m.all list (every visible enemy, s.value =

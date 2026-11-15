@@ -144,6 +144,8 @@
 "wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch",
 "wh3_dlc24_lord_abilities_gulyas",
 "wh3_dlc24_lord_abilities_spirit_bear_upgrade",
+"wh3_dlc24_lord_abilities_the_emperors_executioner",
+"wh3_dlc24_lord_abilities_the_emperors_executioner_upgrade",
 "wh3_dlc24_unit_abilities_hags_denial",
 "wh3_dlc24_unit_abilities_mark_of_yin",
 "wh3_dlc24_unit_bound_missile_mirror",
@@ -198,6 +200,7 @@
 "wh3_dlc29_item_abilities_doom_glaive",
 "wh3_dlc29_item_abilities_icon_of_the_king",
 "wh3_dlc29_item_abilities_morikhane_the_black_armour",
+"wh3_dlc29_item_abilities_punch_dagger",
 "wh3_dlc29_lord_abilities_gaze_of_usirian",
 "wh3_dlc29_lord_abilities_lightning_reflexes",
 "wh3_dlc29_lord_abilities_transfix",
@@ -255,6 +258,7 @@
 "wh3_main_pro_character_abilities_heroic_killing_blow_1",
 "wh3_main_pro_character_abilities_heroic_killing_blow_2",
 "wh3_main_spell_bound_earth_blood",
+"wh3_main_spell_bound_spirit_leech",
 "wh3_main_spell_bound_the_curse_of_anraheir",
 "wh3_main_spell_bound_transmutation_of_lead",
 "wh3_main_unit_abilities_sky_junk_bomb",
@@ -331,6 +335,6 @@
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage"
 ],
-"logs_read": 170,
+"logs_read": 171,
 "made": "2026-11-15"
 }
