@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-15
 
-Every automated ability (822 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (834 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -63,6 +63,7 @@ None.
 | Daemonic Whispers | `slezuzus_voice` | `ally_melee_buff` | round 137: kept (dedicated trigger, 'Keep all 5 for now') |
 | Ghoul King of Ushoran | `ghoul_king_of_ushoran` | `ushoran_health` | round 137: kept (dedicated trigger, 'Keep all 5 for now') |
 | Gulyas | `gulyas` | `health_aura_ground` | round 137: kept (dedicated trigger, 'Keep all 5 for now') |
+| Preyton Horns | `preyton_horns` | `enemy_melee` | round 158: 'Horns melee, Trance waver' (enemy_melee: our fighting units +8, the enemy -8) |
 | Purge the Weak! | `purge_the_weak` | `charge_or_melee` | round 137: kept (dedicated trigger, 'Keep all 5 for now') |
 | Rot or Die! | `rot_or_die` | `melee_unwavering` | round 137: kept (morale plus a combat stat, 'Keep in melee') |
 | Scrying Stone | `scrying_stone` | `melee_unwavering` | round 137: kept (morale plus a combat stat, 'Keep in melee') |

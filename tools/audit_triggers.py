@@ -43,7 +43,8 @@ SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_a
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",
-                                          "enemy_fast_near_ally"}  # round 135: the user's fast-enemy trigger
+                                          "enemy_fast_near_ally",  # round 135: the user's fast-enemy trigger
+                                          "enemy_melee_or_fast"}  # round 156: enemy in melee OR fast-closing (rule 10)
 # Rows the user has explicitly ruled on for a rule: listed apart, never counted as candidates again.
 RULED = {"R4": {
     "hunter_of_champions": "round 123: 'Hunter of champions is okay for enemy_engaged_or_shot'",
@@ -63,6 +64,8 @@ RULED["R6"] = {m: "round 137: kept (%s)" % why for m, why in (
     ("purge_the_weak", "dedicated trigger, 'Keep all 5 for now'"),
     ("slezuzus_voice", "dedicated trigger, 'Keep all 5 for now'"),
     ("verminous_fury", "dedicated trigger, 'Keep all 5 for now'"))}
+RULED["R6"]["preyton_horns"] = ("round 158: 'Horns melee, Trance waver' (enemy_melee: our fighting units +8, the "
+                               "enemy -8)")
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
                "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura"}
 
