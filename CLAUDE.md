@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `326b37332e8f0b94bffeacea5fb6a966`, 1,623,137 bytes
-  (round 158, 2026-11-15: the last 12 group B attacks; group B closed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `23b088aada7c4f68ab59601e6aabc1df`, 1,638,511 bytes
+  (round 159, 2026-11-15: group E, the last open abilities; open is now 0). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -65,7 +65,7 @@ source (paths below relative to `mod_source\`):
 `docs\WH3_process_proposal_2026-11-08.md`, section 0. Every ability climbs: Open -> Proposed -> Approved ->
 Built -> QA passed (the log of a battle THE USER fights; no self-playing build) -> Field approved. Rounds take
 batches of about 10; every proposal walks the sensor checklist. The trigger audit
-(`toolsudit_triggers.py`, `docs\WH3_trigger_audit_<date>.md`) feeds the batches; re-run it and
+(`tools\audit_triggers.py`, `docs\WH3_trigger_audit_<date>.md`) feeds the batches; re-run it and
 `tools\make_progress_page.py` (`docs\progress.html`) at the end of every round.
 
 ## 2. HARD RULES (settled; never re-litigate)
@@ -140,10 +140,10 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 158): 834 ABILITIES entries / 889 ability keys / 84 trigger evaluator families.
-Wheel audit (workbook v44): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 889 implemented,
-234 not implemented among the included (27 of them skipped by user decision). Open (never decided): 33
-(group E only: the self-centred explosions and whirlwinds; group B closed in round 158).
+Current roster (round 159): 860 ABILITIES entries / 917 ability keys / 88 trigger evaluator families.
+Wheel audit (workbook v45): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 917 implemented,
+206 not implemented among the included (32 of them skipped by user decision). Open (never decided): 0
+(group E closed in round 159; every in-wheel ability is now automated or decided).
 
 ## 3. BUILD AND INSTALL
 
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_last_group_b_harness157/build_and_install158.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_group_e_harness158/build_and_install159.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness157: 6,677 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness158: 6,760 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -290,7 +290,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v44_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v44.py`, verified by `tools\verify_xlsx_v44.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v45_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v45.py`, verified by `tools\verify_xlsx_v45.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -320,6 +320,17 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 159 (2026-11-15): GROUP E, the last open abilities (open is now 0). 13 safe self-centred blasts on
+  melee_unwavering ("Like Bloodstorm"); 5 friendly-fire blasts on NEW melee_clear (in melee, none of our OTHER units
+  within blast + 10 m of the caster); the Phoenix dives on NEW fly_dive (flying exactly true, an enemy within 70% of
+  the blast, none of ours within blast + 10 m; corrected from 'in melee and flying' before the build: a flier that
+  lands is not flying); Necrotic Explosion on NEW last_stand_clear; the Frost Dragon Scale on NEW enemy_blob_vortex
+  (evaluate_enemy_blob with the vortex radius); look-alikes: Maneater Smoke Bomb charge_or_melee, Verminous Valour
+  wavering_self, Heaven's Flash enemy_ground_melee, Slime Smoothie health_aura_ground, Slann Gold and Deathmaster's
+  Sigil enemy_commander_value (the Sigil: NEW class commander_ground, target kept blast + 10 m clear). The 4 new
+  families start unarmed (M). Blast radii: GENERATED FOURTH.VORTEX_TEXT (tools\gen_vortex_tables.py) from the NEW
+  gamedata\wh3\battle_vortexs.tsv. Closed by the user ("Close 5, Necrotic last"): Mist Form, Shadowstrider, Deep
+  Tunneling, Sword of Teclis, the Unidentified Hydra Head. Mock: a ground-form cast lands in W.ground_fires.
 - ROUND 158 (2026-11-15): the last group B: 7 AREA DRAINS on NEW enemy_area_drain (max_damaged_entities from the
   GENERATED FOURTH.AREA_TEXT: the target needs at least that many soldiers left; most value per soldier; standing
   still; no margin), Ethrac's Brazier + Storm of the Night on enemy_melee_or_fast (Storm: NEW class "flying",
