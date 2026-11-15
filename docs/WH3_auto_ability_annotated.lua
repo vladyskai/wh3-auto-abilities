@@ -16562,6 +16562,16 @@ end
 -- BREATH_VALUE_BAND of the best value, the one whose side faces it - the line of fire closest to 90 degrees off the
 -- target's facing (its front runs along the breath).
 FOURTH.BREATH_VALUE_BAND = 0.8   -- user ruling 2026-11-14: "within 20% of the best value"
+-- ROUND 153 (user rulings 2026-11-15: "ignore trash units ... Unless there is a big blob", "Value below 2",
+-- "3 packed blocks"): a target worth less than TRASH_VPS per soldier (live value) is taken only when the
+-- blast covers at least TRASH_BLOCKS packed blocks: 3 x (the blast area / PACKED_M2), about 100 soldiers
+-- in a 5 m blast (the density line is HALF a packed block). An unreadable value is not trash.
+FOURTH.TRASH_VPS = 2
+FOURTH.TRASH_BLOCKS = 3
+function FOURTH.blob_trash_ok(e, sc, r)
+	if e.vps == nil or e.vps >= FOURTH.TRASH_VPS then return true end
+	return sc >= FOURTH.TRASH_BLOCKS * math.pi * r * r / FOURTH.PACKED_M2
+end
 function FOURTH.blob_pick(unit, m, r, key)
 	local reach = r + FOURTH.BLOB_MARGIN_M
 	local need = FOURTH.blob_need(r)
@@ -16573,7 +16583,7 @@ function FOURTH.blob_pick(unit, m, r, key)
 			local g = FOURTH.blob_friend_gap(e, m, reach)
 			if g == nil or g > reach then
 				local sc, un = FOURTH.blob_score(e, m, r)
-				if sc >= need then
+				if sc >= need and FOURTH.blob_trash_ok(e, sc, r) then   -- ROUND 153: no trash unless a big blob
 					local v = FOURTH.blob_value(e, m, r, dmg)
 					cands[#cands + 1] = { e, sc, un, g, v }
 					if bv == nil or v > bv then bv = v end
@@ -16711,7 +16721,7 @@ function FOURTH.blob_still_ok(enemy, unit)
 			local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
 			if not FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key]) then return false end
 			local sc = FOURTH.blob_score(e, m, r)
-			return sc >= FOURTH.blob_need(r)
+			return sc >= FOURTH.blob_need(r) and FOURTH.blob_trash_ok(e, sc, r)   -- ROUND 153
 		end
 	end
 	return false
@@ -18937,19 +18947,16 @@ end
 FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
 -- ROUND 152: the user's screenshot (2026-11-15) - below the portrait, right of the camera button. The offset was
 -- calibrated from the top-slot badge (-865,-209) and the bottom-right-slot badge (-799,-37) in that screenshot.
-FOURTH.ALL_OX, FOURTH.ALL_OY = -880, 8
+FOURTH.ALL_OX, FOURTH.ALL_OY = -855, -28   -- ROUND 153: the middle of the cloth (the user's second screenshot)
+FOURTH.ALL_TIP = "ALL: arm or disarm every automatic ability of the selected unit(s). If any of them is on M, "
+	.. "all go to A (automatic); if all are already on A, all go to M (manual)."
 FOURTH.all_state = { badge = nil, attempts = 0, shown = false }
 
 function FOURTH.all_badge_tick()
 	local st = FOURTH.all_state
-	local any = false
-	for _, ability in ipairs(active_abilities_list()) do
-		local s = ability_state[ability.marker]
-		if s ~= nil and s.badge_shown == true then
-			any = true
-			break
-		end
-	end
+	-- ROUND 153: shown while ANY selected unit owns any ability of ours (not only when ability badges show: two
+	-- selected units with no shared ability show no ability badge, but ALL must stay)
+	local any = FOURTH.all_selection_has_ours()
 	if st.badge == nil then
 		if not any or badge_parent == nil or st.attempts >= MAX_BADGE_ATTEMPTS then return end
 		st.attempts = st.attempts + 1
@@ -18961,6 +18968,8 @@ function FOURTH.all_badge_tick()
 			for i = 0, 4 do st.badge:SetImagePath("ui/zz_auto/blank.png", i) end
 			local ok_text = write_badge_letter(st, "ALL")
 			if not ok_text then error("SetText raised", 0) end
+			-- ROUND 153: the hover tooltip (a template without tooltip support simply shows none)
+			pcall(function() st.badge:SetTooltipText(FOURTH.ALL_TIP, true) end)
 			st.badge:SetVisible(false)
 			st.badge:SetDockingPoint(8)
 			st.badge:SetDockOffset(FOURTH.ALL_OX, FOURTH.ALL_OY)
@@ -18980,17 +18989,33 @@ function FOURTH.all_badge_tick()
 	end
 end
 
-function FOURTH.all_click()
+-- ROUND 153: the selected units the ALL badge acts on (the engine's selection; the tracker only when the selection
+-- callback is not in charge), and whether any of them owns an ability of ours
+function FOURTH.all_targets()
 	local targets = {}
 	for i = 1, #selected_ui_ids do
 		if selected_ui_ids[i] ~= nil then targets[#targets + 1] = selected_ui_ids[i] end
 	end
-	if #targets == 0 then
-		if selection_callback_alive or selected_unit_id == nil then
-			FOURTH.all_said("ALL click ignored: no unit selected")
-			return
-		end
+	if #targets == 0 and not selection_callback_alive and selected_unit_id ~= nil then
 		targets[1] = selected_unit_id
+	end
+	return targets
+end
+
+function FOURTH.all_selection_has_ours()
+	local targets = FOURTH.all_targets()
+	for i = 1, #targets do
+		local list = owned_abilities_by_unit[tostring(targets[i])]
+		if list ~= nil and #list > 0 then return true end
+	end
+	return false
+end
+
+function FOURTH.all_click()
+	local targets = FOURTH.all_targets()
+	if #targets == 0 then
+		FOURTH.all_said("ALL click ignored: no unit selected")
+		return
 	end
 	local todo, all_on = {}, true
 	for i = 1, #targets do

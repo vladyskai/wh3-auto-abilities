@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `0cc4a722865e4b5514e4716c9813b232`, 1,584,500 bytes
-  (round 152, 2026-11-15: no whole-map hold, no flying large targets, 90 degrees for 53 central attacks, ALL badge on screen). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `04ed9fcfe08ef13b800d6810f61e4629`, 1,586,283 bytes
+  (round 153, 2026-11-15: no trash targets unless 3 packed blocks; the ALL badge for any selection, moved, with a tooltip). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,8 +140,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 152): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
-Wheel audit (workbook v40): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 854 implemented,
+Current roster (round 153): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
+Wheel audit (workbook v41): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 854 implemented,
 269 not implemented among the included (27 of them skipped by user decision). Open (never decided): 68
 (the 33 non-exploding group B attacks, Dead Eye and Focused Shot, group E).
 
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_no_hold_harness151/build_and_install152.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_trash_all_harness152/build_and_install153.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness151: 6,446 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness152: 6,473 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -289,7 +289,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v40_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v40.py`, verified by `tools\verify_xlsx_v40.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v41_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v41.py`, verified by `tools\verify_xlsx_v41.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -322,10 +322,13 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 - ROUNDS 151-152 (2026-11-14/15): the 53 prefer_central_targets blob attacks hit a safe, NON-FLYING large enemy in
   range first; the whole-map hold is GONE (round 152: it silenced every breath all battle); the game's usage rules
   (12 grounded, 26 engaged_in_melee) are honoured; all 53 central attacks (breaths included) prefer a side-on target
-  within 20% of the best value. 28 trigger families (434 entries, 'tired' added in round 152) START ARMED; harness worlds that arm by
+  within 20% of the best value. ROUND 153: TRASH infantry (live value below 2 per soldier: Zombies, Skavenslaves, the
+  Tithe, Skeletons, Clanrats) is skipped unless the blast covers 3 PACKED BLOCKS (3 x area / 2.368; the density line
+  is HALF a packed block - do not mix the two again). 28 trigger families (434 entries, 'tired' added in round 152) START ARMED; harness worlds that arm by
   clicking need the TEST-ONLY global ZZ_AUTO_TEST_NO_DEFAULTS (load_world sets it unless W.defaults_on). The ALL
-  badge (zz_auto_badge_all; round 151 put it off-screen at (-1007,-105); round 152 at (-880, 8) from the user's
-  screenshot, still to be confirmed) arms/disarms all of the selected units'
+  badge (zz_auto_badge_all; round 151 put it off-screen at (-1007,-105); round 152 at (-880, 8) landed as predicted;
+  round 153: (-855, -28), the middle of the cloth, shown for ANY selection owning our abilities, with a pcall'd
+  SetTooltipText tooltip - still to be confirmed in game) arms/disarms all of the selected units'
   abilities; the mock counts it apart (W.all_badge_created). Main chunk is near Lua's 200-local limit (about 190):
   add new state as FOURTH fields or ability-entry fields, never new file-level locals.
 - WINDS OF MAGIC (round 150): the 21 pure winds abilities fire when ready (when_ready). The pool is NOT full at battle
@@ -347,7 +350,7 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   test needs the generated large set and not-flying too; dead units stay in both lists with men=0. The biggest
   blob was the enemy mobbing one of OUR units: any blob trigger needs the friendly check. Read a battle with
   tools\analyze_map_log.py <log> --from <offset>.
-- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 641,639,500): the
+- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 668,831,712): the
   target is the one whose blast destroys the most enemy VALUE (soldiers covered x share killed after armour vs hit
   points, generated tables BLOB_DMG / UNIT_DEF x live strategic_value per soldier); AP-heavy attacks (38) never target
   armour below 50; the caster must be standing (is_moving() false: an aimed cast STOPS a moving caster, field
