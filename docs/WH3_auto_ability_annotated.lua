@@ -18947,9 +18947,10 @@ end
 FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
 -- ROUND 152: the user's screenshot (2026-11-15) - below the portrait, right of the camera button. The offset was
 -- calibrated from the top-slot badge (-865,-209) and the bottom-right-slot badge (-799,-37) in that screenshot.
--- ROUND 154: the game's round button is 38 x 38 (the text badge was 36 x 24): the same centre, 7 lower. An ESTIMATE:
--- the user tunes it in battle with the Lua Console hooks below and the tuned pair replaces this line.
-FOURTH.ALL_OX, FOURTH.ALL_OY = -855, -21
+-- ROUND 154: the game's round button is 38 x 38 (the text badge was 36 x 24).
+-- ROUND 155: the spot the user TUNED BY HAND in battle with zz_all_nudge (2026-11-15, the last 'ALL POS -923,0',
+-- confirmed by zz_all_where()). Re-tune the same way; the hooks below report the new pair.
+FOURTH.ALL_OX, FOURTH.ALL_OY = -923, 0
 FOURTH.ALL_TIP = "ALL: arm or disarm every automatic ability of the selected unit(s). If any of them is on M, "
 	.. "all go to A (automatic); if all are already on A, all go to M (manual). The button stays pressed while all "
 	.. "of them are on A."

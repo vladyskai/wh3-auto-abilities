@@ -7583,3 +7583,13 @@ places it from the Lua Console with zz_all_nudge / zz_all_set / zz_all_where.
 
 **Arithmetic.** No count change; no workbook version (v41 stays). Harness 153: 6,505 checks / 0 failures, twice
 byte-identical; RED 6/6. Pack md5 `4d95eaa03f3d773c9f9bcf166bd96db9`.
+
+
+### 10.33 Round 155 - the ALL button at the hand-tuned spot (2026-11-15)
+
+**Field (round 154 build, log from byte 675,107,621):** the game's round button works ("It looks amazing"); 11 ALL
+clicks on 1 to 7 units. The user tuned the spot with zz_all_nudge; the last line was 'ALL POS -923,0' (confirmed by
+zz_all_where()). No breath was cast, so the trash rule is still unseen.
+
+**Change.** FOURTH.ALL_OX, FOURTH.ALL_OY = -923, 0. No count change; no workbook version (v41 stays). Harness 154: 6,512
+checks / 0 failures, twice byte-identical; RED 2/2. Pack md5 `ed36892f37ca3838fd41f10c7431df50`.
