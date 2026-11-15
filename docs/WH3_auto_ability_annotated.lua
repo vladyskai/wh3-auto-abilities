@@ -16584,7 +16584,8 @@ function FOURTH.blob_pick(unit, m, r, key)
 	if bv == nil then return nil end
 	local shot = key and FOURTH.BLOB_SHOT[key]
 	local cx, cz = nil, nil
-	if shot ~= nil and shot[6] == 1 then
+	-- ROUND 152 (user ruling 2026-11-15, "All 53 central attacks"): every prefer-central attack, breaths included
+	if shot ~= nil and (shot[5] == 1 or shot[6] == 1) then
 		pcall(function()
 			local p = unit:position()
 			cx, cz = p:get_x(), p:get_z()
@@ -16630,7 +16631,8 @@ function FOURTH.blob_pick_large(unit, m, r, key)
 	local best, bv, bg = nil, nil, nil
 	for i = 1, #m.large do
 		local e = m.large[i]
-		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg) then
+		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg)
+			and FOURTH.blob_not_flying(e.unit) then   -- ROUND 152: never a flying large target
 			local g = FOURTH.blob_friend_gap(e, m, reach)
 			if g == nil or g > reach then
 				local v = FOURTH.blob_large_value(e, key)
@@ -16641,18 +16643,13 @@ function FOURTH.blob_pick_large(unit, m, r, key)
 	return best, bv, bg
 end
 
--- ROUND 151: the hold - a visible large enemy ANYWHERE that this cast would take more value from than the best
--- infantry target now
-function FOURTH.blob_large_hold(m, key, inf_value)
-	local dmg = key and FOURTH.BLOB_DMG[key]
-	for i = 1, #m.large do
-		local e = m.large[i]
-		if FOURTH.blob_ap_ok(e, dmg) then
-			local v = FOURTH.blob_large_value(e, key)
-			if v ~= nil and v > inf_value then return true, e end
-		end
-	end
-	return false, nil
+-- ROUND 152 (user ruling 2026-11-15): the whole-map hold is GONE ("let's do not hold for a large unit in the
+-- whole map") - in the round-151 battle it kept every breath silent all fight.
+
+-- ROUND 152 ("Large first, skip fliers"): a large target must read is_currently_flying() exactly false
+function FOURTH.blob_not_flying(u)
+	local ok, fly = pcall(function() return u:is_currently_flying() end)
+	return ok and fly == false
 end
 
 -- ROUND 151: the game's own usage rules - grounded (the caster must be flying) and engaged_in_melee
@@ -16695,6 +16692,7 @@ function FOURTH.blob_still_ok(enemy, unit)
 				local reach = r + FOURTH.BLOB_MARGIN_M
 				local g = FOURTH.blob_friend_gap(e, m, reach)
 				if g ~= nil and g <= reach then return false end
+				if not FOURTH.blob_not_flying(e.unit) then return false end   -- ROUND 152
 				return FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key])
 			end
 		end
@@ -16744,7 +16742,6 @@ function FOURTH.evaluate_enemy_blob(unit, routing)
 		local sc, un, gap, val
 		tgt, sc, un, gap, val = FOURTH.blob_pick(unit, m, r, key)
 		if tgt == nil or sc < FOURTH.blob_need(r) then return false end
-		if central and FOURTH.blob_large_hold(m, key, val or 0) then return false end
 		kind = "infantry"
 	end
 	FOURTH.blob_r = r
@@ -16828,6 +16825,7 @@ FOURTH.DEFAULT_ON_TRIGGERS = {
 	ally_heal = true,
 	health_aura_ground = true,
 	ally_ammo_low = true,
+	tired = true,   -- ROUND 152 (user ruling 2026-11-15: "Foe-Seeker + tired")
 	self_out_of_ammo = true,
 }
 
@@ -18937,7 +18935,9 @@ end
 -- otherwise all are armed.
 -- ============================================================================
 FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
-FOURTH.ALL_DX = -48          -- left of the wheel's left slot (WHEEL_SLOT[6]), in the ability badges' offset frame
+-- ROUND 152: the user's screenshot (2026-11-15) - below the portrait, right of the camera button. The offset was
+-- calibrated from the top-slot badge (-865,-209) and the bottom-right-slot badge (-799,-37) in that screenshot.
+FOURTH.ALL_OX, FOURTH.ALL_OY = -880, 8
 FOURTH.all_state = { badge = nil, attempts = 0, shown = false }
 
 function FOURTH.all_badge_tick()
@@ -18963,8 +18963,7 @@ function FOURTH.all_badge_tick()
 			if not ok_text then error("SetText raised", 0) end
 			st.badge:SetVisible(false)
 			st.badge:SetDockingPoint(8)
-			local slot = WHEEL_SLOT[6]
-			st.badge:SetDockOffset(BADGE_X + (slot[1] - WHEEL_TOP_X) + FOURTH.ALL_DX, BADGE_Y + (slot[2] - WHEEL_TOP_Y))
+			st.badge:SetDockOffset(FOURTH.ALL_OX, FOURTH.ALL_OY)
 			badge_parent:Layout()
 		end)
 		if not ok then

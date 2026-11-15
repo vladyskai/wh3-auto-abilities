@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `929621699dcf172b415c2e27d20c4a78`, 1,584,781 bytes
-  (round 151, 2026-11-14: large first + hold, usage rules, breaths at 90 degrees, 432 abilities armed by default, ALL badge). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `0cc4a722865e4b5514e4716c9813b232`, 1,584,500 bytes
+  (round 152, 2026-11-15: no whole-map hold, no flying large targets, 90 degrees for 53 central attacks, ALL badge on screen). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,8 +140,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 151): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
-Wheel audit (workbook v39): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 854 implemented,
+Current roster (round 152): 799 ABILITIES entries / 854 ability keys / 75 trigger evaluator families.
+Wheel audit (workbook v40): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 854 implemented,
 269 not implemented among the included (27 of them skipped by user decision). Open (never decided): 68
 (the 33 non-exploding group B attacks, Dead Eye and Focused Shot, group E).
 
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261114_large_defaults_harness150/build_and_install151.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_no_hold_harness151/build_and_install152.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness150: 6,423 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness151: 6,446 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -277,6 +277,8 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   Every automated enemy-targeted ability honours its rule since round 138 (siege-platform flags not modelled).
 - Enemy ammo_left() (round 138, Missile Mirror's enemy_missile_shooting) is UNPROVEN on enemies: fail-closed,
   one log line if unreadable.
+- The build's INSTALL step fails with WinError 32 while the game runs (the pack is locked): ask the user to close the
+  game; never kill it. The installed pack stays untouched (round 152).
 - Builder order (fixed 2026-11-09, `build_and_install135.py` onward): only the build output is cleared early; the
   installed pack is overwritten by the INSTALL step after every gate, so a refused build leaves it in place
   (proven by `tools\make_refusal_probe135.py`). Earlier builders deleted it first; never run one of those.
@@ -287,7 +289,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v39_2026-11-14.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v39.py`, verified by `tools\verify_xlsx_v39.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v40_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v40.py`, verified by `tools\verify_xlsx_v40.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -317,12 +319,13 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
-- ROUND 151 (2026-11-14): the 53 prefer_central_targets blob attacks hit a safe LARGE enemy first and HOLD while a
-  large enemy anywhere is worth more than the best infantry target (it can block them while that enemy fights our
-  units: watch it); the game's usage rules (12 grounded, 26 engaged_in_melee) are honoured; breaths prefer a side-on
-  target within 20% of the best value. 27 trigger families (432 entries) START ARMED; harness worlds that arm by
+- ROUNDS 151-152 (2026-11-14/15): the 53 prefer_central_targets blob attacks hit a safe, NON-FLYING large enemy in
+  range first; the whole-map hold is GONE (round 152: it silenced every breath all battle); the game's usage rules
+  (12 grounded, 26 engaged_in_melee) are honoured; all 53 central attacks (breaths included) prefer a side-on target
+  within 20% of the best value. 28 trigger families (434 entries, 'tired' added in round 152) START ARMED; harness worlds that arm by
   clicking need the TEST-ONLY global ZZ_AUTO_TEST_NO_DEFAULTS (load_world sets it unless W.defaults_on). The ALL
-  badge (zz_auto_badge_all, left of the wheel, position unverified in game) arms/disarms all of the selected units'
+  badge (zz_auto_badge_all; round 151 put it off-screen at (-1007,-105); round 152 at (-880, 8) from the user's
+  screenshot, still to be confirmed) arms/disarms all of the selected units'
   abilities; the mock counts it apart (W.all_badge_created). Main chunk is near Lua's 200-local limit (about 190):
   add new state as FOURTH fields or ability-entry fields, never new file-level locals.
 - WINDS OF MAGIC (round 150): the 21 pure winds abilities fire when ready (when_ready). The pool is NOT full at battle
@@ -344,7 +347,7 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   test needs the generated large set and not-flying too; dead units stay in both lists with men=0. The biggest
   blob was the enemy mobbing one of OUR units: any blob trigger needs the friendly check. Read a battle with
   tools\analyze_map_log.py <log> --from <offset>.
-- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 618,416,228): the
+- THE BLOB TRIGGER (round 146; rounds 150-151 = field rulings; awaiting a battle from byte 641,639,500): the
   target is the one whose blast destroys the most enemy VALUE (soldiers covered x share killed after armour vs hit
   points, generated tables BLOB_DMG / UNIT_DEF x live strategic_value per soldier); AP-heavy attacks (38) never target
   armour below 50; the caster must be standing (is_moving() false: an aimed cast STOPS a moving caster, field

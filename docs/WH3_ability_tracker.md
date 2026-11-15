@@ -7530,3 +7530,23 @@ target it.
 **Arithmetic.** No count change: 854 implemented / 269 not implemented (27 skipped); 799 entries / 854 keys; 75
 families. Harness 150: 6,423 checks / 0 failures, twice byte-identical; RED 14/14. Pack md5
 `929621699dcf172b415c2e27d20c4a78`.
+
+### 10.30 Round 152 - no whole-map hold, no flying large targets, 90 degrees for every central attack (2026-11-15)
+
+**Field (round 151, High Elves vs Vampire Counts, log from byte 618,416,228):**
+- "Start armed is working."
+- The whole-map HOLD kept all three breaths silent the whole battle ("a large enemy (Zombie Dragon) is worth more than
+  the best infantry target"); the mod never cast at the dragon.
+- The ALL badge was created but off-screen, at offset (-1007, -105).
+- Volley of High Arrows hit Grave Guard three times (value 152-239) through the value rule; the 90-degree rule did
+  not cover it then.
+
+**Rulings (2026-11-15).**
+- "let's do not hold for a large unit in the whole map" (breaths miss flying single entities).
+- "Large first, skip fliers".
+- 90 degrees: "All 53 central attacks".
+- Start armed: "Foe-Seeker + tired" (Foe-Seeker, Dazh's Song of Winter Sunlight).
+- The ALL badge: below the portrait, right of the camera button (the user's screenshot).
+
+**Arithmetic.** No count change; 28 families / 434 entries start armed. Harness 151: 6,446 checks / 0 failures, twice
+byte-identical; RED 10/10. Pack md5 `0cc4a722865e4b5514e4716c9813b232`.
