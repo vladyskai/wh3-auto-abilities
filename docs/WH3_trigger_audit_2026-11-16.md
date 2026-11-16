@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-16
 
-Every automated ability (918 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (946 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
