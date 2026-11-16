@@ -67,15 +67,26 @@ def battle_seen():
     return acc, "%d battle logs on this PC" % len(logs)
 
 
+def shut_by_rule(status):
+    """ROUND 161: shut by an old RULE, never ruled on by the user: a 2026-10-09 family decision, an 'auto:'
+    exclusion, or a collection-time 'unsuitable' skip."""
+    s = status.lower()
+    return "family decision" in s or "(auto:" in s or s.lstrip("`").startswith("skipped (unsuitable")
+
+
 def group_of(status):
     s = status.lower()
-    if s.startswith(("rejected", "skipped")) or "already rejected" in s or "family decision" in s:
+    if shut_by_rule(status):
+        return "open"
+    if s.startswith(("rejected", "skipped")) or "already rejected" in s:
         return "decided"
     return "open"
 
 
 def open_kind(status, key):
     s = status
+    if shut_by_rule(status):
+        return "R. Shut by an old rule (2026-10-09 families, auto, collection-time), never ruled on by the user"
     if key in ("wh2_dlc11_hero_abilities_more_powder", "wh3_dlc25_abilities_restock_gunnery_school",
                "wh3_dlc27_character_abilities_master_of_mists", "wh3_dlc27_character_abilities_master_of_mists_custom",
                "wh3_dlc25_item_abilities_ominous_powder", "wh3_dlc29_unit_abilities_of_warp_and_ruin"):

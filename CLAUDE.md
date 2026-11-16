@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `fa8c6d9f0c38ba1f6ed9bfd6e8b644df`, 1,639,315 bytes
-  (round 160, 2026-11-16: the Beastmen-battle fixes: when_ready skips routing units; instant abilities hold one poll). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `45cc23e8c2edac364057b461f390fad0`, 1,639,421 bytes
+  (round 161, 2026-11-16: the 14 ally melee buffs start armed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,8 +142,9 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
 
 Current roster (round 159): 860 ABILITIES entries / 917 ability keys / 88 trigger evaluator families.
 Wheel audit (workbook v45): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 917 implemented,
-206 not implemented among the included (32 of them skipped by user decision). Open (never decided): 0
-(group E closed in round 159; every in-wheel ability is now automated or decided).
+206 not implemented among the included: 61 decided by the user, 145 OPEN = shut by an old RULE (the 2026-10-09
+family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
+A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
 
 ## 3. BUILD AND INSTALL
 
@@ -152,7 +153,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_beastmen_fixes_harness159/build_and_install160.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_ally_buffs_armed_harness160/build_and_install161.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +183,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness159: 6,779 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness160: 6,794 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -320,6 +321,13 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 161 (2026-11-16, tuning, from the Bretonnia battle at log bytes 704,611,726-735,692,926, archived as
+  archive\logs\battle_20261116_r160_bretonnia.txt): ally_melee_buff (14) joins FOURTH.DEFAULT_ON_TRIGGERS ("Whole
+  family"); the builder's round-151 gate pins the exact default-armed family set (now 29). Field: round 160's one-poll
+  rule CONFIRMED (10 instant pairs, every first cast's retry refused 'on cooldown'). NEXT: the 34 wandering winds
+  (Wrath of Manann first seen uncovered), user choice 2026-11-16; then the other rule-shut groups (28 placed areas,
+  28 FF breaths, 19 own-troop auras, 22 collection-time skips, 7 flanking, 5 mutual exclusivity, 2 bombardment)
+  and the user's own 9 'skipped (revisit)'. Next battle from byte 735,692,926.
 - ROUND 160 (2026-11-16, tuning, from the Beastmen battle at log bytes 689,926,854-704,611,726, archived as
   archive\logs\battle_20261116_r159.txt): when_ready skips a ROUTING unit (Jagged Dagger was 'accepted' 6 times in
   11 s while its shaman fled); the per-unit serialisation window is ONE poll (FOURTH.SERIAL_INSTANT_HOLD_SECONDS) for

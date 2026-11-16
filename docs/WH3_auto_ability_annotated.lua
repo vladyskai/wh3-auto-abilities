@@ -17223,6 +17223,7 @@ FOURTH.DEFAULT_ON_TRIGGERS = {
 	ally_ammo_low = true,
 	tired = true,   -- ROUND 152 (user ruling 2026-11-15: "Foe-Seeker + tired")
 	self_out_of_ammo = true,
+	ally_melee_buff = true,   -- ROUND 161 (user ruling 2026-11-16: the 14 ally melee buffs, "Whole family")
 }
 
 -- the armed state of a (unit slot, marker) pair: the explicit switch, else the family default

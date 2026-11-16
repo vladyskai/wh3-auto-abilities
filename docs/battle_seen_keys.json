@@ -60,6 +60,7 @@
 "wh2_dlc14_lord_abilities_tzarkan",
 "wh2_dlc14_lord_abilities_tzarkan_mp",
 "wh2_dlc14_lord_abilities_whiplash",
+"wh2_dlc14_weapon_abilities_sword_of_lyonesse",
 "wh2_dlc15_character_abilities_burp_of_grom_0",
 "wh2_dlc15_character_abilities_sausage_busta",
 "wh2_dlc15_character_abilities_slimy_smoothie",
@@ -310,6 +311,8 @@
 "wh_dlc06_unit_abilities_the_loons_of_eight_peaks",
 "wh_dlc07_character_abilities_heroic_killing_blow",
 "wh_dlc07_hero_abilities_dolorous_blade",
+"wh_dlc07_item_abilities_chalice_of_potions",
+"wh_dlc07_lord_abilities_favour_of_the_fay",
 "wh_dlc08_item_abilities_ancient_frost_wyrm_scale",
 "wh_dlc08_item_abilities_terrorgheist_skull",
 "wh_main_character_abilities_blood_lust",
@@ -331,6 +334,7 @@
 "wh_main_item_abilities_forbidden_rod",
 "wh_main_item_abilities_opal_amulet",
 "wh_main_item_abilities_pendant_of_slaanesh",
+"wh_main_item_abilities_potion_of_foolhardiness",
 "wh_main_item_abilities_potion_of_healing",
 "wh_main_item_abilities_potion_of_speed",
 "wh_main_item_abilities_potion_of_strength",
@@ -359,6 +363,7 @@
 "wh_main_weapon_abilities_runefang",
 "wh_main_weapon_abilities_sword_of_anti_heroes",
 "wh_main_weapon_abilities_the_hammer_of_karak_drazh",
+"wh_main_weapon_abilities_the_sword_of_couronne",
 "wh_main_weapon_abilities_tormentor_sword",
 "wh_pro01_lord_abilities_flash_bomb",
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
@@ -366,6 +371,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 174,
+"logs_read": 175,
 "made": "2026-11-16"
 }

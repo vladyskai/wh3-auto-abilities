@@ -7707,3 +7707,17 @@ its Bray-Shaman fled; Potion of Speed lost the charge to the Wargor's Deadly Ons
 **Change:** `when_ready` skips a routing unit; an entry with no wind-up holds its unit for one poll (0.25 s), entries with
 a wind-up keep wind-up + 2 s (min 2.5 s). No roster change. Harness 159: 6,779 checks / 0 failures twice, RED 4/4. Pack
 md5 `fa8c6d9f0c38ba1f6ed9bfd6e8b644df`.
+
+### 10.39 Round 161 - the ally melee buffs start armed (2026-11-16)
+
+**Field (Bretonnia battle, log bytes 704,611,726 to 735,692,926):** no errors; round 160's one-poll rule confirmed (10
+back-to-back instant pairs, every first cast's retry refused "on cooldown"); Wrath of Manann the only uncovered non-spell
+wheel ability.
+
+**Rulings (user, 2026-11-16):** the 14 `ally_melee_buff` abilities start armed ("Whole family"); propose the 34 wandering
+winds first.
+
+**Correction:** 145 in-wheel abilities were shut by a RULE (the 2026-10-09 family decisions, `auto:` exclusions,
+collection-time "unsuitable" skips), never by the user one by one. The progress page now shows them as open; round 159's
+"0 open" counted them as decided. Harness 160: 6,794 checks / 0 failures twice, RED 4/4. Pack md5
+`45cc23e8c2edac364057b461f390fad0`.
