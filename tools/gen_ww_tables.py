@@ -28,7 +28,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gamedata_paths as GP  # noqa: E402
 import gen_vortex_tables as GV  # noqa: E402
 
-FAMILIES = ("enemy_wave", "enemy_wander")
+FAMILIES = ("enemy_wave", "enemy_wander",
+            "enemy_strike", "ally_blast")   # ROUND 163: Siegebreaker (kind 4), Arcane Vassal (its radius)
 RUNS = 4000
 
 
@@ -80,25 +81,57 @@ def drift95(v, key, wave):
     return best
 
 
+def bombardment(usa_row):
+    """ROUND 163: an ability's bombardment reach and friendly fire: (radius_spread + the projectile's blast radius,
+    hits_allies), or None when it has no bombardment. projectile_bombardments -> projectiles -> projectiles_explosions."""
+    b = usa_row.get("bombardment", "")
+    if not b:
+        return None
+    bomb = {r["bombardment_key"]: r for r in tsv("projectile_bombardments.tsv")}[b]
+    prj = {r["key"]: r for r in tsv("projectiles.tsv")}[bomb["projectile_type"]]
+    exp = {r["key"]: r for r in tsv("projectiles_explosions.tsv")}.get(prj.get("explosion_type", ""), {})
+    reach = float(bomb["radius_spread"] or 0) + float(exp.get("detonation_radius") or 0)
+    allies = 1 if (prj.get("can_damage_allies") == "true" or exp.get("affects_allies") == "true") else 0
+    return reach, allies
+
+
 def derive(key_fams):
     usa = {r["key"]: r for r in tsv("unit_spec_abil.tsv")}
     vx = {r["vortex_key"]: r for r in tsv("battle_vortexs.tsv")}
     out = {}
     for k, fam in sorted(key_fams.items()):
         rows = GV.chain(vx, usa[k]["vortex"])
-        assert rows, "%s has no vortex" % k
-        v = rows[0]
+        bomb = bombardment(usa[k])
+        assert rows or bomb, "%s has no vortex and no bombardment" % k
         wave = (fam == "enemy_wave")
-        # a wave must launch from the target's near edge; a wanderer may too (The Ruination of Cities: three spokes from
-        # the near edge, offset 0, no turn, so its buffer is its whole path)
-        assert (not wave) or v["launch_source"] == "target_near_edge", "%s: wave launched from %s" % (k, v["launch_source"])
-        r = max(max(float(x["start_radius"] or 0), float(x["goal_radius"] or 0)) for x in rows)
-        path = float(v["movement_speed"] or 0) * float(v["duration"] or 0)
-        off = float(v["launch_source_offset"] or 0)
-        buf = int(math.ceil(drift95(v, k, wave) - 1e-9))
-        allies = 1 if any(x["affects_allies"] == "true" for x in rows) else 0
-        kind = 1 if wave else (3 if v["launch_source"] == "target_near_edge" else 2)
+        if rows:
+            v = rows[0]
+            # a wave must launch from the target's near edge; a wanderer may too (The Ruination of Cities: three spokes
+            # from the near edge, offset 0, no turn, so its buffer is its whole path)
+            assert (not wave) or v["launch_source"] == "target_near_edge", "%s: wave launched from %s" % (k, v["launch_source"])
+            r = max(max(float(x["start_radius"] or 0), float(x["goal_radius"] or 0)) for x in rows)
+            path = float(v["movement_speed"] or 0) * float(v["duration"] or 0)
+            off = float(v["launch_source_offset"] or 0)
+            buf = int(math.ceil(drift95(v, k, wave) - 1e-9))
+            allies = 1 if any(x["affects_allies"] == "true" for x in rows) else 0
+            kind = 1 if wave else (3 if v["launch_source"] == "target_near_edge" else 2)
+        else:
+            assert not wave, k
+            r, path, off, buf, allies, kind = 0.0, 0.0, 0.0, 0, 0, 2
+        if bomb is not None:
+            # ROUND 163: a bombardment's own reach (Magma Storm: 60 m spread + 5 m blasts; Hell Hammer: a 14 m blast).
+            # A wave's corridor radius takes it; a static area or wanderer keeps its vortex radius for scoring the
+            # target and adds the extra reach to its safety buffer (with no vortex, the reach IS the radius).
+            if wave or not rows:
+                r = max(r, bomb[0])
+            else:
+                buf = max(buf, int(math.ceil(bomb[0] - r - 1e-9)))
+            allies = max(allies, bomb[1])
         ground = 1 if (usa[k]["target_enemies"] != "true" and usa[k]["target_ground"] == "true") else 0
+        if fam == "enemy_strike":
+            # ROUND 163: a single strike on the ground under a single-entity enemy (Siegebreaker: the game refuses it as a
+            # unit target unless the unit climbs, mans equipment or stands on a platform)
+            kind, ground = 4, 1
         out[k] = (kind, r, path, off, buf, allies, ground)
     return out
 

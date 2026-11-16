@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `5792ffbeaa36c6110448037d38314a06`, 1,663,291 bytes
-  (round 162, 2026-11-16: the wandering winds, 32 abilities on enemy_wave / enemy_wander). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `66cb4f7ca1ddde52d5af56937ec740d4`, 1,681,383 bytes
+  (round 163, 2026-11-16: the placed areas, 26 abilities; friendly-fire checks skip expendable / cheap units). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,9 +140,9 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 162): 892 ABILITIES entries / 949 ability keys / 90 trigger evaluator families.
-Wheel audit (workbook v46): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 949 implemented,
-174 not implemented among the included: 63 decided by the user, 111 OPEN = shut by an old RULE (the 2026-10-09
+Current roster (round 163): 918 ABILITIES entries / 975 ability keys / 92 trigger evaluator families.
+Wheel audit (workbook v47): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 975 implemented,
+148 not implemented among the included: 65 decided by the user, 83 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
 
@@ -153,7 +153,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_wandering_winds_harness161/build_and_install162.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_placed_areas_harness162/build_and_install163.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -183,7 +183,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness161: 6,833 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness162: 6,892 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -291,7 +291,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v46_2026-11-16.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v46.py`, verified by `tools\verify_xlsx_v46.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v47_2026-11-16.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v47.py`, verified by `tools\verify_xlsx_v47.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -321,6 +321,19 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 163 (2026-11-16): THE PLACED AREAS (the 2026-10-09 'placed / static area damage' RULE reopened) and the
+  EXPENDABLE UNITS. 22 on enemy_wander (7 instant blasts 'Like Dwellers Below', 14 lingering areas 'Same as the
+  blasts', Chain Lightning RoR); NEW ally_blast (Arcane Vassal: our unit with the most enemy value around it, cast on
+  it); NEW enemy_strike (Siegebreaker: the most valuable STANDING single enemy, ground cast, none of ours within 11 m;
+  as a unit target the game only accepts climbing / manning / platform units); Befuddlement on enemy_fast_near_ally
+  (user: 'charge only', 'Any fast enemy'); Winged Staff on enemy_area_drain; the Wrath & Ruin runes closed (shared
+  recharge 60/90 s locks the Runelord's other runes). gen_ww_tables now reads BOMBARDMENTS (projectile_bombardments
+  extracted): Magma Storm safety 75 m with its 20 m vortex scoring; Hell Hammer's corridor radius 14.1 m. EXPENDABLE
+  (user: 'Game's set + cheap undead'): blob_map leaves out of m.ours (the ONE list every friendly-fire check reads)
+  our units with the game's 'expendable' attribute (GENERATED FOURTH.EXPENDABLE_TEXT, tools\gen_expendable_keys.py,
+  48) and those below TRASH_VPS per soldier. Lesson: name EVERY stat an ability changes in the proposal (the audit
+  caught Smednir's x0.4 speed; ruled 'Keep the blast rule'). Workbook prose slip: v46 says 172 not implemented, the
+  right figure is 174 (its cell); recorded in v47.
 - ROUND 162 (2026-11-16): THE WANDERING WINDS (the 2026-10-09 'vortex / wandering wind' family RULE reopened).
   NEW enemy_wave (12 straight waves) and enemy_wander (15 wanderers, Ruination of Cities, Dwellers Below x2, Heaven's
   Gate, Abyssal Swarm): the caster AND THE TARGET standing still (user: 3-5 s casts, a moving target leaves the
@@ -335,7 +348,7 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   archive\logs\battle_20261116_r160_bretonnia.txt): ally_melee_buff (14) joins FOURTH.DEFAULT_ON_TRIGGERS ("Whole
   family"); the builder's round-151 gate pins the exact default-armed family set (now 29). Field: round 160's one-poll
   rule CONFIRMED (10 instant pairs, every first cast's retry refused 'on cooldown'). The wandering winds were done in
-  round 162; still rule-shut: 28 placed areas, 28 FF breaths, 19 own-troop auras, 22 collection-time skips, 7
+  round 162, the placed areas in 163; still rule-shut: 28 FF breaths, 19 own-troop auras, 22 collection-time skips, 7
   flanking, 5 mutual exclusivity, 2 bombardment; plus the user's own 9 'skipped (revisit)'. Next battle from byte
   735,692,926.
 - ROUND 160 (2026-11-16, tuning, from the Beastmen battle at log bytes 689,926,854-704,611,726, archived as

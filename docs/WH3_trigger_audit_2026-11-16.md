@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-16
 
-Every automated ability (892 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (918 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -53,6 +53,7 @@ None.
 | Fecund Rebirth | `mark_of_the_monster` | `enemy_engaged_or_shot` | round 135: 'Keep as is' (large single-entity filter) |
 | Hunter of Champions | `hunter_of_champions` | `enemy_engaged_or_shot` | round 123: 'Hunter of champions is okay for enemy_engaged_or_shot' |
 | Looming Dread | `looming_dread` | `enemy_engaged_or_shot` | round 135: 'Keep as is, but make sure the trigger filters for the enemy unit type' (Lord/Hero filter) |
+| The Hammer of Smednir | `hammer_of_smednir` | `enemy_wander` | round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, possibly the wielder's drawback; the 15 m blast decides the trigger) |
 
 ## R6: kept by the user's ruling (not candidates)
 

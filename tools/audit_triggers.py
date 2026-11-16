@@ -66,6 +66,8 @@ RULED["R6"] = {m: "round 137: kept (%s)" % why for m, why in (
     ("verminous_fury", "dedicated trigger, 'Keep all 5 for now'"))}
 RULED["R6"]["preyton_horns"] = ("round 158: 'Horns melee, Trance waver' (enemy_melee: our fighting units +8, the "
                                "enemy -8)")
+RULED["R4"]["hammer_of_smednir"] = ("round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, "
+                                    "possibly the wielder's drawback; the 15 m blast decides the trigger)")
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
                "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura"}
 
