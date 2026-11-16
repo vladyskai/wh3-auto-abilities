@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `45cc23e8c2edac364057b461f390fad0`, 1,639,421 bytes
-  (round 161, 2026-11-16: the 14 ally melee buffs start armed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `5792ffbeaa36c6110448037d38314a06`, 1,663,291 bytes
+  (round 162, 2026-11-16: the wandering winds, 32 abilities on enemy_wave / enemy_wander). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -140,9 +140,9 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 159): 860 ABILITIES entries / 917 ability keys / 88 trigger evaluator families.
-Wheel audit (workbook v45): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 917 implemented,
-206 not implemented among the included: 61 decided by the user, 145 OPEN = shut by an old RULE (the 2026-10-09
+Current roster (round 162): 892 ABILITIES entries / 949 ability keys / 90 trigger evaluator families.
+Wheel audit (workbook v46): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 949 implemented,
+174 not implemented among the included: 63 decided by the user, 111 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
 
@@ -153,7 +153,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_ally_buffs_armed_harness160/build_and_install161.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_wandering_winds_harness161/build_and_install162.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -183,7 +183,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness160: 6,794 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness161: 6,833 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -245,7 +245,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   derived data (ranges, uses, wind-ups, reload table) BEFORE any other work.
 - Claude cannot click in Warhammer III (2026-11-08): screenshots, mouse movement and keys work, clicks
   are ignored (plain and SendInput modifier clicks). The user builds and fights the QA battle.
-- Inline Python in a bash heredoc turns Windows paths like `ound132` into escape characters. Put any
+- Inline Python in a bash heredoc turns Windows paths like `\round132` into escape characters. Put any
   generator with Windows paths in a FILE with raw strings (it broke the round-133 builder once). Round 158 again:
   a heredoc turned `\b` into a backspace byte and `\n` into a real newline. Write generators with the Write tool.
 - QA battles (docs\WH3_QA_army_list_2026-11-09.md): read a battle by cutting the log from its byte offset before
@@ -291,7 +291,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | File | Role |
 |---|---|
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
-| `docs\WH3_abilities_master_v45_2026-11-15.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v45.py`, verified by `tools\verify_xlsx_v45.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v46_2026-11-16.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v46.py`, verified by `tools\verify_xlsx_v46.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -321,13 +321,23 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 162 (2026-11-16): THE WANDERING WINDS (the 2026-10-09 'vortex / wandering wind' family RULE reopened).
+  NEW enemy_wave (12 straight waves) and enemy_wander (15 wanderers, Ruination of Cities, Dwellers Below x2, Heaven's
+  Gate, Abyssal Swarm): the caster AND THE TARGET standing still (user: 3-5 s casts, a moving target leaves the
+  computed path); waves pick the most enemy value on the path (offset 24 m + target half extent before it, speed x
+  duration long, caster-to-target heading) with none of ours within radius + 10 m at its start widening to radius +
+  95% drift + 10 m at its end; wanderers ride the blob rule with none of ours within radius + 95% reach + 10 m (none
+  when the vortex cannot hit allies). GENERATED FOURTH.WW_TEXT (tools\gen_ww_tables.py: 4,000 simulated paths per
+  reading of change_max_angle, the wider reading, fixed seeds; user: 'Simulated 95%', 'low randomness, lower
+  buffer'). Closed: Gehenna's Golden Globe, Wall of Wind & Fire (heading unknown). The round-118 dead-symbol token
+  'dwell' became ' dwell' (the key the_dwellers_below). Unchecked: the wave heading, the turn field's meaning.
 - ROUND 161 (2026-11-16, tuning, from the Bretonnia battle at log bytes 704,611,726-735,692,926, archived as
   archive\logs\battle_20261116_r160_bretonnia.txt): ally_melee_buff (14) joins FOURTH.DEFAULT_ON_TRIGGERS ("Whole
   family"); the builder's round-151 gate pins the exact default-armed family set (now 29). Field: round 160's one-poll
-  rule CONFIRMED (10 instant pairs, every first cast's retry refused 'on cooldown'). NEXT: the 34 wandering winds
-  (Wrath of Manann first seen uncovered), user choice 2026-11-16; then the other rule-shut groups (28 placed areas,
-  28 FF breaths, 19 own-troop auras, 22 collection-time skips, 7 flanking, 5 mutual exclusivity, 2 bombardment)
-  and the user's own 9 'skipped (revisit)'. Next battle from byte 735,692,926.
+  rule CONFIRMED (10 instant pairs, every first cast's retry refused 'on cooldown'). The wandering winds were done in
+  round 162; still rule-shut: 28 placed areas, 28 FF breaths, 19 own-troop auras, 22 collection-time skips, 7
+  flanking, 5 mutual exclusivity, 2 bombardment; plus the user's own 9 'skipped (revisit)'. Next battle from byte
+  735,692,926.
 - ROUND 160 (2026-11-16, tuning, from the Beastmen battle at log bytes 689,926,854-704,611,726, archived as
   archive\logs\battle_20261116_r159.txt): when_ready skips a ROUTING unit (Jagged Dagger was 'accepted' 6 times in
   11 s while its shaman fled); the per-unit serialisation window is ONE poll (FOURTH.SERIAL_INSTANT_HOLD_SECONDS) for

@@ -126,6 +126,7 @@
 "wh2_pro08_character_abilities_helping_hand",
 "wh2_pro08_weapon_abilities_karaghul",
 "wh2_pro08_weapon_abilities_rune_axe_of_gotrek",
+"wh3_cp1_item_abilities_heavens_gate",
 "wh3_cp1_weapon_abilities_blades_of_shang_yang",
 "wh3_cp1_weapon_abilities_tyrants_talon",
 "wh3_dlc20_cataclysm_bound_merciws_monstrous_regiment",
@@ -276,6 +277,7 @@
 "wh3_main_lord_abilities_virulent_contagion",
 "wh3_main_pro_character_abilities_heroic_killing_blow_1",
 "wh3_main_pro_character_abilities_heroic_killing_blow_2",
+"wh3_main_spell_bound_banishment",
 "wh3_main_spell_bound_earth_blood",
 "wh3_main_spell_bound_spirit_leech",
 "wh3_main_spell_bound_the_curse_of_anraheir",
@@ -312,9 +314,11 @@
 "wh_dlc07_character_abilities_heroic_killing_blow",
 "wh_dlc07_hero_abilities_dolorous_blade",
 "wh_dlc07_item_abilities_chalice_of_potions",
+"wh_dlc07_item_abilities_wrath_of_manann",
 "wh_dlc07_lord_abilities_favour_of_the_fay",
 "wh_dlc08_item_abilities_ancient_frost_wyrm_scale",
 "wh_dlc08_item_abilities_terrorgheist_skull",
+"wh_dlc08_lord_abilities_seafang",
 "wh_main_character_abilities_blood_lust",
 "wh_main_character_abilities_deadly_onslaught",
 "wh_main_character_abilities_foe_seeker",
@@ -371,6 +375,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 175,
+"logs_read": 176,
 "made": "2026-11-16"
 }
