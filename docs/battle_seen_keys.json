@@ -1,6 +1,7 @@
 {
 "accepted": [
 "wh2_dlc09_character_abilities_curse_of_djaf",
+"wh2_dlc09_character_abilities_curse_of_khsar",
 "wh2_dlc09_character_abilities_restore",
 "wh2_dlc09_character_abilities_stay_here_ill_get_help",
 "wh2_dlc09_character_abilities_strike_of_nagash",
@@ -146,6 +147,7 @@
 "wh3_dlc23_character_abilities_sword_dance",
 "wh3_dlc23_hero_abilities_crooked_dice",
 "wh3_dlc23_item_abilities_armour_of_gazrakh",
+"wh3_dlc23_item_abilities_daemon_flask_of_ashak",
 "wh3_dlc23_item_abilities_dweomer_leach_orb",
 "wh3_dlc23_lord_abilities_sadistic_snare",
 "wh3_dlc23_weapon_abilities_black_hammer_of_hashut",
@@ -389,6 +391,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 178,
+"logs_read": 179,
 "made": "2026-11-16"
 }

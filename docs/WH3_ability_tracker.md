@@ -7803,3 +7803,28 @@ ruling on these 28 abilities one by one. They are VORTEX breaths (the 77 project
 - **The mod:** 918 + 28 = **946 entries / 1,003 keys**; **95** families.
 - **Tests:** harness 163 full suite **6,947 checks / 0 failures**, run twice byte-identical. RED 16/16.
 - **Install:** pack md5 `b4ff0c03c8246166b426bb881c2012aa`.
+
+### 10.43 Round 165 - the night audit (2026-11-17)
+
+**Request (user, 2026-11-16, overnight):** check each ability's card note (necessary and sufficient), rank each trigger,
+check every game restriction ("if it only applies to flying units ... we should add the check"), and suggest features.
+Full report: `docs\WH3_overnight_audit_2026-11-17.md`; round document `docs\WH3_round165_night_audit.md`.
+
+**Changes (no trigger redesigned; every proposal waits for a ruling).**
+
+- **The card:** `FOURTH.TRIGGER_TIP` (round 93) was never shown. NEW `FOURTH.CARD_TIP` (95 corrected sentences) plus each
+  entry's own numbers and the game's restriction clauses become the hover tooltip of its M/A badge (946 cards; sheet Cards
+  of v49).
+- **The game's caster rules:** GENERATED `FOURTH.USAGE_TEXT` (60 keys). New in effect for Entice, Favoured by the
+  Matriarch, both Loons, Curse of Khsar, Curse of Djaf, Daemon Flask of Ashak, Feaster of Souls, Eye of the Storm and
+  Stay Here, I'll Get Help! (not while its caster fights).
+- **The game's ally target rules:** GENERATED `FOURTH.ATARGET_TEXT`. New in effect for Helping Hand (Lords and Heroes
+  only), Captain of the Phoenix Guard (never a Lord, Hero or large unit), Entrenchment (never a flying ally) and Whiplash!
+  (never a Lord or Hero).
+- **Defects fixed:**
+  - the 7 ground-only WW keys are now cast in the ground form;
+  - the two sweeps now have their 70% bounds (4 m and 2 m, not the 52 m default).
+
+**Arithmetic:** no roster change (1,003 rows / keys implemented, 120 not, 36 skipped; 946 entries / 95 families).
+Harness 164 full suite **7,004 checks / 0 failures**, run twice byte-identical; RED 20/20. Pack md5
+`df53a1b19192d4afecf132049cecb6e0`.
