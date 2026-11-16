@@ -7695,3 +7695,15 @@ vortex table (`gamedata\wh3\battle_vortexs.tsv`, extracted this round).
 - **The mod:** 834 + 26 = **860 entries / 917 keys**; **88** families.
 - **Tests:** harness 158 full suite **6,760 checks / 0 failures**, run twice byte-identical. RED 22/22.
 - **Install:** pack md5 `23b088aada7c4f68ab59601e6aabc1df`.
+
+### 10.38 Round 160 - the Beastmen-battle fixes (2026-11-16)
+
+**Field (Beastmen battle, log bytes 689,926,854 to 704,611,726):** no errors; 19 of 20 armed abilities fired; Bloodbeast
+fired twice with our nearest unit at 25.1 m and 25.9 m (ring 25 m). Jagged Dagger was "accepted" 6 times in 11 s while
+its Bray-Shaman fled; Potion of Speed lost the charge to the Wargor's Deadly Onslaught (2.5 s per-unit hold).
+
+**Ruling (user, 2026-11-16):** fix the fleeing casts, and instant abilities (no casting time) need no 2.5 s wait.
+
+**Change:** `when_ready` skips a routing unit; an entry with no wind-up holds its unit for one poll (0.25 s), entries with
+a wind-up keep wind-up + 2 s (min 2.5 s). No roster change. Harness 159: 6,779 checks / 0 failures twice, RED 4/4. Pack
+md5 `fa8c6d9f0c38ba1f6ed9bfd6e8b644df`.

@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `23b088aada7c4f68ab59601e6aabc1df`, 1,638,511 bytes
-  (round 159, 2026-11-15: group E, the last open abilities; open is now 0). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `fa8c6d9f0c38ba1f6ed9bfd6e8b644df`, 1,639,315 bytes
+  (round 160, 2026-11-16: the Beastmen-battle fixes: when_ready skips routing units; instant abilities hold one poll). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -152,7 +152,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261115_group_e_harness158/build_and_install159.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261116_beastmen_fixes_harness159/build_and_install160.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -182,7 +182,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness158: 6,760 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness159: 6,779 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -320,6 +320,14 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 160 (2026-11-16, tuning, from the Beastmen battle at log bytes 689,926,854-704,611,726, archived as
+  archive\logs\battle_20261116_r159.txt): when_ready skips a ROUTING unit (Jagged Dagger was 'accepted' 6 times in
+  11 s while its shaman fled); the per-unit serialisation window is ONE poll (FOURTH.SERIAL_INSTANT_HOLD_SECONDS) for
+  an entry with no wind-up in cast_gate.wind_up_s (= exactly the game's 258 keys with wind_up_time > 0; the build
+  regenerates and compares), and wind-up + 2 s (min 2.5 s) otherwise (user: instant abilities need no 2.5 s wait).
+  Watch next battle: an instant cast's own retry 2 s later must still be refused 'on cooldown' (ACCEPTED = it was
+  replaced). Bloodbeast (melee_clear) field-confirmed: fired at 25.1 m / 25.9 m clearance. Next battle from byte
+  704,611,726. Mock gotcha: Blood Lust's badge is the legacy zz_auto_badge_bl.
 - ROUND 159 (2026-11-15): GROUP E, the last open abilities (open is now 0). 13 safe self-centred blasts on
   melee_unwavering ("Like Bloodstorm"); 5 friendly-fire blasts on NEW melee_clear (in melee, none of our OTHER units
   within blast + 10 m of the caster); the Phoenix dives on NEW fly_dive (flying exactly true, an enemy within 70% of

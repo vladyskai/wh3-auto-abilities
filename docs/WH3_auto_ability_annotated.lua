@@ -6332,6 +6332,10 @@ FOURTH.RANGE_FRACTION = 0.70
 -- unit must wait after a cast before a DIFFERENT ability may be issued
 -- (the comment beside IN_FLIGHT_SETTLE_SECONDS states the why).
 FOURTH.SERIAL_MIN_HOLD_SECONDS = 2.5
+-- ROUND 160 (user ruling 2026-11-16): an INSTANT ability (no wind_up_time in any of its keys) holds the unit for
+-- ONE poll only - never two orders in the same tick (the engine replaces a same-tick order); the 2.5 s minimum
+-- above protects the abilities WITH a wind-up (the round-107 Moondial evidence: a 3 s wind-up was replaced)
+FOURTH.SERIAL_INSTANT_HOLD_SECONDS = POLL_MS / 1000
 
 
 -- ============================================================================
@@ -17161,6 +17165,8 @@ FOURTH.load_value_tables()
 
 -- ROUND 150: the Winds of Magic abilities fire whenever they are ready (no condition)
 function FOURTH.evaluate_when_ready(unit, routing)
+	-- ROUND 160: a routing unit cannot cast
+	if routing then return false end
 	return true
 end
 
@@ -18197,6 +18203,10 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 					local unit_hold_s = ((ability.wind_up_s or 0) + IN_FLIGHT_SETTLE_SECONDS)
 					if unit_hold_s < FOURTH.SERIAL_MIN_HOLD_SECONDS then
 						unit_hold_s = FOURTH.SERIAL_MIN_HOLD_SECONDS
+					end
+					-- ROUND 160: an instant ability (no wind-up) holds the unit for one poll only
+					if ability.wind_up_s == nil then
+						unit_hold_s = FOURTH.SERIAL_INSTANT_HOLD_SECONDS
 					end
 					cast_gate.unit_until[ui_id] = tick_count + math.floor((unit_hold_s * 1000) / POLL_MS)
 					cast_gate.unit_marker[ui_id] = ability.marker
