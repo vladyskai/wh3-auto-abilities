@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `89258fddf65a5ca819df984941cb7773`, 1,414,743 bytes
-  (round 168, 2026-11-17: the cast animation decides the stand-still rule; the older pickers skip hidden enemies). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c12c1eb107d4372b7fb343b1d61360a1`, 1,414,973 bytes
+  (round 169, 2026-11-17: every enemy read skips hidden enemies). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,7 +142,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 168): 946 ABILITIES entries / 1,003 ability keys / 95 trigger evaluator families.
+Current roster (round 169): 946 ABILITIES entries / 1,003 ability keys / 95 trigger evaluator families.
 Wheel audit (workbook v52): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
 120 not implemented among the included: 65 decided by the user, 55 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
@@ -155,7 +155,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261117_anim_visibility_harness167/build_and_install168.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261117_sensor_visibility_harness168/build_and_install169.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -185,7 +185,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness167: 7,082 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness168: 7,105 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -332,8 +332,8 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   only an animated cast waits for its caster (63 entries may now fire on the move: Fireball, Gaze of Malice, Wrath of
   Manann, the Banishments ...); target-still rules unchanged. VISIBILITY: FOURTH.enemy_not_hidden (only an exact false
   from is_visible_to_alliance blocks; unreadable passes) first in eg_class_ok (every picker + the pre-cast re-check)
-  and in the non-commander picker. NOT covered (told the user, offered): the air drop's underfoot read and the
-  Farsight / Mist 'just beyond range' read still sense hidden enemies. Next battle from byte 781,091,240: watch a
+  and in the non-commander picker. ROUND 169 (user: 'Yes, those too'): the air drop, the Farsight / Mist read and the
+  contact set skip hidden enemies too: EVERY decision ignores an enemy we cannot see (the map probe only logs). Next battle from byte 781,091,240: watch a
   non-animated blast cast on the move and a wave's heading after a moving wind-up.
 - ROUND 167 (2026-11-17, after the Dark Elves battle, archive\logs\battle_20261117_r166_darkelves.txt, bytes
   760,068,621-781,091,240: 87 casts, 0 errors). User: NO FINAL PERIOD on a one-sentence tooltip (the card and the ALL

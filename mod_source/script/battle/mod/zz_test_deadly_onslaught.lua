@@ -13742,6 +13742,7 @@ function FOURTH.engagement_set(unit)
 				if ok_gap and type(g) == "number" then gap = g end
 				if ok_alive and type(alive) == "number" and alive > 0
 					and ok_melee and melee == true
+					and FOURTH.enemy_not_hidden(enemy)   -- ROUND 169: never a hidden enemy
 					and (gap == nil or gap <= FOURTH.ENGAGE_CONTACT_M) then
 					local etype = FOURTH.type_plain(enemy) or "enemy"
 					local cmdr = FOURTH.enemy_is_commander(enemy)
@@ -14071,7 +14072,8 @@ function FOURTH.ad_nearest(unit)
 			pcall(function() enemy = su.unit end)
 			if enemy ~= nil then
 				local ok_alive, alive = pcall(function() return enemy:number_of_men_alive() end)
-				if ok_alive and type(alive) == "number" and alive > FOURTH.AIR_DROP_MIN_MEN then
+				if ok_alive and type(alive) == "number" and alive > FOURTH.AIR_DROP_MIN_MEN
+					and FOURTH.enemy_not_hidden(enemy) then   -- ROUND 169: never a hidden enemy
 					local d = FOURTH.ad_centre_gap(unit, enemy)
 					if d ~= nil and (best_d == nil or d < best_d) then
 						best, best_d, best_men = enemy, d, alive
@@ -14307,7 +14309,8 @@ function FOURTH.nearest_enemy_gap(unit, inner)
 		if enemy ~= nil then
 			local ok_a, alive = pcall(function() return enemy:number_of_men_alive() end)
 			local ok_g, gap = pcall(function() return unit:unit_distance(enemy) end)
-			if ok_a and type(alive) == "number" and alive > 0 and ok_g and type(gap) == "number" and gap >= 0 then
+			if ok_a and type(alive) == "number" and alive > 0 and ok_g and type(gap) == "number" and gap >= 0
+				and FOURTH.enemy_not_hidden(enemy) then   -- ROUND 169: never a hidden enemy
 				if best == nil or gap < best then best = gap end
 				if gap <= inner then any_inner = true end
 			end

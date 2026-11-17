@@ -7902,3 +7902,12 @@ casts accepted on 35 abilities, 0 script errors.
 
 **Arithmetic:** no roster change. Harness 167 full suite **7,082 checks / 0 failures**, run twice byte-identical; RED
 16/16. Pack md5 `89258fddf65a5ca819df984941cb7773`.
+
+### 10.47 Round 169 - every enemy read skips hidden enemies (2026-11-17)
+
+**Ruling (user, 2026-11-17):** "Yes, those too; I don't see the reason you kept them different." The air drop
+(`ad_nearest`), the Farsight / Mist read (`nearest_enemy_gap`) and the contact set (`engagement_set`) now skip an enemy
+the game reads as not visible. Round document `docs\WH3_round169_sensor_visibility.md`.
+
+**Arithmetic:** no roster change; workbook stays v52. Harness 168 full suite **7,105 checks / 0 failures**, run twice
+byte-identical; RED 10/10. Pack md5 `c12c1eb107d4372b7fb343b1d61360a1`.
