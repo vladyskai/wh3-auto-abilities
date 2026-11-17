@@ -46,49 +46,49 @@ is the 5/5 for that ability."
 
 | # | Ability | Every effect (game data) | Now | Proposed trigger (5/5 for this ability) | Score after |
 |---|---|---|---|---|---|
-| 1 | Horn of the Wild Hunt | charge bonus x1.6, caster AND whole army, 24 s; recharge 120 s; unlimited | in melee | **ARMY CHARGE:** fires when at least 3 of our units are in their charge window or in fresh contact (reads A + B + C). Any range, since the buff is army-wide. Tracker: "skipped ... charge-only" at collection time (an old rule, never your decision). | 5 |
+| 1 | Horn of the Wild Hunt (**BUILT round 171**) | charge bonus x1.6, caster AND whole army, 24 s; recharge 120 s; unlimited | in melee | **ARMY CHARGE** (**RULED 2026-11-17**): fires when at least N of our units are in their charge window or in fresh contact (reads A + B + C), N = 3, or every living unit of ours when the army has fewer than 3. Any range, since the buff is army-wide. User: "waiting for the perfect moment to use the ability is often less beneficial than just using the ability the moment it is useful". Tracker: "skipped ... charge-only" at collection time (an old rule, never your decision). | 5 |
 | 2 | Potion of Foolhardiness (**RULED 2026-11-17: 'Charge or wavering'; built in round 170**) | caster only: charge bonus x1.4 + Unbreakable, 31 s; ONE use | in melee | **`charge_or_wavering`** (exists): on its own charge (charge bonus), or when it wavers (Unbreakable saves it from breaking). | 5 |
-| 3 | Ursun's Roar (`wh3_main_character_abilities_ursuns_roar` only) | charge bonus x1.36 + leadership +8, caster and allies within 35 m, **9 s**; recharge 60 s | in melee | **AURA CHARGE:** fires when the caster, or at least 2 units within 24 m (70% of 35), are in their charge window or fresh contact. Needs its own entry: the other 3 keys of the entry are melee-attack buffs and stay in melee. | 5 |
-| 4 | Red Fury | charge bonus x1.2 + AP damage x1.25, ONE unit (the caster or an ally within 100 m), 31 s; recharge 90 s | in melee, on self | **ALLY CHARGE OR MELEE:** on the caster or the nearest ally within 70 m in its charge window. Else on the caster in fresh contact. Else on the caster in melee (the AP damage still pays for 31 s). | 5 |
-| 5 | Waaagh! (`wh_main_character_abilities_waaagh` only) | speed x1.25, charge bonus x1.2, melee attack +20, caster AND whole army, 30 s; recharge 90 s | in melee | **ARMY CHARGE**, as Horn. The speed brings the army in faster; +20 melee attack pays the 30 s after. Your questionnaire answer (2026-10-08, the in-melee list) predates rule 10; please confirm. The other key (`waaagh_in_combat`: melee attack and damage, self) stays in melee. | 5 |
-| 6 | The Rock of Inevitability | enemies within 35 m: speed x0.75, charge speed x0.75, melee defence -26, 22 s; recharge 90 s | in melee | **SLOW AURA:** fires when the caster is in melee, or a fast enemy (read H) is within 24 m and closing. The defence cut pays in melee; the charge-speed cut pays on an enemy charge. Rule 10 territory. | 5 |
-| 7 | The Wissenland Runefang | enemies within 35 m: speed x0.55, 29 s; recharge 120 s | in melee | **SLOW AURA**, as the Rock (rule 10: "Enemy speed reductions fire in melee or on the charge"). Tracker: "skipped ... movement" at collection time (an old rule). | 5 |
+| 3 | Ursun's Roar (`wh3_main_character_abilities_ursuns_roar` only) (**BUILT round 171**) | charge bonus x1.36 + leadership +8, caster and allies within 35 m, **9 s**; recharge 60 s | in melee | **AURA CHARGE OR WAVERING** (**RULED 2026-11-17**: "Agreed, and include the wavering"): fires when at least 1 unit (the caster included, or any ally within 24 m = 70% of 35) is in its charge window or fresh contact (charge bonus), or is wavering (leadership +8). Needs its own entry: the other 3 keys of the entry are melee-attack buffs and stay in melee. | 5 |
+| 4 | Red Fury (**BUILT round 171**) | charge bonus x1.2 + AP damage x1.25, ONE unit (the caster or an ally within 100 m), 31 s; recharge 90 s | in melee, on self | **ALLY CHARGE OR MELEE:** on the caster or the nearest ally within 70 m in its charge window. Else on the caster in fresh contact. Else on the caster in melee (the AP damage still pays for 31 s). | 5 |
+| 5 | Waaagh! (`wh_main_character_abilities_waaagh` only) (**BUILT round 171**) | speed x1.25, charge bonus x1.2, melee attack +20, caster AND whole army, 30 s; recharge 90 s | in melee | **ARMY CHARGE OR ARMY MELEE** (**RULED 2026-11-17**): fires when at least N of our units are in their charge window or fresh contact (speed, charge bonus and melee attack all pay), or at least N are in melee (the +20 melee attack pays in any fight, charge or not). N = 3, or every living unit of ours when the army has fewer than 3. Replaces the 2026-10-08 questionnaire answer (in melee). The other key (`waaagh_in_combat`: melee attack and damage, self) stays in melee. | 5 |
+| 6 | The Rock of Inevitability (**BUILT round 171**) | enemies within 35 m: speed x0.75, charge speed x0.75, melee defence -26, 22 s; recharge 90 s | in melee | **SLOW AURA:** fires when the caster is in melee, or a fast enemy (read H) is within 24 m and closing. The defence cut pays in melee; the charge-speed cut pays on an enemy charge. Rule 10 territory. | 5 |
+| 7 | The Wissenland Runefang (**BUILT round 171**) | enemies within 35 m: speed x0.55, 29 s; recharge 120 s | in melee | **SLOW AURA**, as the Rock (rule 10: "Enemy speed reductions fire in melee or on the charge"). Tracker: "skipped ... movement" at collection time (an old rule). | 5 |
 
 ## 2. Winds of Magic, miscast and spell power items
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 8 | Black Staff | winds recharge +80%, winds reserve rule x0.7; **33 damage per second to the target for 20 s (660)**; one unit (the caster or an ally within 200 m); 3 uses | in melee | **WINDS LOW:** fires when the winds pool is below 30 and the reserve is at least 20 (read D), on the caster while it is above 50% health. It starts on M since round 167 (self-damage). | 5 |
-| 9 | Forbidden Rod | winds recharge +160%, reserve rule x0.2; **33 damage per second to the caster for 23 s (759)**; 3 uses | in melee | **WINDS LOW**, as Black Staff. | 5 |
-| 10 | Wand of Jet | winds recharge +80% and own abilities recharge 15 s faster, 57 s; recharge 60 s; unlimited uses | in melee | **`when_ready`:** it is up 57 s of every 117. Waiting for a low pool would lose more than it saves. | 5 |
-| 11 | Earthing Rod | miscast chance x0 for 36 s; ONE use | in melee | **Close it (no automation).** Your rule 10: "An effect that only helps before something else happens (... before a friendly spell) is not automated." Only you know when you will cast. | 5 (as a decision) |
-| 12 | Hagtree Fetish | miscast chance x0.25 for 29 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
-| 13 | Master of the Black Arts | spell mastery x1.6 for 15 s; recharge 90 s | in melee | **Close it**, as Earthing Rod: 15 s of spell power is wasted unless you cast in those 15 s. | 5 (as a decision) |
-| 14 | Maw Shard | spell mastery x1.6 for the caster and allies, 22 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
-| 15 | Power Familiar | spell mastery x1.2 for 22 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
+| 8 | Black Staff (**BUILT round 171**) | winds recharge +80%, winds reserve rule x0.7; **33 damage per second to the target for 20 s (660)**; one unit (the caster or an ally within 200 m); 3 uses | in melee | **WINDS LOW:** fires when the winds pool is below 30 and the reserve is at least 20 (read D), on the caster while it is above 50% health. It starts on M since round 167 (self-damage). | 5 |
+| 9 | Forbidden Rod (**BUILT round 171**) | winds recharge +160%, reserve rule x0.2; **33 damage per second to the caster for 23 s (759)**; 3 uses | in melee | **WINDS LOW**, as Black Staff. | 5 |
+| 10 | Wand of Jet (**BUILT round 171**) | winds recharge +80% and own abilities recharge 15 s faster, 57 s; recharge 60 s; unlimited uses | in melee | **`when_ready`:** it is up 57 s of every 117. Waiting for a low pool would lose more than it saves. | 5 |
+| 11 | Earthing Rod (**CLOSED round 171**) | miscast chance x0 for 36 s; ONE use | in melee | **Close it (no automation).** Your rule 10: "An effect that only helps before something else happens (... before a friendly spell) is not automated." Only you know when you will cast. | 5 (as a decision) |
+| 12 | Hagtree Fetish (**CLOSED round 171**) | miscast chance x0.25 for 29 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
+| 13 | Master of the Black Arts (**CLOSED round 171**) | spell mastery x1.6 for 15 s; recharge 90 s | in melee | **Close it**, as Earthing Rod: 15 s of spell power is wasted unless you cast in those 15 s. | 5 (as a decision) |
+| 14 | Maw Shard (**CLOSED round 171**) | spell mastery x1.6 for the caster and allies, 22 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
+| 15 | Power Familiar (**CLOSED round 171**) | spell mastery x1.2 for 22 s; ONE use | in melee | **Close it**, as Earthing Rod. | 5 (as a decision) |
 
 ## 3. Spotting and reveal
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 16 | Rock Eye | forest and scrub spotting x1.1, caster and army, 60 s; ONE use | in melee | **HIDDEN ENEMY:** fires when a living enemy reads not visible (read E). Note: the mod then acts on knowing a hidden unit exists, which you cannot see on screen. The alternative is `when_ready` at battle start. | 4 (+10% spotting is tiny whatever the moment) |
-| 17 | Watched by the Watcher | every enemy REVEALED for 60 s; 3 uses; recharge 120 s | in melee | **HIDDEN ENEMY** (read E), with the same note. | 5 |
+| 16 | Rock Eye (**OPEN: not a passive by the data (passive=false, source_type active, 1 use, 60 s); never cast in a battle**) | forest and scrub spotting x1.1, caster and army, 60 s; ONE use | in melee | **HIDDEN ENEMY:** fires when a living enemy reads not visible (read E). Note: the mod then acts on knowing a hidden unit exists, which you cannot see on screen. The alternative is `when_ready` at battle start. | 4 (+10% spotting is tiny whatever the moment) |
+| 17 | Watched by the Watcher (**CLOSED round 171 ('close (no actuation)')**) | every enemy REVEALED for 60 s; 3 uses; recharge 120 s | in melee | **HIDDEN ENEMY** (read E), with the same note. | 5 |
 
 ## 4. Wards against magic
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 18 | Null Stone | **every unit on BOTH sides** silenced and magical attacks removed, 35 s; 3 uses | in melee | **ENEMY MAGIC ONLY:** fires when a visible living enemy spellcaster exists (read F) and none of our units is a spellcaster. It silences our casters too. | 5 |
-| 19 | Sceptre of Stability | magic resistance +40, one unit (the caster or an ally within 100 m), 22 s; recharge 60 s | in melee | **ON THE UNIT UNDER FIRE:** on the caster or the most valuable ally within 70 m that is under missile fire while a visible enemy spellcaster (read F) is within 150 m of it. ASSUMPTION: magic missiles count as missile fire for `is_under_missile_attack`. | 4 (no read of an incoming spell) |
-| 20 | Locus of Abjuration | magic resistance +65, caster and allies within 55 m, 25 s; recharge 90 s | in melee | **AURA UNDER FIRE:** fires when the caster or an ally within 38 m is under missile fire while a visible enemy spellcaster is within 150 m. Same assumption. | 4 |
-| 21 | Necrotic Phylactery | magic resistance +15, immunity to enemy contact effects (poison, burning, ...), spreads to nearby allies, 18 s; ONE use | at or below 75% health | **IN MELEE, NOT WAVERING:** contact effects arrive with melee blows. A 5 would also need the list of enemy units with a contact effect (not extracted yet; feasible later). | 4 |
-| 22 | Focus Instincts | removes Rampage (Primal Instincts) from the caster and Lizardmen allies within 35 m, 40 s; recharge 90 s | in melee | **RAMPAGE RISK:** fires when a Primal-Instincts ally within 24 m (read G) is in melee and at or below 50% health, the game's own condition for the instinct. | 5 |
+| 18 | Null Stone (**OPEN: NOT multiplayer-only (ancillaries: mp_exclusive=false, randomly_dropped=true, High Elves)**) | **every unit on BOTH sides** silenced and magical attacks removed, 35 s; 3 uses | in melee | **ENEMY MAGIC ONLY:** fires when a visible living enemy spellcaster exists (read F) and none of our units is a spellcaster. It silences our casters too. | 5 |
+| 19 | Sceptre of Stability (**CLOSED round 171 ('no read against enemy magic')**) | magic resistance +40, one unit (the caster or an ally within 100 m), 22 s; recharge 60 s | in melee | **ON THE UNIT UNDER FIRE:** on the caster or the most valuable ally within 70 m that is under missile fire while a visible enemy spellcaster (read F) is within 150 m of it. ASSUMPTION: magic missiles count as missile fire for `is_under_missile_attack`. | 4 (no read of an incoming spell) |
+| 20 | Locus of Abjuration (**CLOSED round 171 ('no read against enemy magic')**) | magic resistance +65, caster and allies within 55 m, 25 s; recharge 90 s | in melee | **AURA UNDER FIRE:** fires when the caster or an ally within 38 m is under missile fire while a visible enemy spellcaster is within 150 m. Same assumption. | 4 |
+| 21 | Necrotic Phylactery (**BUILT round 171 (the contact list: 503 land units)**) | magic resistance +15, immunity to enemy contact effects (poison, burning, ...), spreads to nearby allies, 18 s; ONE use | at or below 75% health | **IN MELEE, NOT WAVERING:** contact effects arrive with melee blows. A 5 would also need the list of enemy units with a contact effect (not extracted yet; feasible later). | 4 |
+| 22 | Focus Instincts (**CLOSED round 171 (no read of a rampaging unit)**) | removes Rampage (Primal Instincts) from the caster and Lizardmen allies within 35 m, 40 s; recharge 90 s | in melee | **RAMPAGE RISK:** fires when a Primal-Instincts ally within 24 m (read G) is in melee and at or below 50% health, the game's own condition for the instinct. | 5 |
 
 ## 5. Enemy-targeted
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 23 | Executioner | 1 shot: 200 damage, 420 AP, +240 vs large; 3 uses; 5 s wind-up; range 250 m | blob (1 m blast) | **`enemy_single_shot`** (exists): the most valuable visible Lord, Hero or monster within 175 m, clear of allies. | 5 |
+| 23 | Executioner | 1 shot: 200 damage, 420 AP, +240 vs large; **damage x1 at full health rising to x4 at 1% health** (`projectiles_scaling_damages`: kill_shot, the user caught it 2026-11-17); 3 uses; 5 s wind-up; range 250 m | blob (1 m blast) | **FINISHER** (**RULED 2026-11-17**: "No need for a max-hit-points table, let's just rely on percentages ... All of them should have priority, if possible, for the entity with the lowest health percentage"): the visible single-entity enemy within 175 m with the LOWEST live health percentage, clear of allies; a tie goes to the most valuable. It fires whenever such a target exists (no health line). ASSUMPTION: the multiplier reads the target entity's own health. | 5 |
 | 24 | Amber Bow | 5 shots: 50 damage, 115 AP, +60 vs large, + a 30 / 65 AP burst; 2 uses | blob | **`enemy_large_shot`** (exists): the most valuable large enemy, else the most armoured infantry (the high AP suits armour). | 5 |
 | 25 | Gaze of Nagash | 5 bolts: 30 damage, 75 AP, +50 vs large; 3 uses | blob | **`enemy_large_shot`** (AP 75: armour fallback). | 5 |
 | 26 | Hand of Gods | 15 bolts: 20 damage, 50 AP, +33 vs large; 2 uses | blob | **LARGE, ELSE VALUE:** the most valuable large enemy, else the most valuable infantry per soldier. The armour fallback does not suit 50 AP. A small variant of `enemy_large_shot`. | 5 |
@@ -121,6 +121,20 @@ is the 5/5 for that ability."
 | 48 | Overseer of the Unseen | ONE ally (never a Lord or Hero, never large, never flying): melee attack +40, **Cannot Die**, Unbreakable, 35 s | the closest eligible ally, at once | **ALLY IN MELEE, AT RISK:** the most valuable eligible ally within 70 m that is in melee and wavering or at or below 50% health (Cannot Die and Unbreakable pay then). Your questionnaire answer: "in melee". | 5 |
 | 49 | Whiplash! | ONE beast ally (never a Lord or Hero): charge speed x1.25, charge bonus x1.2, melee damage x1.5, 21 s | the closest beast ally, at once | **BEAST CHARGE OR FRESH CONTACT:** the nearest beast ally within 70 m in its charge window, else in fresh contact. | 5 |
 | 50 | Iron-Handed Captain | ONE ally whose morale is BROKEN (the game's rule): leadership +100, **Force Rally**, 42 s; range 200 m | broken ally, but the shared picker skips routing units, so it probably never fires | **ROUTING ALLY:** the most valuable routing ally within 140 m. Force Rally exists to bring a routing unit back. The picker must stop skipping routing units for this entry (a defect). | 5 |
+
+## 7. FINISHERS (user ruling 2026-11-17)
+
+A finisher is an ability whose damage grows as its target's health falls. Ruling: "All of them should have priority,
+if possible, for the entity with the lowest health percentage", read from live percentages (no hit-point table).
+
+| Ability | The game's rule | Now | Finisher target |
+|---|---|---|---|
+| Executioner (`wh2_dlc13_lord_abilities_executioner`) | damage x1 at full health, rising to x4 at 1% (`projectiles_scaling_damages`: kill_shot) | blob (row 23) | the lowest-health-percentage single entity within 175 m, clear of allies |
+| Skjalandir's Fall (`wh3_dlc23_character_abilities_skjalandirs_fall`) | the same kill_shot scaling, x1 to x4 | `melee_or_shooting_into_melee` (round 130) | the lowest-health-percentage single entity within its 70% bound, clear of allies (it is a cast at an enemy, so its trigger becomes the finisher pick) |
+| The Emperor's Executioner, base and upgrade | executes at or below 20% / 33% health (`execute_ratio`) | `enemy_execute`: the most valuable target at or below the line | the same line, but the LOWEST health percentage first (the most valuable breaks a tie) |
+
+The Emperor's Executioner is a finisher by its effect (an execute), not by the scaling table. It is included because the
+ruling says "all of them".
 
 ## What I ask
 

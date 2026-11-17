@@ -44,7 +44,8 @@ MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",
                                           "enemy_fast_near_ally",  # round 135: the user's fast-enemy trigger
-                                          "enemy_melee_or_fast"}  # round 156: enemy in melee OR fast-closing (rule 10)
+                                          "enemy_melee_or_fast",  # round 156: enemy in melee OR fast-closing (rule 10)
+                                          "slow_aura"}  # round 171: the caster in melee OR a fast enemy entering the aura
 # Rows the user has explicitly ruled on for a rule: listed apart, never counted as candidates again.
 RULED = {"R4": {
     "hunter_of_champions": "round 123: 'Hunter of champions is okay for enemy_engaged_or_shot'",

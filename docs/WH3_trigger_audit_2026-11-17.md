@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-17
 
-Every automated ability (946 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (939 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -96,7 +96,7 @@ None.
 | Pilgrimage of Skulls | `pilgrimage_of_skulls` | `wavering_ally_range` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Potion of Speed | `potion_of_speed` | `charge_only` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Purge the Weak! | `purge_the_weak` | `charge_or_melee` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Red Fury | `red_fury` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Red Fury | `red_fury` | `self_or_ally_charge` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Regrowth | `regrowth` | `health_aura_ally` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Rok of Itza | `rock_of_itza` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Sacred Spawning of Xhotl | `sacred_spawning_of_xhotl` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
