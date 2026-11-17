@@ -18510,8 +18510,13 @@ function FOURTH.ww_wander_value(unit, e, m, row)
 	elseif row.allies then
 		local need = row.r + row.buf + FOURTH.SHOT_SAFE_M
 		if row.kind == 3 then need = need + (e.half or 0) end
+		-- ROUND 166 (user ruling 2026-11-17, "do not count the caster"): the caster never blocks its own wanderer
+		local self_id = nil
+		pcall(function() self_id = tostring(unit:unique_ui_id()) end)
 		for i = 1, #m.ours do
-			if FOURTH.blob_rect_gap(e.x, e.z, m.ours[i]) <= need then return nil end
+			local oid = nil
+			pcall(function() oid = tostring(m.ours[i].unit:unique_ui_id()) end)
+			if (oid == nil or oid ~= self_id) and FOURTH.blob_rect_gap(e.x, e.z, m.ours[i]) <= need then return nil end
 		end
 	end
 	local sc = FOURTH.blob_score(e, m, row.r)
@@ -19279,122 +19284,124 @@ end
 -- ability's name, the sentence and the clauses; it is the hover tooltip of the
 -- ability's own M/A badge (create_badge, STEP 5b).
 -- ============================================================================
+-- ROUND 166 (user, 2026-11-17: "too long and not thematic ... condense the meaning of the triggers in the
+-- least amount of words possible. For example, Deadly Onslaught might say 'fires when charging'"): ONE short
+-- sentence per family, no distances (the 70% bounds stay in the code and the log); no name, no 'on A:'.
+-- Tokens: {ALLYA} 'a nearby ally' ('any ally' for an army-wide aura; absent without an aura), {FF} present unless
+-- the entry's WW row says its blast cannot hit our units, and the numbers {LS} {HL} {EXEC} {AREA} {AMMO} {ADMEN}.
 FOURTH.CARD_TIP = {
-	charge = "fires when this unit runs at the enemy it is attacking, {CMIN} to {CMAX} m away and at most {CTTC} s from contact, or when it is in melee",
-	charge_or_melee = "fires when this unit runs at the enemy it is attacking, {CMIN} to {CMAX} m away and at most {CTTC} s from contact, or when it is in melee",
-	charge_only = "fires when this unit runs at the enemy it is attacking, {CMIN} to {CMAX} m away and at most {CTTC} s from contact",
-	charge_or_wavering = "fires when this unit runs at the enemy it is attacking, {CMIN} to {CMAX} m away and at most {CTTC} s from contact, or when it is wavering",
-	tired = "fires when this unit is tired, very tired or exhausted",
-	melee = "fires when this unit is in melee",
-	melee_low_morale = "fires when this unit is in melee and wavering",
-	melee_unwavering = "fires when this unit is in melee and not wavering",
-	melee_health75 = "fires when this unit is in melee and at or below 75% health",
-	melee_skip_commanders = "fires when this unit is in melee, unless every enemy within {ENG} m of it (with none that close: its current target) is a Lord or Hero",
-	melee_self_or_ally = "fires on this unit when it is in melee, else on the closest friendly unit {IN_R} that is in melee",
-	self_summon_melee = "fires when this unit is in melee",
-	barrier_broken = "fires when this unit's barrier is broken",
-	ushoran_health = "fires when this unit is at or below 75% health",
-	health_below_15 = "fires when this unit is below 15% health",
-	self_last_stand = "fires when this unit is at or below {LS}% health while in melee or under missile fire",
-	health_aura_ground = "fires on the ground under the lowest-health unit, this one or a friendly unit {IN_REACH}, once it is at or below 75% health",
-	health_aura_ally = "fires on the lowest-health unit, this one or a friendly unit {IN_REACH}, once it is at or below 75% health",
-	health_aura_self = "fires on this unit when it, or a friendly unit {IN_REACH}, is at or below 75% health",
-	health_aura_self_undead = "fires on this unit when it, or a friendly unit {IN_REACH}, is undead and at or below 75% health",
-	ally_hurt_melee = "fires on the lowest-health unit in melee, this one or a friendly unit {IN_REACH}, once it is at or below 75% health",
-	glorious_death = "fires when a Slayer friendly unit within {GD} m is in melee, or when this unit is a Slayer in melee",
-	verminking_wavering = "fires when a friendly unit within {VK} m is in melee and wavering",
-	metallurgy_melee = "fires when this unit, or a friendly unit within {MET} m, is in melee",
-	wavering_self = "fires when this unit is wavering",
-	wavering_self_or_ally = "fires when this unit is wavering, or a friendly unit within {WR} m is in melee and wavering",
-	wavering_ally_range = "fires on the closest wavering friendly unit {IN_R}",
-	wavering_aura = "fires when this unit[, or a friendly unit {IN_A},] is wavering",
-	melee_or_wavering_aura = "fires when this unit[, or a friendly unit {IN_A},] is in melee or wavering",
-	blood_sacrifice = "fires on the lowest-health other friendly unit within {BS} m once it is at or below 75% health",
-	eat_da_runts = "fires on this unit when it is at or below 75% health, else on the lowest-health other friendly unit within {ED} m at or below 75%",
-	ally_heal = "fires on the lowest-health other friendly unit {IN_R} once it is at or below 75% health",
-	ally_heal_melee = "fires when this unit is in melee, on the lowest-health other friendly unit {IN_R} at or below 75% health",
-	ally_warmachine_heal = "fires on the lowest-health friendly war machine {IN_R} once it is at or below 75% health",
-	ally_hellforged_heal = "fires on the lowest-health friendly Hell-Forged unit {IN_R} once it is at or below 75% health",
-	ally_monster_heal = "fires on the lowest-health friendly monster {IN_R} once it is at or below 75% health",
-	ally_construct_heal = "fires on the lowest-health friendly construct {IN_R} once it is at or below 75% health",
-	ally_wavering = "fires on the closest wavering friendly unit {IN_R}",
-	ally_melee_buff = "fires when this unit is in melee and not wavering, on the closest friendly unit {IN_R}",
-	ally_overseer = "fires on the closest friendly unit {IN_R} that Overseer of the Unseen may target",
-	ally_beast = "fires on the closest friendly beast unit {IN_R}",
-	ally_broken = "fires on the closest friendly unit {IN_R} whose morale is broken",
-	ally_missile = "fires on the closest friendly missile unit {IN_R}",
-	ally_infinite_buff = "fires on the closest friendly unit, at any range",
-	ally_winds = "fires on the other friendly unit {IN_R} with the most hit points left",
-	ally_ammo_low = "fires on the shooting friendly unit {IN_R} with the least ammunition, once it is at or below {AMMO}% and was not refilled in the last {RC} s",
-	ally_blast = "fires on the friendly unit {IN_R} (this one included) with the most enemy value inside its blast, when the blast covers enough soldiers",
-	allies_firing_aura = "fires when this unit[, or a friendly unit {IN_A},] has been shooting for half a reload",
-	self_or_ally_shooting = "fires on this unit when it has been shooting for half a reload, else on the closest friendly unit {IN_R} that has",
-	melee_or_self_or_ally_shooting = "fires on this unit when it is in melee and not wavering, or has been shooting for half a reload; else on the closest friendly unit {IN_R} that has been shooting for half a reload",
-	melee_or_shooting_self_or_ally = "fires on this unit when it is in melee and not wavering, or has been shooting for half a reload; else on the closest friendly unit {IN_R} that is in melee or has been shooting",
-	melee_or_shooting_aura = "fires when this unit, or a friendly unit within {MET} m, is in melee, or when this unit[ or a friendly unit {IN_A}] has been shooting for half a reload",
-	melee_or_shooting_into_melee = "fires when this unit is in melee and not wavering, or has been shooting for half a reload at an enemy in melee",
-	self_shooting = "fires when this unit has been shooting for half a reload",
-	self_shooting_clear = "fires when this unit has been shooting for half a reload at a target that is not in melee",
-	self_shooting_healthy = "fires when this unit has been shooting for half a reload and is above 50% health",
-	self_out_of_ammo = "fires when this unit has no ammunition left",
-	self_moving = "fires when this unit is moving",
-	self_running = "fires when this unit is running",
-	no_enemy_in_range_within_boost = "fires when this unit, out of melee and with ammunition, has no enemy within its missile range but one within {FSB} times that range",
-	ground_ally_before_range = "fires on the ground under the closest friendly missile unit {IN_R} (this one included) that is out of melee, has ammunition, and has no enemy within its range but one within {MIST} times it",
-	under_fire = "fires when this unit[, or a friendly unit {IN_A},] is under missile fire",
-	melee_or_under_fire = "fires when this unit is in melee and not wavering, or is under missile fire[, or when a friendly unit {IN_A} is in melee or under missile fire]",
-	self_recharging = "fires while another ability the mod cast on this unit is active or recharging",
-	self_recharging_2 = "fires while two other abilities the mod cast on this unit are active or recharging",
-	recharging_in_reach = "fires while this unit, or a friendly unit {IN_R}, has an ability the mod cast still active or recharging",
-	when_ready = "fires as soon as it is ready",
-	enemy_engaged_or_shot = "fires on the closest enemy {IN_R} in melee, else on the closest one under missile fire",
-	enemy_ground_area = "fires on the ground under the closest enemy {IN_R} in melee, else under the closest one under missile fire",
-	enemy_melee = "fires on the closest enemy {IN_R} that is in melee",
-	enemy_ground_melee = "fires at the closest enemy {IN_R} that is in melee",
-	enemy_ground_melee_infantry = "fires at the closest enemy infantry unit {IN_R} that is in melee, never a Lord or Hero",
-	enemy_melee_noncommander = "fires on the closest enemy {IN_R} in melee, never a Lord or Hero",
-	enemy_low_health_noncommander = "fires on the lowest-health enemy {IN_R} below {HL}% health, never a Lord or Hero",
-	enemy_wavering = "fires on the closest wavering enemy {IN_R}",
-	enemy_missile_shooting = "fires on the closest enemy missile unit {IN_R} that is shooting and not in melee",
-	enemy_ground_shooting = "fires on the ground under the closest enemy missile unit {IN_R} that is shooting and not in melee",
-	enemy_melee_or_shooting = "fires on the closest enemy {IN_R} in melee, else on the closest enemy missile unit that is shooting",
-	enemy_fast_near_ally = "fires on a moving enemy {IN_R} with a run speed of {FAST} m/s or more that is within {NEAR} m of one of your units",
-	enemy_melee_or_fast = "fires on the closest enemy {IN_R} in melee, else on a moving enemy with a run speed of {FAST} m/s or more within {NEAR} m of your units",
-	enemy_commander_value = "fires on the most valuable visible enemy Lord or Hero {IN_R}",
-	enemy_single_drain = "fires, while this unit stands still, on the most valuable visible single-entity enemy {IN_R}",
-	enemy_execute = "fires on the most valuable visible enemy {IN_R} at or below {EXEC}% health",
-	enemy_area_drain = "fires, while this unit stands still, on the visible enemy infantry {IN_R} worth the most per soldier that has at least {AREA} soldiers",
-	enemy_large_shot = "fires on the most valuable visible large enemy {IN_R} with none of your units within {SAFE} m of it, else on the most armoured enemy infantry",
-	enemy_single_shot = "fires, while this unit stands still, on the most valuable visible single-entity enemy {IN_R} with none of your units within {SAFE} m of it",
-	enemy_infantry_shot = "fires, while this unit stands still, on the visible enemy infantry {IN_R} worth the most per soldier, with none of your units within {SAFE} m of it",
-	enemy_blob = "fires, while this unit stands still, at the visible enemy {IN_R} where the blast destroys the most value, when it covers enough soldiers and none of your units are within {CLEAR} m of the target",
-	enemy_blob_vortex = "fires, while this unit stands still, at the visible enemy {IN_R} where the blast destroys the most value, when it covers enough soldiers and none of your units are within {CLEAR} m of the target",
-	enemy_wave = "fires its wave, while this unit and the target stand still, at the visible enemy {IN_R} whose path holds the most enemy value[, with none of your other units {WPATH}]",
-	enemy_wave_charge = "fires its wave, while this unit stands still, at a moving enemy {IN_R} with a run speed of {FAST} m/s or more within {NEAR} m of your units[, with none of your other units {WPATH}]",
-	enemy_wander = "fires, while this unit and the target stand still, at the visible enemy {IN_R} where the blast destroys the most value[, with none of your units within {W2} m of {WHERE}]",
-	enemy_strike = "strikes, while this unit stands still, the ground under the most valuable standing single-entity enemy {IN_R}[, with none of your units within {W1} m of it]",
-	enemy_cone = "breathes, while this unit stands still, through the standing visible enemy {IN_R} whose cone holds the most enemy value[, with none of your other units within {W2} m of the cone]",
-	enemy_sweep = "fires when this unit is in melee and not wavering, at the closest enemy in melee {IN_R}, with none of your other units within {W1} m of this unit",
-	melee_clear = "fires when this unit is in melee and not wavering, with none of your other units within {CLEAR} m of it",
-	fly_dive = "fires when this unit is flying with an enemy within {DIVE} m of its centre and none of your other units within {CLEAR} m",
-	last_stand_clear = "fires when this unit is at or below {LS}% health in melee, with none of your other units within {CLEAR} m",
-	air_drop_on_infantry = "fires when the centre of the nearest enemy with more than {ADMEN} soldiers is within {AD} m of this unit's centre",
+	charge = "Fires when charging or in melee",
+	charge_or_melee = "Fires when charging or in melee",
+	charge_only = "Fires when charging",
+	charge_or_wavering = "Fires when charging or wavering",
+	tired = "Fires when tired",
+	melee = "Fires in melee",
+	melee_low_morale = "Fires in melee when wavering",
+	melee_unwavering = "Fires in melee unless wavering",
+	melee_health75 = "Fires in melee below 75% health",
+	melee_skip_commanders = "Fires in melee, unless fighting only Lords or Heroes",
+	melee_self_or_ally = "Fires on itself or the nearest ally in melee",
+	self_summon_melee = "Fires in melee",
+	barrier_broken = "Fires when its barrier breaks",
+	ushoran_health = "Fires below 75% health",
+	health_below_15 = "Fires below 15% health",
+	self_last_stand = "Fires below {LS}% health in melee or under fire",
+	health_aura_ground = "Fires under the most hurt unit nearby, below 75% health",
+	health_aura_ally = "Fires on the most hurt unit nearby, below 75% health",
+	health_aura_self = "Fires when it or a nearby ally is below 75% health",
+	health_aura_self_undead = "Fires when it or a nearby undead ally is below 75% health",
+	ally_hurt_melee = "Fires on the most hurt unit in melee nearby, below 75% health",
+	glorious_death = "Fires when a nearby Slayer is in melee",
+	verminking_wavering = "Fires when a nearby ally wavers in melee",
+	metallurgy_melee = "Fires when it or a nearby ally is in melee",
+	wavering_self = "Fires when wavering",
+	wavering_self_or_ally = "Fires when it wavers, or a nearby ally wavers in melee",
+	wavering_ally_range = "Fires on the nearest wavering ally",
+	wavering_aura = "Fires when it or {ALLYA} wavers",
+	melee_or_wavering_aura = "Fires when it or {ALLYA} is in melee or wavering",
+	blood_sacrifice = "Fires on the most hurt nearby ally below 75% health",
+	eat_da_runts = "Fires on itself, else the most hurt nearby ally, below 75% health",
+	ally_heal = "Fires on the most hurt ally in range below 75% health",
+	ally_heal_melee = "Fires in melee, on the most hurt ally in range below 75% health",
+	ally_warmachine_heal = "Fires on the most hurt war machine in range below 75% health",
+	ally_hellforged_heal = "Fires on the most hurt Hell-Forged unit in range below 75% health",
+	ally_monster_heal = "Fires on the most hurt monster in range below 75% health",
+	ally_construct_heal = "Fires on the most hurt construct in range below 75% health",
+	ally_wavering = "Fires on the nearest wavering ally in range",
+	ally_melee_buff = "Fires in melee unless wavering, on the nearest ally in range",
+	ally_overseer = "Fires on the nearest ally in range",
+	ally_beast = "Fires on the nearest beast ally in range",
+	ally_broken = "Fires on the nearest routing ally in range",
+	ally_missile = "Fires on the nearest missile ally in range",
+	ally_infinite_buff = "Fires on the nearest ally",
+	ally_winds = "Fires on the healthiest ally in range",
+	ally_ammo_low = "Fires on the shooting ally in range lowest on ammo, at {AMMO}% or less",
+	ally_blast = "Fires on itself or the ally amid the most enemies",
+	allies_firing_aura = "Fires when it or {ALLYA} is shooting",
+	self_or_ally_shooting = "Fires on itself, else the nearest ally in range, while shooting",
+	melee_or_self_or_ally_shooting = "Fires in melee unless wavering, or on itself or the nearest ally in range while shooting",
+	melee_or_shooting_self_or_ally = "Fires in melee unless wavering or while shooting, else on the nearest ally in range doing either",
+	melee_or_shooting_aura = "Fires when it or a nearby ally is in melee or shooting",
+	melee_or_shooting_into_melee = "Fires in melee unless wavering, or when shooting into a melee",
+	self_shooting = "Fires while shooting",
+	self_shooting_clear = "Fires while shooting at a target not in melee",
+	self_shooting_healthy = "Fires while shooting, above 50% health",
+	self_out_of_ammo = "Fires when out of ammo",
+	self_moving = "Fires when moving",
+	self_running = "Fires when running",
+	no_enemy_in_range_within_boost = "Fires when an enemy is just beyond its missile range",
+	ground_ally_before_range = "Fires under the nearest missile ally whose enemy is just beyond its range",
+	under_fire = "Fires when it or {ALLYA} is under missile fire",
+	melee_or_under_fire = "Fires in melee unless wavering, or under missile fire[, or when {ALLYA} is in melee or under fire]",
+	self_recharging = "Fires while another of its abilities recharges",
+	self_recharging_2 = "Fires while two of its other abilities recharge",
+	recharging_in_reach = "Fires on itself or an ally in range while one of their abilities recharges",
+	when_ready = "Fires when ready",
+	enemy_engaged_or_shot = "Fires on the nearest enemy in melee, else one under missile fire",
+	enemy_ground_area = "Fires under the nearest enemy in melee, else one under missile fire",
+	enemy_melee = "Fires on the nearest enemy in melee",
+	enemy_ground_melee = "Fires at the nearest enemy in melee",
+	enemy_ground_melee_infantry = "Fires at the nearest enemy infantry in melee, not Lords or Heroes",
+	enemy_melee_noncommander = "Fires on the nearest enemy in melee, not Lords or Heroes",
+	enemy_low_health_noncommander = "Fires on the most hurt enemy below {HL}% health, not Lords or Heroes",
+	enemy_wavering = "Fires on the nearest wavering enemy",
+	enemy_missile_shooting = "Fires on the nearest shooting enemy missile unit",
+	enemy_ground_shooting = "Fires under the nearest shooting enemy missile unit",
+	enemy_melee_or_shooting = "Fires on the nearest enemy in melee, else a shooting missile unit",
+	enemy_fast_near_ally = "Fires on a fast enemy closing on allies",
+	enemy_melee_or_fast = "Fires on the nearest enemy in melee, else a fast enemy closing on allies",
+	enemy_commander_value = "Fires on the most valuable enemy Lord or Hero",
+	enemy_single_drain = "Fires when standing still, on the most valuable enemy monster or character",
+	enemy_execute = "Fires on the most valuable enemy below {EXEC}% health",
+	enemy_area_drain = "Fires when standing still, on the most valuable enemy infantry of {AREA}+ men",
+	enemy_large_shot = "Fires on the most valuable large enemy clear of allies, else armoured infantry",
+	enemy_single_shot = "Fires when standing still, on the most valuable enemy monster or character clear of allies",
+	enemy_infantry_shot = "Fires when standing still, on the most valuable enemy infantry clear of allies",
+	enemy_blob = "Fires when standing still, where the blast hurts the enemy most[, clear of allies{FF}]",
+	enemy_blob_vortex = "Fires when standing still, where the blast hurts the enemy most[, clear of allies{FF}]",
+	enemy_wave = "Fires when it and the target stand still, down the path with the most enemies[, clear of allies{FF}]",
+	enemy_wave_charge = "Fires when standing still, at a fast enemy closing on allies[, its path clear of allies{FF}]",
+	enemy_wander = "Fires when it and the target stand still, where the blast hurts the enemy most[, clear of allies{FF}]",
+	enemy_strike = "Fires when standing still, under the most valuable standing monster or character[, clear of allies{FF}]",
+	enemy_cone = "Fires when standing still, through the standing enemies it hurts most[, clear of allies{FF}]",
+	enemy_sweep = "Fires in melee unless wavering, at the nearest enemy in melee[, clear of allies{FF}]",
+	melee_clear = "Fires in melee unless wavering[, clear of allies{FF}]",
+	fly_dive = "Fires while flying over an enemy[, clear of allies{FF}]",
+	last_stand_clear = "Fires below {LS}% health in melee[, clear of allies{FF}]",
+	air_drop_on_infantry = "Fires when over an enemy unit of more than {ADMEN} men",
 }
 -- the entry's enemy target class (round 135 onward), as a clause
 FOURTH.CARD_CLASS = {
 	commander = "Lords and Heroes only",
-	commander_ground = "Lords and Heroes on the ground only[, none of your units within {CLEAR} m of it]",
+	commander_ground = "no flying targets[, clear of allies{FF}]",
 	large = "large targets only",
-	large_single = "single large targets only (monsters, mounted characters)",
-	single = "single-entity targets only",
-	not_flying = "never a flying target",
+	large_single = "monsters and large characters only",
+	single = "monsters and characters only",
+	not_flying = "no flying targets",
 	flying = "flying targets only",
-	not_undead = "never an undead target",
+	not_undead = "no undead targets",
 	missile = "missile units only",
 }
--- a clause the family's sentence already states is left out
-FOURTH.CARD_SKIP = { enemy_commander_value = { commander = true }, enemy_single_shot = { single = true },
-	enemy_single_drain = { single = true }, fly_dive = { G = true } }
 -- the families whose target is chosen by the shared ally picker (ab_pick_ally): the only ones the ally target
 -- rules apply to
 FOURTH.CARD_ALLY_FAMILY = { ally_heal = true, ally_heal_melee = true, ally_wavering = true, ally_melee_buff = true,
@@ -19402,13 +19409,19 @@ FOURTH.CARD_ALLY_FAMILY = { ally_heal = true, ally_heal_melee = true, ally_waver
 	ally_hellforged_heal = true, ally_monster_heal = true, ally_construct_heal = true, ally_infinite_buff = true,
 	ally_winds = true, ally_ammo_low = true, self_or_ally_shooting = true, melee_or_shooting_self_or_ally = true,
 	recharging_in_reach = true, melee_self_or_ally = true, melee_or_self_or_ally_shooting = true }
+-- the four aura families without an aura (the caster alone)
+FOURTH.CARD_TIP_NOAURA = { wavering_aura = "Fires when wavering", melee_or_wavering_aura = "Fires in melee or when wavering",
+	allies_firing_aura = "Fires while shooting", under_fire = "Fires under missile fire" }
+-- a clause the family's sentence already states is left out
+FOURTH.CARD_SKIP = { enemy_commander_value = { commander = true }, enemy_single_shot = { single = true },
+	enemy_single_drain = { single = true }, fly_dive = { G = true }, enemy_missile_shooting = { missile = true },
+	enemy_ground_shooting = { missile = true } }
 -- the game's caster rules (FOURTH.USAGE_TEXT) and ally target rules (FOURTH.ATARGET_TEXT), as clauses
-FOURTH.CARD_USAGE = { M = "not while this unit is in melee", G = "only while this unit flies",
-	F = "not while this unit flies", V = "not while this unit moves", W = "not while this unit wavers",
-	L = "only when this unit is a large unit" }
-FOURTH.CARD_ATARGET = { C = "the ally must be a Lord or Hero", c = "never on a Lord or Hero",
-	L = "large allies only", l = "never on a large unit", F = "never on a flying unit", U = "undead allies only",
-	u = "never on an undead unit", S = "single-entity allies only", P = "missile allies only" }
+FOURTH.CARD_USAGE = { M = "not in melee", G = "only in flight", F = "not in flight", V = "not while moving",
+	W = "not when wavering", L = "only in large form" }
+FOURTH.CARD_ATARGET = { C = "Lord or Hero allies only", c = "no Lords or Heroes", L = "large allies only",
+	l = "no large units", F = "no flying units", U = "undead allies only", u = "no undead", S = "monster or character allies only",
+	P = "missile allies only" }
 -- the clause order on the card (pairs() order is not fixed)
 FOURTH.CARD_USAGE_ORDER = { "M", "G", "F", "V", "W", "L" }
 FOURTH.CARD_ATARGET_ORDER = { "C", "c", "L", "l", "F", "U", "u", "S", "P" }
@@ -19466,6 +19479,9 @@ function FOURTH.card_tokens(ability)
 	t.SAFE = FOURTH.card_num(FOURTH.SHOT_SAFE_M)
 	t.FSB = string.format("%.2f", FOURTH.FARSIGHT_BAND)
 	t.MIST = string.format("%.2f", FOURTH.MIST_BAND)
+	-- ROUND 166: the short card's two words-only tokens
+	if type(ability.aura_m) == "number" then t.ALLYA = (ability.aura_m < 0) and "any ally" or "a nearby ally" end
+	if not (row ~= nil and not row.allies) then t.FF = "" end
 	return t
 end
 
@@ -19483,6 +19499,9 @@ end
 
 function FOURTH.compose_card(ability)
 	local tpl = FOURTH.CARD_TIP[ability.trigger]
+	if ability.aura_m == nil and FOURTH.CARD_TIP_NOAURA[ability.trigger] ~= nil then   -- ROUND 166
+		tpl = FOURTH.CARD_TIP_NOAURA[ability.trigger]
+	end
 	if tpl == nil then return nil end
 	local t = FOURTH.card_tokens(ability)
 	local parts = { FOURTH.card_fill(tpl, t) }
@@ -19497,7 +19516,7 @@ function FOURTH.compose_card(ability)
 			if u[c] and not skip[c] then parts[#parts + 1] = FOURTH.CARD_USAGE[c] end
 		end
 		if u.hmin ~= nil then parts[#parts + 1] = "not below " .. FOURTH.card_num(u.hmin) .. "% health" end
-		if u.hmax ~= nil then parts[#parts + 1] = "only at or below " .. FOURTH.card_num(u.hmax) .. "% health" end
+		if u.hmax ~= nil then parts[#parts + 1] = "only at " .. FOURTH.card_num(u.hmax) .. "% health or less" end
 	end
 	local a = ability.atarget
 	if a ~= nil then
@@ -19505,7 +19524,7 @@ function FOURTH.compose_card(ability)
 			if a[c] then parts[#parts + 1] = FOURTH.CARD_ATARGET[c] end
 		end
 	end
-	return tostring(ability.name) .. " on A: " .. table.concat(parts, "; ") .. "."
+	return table.concat(parts, "; ") .. "."   -- ROUND 166: no name, no 'on A:'
 end
 
 for _, ability in ipairs(ABILITIES) do
@@ -21373,9 +21392,8 @@ FOURTH.ALL_BADGE_ID = "zz_auto_badge_all"
 -- ROUND 155: the spot the user TUNED BY HAND in battle with zz_all_nudge (2026-11-15, the last 'ALL POS -923,0',
 -- confirmed by zz_all_where()). Re-tune the same way; the hooks below report the new pair.
 FOURTH.ALL_OX, FOURTH.ALL_OY = -923, 0
-FOURTH.ALL_TIP = "ALL: arm or disarm every automatic ability of the selected unit(s). If any of them is on M, "
-	.. "all go to A (automatic); if all are already on A, all go to M (manual). The button stays pressed while all "
-	.. "of them are on A."
+-- ROUND 166 (the user's marked-up screenshot): only the first sentence stays
+FOURTH.ALL_TIP = "Arm or disarm every automatic ability of the selected unit(s)."
 -- ROUND 154 (user ruling 2026-11-15, "Game round button"): the game's own bronze round toggle button (the camera
 -- button's family, 38 x 38, ui3.pack) with the game's own abilities icon (the gold fist, ui2.pack); no letters.
 FOURTH.ALL_TEMPLATE = "ui/templates/round_small_button_toggle"

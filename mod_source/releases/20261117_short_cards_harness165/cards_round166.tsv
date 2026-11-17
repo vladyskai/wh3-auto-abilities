@@ -1,0 +1,947 @@
+marker	ability	family	keys	card
+onslaught	Deadly Onslaught	charge	wh_main_character_abilities_deadly_onslaught	Fires when charging or in melee.
+foe_seeker	Foe-Seeker	tired	wh_main_character_abilities_foe_seeker;wh_dlc03_character_abilities_foe_seeker;wh_main_character_abilities_foe_seeker_summoned	Fires when tired.
+hammer_of_sigmar	Hammer of Sigmar	melee	wh_main_spell_bound_hammer_of_sigmar;wh_dlc04_spell_bound_hammer_of_sigmar_upgraded	Fires in melee.
+stand_your_ground	Stand Your Ground	melee_or_wavering_aura	wh_main_character_abilities_stand_your_ground;wh3_dlc24_character_abilities_tacticians_stand_your_ground	Fires when it or a nearby ally is in melee or wavering.
+blood_lust	Blood Lust	melee_unwavering	wh_main_character_abilities_blood_lust;wh_dlc03_character_abilities_blood_lust	Fires in melee unless wavering.
+aether_sword	Aether Sword	melee_unwavering	wh3_dlc20_weapon_abilities_aether_sword	Fires in melee unless wavering.
+apocalyptic_vision	Apocalyptic Vision	melee_unwavering	wh_dlc03_character_abilities_apocalyptic_vision	Fires in melee unless wavering.
+armour_of_gazrakh	Armour of Gazrakh	melee_unwavering	wh3_dlc23_item_abilities_armour_of_gazrakh	Fires in melee unless wavering.
+aura_of_quetzl	Aura of Quetzl	melee_unwavering	wh2_main_item_abilities_aura_of_quetzl	Fires in melee unless wavering.
+axe_of_dargo	Axe of Dargo	melee_unwavering	wh_main_weapon_abilities_axe_of_dargo	Fires in melee unless wavering.
+axe_of_grom	Axe of Grom	melee_unwavering	wh2_dlc15_weapon_abilities_axe_of_grom	Fires in melee unless wavering.
+axes_of_kadrin	Axes of Kadrin	melee_unwavering	wh3_dlc25_weapon_abilities_axes_of_kadrin	Fires in melee unless wavering.
+azhags_ard_armour	Azhag's 'Ard Armour	melee_unwavering	wh2_dlc15_item_abilities_azhags_ard_armour	Fires in melee unless wavering.
+ballet_of_blows	Ballet of Blows	melee_unwavering	wh3_main_lord_abilities_ballet_of_blows	Fires in melee unless wavering.
+bear_fang_talisman	Bear Fang Talisman	melee_unwavering	wh3_dlc27_item_abilities_bear_fang_talisman	Fires in melee unless wavering.
+beastslaver	Beastslaver	melee_unwavering	wh2_dlc14_lord_abilities_beastslaver	Fires in melee unless wavering.
+blade_of_bel_korhadris	Blade of Bel-Korhadris	melee_unwavering	wh2_main_item_abilities_blade_of_bel_korhadris	Fires in melee unless wavering.
+blades_of_shang_yang	Blades of Shang-Yang	melee_unwavering	wh3_cp1_weapon_abilities_blades_of_shang_yang	Fires in melee unless wavering.
+bloodstorm_blades	Bloodstorm Blades	melee_unwavering	wh3_dlc26_weapon_abilities_bloodstorm_blades	Fires in melee unless wavering.
+brass_body	Brass Body	melee_unwavering	wh2_dlc17_lord_abilities_brass_body	Fires in melee unless wavering.
+change_or_die	Change or Die!	melee_unwavering	wh3_dlc24_character_abilities_change_or_die	Fires in melee unless wavering.
+claws_of_mourkain	Claws of Mourkain	melee_unwavering	wh2_dlc11_lord_abilities_claws_of_mourkain	Fires in melee unless wavering.
+cloak_of_mists_and_shadows	Cloak of Mists & Shadows	melee_unwavering	wh_main_item_abilities_cloak_of_mists_and_shadows	Fires in melee unless wavering.
+coat_in_blood	Coat in Blood	melee_unwavering	wh3_dlc29_hero_abilities_coat_in_blood	Fires in melee unless wavering.
+creature_killer	Creature-Killer	melee_unwavering	wh2_dlc16_weapon_abilities_creature_killer	Fires in melee unless wavering.
+da_great_un_iz_ere	Da Great 'Un Iz 'Ere!	melee_unwavering	wh2_dlc15_lord_abilities_da_great_un_iz_ere	Fires in melee unless wavering.
+daemonblade	Daemonblade	melee_unwavering	wh3_dlc20_weapon_abilities_daemonblade	Fires in melee unless wavering.
+daemonshield	Daemonshield	melee_unwavering	wh3_dlc20_item_abilities_daemonshield	Fires in melee unless wavering.
+dagger_of_malice	Dagger of Malice	melee_unwavering	wh3_dlc23_weapon_abilities_dagger_of_malice	Fires in melee unless wavering.
+dark_protection	Dark Protection	melee_unwavering	wh2_dlc11_lord_abilities_dark_protection	Fires in melee unless wavering.
+darkwalker	Darkwalker	melee_unwavering	wh3_dlc25_lord_abilities_darkwalker	Fires in melee unless wavering.
+deathbringer	Deathbringer	melee_unwavering	wh3_main_lord_abilities_deathbringer;wh3_main_lord_abilities_deathbringer_upgraded	Fires in melee unless wavering.
+strike_of_nehekhara	Desertstrike	melee_unwavering	wh2_dlc09_character_abilities_strike_of_nehekhara	Fires in melee unless wavering.
+dolorous_blade	Dolorous Blade	melee_unwavering	wh_dlc07_hero_abilities_dolorous_blade	Fires in melee unless wavering.
+dragon_spear	Dragon Spear	melee_unwavering	wh2_dlc16_weapon_abilities_dragon_spear	Fires in melee unless wavering.
+dreaded_duelist	Dreaded Duelist	melee_unwavering	wh2_dlc11_lord_abilities_dreaded_duelist	Fires in melee unless wavering.
+dwarf_gouger	Dwarf Gouger	melee_unwavering	wh2_main_weapon_abilities_dwarf_gouger	Fires in melee unless wavering.
+enrage	Enrage	melee_unwavering	wh_pro04_unit_abilities_enrage	Fires in melee unless wavering.
+entice	Entice	melee_unwavering	wh3_dlc29_unit_abilities_entice	Fires in melee unless wavering; not below 50% health.
+everyone_has_their_price	Everyone Has Their Price	melee_unwavering	wh3_main_lord_abilities_everyone_has_their_price	Fires in melee unless wavering.
+evisceration	Evisceration	melee_unwavering	wh2_dlc16_hero_abilities_evisceration	Fires in melee unless wavering.
+eye_jabber	Eye Jabber	melee_unwavering	wh3_dlc29_spell_bound_eye_jabber	Fires in melee unless wavering.
+eye_gouger	Eye Gouger	melee_unwavering	wh3_dlc29_spell_bound_eye_gouger	Fires in melee unless wavering.
+eye_of_the_storm	Eye of the Storm	melee_unwavering	wh3_main_lord_abilities_eye_of_the_storm	Fires in melee unless wavering; only in large form.
+faiths_bastion	Faith's Bastion	melee_unwavering	wh_main_hero_abilities_faiths_bastion	Fires in melee unless wavering.
+fangsword_of_eltharion	Fangsword of Eltharion	melee_unwavering	wh2_dlc15_weapon_abilities_fangsword_of_eltharion	Fires in melee unless wavering.
+feint_and_reposte	Feint and Reposte	melee_unwavering	wh2_main_lord_abilities_feint_and_reposte	Fires in melee unless wavering.
+filth_mace	Filth Mace	melee_unwavering	wh_main_weapon_abilities_filth_mace	Fires in melee unless wavering.
+fluid_injection	Fluid Injection	melee_unwavering	wh2_dlc16_unit_abilities_fluid_injection	Fires in melee unless wavering.
+gaze_of_khorne	Gaze of Khorne	melee_unwavering	wh3_dlc26_lord_abilities_gaze_of_khorne	Fires in melee unless wavering.
+fury_of_the_land	Fury of the Land	melee_unwavering	wh3_dlc24_character_abilities_fury_of_the_land	Fires in melee unless wavering.
+fury_of_ursun	Fury of Ursun	melee_unwavering	wh3_main_lord_abilities_fury_of_ursun	Fires in melee unless wavering.
+ghal_maraz	Ghal Maraz	melee_unwavering	wh_main_weapon_abilities_ghal_maraz	Fires in melee unless wavering.
+giant_leap	Giant Leap	melee_unwavering	wh3_dlc24_character_abilities_giant_leap	Fires in melee unless wavering.
+gitsnik	Gitsnik	melee_unwavering	wh_main_weapon_abilities_gitsnik	Fires in melee unless wavering.
+gotrek_doom	Gotrek's Doom	melee_unwavering	wh2_pro08_character_abilities_gotrek_doom	Fires in melee unless wavering.
+shield_of_faith_upgraded	Shield of Faith (Upgraded)	melee_unwavering	wh_dlc04_spell_bound_shield_of_faith_upgraded	Fires in melee unless wavering.
+great_gutgouger	Great Gutgouger	melee_unwavering	wh3_dlc26_weapon_abilities_great_gutgouger	Fires in melee unless wavering.
+halo_of_maidenly_wrath	Halo of Maidenly Wrath	melee_unwavering	wh2_dlc14_lord_abilities_halo_of_maidenly_wrath	Fires in melee unless wavering.
+hammer_axe_of_skoll	Hammer-Axe of Skoll	melee_unwavering	wh3_dlc29_weapon_active_hammer_axe_of_skoll	Fires in melee unless wavering.
+eagle_feather_torc	Eagle-Feather Torc	barrier_broken	wh3_dlc27_item_abilities_eagle_feather_torc	Fires when its barrier breaks.
+fangspike	Fangspike	charge_or_melee	wh3_dlc26_weapon_abilities_fangspike	Fires when charging or in melee.
+ghoul_king_of_ushoran	Ghoul King of Ushoran	ushoran_health	wh2_dlc11_lord_abilities_ghoul_king_of_ushoran	Fires below 75% health.
+glorious_death	Glorious Death	glorious_death	wh3_dlc25_lord_abilities_glorious_death	Fires when a nearby Slayer is in melee.
+legbiter	Legbiter	melee_unwavering	wh3_dlc29_weapon_abilities_legbiter	Fires in melee unless wavering.
+hellfire_sword	Hellfire Sword	melee_unwavering	wh_main_weapon_abilities_hellfire_sword	Fires in melee unless wavering.
+helm_of_discord	Helm of Discord	melee_unwavering	wh_main_weapon_abilities_helm_of_discord	Fires in melee unless wavering.
+helm_of_many_eyes	Helm of Many Eyes	melee_unwavering	wh_dlc01_item_passive_helm_of_many_eyes	Fires in melee unless wavering.
+heroic_killing_blow_2	Heroic Killing Blow	melee_unwavering	wh3_main_pro_character_abilities_heroic_killing_blow_2	Fires in melee unless wavering.
+heroic_killing_blow_dlc07	Heroic Killing Blow	melee_unwavering	wh_dlc07_character_abilities_heroic_killing_blow	Fires in melee unless wavering.
+heroic_killing_blow_main	Heroic Killing Blow	melee_unwavering	wh_main_character_abilities_heroic_killing_blow	Fires in melee unless wavering.
+hydra_blade	Hydra Blade	melee_unwavering	wh2_main_weapon_abilities_hydra_blade	Fires in melee unless wavering.
+inevitable_horror	Inevitable Horror	melee_unwavering	wh3_dlc26_character_abilities_inevitable_horror	Fires in melee unless wavering.
+karaghul	Karaghul	melee_unwavering	wh2_pro08_weapon_abilities_karaghul	Fires in melee unless wavering.
+killing_blow_1	Killing Blow	melee_unwavering	wh3_main_pro_character_abilities_heroic_killing_blow_1	Fires in melee unless wavering.
+killing_blow	Killing Blow	melee_unwavering	wh_main_unit_abilities_killing_blow	Fires in melee unless wavering.
+liarsbane	Liarsbane	melee_unwavering	wh3_dlc25_weapon_abilities_liarsbane	Fires in melee unless wavering.
+lightning_reflexes	Lightning Reflexes	charge_or_melee	wh2_dlc11_lord_abilities_lightning_reflexes	Fires when charging or in melee.
+locus_of_beguilement	Locus of Beguilement	melee_unwavering	wh3_main_character_abilities_locus_of_beguilement	Fires in melee unless wavering.
+locus_of_grace	Locus of Grace	melee_unwavering	wh3_main_character_abilities_locus_of_grace	Fires in melee unless wavering.
+locus_of_wrath	Locus of Wrath	melee_unwavering	wh3_main_character_abilities_locus_of_wrath	Fires in melee unless wavering.
+lucky_banner	Lucky Banner	melee_unwavering	wh2_dlc15_item_abilities_lucky_banner	Fires in melee unless wavering.
+mace_of_ulumak	Mace of Ulumak	melee_unwavering	wh2_dlc13_weapon_abilities_mace_of_ulumak	Fires in melee unless wavering.
+mananns_luck	Manann's Luck	melee_unwavering	wh2_dlc11_lord_abilities_mananns_luck	Fires in melee unless wavering.
+master_of_the_skies	Master of the Skies	charge_or_melee	wh2_dlc12_lord_abilities_master_of_the_skies	Fires when charging or in melee.
+mimic_waaagh	Mirror (Waaagh!)	melee_unwavering	wh2_dlc15_unit_abilities_mimic_waaagh	Fires in melee unless wavering.
+mimic_grom_waaagh	Mirror (Grom's Big Waaagh!)	melee_unwavering	wh2_dlc15_unit_abilities_mimic_grom_waaagh	Fires in melee unless wavering.
+monstrous_strength	Monstrous Strength	melee_unwavering	wh2_dlc13_lord_abilities_monstrous_strength	Fires in melee unless wavering.
+mortal_blow	Mortal Blow	melee_unwavering	wh3_main_daemon_arms_abilities_mortal_blow	Fires in melee unless wavering.
+mortal_blow_upgraded	Mortal Blow (Upgraded)	melee_unwavering	wh3_main_daemon_arms_abilities_mortal_blow_upgraded	Fires in melee unless wavering.
+mumbo_jumbo_chant	Mumbo-Jumbo Chant	melee_unwavering	wh3_dlc26_character_abilities_mumbo_jumbo_chant	Fires in melee unless wavering.
+strike_of_nagash	Necrostrike	melee_unwavering	wh2_dlc09_character_abilities_strike_of_nagash	Fires in melee unless wavering.
+nurgles_favoured_son	Nurgle's Favoured Son	melee_unwavering	wh3_dlc25_lord_abilities_nurgles_favoured_son	Fires in melee unless wavering.
+opal_amulet	Opal Amulet	melee_unwavering	wh_main_item_abilities_opal_amulet	Fires in melee unless wavering.
+oracle_of_eternity	Oracle of Eternity	melee_unwavering	wh3_main_lord_abilities_oracle_of_eternity	Fires in melee unless wavering.
+pendant_of_slaanesh	Pendant of Slaanesh	charge_or_melee	wh_main_item_abilities_pendant_of_slaanesh	Fires when charging or in melee.
+plaguefathers_oration	Plaguefather's Oration	melee_unwavering	wh3_main_lord_abilities_plaguefathers_oration	Fires in melee unless wavering.
+primal_roar	Primal Roar	melee_unwavering	wh2_dlc13_lord_abilities_primal_roar	Fires in melee unless wavering.
+puncture	Puncture	melee_unwavering	wh3_dlc26_character_abilities_puncture	Fires in melee unless wavering.
+heart_piercing	Heart Piercing	charge_or_melee	wh2_dlc11_lord_abilities_heart_piercing	Fires when charging or in melee.
+horn_of_the_first_beast	Horn of the First Beast	charge_or_melee	wh_dlc03_item_abilities_horn_of_the_first_beast	Fires when charging or in melee.
+morglor_the_mangler	Morglor the Mangler	charge_or_melee	wh3_dlc26_weapon_abilities_morglor_the_mangler	Fires when charging or in melee.
+banespear	The Bane Spear	melee_unwavering	wh3_main_weapon_abilities_banespear	Fires in melee unless wavering.
+black_axe_of_krell	The Black Axe of Krell	melee_unwavering	wh3_dlc29_item_abilities_black_axe_of_krell	Fires in melee unless wavering.
+black_lotus	Black Lotus	melee_unwavering	wh2_main_character_abilities_black_lotus	Fires in melee unless wavering.
+blessed_blade_of_ptra	The Blessed Blade of Ptra	melee_unwavering	wh2_dlc09_weapon_abilities_blessed_blade_of_ptra	Fires in melee unless wavering.
+daemonic_strength	Daemonic Strength	melee_unwavering	wh_main_item_abilities_daemonic_strength	Fires in melee unless wavering.
+dark_venom	Dark Venom	melee_unwavering	wh2_main_character_abilities_dark_venom	Fires in melee unless wavering.
+doom_glaive	Doom Glaive	melee_unwavering	wh3_dlc29_item_abilities_doom_glaive	Fires in melee unless wavering.
+dragons_fang	The Dragon's Fang	melee_unwavering	wh3_dlc24_weapon_abilities_dragons_fang	Fires in melee unless wavering.
+drakwald_runefang	The Drakwald Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_drakwald_runefang	Fires in melee unless wavering.
+elixir_of_damnation	Elixir of Damnation	melee_unwavering	wh3_dlc27_item_abilities_elixir_of_damnation	Fires in melee unless wavering.
+hochland_runefang	The Hochland Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_hochland_runefang	Fires in melee unless wavering.
+nordland_runefang	The Nordland Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_nordland_runefang	Fires in melee unless wavering.
+ostermark_runefang	The Ostermark Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_ostermark_runefang	Fires in melee unless wavering.
+ostland_runefang	The Ostland Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_ostland_runefang	Fires in melee unless wavering.
+potion_of_strength	Potion of Strength	melee_unwavering	wh_main_item_abilities_potion_of_strength	Fires in melee unless wavering.
+potion_of_toughness	Potion of Toughness	melee_health75	wh_main_item_abilities_potion_of_toughness	Fires in melee below 75% health.
+quickblood	Quickblood	melee_unwavering	wh3_dlc29_lord_abilities_lightning_reflexes	Fires in melee unless wavering.
+quicksilver_strike	Quicksilver Strike	melee_unwavering	wh3_dlc27_lord_abilities_quicksilver_strike	Fires in melee unless wavering.
+rage_embodied	Rage Embodied	melee_unwavering	wh3_main_lord_abilities_rage_embodied	Fires in melee unless wavering.
+rage_incarnate	Rage Incarnate	melee_unwavering	wh3_main_lord_abilities_rage_incarnate	Fires in melee unless wavering.
+rapier_of_ecstasy	Rapier of Ecstasy	melee_unwavering	wh3_dlc20_weapon_abilities_rapier_of_ecstasy	Fires in melee unless wavering.
+red_ruin	Red Ruin	melee_unwavering	wh2_dlc10_lord_abilities_red_ruin	Fires in melee unless wavering.
+refuse_to_die	Refuse to Die	melee_unwavering	wh2_dlc12_unit_abilities_refuse_to_die	Fires in melee unless wavering.
+revenge_incarnate	Revenge Incarnate	melee_unwavering	wh_dlc06_lord_abilities_revenge_incarnate	Fires in melee unless wavering.
+rock_of_itza	Rok of Itza	melee_unwavering	wh2_dlc13_lord_abilities_rock_of_itza	Fires in melee unless wavering.
+rot_or_die	Rot or Die!	melee_unwavering	wh3_dlc25_lord_abilities_rot_or_die	Fires in melee unless wavering.
+rot_pocked_axe	Rot-pocked Axe	melee_unwavering	wh3_dlc29_item_active_rot_pocked_axe	Fires in melee unless wavering.
+rune_axe_of_gotrek	Rune Axe of Gotrek	melee_unwavering	wh2_pro08_weapon_abilities_rune_axe_of_gotrek	Fires in melee unless wavering.
+rune_axe_of_grombrindal	Rune Axe of Grombrindal	melee_unwavering	wh_pro01_weapon_abilities_rune_axe_of_grombrindal	Fires in melee unless wavering.
+runefang	Runefang	melee_unwavering	wh_main_weapon_abilities_runefang	Fires in melee unless wavering.
+sacred_spawning_of_xhotl	Sacred Spawning of Xhotl	melee_unwavering	wh2_main_lord_abilities_sacred_spawning_of_xhotl	Fires in melee unless wavering.
+sands_of_sickness	Sands of Sickness	melee_unwavering	wh3_dlc25_character_abilities_sands_of_sickness	Fires in melee unless wavering.
+scales_of_the_celestial_court	Scales of the Celestial Court	melee_unwavering	wh3_main_item_abilities_scales_of_the_celestial_court	Fires in melee unless wavering.
+sceptre_of_titans	Sceptre of Titans	melee_unwavering	wh3_main_weapon_abilities_sceptre_of_titans	Fires in melee unless wavering.
+scourge	Scourge	melee_unwavering	wh_dlc03_weapon_abilities_scourge	Fires in melee unless wavering.
+scrying_stone	Scrying Stone	melee_unwavering	wh2_main_item_abilities_scrying_stone	Fires in melee unless wavering.
+seduction_of_the_serpent	Seduction of the Serpent	melee_unwavering	wh_dlc08_lord_abilities_seduction_of_the_serpent	Fires in melee unless wavering.
+shadow_shroud	Shadow Shroud	melee_unwavering	wh3_main_lord_abilities_shadow_shroud	Fires in melee unless wavering.
+shield_of_aeons	Shield of Aeons	melee_unwavering	wh2_dlc13_item_abilities_shield_of_aeons	Fires in melee unless wavering.
+shield_of_faith	Shield of Faith	melee_unwavering	wh_main_spell_bound_shield_of_faith	Fires in melee unless wavering.
+silver_dagger	Silver Dagger	melee_unwavering	wh3_dlc23_weapon_abilities_silver_dagger	Fires in melee unless wavering.
+skull_wand_of_kaloth	Skull Wand of Kaloth	melee_unwavering	wh_main_item_abilities_skull_wand_of_kaloth	Fires in melee unless wavering.
+slippery	Slippery	charge_or_melee	wh_main_hero_abilities_slippery	Fires when charging or in melee.
+sliverslash	Sliverslash	melee_unwavering	wh3_dlc20_weapon_abilities_sliverslash	Fires in melee unless wavering.
+smash_em_faster	Smash 'Em Faster	melee_unwavering	wh2_dlc15_lord_abilities_smash_em_faster	Fires in melee unless wavering.
+stand_or_die	Stand or Die!	melee_unwavering	wh_main_character_abilities_stand_or_die	Fires in melee unless wavering.
+star_lance	Star Lance	charge_or_melee	wh2_dlc15_weapon_abilities_star_lance	Fires when charging or in melee.
+starcrusher	Starcrusher	melee_unwavering	wh_dlc01_weapon_abilities_starcrusher	Fires in melee unless wavering.
+steppe_hunters_horn	Steppe Hunter's Horn	melee_unwavering	wh3_main_item_abilities_steppe_hunters_horn	Fires in melee unless wavering.
+stinky_giant_club	Stinky Giant Club	melee_unwavering	wh_dlc08_weapon_abilities_stinky_giant_club	Fires in melee unless wavering.
+storm_rage	Storm Rage	charge_or_melee	wh3_dlc20_unit_abilities_storm_rage	Fires when charging or in melee.
+stormlance	Stormlance	charge_or_melee	wh3_dlc25_item_abilities_stormlance	Fires when charging or in melee.
+strike_of_tombs	Tombstrike	melee_unwavering	wh2_dlc09_character_abilities_strike_of_tombs	Fires in melee unless wavering.
+sword_dance	The Dancing Blade	melee_unwavering	wh3_dlc23_character_abilities_sword_dance	Fires in melee unless wavering.
+sword_of_anti_heroes	Sword of Anti-Heroes	melee_unwavering	wh_main_weapon_abilities_sword_of_anti_heroes	Fires in melee unless wavering.
+sword_of_lyonesse	The Sword of Lyonesse	melee_unwavering	wh2_dlc14_weapon_abilities_sword_of_lyonesse	Fires in melee unless wavering.
+sword_of_torgald	Sword of Torgald	melee_unwavering	wh_dlc08_weapon_abilities_sword_of_torgald	Fires in melee unless wavering.
+talabecland_runefang	The Talabecland Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_talabecland_runefang	Fires in melee unless wavering.
+tempest_rage	Tempest Rage	charge_or_melee	wh3_dlc20_lord_abilities_tempest_rage	Fires when charging or in melee.
+tenebrous_forge_hammer	Tenebrous Forge-Hammer	melee_unwavering	wh3_dlc27_weapon_abilities_tenebrous_forge_hammer	Fires in melee unless wavering.
+the_armour_of_morkar	The Armour of Morkar	melee_unwavering	wh3_dlc20_item_abilities_the_armour_of_morkar	Fires in melee unless wavering.
+the_black_cleaver	The Black Cleaver	melee_unwavering	wh3_dlc25_weapon_abilities_the_black_cleaver	Fires in melee unless wavering.
+the_blood_price	The Blood Price	melee_unwavering	wh2_dlc14_lord_abilities_the_blood_price	Fires in melee unless wavering.
+the_carstein_ring	The Carstein Ring	melee_unwavering	wh_dlc04_item_abilities_the_carstein_ring	Fires in melee unless wavering.
+the_daemons_curse	The Daemon's Curse	melee_unwavering	wh2_dlc14_lord_abilities_the_daemons_curse	Fires in melee unless wavering.
+the_eternal_blade	The Eternal Blade	melee_unwavering	wh3_main_weapon_abilities_the_eternal_blade	Fires in melee unless wavering.
+the_father_of_blades	The Father of Blades	melee_unwavering	wh3_dlc25_weapon_abilities_the_father_of_blades	Fires in melee unless wavering.
+the_horn_of_kygor	The Horn of Kygor	charge_or_melee	wh2_main_item_abilities_the_horn_of_kygor	Fires when charging or in melee.
+the_mace_of_helsturm	The Mace of Helsturm	melee_unwavering	wh_main_weapon_abilities_the_mace_of_helsturm	Fires in melee unless wavering.
+the_phoenix_blade	The Phoenix Blade	melee_unwavering	wh3_dlc27_weapon_abilities_the_phoenix_blade	Fires in melee unless wavering.
+the_reikland_runefang	The Reikland Runefang	melee_unwavering	wh_main_weapon_abilities_the_reikland_runefang	Fires in melee unless wavering.
+the_rock_of_inevitability	The Rock of Inevitability	melee_unwavering	wh3_main_item_abilities_the_rock_of_inevitability	Fires in melee unless wavering.
+the_rotaxes	The Rotaxes	melee_unwavering	wh3_dlc29_item_active_the_rotaxes	Fires in melee unless wavering.
+the_slayer_of_kings	The Slayer of Kings	melee_unwavering	wh_dlc01_weapon_abilities_the_slayer_of_kings	Fires in melee unless wavering.
+the_slayer_sword	The Slayer Sword	melee_unwavering	wh3_dlc26_weapon_abilities_the_slayer_sword	Fires in melee unless wavering.
+the_sword_of_couronne	The Sword of Couronne	melee_unwavering	wh_main_weapon_abilities_the_sword_of_couronne	Fires in melee unless wavering.
+the_tenderiser	The Tenderiser	melee_unwavering	wh3_main_weapon_abilities_the_tenderiser	Fires in melee unless wavering.
+toad_rage	Toad Rage	melee_unwavering	wh2_dlc12_unit_abilities_toad_rage	Fires in melee unless wavering.
+tormentor_sword	Tormentor Sword	melee_unwavering	wh_main_weapon_abilities_tormentor_sword	Fires in melee unless wavering.
+tors_battle_hymn	Tor's Battle Hymn	melee_unwavering	wh3_main_character_abilities_tors_battle_hymn	Fires in melee unless wavering.
+transfix	Transfix	charge_or_melee	wh2_dlc11_lord_abilities_transfix	Fires when charging or in melee.
+unyielding_defender	Unyielding Defence	melee_unwavering	wh3_main_character_abilities_unyielding_defender	Fires in melee unless wavering.
+ursuns_claw	Ursun's Claw	melee_unwavering	wh3_dlc24_weapon_abilities_ursuns_claw	Fires in melee unless wavering.
+warp_frenzy	Warp Frenzy	melee_unwavering	wh2_dlc16_hero_abilities_warp_frenzy	Fires in melee unless wavering.
+warriors_crest	Warrior's Crest	melee_unwavering	wh2_dlc12_lord_abilities_warriors_crest	Fires in melee unless wavering.
+will_of_the_verminking	Will of the Verminking	verminking_wavering	wh3_dlc29_lord_abilities_will_of_the_verminking	Fires when a nearby ally wavers in melee.
+witstealer_sword	Witstealer Sword	melee_unwavering	wh3_main_weapon_abilities_witstealer_sword	Fires in melee unless wavering.
+enchanted_metallurgy	Enchanted Metallurgy	melee_or_shooting_aura	wh3_main_character_abilities_enchanted_metallurgy	Fires when it or a nearby ally is in melee or shooting.
+enchanted_metallurgy_flaming	Enchanted Metallurgy: Flaming	melee_or_shooting_aura	wh3_main_character_abilities_enchanted_metallurgy_flaming	Fires when it or a nearby ally is in melee or shooting.
+enchanted_metallurgy_piercing	Enchanted Metallurgy: Piercing	melee_or_shooting_aura	wh3_main_character_abilities_enchanted_metallurgy_piercing	Fires when it or a nearby ally is in melee or shooting.
+enchanted_metallurgy_poison	Enchanted Metallurgy: Poison	melee_or_shooting_aura	wh3_main_character_abilities_enchanted_metallurgy_poison	Fires when it or a nearby ally is in melee or shooting.
+bastions_defenders	Bastion's Defenders	melee_unwavering	wh3_dlc24_character_abilities_bastions_defenders	Fires in melee unless wavering.
+battle_of_wills	Battle of Wills	melee_unwavering	wh3_dlc29_unit_abilities_battle_of_wills	Fires in melee unless wavering.
+bironas_timewarp	Birona's Timewarp	charge_or_melee	wh_main_spell_bound_bironas_timewarp	Fires when charging or in melee.
+breath_of_hatred	Breath of Hatred	melee_unwavering	wh3_dlc23_bound_abilities_breath_of_hatred;wh3_dlc23_character_abilities_breath_of_hatred	Fires in melee unless wavering.
+captain_of_the_phoenix_guard	Captain of the Phoenix Guard	ally_heal_melee	wh3_dlc27_character_abilities_captain_of_the_phoenix_guard	Fires in melee, on the most hurt ally in range below 75% health; no Lords or Heroes; no large units.
+cash_cascade	Cash Cascade	charge_or_melee	wh3_dlc26_character_abilities_cash_cascade	Fires when charging or in melee.
+commanding_presence	Commanding Presence	wavering_self_or_ally	wh3_dlc29_lord_active_commanding_presence	Fires when it wavers, or a nearby ally wavers in melee.
+curse_of_years	Curse of Years	melee_unwavering	wh3_dlc29_spell_bound_curse_of_years	Fires in melee unless wavering.
+da_boss_as_a_plan	Da Boss 'as a Plan!	ally_melee_buff	wh3_dlc26_character_abilities_da_boss_as_a_plan	Fires in melee unless wavering, on the nearest ally in range.
+dazs_song_of_winter_sunlight	Dazh's Song of Winter Sunlight	tired	wh3_main_character_abilities_dazs_song_of_winter_sunlight;wh3_twa06_unit_abilities_dazs_song_of_winter_sunlight	Fires when tired.
+death_frenzy	Death Frenzy	melee_unwavering	wh2_dlc16_spell_bound_death_frenzy	Fires in melee unless wavering.
+dragonhorn	Dragonhorn	melee_unwavering	wh2_dlc15_lord_abilities_dragonhorn	Fires in melee unless wavering.
+empowering_shrooms	Empowering Shrooms	melee_unwavering	wh3_dlc26_character_abilities_empowering_shrooms	Fires in melee unless wavering.
+favour_of_the_fay	Favour of the Fay	ally_melee_buff	wh_dlc07_lord_abilities_favour_of_the_fay	Fires in melee unless wavering, on the nearest ally in range.
+ferocious_battle_howl	Ferocious Battle Howl	charge_only	wh3_dlc29_spell_bound_prayer_ferocious_battle_howl	Fires when charging.
+ferocious_fury_of_ulric	Ferocious Fury of Ulric	wavering_self	wh3_dlc29_spell_bound_prayer_ferocious_fury_of_ulric	Fires when wavering.
+ferocious_winters_chill	Ferocious Winter’s Chill	melee_unwavering	wh3_dlc29_spell_bound_prayer_ferocious_winters_chill	Fires in melee unless wavering.
+flame_incarnate	Flame Incarnate	melee_unwavering	wh3_main_character_abilities_flame_incarnate	Fires in melee unless wavering.
+fury_of_khaine	Fury of Khaine	ally_melee_buff	wh2_main_unit_abilities_fury_of_khaine	Fires in melee unless wavering, on the nearest ally in range.
+fury_of_ulric	Fury of Ulric	wavering_self_or_ally	wh3_dlc29_spell_bound_prayer_fury_of_ulric	Fires when it wavers, or a nearby ally wavers in melee.
+gate_of_khorne	Gate of Khorne	enemy_ground_melee	wh3_main_character_abilities_gate_of_khorne	Fires at the nearest enemy in melee.
+gaze_of_khaine	Gaze of Khaine	melee_unwavering	wh2_dlc10_lord_abilities_gaze_of_khaine	Fires in melee unless wavering.
+gulyas	Gulyas	health_aura_ground	wh3_dlc24_lord_abilities_gulyas	Fires under the most hurt unit nearby, below 75% health.
+helm_of_yvresse	Helm of Yvresse	wavering_self	wh2_dlc15_item_abilities_helm_of_yvresse	Fires when wavering.
+helping_hand	Helping Hand	ally_melee_buff	wh2_pro08_character_abilities_helping_hand	Fires in melee unless wavering, on the nearest ally in range; Lord or Hero allies only.
+inspired_assault_i	Inspired Assault I	ally_melee_buff	wh3_main_lord_abilities_inspired_assault_i	Fires in melee unless wavering, on the nearest ally in range.
+inspired_assault_ii	Inspired Assault II	ally_melee_buff	wh3_main_lord_abilities_inspired_assault_ii	Fires in melee unless wavering, on the nearest ally in range.
+inspired_assault_iii	Inspired Assault III	ally_melee_buff	wh3_main_lord_abilities_inspired_assault_iii	Fires in melee unless wavering, on the nearest ally in range.
+inspired_defence_i	Inspired Defence I	ally_melee_buff	wh3_main_lord_abilities_inspired_defence_i	Fires in melee unless wavering, on the nearest ally in range.
+inspired_defence_ii	Inspired Defence II	ally_melee_buff	wh3_main_lord_abilities_inspired_defence_ii	Fires in melee unless wavering, on the nearest ally in range.
+inspired_defence_iii	Inspired Defence III	ally_melee_buff	wh3_main_lord_abilities_inspired_defence_iii	Fires in melee unless wavering, on the nearest ally in range.
+lord_of_grand_cathay	Lord of Grand Cathay	melee_unwavering	wh3_dlc24_lord_abilities_lord_of_grand_cathay	Fires in melee unless wavering.
+master_of_alchemy	Master of Alchemy	melee_or_shooting_aura	wh3_main_lord_abilities_master_of_alchemy	Fires when it or a nearby ally is in melee or shooting.
+master_of_alchemy_flaming	Master of Alchemy: Flaming	melee_or_shooting_aura	wh3_main_lord_abilities_master_of_alchemy_flaming	Fires when it or a nearby ally is in melee or shooting.
+master_of_alchemy_piercing	Master of Alchemy: Piercing	melee_or_shooting_aura	wh3_main_lord_abilities_master_of_alchemy_piercing	Fires when it or a nearby ally is in melee or shooting.
+master_of_alchemy_poison	Master of Alchemy: Poison	melee_or_shooting_aura	wh3_main_lord_abilities_master_of_alchemy_poison	Fires when it or a nearby ally is in melee or shooting.
+master_rune_of_oath_and_steel	Master Rune of Oath & Steel	melee_unwavering	wh_dlc06_rune_abilities_master_rune_of_oath_and_steel	Fires in melee unless wavering.
+master_rune_of_speed	Master Rune of Speed	charge_or_melee	wh2_dlc17_rune_abilities_master_rune_of_speed	Fires when charging or in melee.
+offense_prayer	Mantra of Righteousness	melee_unwavering	wh3_cp1_character_abilities_offense_prayer	Fires in melee unless wavering.
+okkams_mindrazor	Okkam's Mindrazor	melee_unwavering	wh3_dlc29_spell_bound_okkams_mindrazor	Fires in melee unless wavering.
+orcs_are_da_best	Orcs are da Best!	ally_melee_buff	wh3_dlc26_character_abilities_orcs_are_da_best	Fires in melee unless wavering, on the nearest ally in range.
+overseer_of_the_unseen	Overseer of the Unseen	ally_overseer	wh3_dlc29_hero_active_overseer_of_the_unseen	Fires on the nearest ally in range; no Lords or Heroes; no large units; no flying units.
+primeval_roar	Primeval Roar	melee_unwavering	wh2_dlc17_unit_abilities_primeval_roar	Fires in melee unless wavering.
+protection_prayer	Mantra of Invigoration	ushoran_health	wh3_cp1_character_abilities_protection_prayer	Fires below 75% health.
+rune_of_doom	Rune of Doom	melee_unwavering	wh2_dlc17_lord_abilities_rune_of_doom	Fires in melee unless wavering.
+rune_of_oath_and_steel	Rune of Oath & Steel	melee_unwavering	wh_main_rune_abilities_rune_of_oath_and_steel	Fires in melee unless wavering.
+rune_of_speed	Rune of Speed	charge_or_melee	wh2_dlc17_rune_abilities_rune_of_speed	Fires when charging or in melee.
+sausage_busta	Bangers & Smash	charge_or_wavering	wh2_dlc15_character_abilities_sausage_busta	Fires when charging or wavering.
+shield_of_the_old_ones	Shield of the Old Ones	melee_unwavering	wh2_main_character_abilities_shield_of_the_old_ones	Fires in melee unless wavering.
+slayer_for_chaos	Slayer for Chaos	melee_unwavering	wh3_dlc23_item_abilities_slayer_for_chaos	Fires in melee unless wavering.
+spite_of_da_bad_moon	Spite of Da Bad Moon	melee_unwavering	wh_dlc06_lord_abilities_spite_of_da_bad_moon	Fires in melee unless wavering.
+star_of_avelorn	Star of Avelorn	health_aura_ground	wh2_dlc10_item_abilities_star_of_avelorn	Fires under the most hurt unit nearby, below 75% health.
+stay_here_ill_get_help	"Stay Here, I'll Get Help!"	wavering_ally_range	wh2_dlc09_character_abilities_stay_here_ill_get_help	Fires on the nearest wavering ally; not in melee.
+supreme_shield_of_the_old_ones	Supreme Shield of the Old Ones	melee_unwavering	wh2_dlc12_character_abilities_supreme_shield_of_the_old_ones	Fires in melee unless wavering.
+talisman_of_loec	Talisman of Loec	melee_unwavering	wh2_main_item_abilities_talisman_of_loec	Fires in melee unless wavering.
+the_liber_mortis	The Liber Mortis	melee_unwavering	wh2_dlc09_lord_abilities_the_liber_mortis	Fires in melee unless wavering.
+vial_of_troll_blood	Vial of Troll Blood	wavering_self	wh_dlc08_item_abilities_vial_of_troll_blood	Fires when wavering.
+warpstone_addiction	Warpstone Addiction	melee_unwavering	wh3_dlc29_lord_abilities_warpstone_addiction	Fires in melee unless wavering.
+warrior_familiar	Warrior Familiar	melee_unwavering	wh3_dlc27_item_abilities_warrior_familiar	Fires in melee unless wavering.
+winters_chill	Winter’s Chill	melee_unwavering	wh3_dlc29_ability_bound_prayer_winters_chill;wh3_dlc29_spell_bound_prayer_winters_chill	Fires in melee unless wavering.
+witchbrew	Witchbrew	melee_unwavering	wh2_main_character_abilities_witchbrew;wh3_dlc24_unit_abilities_witchbrew	Fires in melee unless wavering.
+worlds_edge_armour	World's Edge Armour	melee_unwavering	wh2_main_item_abilities_worlds_edge_armour	Fires in melee unless wavering.
+znarkharjas_ward	Znarkharja's Ward	melee_unwavering	wh3_dlc24_hero_abilities_znarkharjas_ward	Fires in melee unless wavering.
+accusation	Accusation	enemy_engaged_or_shot	wh_main_hero_abilities_accusation	Fires on the nearest enemy in melee, else one under missile fire.
+acquiescence	Acquiescence	enemy_melee	wh3_dlc27_spell_bound_acquiescence	Fires on the nearest enemy in melee.
+aken_seth_the_staff_of_pain	Aken-seth, the Staff of Pain	self_recharging	wh3_dlc29_weapon_abilities_aken_seth_the_staff_of_pain	Fires while another of its abilities recharges.
+alchemists_elixir_of_iron_skin	Alchemist's Elixir of Iron Skin	melee_unwavering	wh3_main_item_abilities_alchemists_elixir_of_iron_skin	Fires in melee unless wavering.
+alchemists_elixir_of_puissance	Alchemist's Elixir of Puissance	melee_unwavering	wh3_main_item_abilities_alchemists_elixir_of_puissance	Fires in melee unless wavering.
+alchemists_elixir_of_venom	Alchemist's Elixir of Venom	melee_unwavering	wh3_main_item_abilities_alchemists_elixir_of_venom	Fires in melee unless wavering.
+all_hands_hoay	All Hands Hoay!	melee_unwavering	wh2_dlc11_character_abilities_all_hands_hoay	Fires in melee unless wavering.
+amulet_of_itzl	Amulet of Itzl	melee_unwavering	wh2_main_item_abilities_amulet_of_itzl	Fires in melee unless wavering.
+amulet_of_phastah	Amulet of Pha-Stah	enemy_ground_area	wh2_dlc09_item_abilities_amulet_of_phastah	Fires under the nearest enemy in melee, else one under missile fire.
+apocalyptic_charge	Apocalyptic Charge	charge_only	wh_pro04_unit_abilities_apocalyptic_charge	Fires when charging.
+magic_prayer	Arcane Hymn	when_ready	wh3_cp1_character_abilities_magic_prayer	Fires when ready.
+armour_of_caledor	Armour of Caledor	melee_health75	wh2_dlc15_item_abilities_armour_of_caledor	Fires in melee below 75% health.
+armour_of_the_burrows	Armour of the Barrows	melee_unwavering	wh3_dlc29_item_abilities_armour_of_the_burrows	Fires in melee unless wavering.
+assassins_trophy	Assassin's Trophy	enemy_melee	wh2_main_character_abilities_assassins_trophy	Fires on the nearest enemy in melee; Lords and Heroes only.
+aura_of_inertia	Aura of Inertia	melee_unwavering	wh2_dlc13_lord_abilities_aura_of_inertia	Fires in melee unless wavering.
+avast_ye	Avast Ye!	melee_unwavering	wh2_dlc11_character_abilities_avast_ye	Fires in melee unless wavering.
+axe_of_men	Axe of Men	melee_unwavering	wh_dlc03_weapon_abilities_axe_of_men	Fires in melee unless wavering.
+barbed_knuckle_boxing	Barbed-Knuckle Boxing	melee_unwavering	wh2_dlc17_lord_abilities_barbed_knuckle_boxing	Fires in melee unless wavering.
+bastet	Bastet	enemy_engaged_or_shot	wh3_dlc29_lord_abilities_bastet	Fires on the nearest enemy in melee, else one under missile fire.
+black_periapt	Black Periapt	when_ready	wh_main_item_abilities_black_periapt	Fires when ready.
+black_staff	Black Staff	melee_unwavering	wh2_main_spell_bound_black_staff	Fires in melee unless wavering.
+blade_of_setep	Blade of Setep	enemy_engaged_or_shot	wh2_dlc09_weapon_abilities_blade_of_setep	Fires on the nearest enemy in melee, else one under missile fire.
+blessed_helm_of_the_oblast	Blessed Helm of the Oblast	melee_or_under_fire	wh3_dlc24_item_abilities_blessed_helm_of_the_oblast	Fires in melee unless wavering, or under missile fire, or when a nearby ally is in melee or under fire.
+blight_of_terrors	Blight of Terrors	melee_unwavering	wh2_dlc16_character_abilities_blight_of_terrors	Fires in melee unless wavering.
+blight_swarm	Blight Swarm	enemy_melee	wh3_main_lord_abilities_blight_swarm	Fires on the nearest enemy in melee.
+blood_omens	Blood Omens	melee_unwavering	wh3_dlc29_unit_abilities_blood_omens	Fires in melee unless wavering.
+bloody_onslaught	Bloody Onslaught	enemy_engaged_or_shot	wh3_dlc26_character_abilities_bloody_onslaught	Fires on the nearest enemy in melee, else one under missile fire.
+blooood	Blooood!	self_moving	wh_main_unit_abilities_blooood	Fires when moving.
+book_of_arkhan	Book of Arkhan	charge_or_melee	wh_main_spell_bound_book_of_arkhan	Fires when charging or in melee.
+book_of_hoeth	Book of Hoeth	when_ready	wh2_main_item_abilities_book_of_hoeth	Fires when ready.
+book_of_secrets	Book of Secrets	enemy_engaged_or_shot	wh3_dlc24_item_abilities_book_of_secrets	Fires on the nearest enemy in melee, else one under missile fire.
+boom	Boom!	self_shooting	wh_main_unit_abilities_boom	Fires while shooting.
+call_of_violence	Call of Violence	wavering_aura	wh_dlc03_character_abilities_call_of_violence	Fires when it or a nearby ally wavers.
+cascading_fire_cloak	Cascading Fire Cloak	melee_unwavering	wh3_main_spell_bound_cascading_fire_cloak	Fires in melee unless wavering.
+chalice_of_dark_rain	Chalice of Dark Rain	enemy_ground_area	wh_dlc03_item_abilities_chalice_of_dark_rain	Fires under the nearest enemy in melee, else one under missile fire.
+channelling_staff	Channelling Staff	self_recharging	wh_main_item_abilities_channelling_staff	Fires while another of its abilities recharges.
+charmed_shield	Charmed Shield	melee_or_under_fire	wh_main_weapon_abilities_charmed_shield	Fires in melee unless wavering, or under missile fire.
+cold_blooded	Cold-Blooded	wavering_ally_range	wh2_main_character_abilities_cold_blooded	Fires on the nearest wavering ally.
+crown_of_command	Crown of Command	wavering_ally_range	wh_main_item_abilities_crown_of_command	Fires on the nearest wavering ally.
+cube_of_darkness	Cube of Darkness	enemy_engaged_or_shot	wh2_main_item_abilities_cube_of_darkness	Fires on the nearest enemy in melee, else one under missile fire.
+curse_of_khsar	Curse of Khsar	enemy_ground_area	wh2_dlc09_character_abilities_curse_of_khsar	Fires under the nearest enemy in melee, else one under missile fire; only at 50% health or less.
+slezuzus_voice	Daemonic Whispers	ally_melee_buff	wh3_dlc27_character_abilities_slezuzus_voice	Fires in melee unless wavering, on the nearest ally in range.
+dark_fortune	Dark Fortune	melee_unwavering	wh_main_item_abilities_dark_fortune	Fires in melee unless wavering.
+deranged_munitions	Deranged Munitions	self_or_ally_shooting	wh3_dlc25_lord_abilities_deranged_munitions	Fires on itself, else the nearest ally in range, while shooting.
+deranged_munitions_upgraded	Deranged Munitions Upgraded	allies_firing_aura	wh3_dlc25_lord_abilities_deranged_munitions_upgraded	Fires when it or a nearby ally is shooting.
+dont_even_try_it	Don't Even Try It	enemy_engaged_or_shot	wh2_dlc15_lord_abilities_dont_even_try_it	Fires on the nearest enemy in melee, else one under missile fire.
+doom_and_darkness_gunnery_school	Doom & Darkness	enemy_engaged_or_shot	wh3_dlc25_spell_Bound_doom_and_darkness_gunnery_school;wh3_dlc27_spell_bound_runecaller_death_doom_and_darkness;wh_dlc08_spell_bound_death_doom_and_darkness	Fires on the nearest enemy in melee, else one under missile fire.
+doom_lord	Doom Lord	wavering_ally_range	wh3_dlc29_lord_abilities_doom_lord	Fires on the nearest wavering ally.
+earthing_rod	Earthing Rod	melee_unwavering	wh_main_item_abilities_earthing_rod	Fires in melee unless wavering.
+el_syf	El Syf	enemy_melee	wh_dlc05_weapon_abilities_el_syf	Fires on the nearest enemy in melee; Lords and Heroes only.
+elixir_of_might	Elixir of Might	melee_unwavering	wh2_dlc09_item_abilities_elixir_of_might	Fires in melee unless wavering.
+embers_of_the_phoenix	Embers of the Phoenix	melee_or_shooting_aura	wh2_main_spell_bound_embers_of_the_phoenix	Fires when it or a nearby ally is in melee or shooting.
+ballistic_enchantment	Enchanted Ballistics	allies_firing_aura	wh2_dlc11_character_abilities_ballistic_enchantment	Fires when it or a nearby ally is shooting.
+enhanced_skavenbrew	Enhanced Skavenbrew	melee_unwavering	wh3_dlc29_item_abilities_enhanced_skavenbrew	Fires in melee unless wavering.
+entangle	Entangle	enemy_ground_area	wh2_dlc10_character_abilities_entangle	Fires under the nearest enemy in melee, else one under missile fire; no flying targets.
+entrenchment	Entrenchment	melee_or_self_or_ally_shooting	wh_main_unit_abilities_entrenchment	Fires in melee unless wavering, or on itself or the nearest ally in range while shooting; no flying units.
+more_powder	More Powder!	ally_ammo_low	wh2_dlc11_hero_abilities_more_powder	Fires on the shooting ally in range lowest on ammo, at 70% or less.
+restock_gunnery_school	Restock!	ally_ammo_low	wh3_dlc25_abilities_restock_gunnery_school	Fires on the shooting ally in range lowest on ammo, at 70% or less.
+master_of_mists	Master of Mists	ground_ally_before_range	wh3_dlc27_character_abilities_master_of_mists;wh3_dlc27_character_abilities_master_of_mists_custom	Fires under the nearest missile ally whose enemy is just beyond its range.
+of_warp_and_ruin	Of Warp and Ruin	self_shooting_clear	wh3_dlc29_unit_abilities_of_warp_and_ruin	Fires while shooting at a target not in melee.
+ominous_powder	Ominous Powder	self_shooting_healthy	wh3_dlc25_item_abilities_ominous_powder	Fires while shooting, above 50% health.
+curse_of_anraheir	The Curse of Anraheir	enemy_ground_melee	wh2_dlc16_spell_bound_the_curse_of_anraheir;wh3_main_spell_bound_the_curse_of_anraheir;wh_dlc05_spell_bound_the_curse_of_anraheir	Fires at the nearest enemy in melee.
+transmutation_of_lead	Transmutation of Lead	enemy_ground_melee	wh3_main_spell_bound_transmutation_of_lead	Fires at the nearest enemy in melee.
+soulblight	Soulblight	enemy_ground_melee	wh2_dlc10_spell_bound_soulblight	Fires at the nearest enemy in melee.
+the_soulstealer	The Soulstealer	enemy_ground_melee	wh3_dlc29_spell_bound_undeath_khizaar_the_soulstealer	Fires at the nearest enemy in melee.
+curse_of_djaf	Curse of Djaf	enemy_ground_shooting	wh2_dlc09_character_abilities_curse_of_djaf	Fires under the nearest shooting enemy missile unit; only at 50% health or less.
+soulblight_handmaidens	Soulblight	melee_unwavering	wh3_dlc29_spell_bound_soulblight	Fires in melee unless wavering.
+squig_thinkin	Squig Thinkin'	enemy_ground_melee	wh3_dlc26_character_abilities_squig_thinkin	Fires at the nearest enemy in melee.
+spinning_loons	Spinning Loons	enemy_ground_melee	wh_main_unit_abilities_spinning_loons	Fires at the nearest enemy in melee; no flying targets; not below 25% health.
+loons_of_eight_peaks	The Loons of Eight Peaks	enemy_ground_melee	wh_dlc06_unit_abilities_the_loons_of_eight_peaks	Fires at the nearest enemy in melee; no flying targets; not below 25% health.
+hags_denial	Hag's Denial	self_last_stand	wh3_dlc24_unit_abilities_hags_denial	Fires below 10% health in melee or under fire.
+ruinshelter	Ruinshelter	melee_unwavering	wh2_dlc15_unit_abilities_mimic_ruinshelter	Fires in melee unless wavering.
+rock_bottom	Rock Bottom	self_out_of_ammo	wh2_dlc15_unit_abilities_rock_bottom	Fires when out of ammo.
+morikhane	Morikhane, the Black Armour	under_fire	wh3_dlc29_item_abilities_morikhane_the_black_armour	Fires under missile fire.
+hunters_call	Hunter's Call	melee_or_wavering_aura	wh2_dlc13_character_ability_hunters_call	Fires when it or a nearby ally is in melee or wavering.
+icon_of_the_king	Icon of the King	health_aura_self_undead	wh3_dlc29_item_abilities_icon_of_the_king	Fires when it or a nearby undead ally is below 75% health.
+the_gold_standard	The Gold Standard	ally_hurt_melee	wh3_dlc25_item_abilities_the_gold_standard	Fires on the most hurt unit in melee nearby, below 75% health.
+banner_of_hellfire	Banner of Hellfire	melee_unwavering	wh3_main_banner_abilities_banner_of_hellfire	Fires in melee unless wavering.
+ghostly_howl	Ghostly Howl	enemy_wavering	wh3_dlc29_hero_active_ghostly_howl	Fires on the nearest wavering enemy.
+petrifying_gaze	Petrifying Gaze	enemy_fast_near_ally	wh3_dlc24_unit_passive_petrifying_gaze	Fires on a fast enemy closing on allies.
+weapon_abilities_venom_staff	The Venom Staff	enemy_blob	wh2_dlc09_weapon_abilities_venom_staff	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_frost_breath	Frost Breath	enemy_blob	wh2_dlc10_unit_abilities_frost_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+unit_abilities_frost_wyrm_breath	Frost Breath	enemy_blob	wh2_dlc10_unit_abilities_frost_wyrm_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+weapon_abilities_the_moonbow	The Moonbow	enemy_blob	wh2_dlc10_weapon_abilities_the_moonbow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_cackle_fruit	Cackle Fruit	enemy_blob	wh2_dlc11_character_abilities_cackle_fruit	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+character_abilities_pyromaniac	Pyromaniac	enemy_blob	wh2_dlc11_character_abilities_pyromaniac	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+hero_abilities_bomb_throw	Bomb-Throw	enemy_blob	wh2_dlc11_hero_abilities_bomb_throw	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+weapon_abilities_storm_daemon	Storm Daemon	enemy_blob	wh2_dlc12_weapon_abilities_storm_daemon	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_big_boom	Big Boom	enemy_blob	wh2_dlc13_character_abilities_big_boom	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+lord_abilities_arrows_of_aqshy	Quiver of Aqshy	enemy_blob	wh2_dlc13_lord_abilities_arrows_of_aqshy	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_executioner	Executioner	enemy_blob	wh2_dlc13_lord_abilities_executioner	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_fire_arrow	Arrow of Aqshy	enemy_blob	wh2_dlc13_lord_abilities_fire_arrow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+weapon_abilities_amber_bow	Amber Bow	enemy_blob	wh2_dlc13_weapon_abilities_amber_bow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_cracklebomb	Cracklebomb	enemy_blob	wh2_dlc14_character_abilities_cracklebomb	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+spell_bound_warpfireball	Warp-Fireball	enemy_blob	wh2_dlc14_spell_bound_warpfireball	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_goggly_glare	Goggly Glare	enemy_blob	wh2_dlc15_character_abilities_goggly_glare	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+hero_abilities_swamp_breath	Swamp Breath	enemy_blob	wh2_dlc15_hero_abilities_swamp_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; no flying targets; not in melee.
+spell_bound_gaze_of_nagash	Gaze of Nagash	enemy_blob	wh2_dlc15_spell_bound_gaze_of_nagash	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_noxious_breath_imrik	Shackolot's Noxious Breath	enemy_blob	wh2_dlc15_unit_abilities_noxious_breath_imrik	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_sun_dragon_breath_imrik	Gordinar's Dragon Breath	enemy_blob	wh2_dlc15_unit_abilities_sun_dragon_breath_imrik	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+item_abilities_dart_of_doom	Dart of Doom	enemy_blob	wh2_dlc16_item_abilities_dart_of_doom	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+item_abilities_eagle_quiver	Eagle Quiver	enemy_blob	wh2_dlc16_item_abilities_eagle_quiver	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_volley_of_kurnous	Volley of Kurnous	enemy_blob	wh2_dlc16_unit_abilities_volley_of_kurnous	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+hero_abilities_cinderblast_shell	Cinderblast Shell	enemy_blob	wh2_dlc17_hero_abilities_cinderblast_shell	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_volley_of_dark_arrows	Volley of Dark Arrows	enemy_blob	wh2_main_character_abilities_volley_of_dark_arrows	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_volley_of_high_arrows	Volley of High Arrows	enemy_blob	wh2_main_character_abilities_volley_of_high_arrows	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+hero_abilities_doomrocket	Doomrocket	enemy_blob	wh2_main_hero_abilities_doomrocket	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_bound_hand_of_gods	Hand of Gods	enemy_blob	wh2_main_spell_bound_hand_of_gods	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_dark_fire_of_chaos	Dark Fire of Chaos	enemy_blob	wh2_main_unit_abilities_dark_fire_of_chaos	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_death_shriek	Death Shriek	enemy_blob	wh2_main_unit_abilities_death_shriek	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+unit_abilities_fiery_breath	Fiery Breath	enemy_blob	wh2_main_unit_abilities_fiery_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+unit_abilities_moon_dragons_breath	Moon Dragon's Breath	enemy_blob	wh2_main_unit_abilities_moon_dragons_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_noxious_breath	Noxious Breath	enemy_blob	wh2_main_unit_abilities_noxious_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_pestilential_breath	Pestilential Breath	enemy_blob	wh2_main_unit_abilities_pestilential_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_soporific_breath	Soporific Breath	enemy_blob	wh2_main_unit_abilities_soporific_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_star_dragons_breath	Star Dragon's Breath	enemy_blob	wh2_main_unit_abilities_star_dragons_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_sun_dragons_breath	Sun Dragon's Breath	enemy_blob	wh2_main_unit_abilities_sun_dragons_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+weapon_abilities_bow_of_the_seafarer	Bow of the Seafarer	enemy_blob	wh2_main_weapon_abilities_bow_of_the_seafarer	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+weapon_bound_reaver_bow	Reaver Bow	enemy_blob	wh2_main_weapon_bound_reaver_bow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_bound_burning_wrath	Burning Wrath	enemy_blob	wh3_dlc23_spell_bound_burning_wrath	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_flaming_breath	Flaming Breath	enemy_blob	wh3_dlc23_unit_abilities_flaming_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+hero_abilities_windblade	The Windblade	enemy_blob	wh3_dlc24_hero_abilities_windblade	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+item_abilities_wind_bow	Wind Bow	enemy_blob	wh3_dlc24_item_abilities_wind_bow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_spirit_bear	Spirit Bear	enemy_blob	wh3_dlc24_lord_abilities_spirit_bear	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_spirit_bear_upgrade	Dire Spirit Bear	enemy_blob	wh3_dlc24_lord_abilities_spirit_bear_upgrade	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_taals_judgement	Taal's Judgement	enemy_blob	wh3_dlc24_lord_abilities_taals_judgement	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_ice_breath	Ice Breath	enemy_blob	wh3_dlc24_unit_abilities_ice_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_mercurial_shot	Mercurial Shot	enemy_blob	wh3_dlc25_character_abilities_mercurial_shot	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_cinderblast_cluster_bomb	Cinderblast Cluster Bomb	enemy_blob	wh3_dlc25_lord_abilities_cinderblast_cluster_bomb	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_coruscating_blast	Coruscating Blast	enemy_blob	wh3_dlc25_unit_abilities_coruscating_blast	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee; only in flight.
+unit_abilities_spear_of_grungni	Spear of Grungni	enemy_blob	wh3_dlc25_unit_abilities_spear_of_grungni	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_unspeakable_foulness	Unspeakable Foulness	enemy_blob	wh3_dlc25_unit_abilities_unspeakable_foulness	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+weapon_abilities_experimental_explosive	Experimental Explosive	enemy_blob	wh3_dlc25_weapon_abilities_experimental_explosive	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+character_abilities_sting_of_snagla	Sting of Snagla	enemy_blob	wh3_dlc26_character_abilities_sting_of_snagla	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_bound_fireball_upgraded	Fireball Upgraded	enemy_blob	wh3_dlc27_spell_bound_fireball_upgraded	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_heavens_chain_lightning_bound	Chain Lightning	enemy_blob	wh3_dlc27_spell_heavens_chain_lightning_bound	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_heavens_chain_lightning_bound_unit	Chain Lightning	enemy_blob	wh3_dlc27_spell_heavens_chain_lightning_bound_unit	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+wh3_dlc27_unit_abilities_flaming_breath	Flaming Breath	enemy_blob	wh3_dlc27_unit_abilities_flaming_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+hero_active_bilespurter	Bilespurt	enemy_blob	wh3_dlc29_hero_active_bilespurter	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_lamentation_of_despair_upgraded	Lamentation of Despairs (Empowered)	enemy_blob	wh3_dlc29_lord_abilities_lamentation_of_despair_upgraded	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_shadowblood	Shadowblood	enemy_blob	wh3_dlc29_lord_abilities_shadowblood	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_active_pestilent_torrent	Pestilent Torrent	enemy_blob	wh3_dlc29_lord_active_pestilent_torrent	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+unit_abilities_the_gaze_of_dust	The Gaze of Dust	enemy_blob	wh3_dlc29_unit_abilities_the_gaze_of_dust	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+character_abilities_fire_breath	Fire Breath	enemy_blob	wh3_main_character_abilities_fire_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+character_abilities_ice_shard	Ice Shard	enemy_blob	wh3_main_character_abilities_ice_shard	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_bellow_of_endless_fury	Bellow of Endless Fury	enemy_blob	wh3_main_lord_abilities_bellow_of_endless_fury	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+lord_abilities_bellow_of_fury	Bellow of Fury	enemy_blob	wh3_main_lord_abilities_bellow_of_fury	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+unit_abilities_elemental_breath	Elemental Breath	enemy_blob	wh3_main_unit_abilities_elemental_breath	Fires when standing still, where the blast hurts the enemy most, clear of allies; not in melee.
+spell_bound_the_amber_spear	The Amber Spear	enemy_blob	wh_dlc03_spell_bound_the_amber_spear	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+hero_abilities_arrow_of_kurnous	Arrow of Kurnous	enemy_blob	wh_dlc05_hero_abilities_arrow_of_kurnous	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+item_abilities_hail_of_doom_arrow	Hail of Doom Arrow	enemy_blob	wh_dlc05_item_abilities_hail_of_doom_arrow	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_lamentation_of_despair	Lamentation of Despairs	enemy_blob	wh_dlc05_lord_abilities_lamentation_of_despair	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_bound_vindictive_glare	Vindictive Glare	enemy_blob	wh_dlc06_spell_bound_vindictive_glare	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+weapon_abilities_skarsniks_prodder	Skarsnik's Prodder	enemy_blob	wh_dlc06_weapon_abilities_skarsniks_prodder	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+lord_abilities_copious_vomit	Copious Vomit	enemy_blob	wh_dlc08_lord_abilities_copious_vomit	Fires when standing still, where the blast hurts the enemy most, clear of allies; no flying targets.
+spell_bound_fireball	Fireball	enemy_blob	wh_main_spell_bound_fireball	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+spell_light_shems_burning_gaze_bound	Shem's Burning Gaze	enemy_blob	wh_main_spell_light_shems_burning_gaze_bound	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+blast	Blast	enemy_large_shot	wh2_dlc10_item_bound_blast	Fires on the most valuable large enemy clear of allies, else armoured infantry.
+damned_pistol	Damned Pistol	enemy_large_shot	wh3_main_weapon_abilities_godkiller_pistol	Fires on the most valuable large enemy clear of allies, else armoured infantry.
+hunting_spear	Hunting Spear	enemy_large_shot	wh_dlc03_weapon_abilities_hunting_spear	Fires on the most valuable large enemy clear of allies, else armoured infantry.
+master_rune_of_flight	Master Rune of Flight	enemy_large_shot	wh2_dlc17_rune_abilities_master_rune_of_flight	Fires on the most valuable large enemy clear of allies, else armoured infantry.
+schalkains_teeth	Schalkain's Teeth	enemy_large_shot	wh3_dlc27_item_abilities_schalkains_teeth	Fires on the most valuable large enemy clear of allies, else armoured infantry.
+dead_eye	Dead Eye	enemy_single_shot	wh3_dlc26_character_abilities_dead_eye	Fires when standing still, on the most valuable enemy monster or character clear of allies.
+focused_shot	Focused Shot	enemy_single_shot	wh2_dlc13_lord_abilities_kill_shot	Fires when standing still, on the most valuable enemy monster or character clear of allies.
+crippling_throw	Crippling Throw	enemy_melee_or_fast	wh3_main_character_abilities_crippling_throw	Fires on the nearest enemy in melee, else a fast enemy closing on allies; not in melee.
+golden_blowpipe	The Golden Blowpipe of P'Toohee	enemy_melee_or_fast	wh2_dlc17_weapon_abilities_the_golden_blowpipe_of_ptoohee	Fires on the nearest enemy in melee, else a fast enemy closing on allies.
+spear_of_kurnous	Spear of Kurnous	enemy_melee_or_shooting	wh_dlc05_weapon_abilities_spear_of_kurnous	Fires on the nearest enemy in melee, else a shooting missile unit.
+bolt_storm	Bolt Storm	enemy_infantry_shot	wh3_main_weapon_abilities_nuku_chos_crossbow	Fires when standing still, on the most valuable enemy infantry clear of allies; not in melee.
+spirit_leech_death_bound	Spirit Leech	enemy_single_drain	wh2_dlc09_spell_death_spirit_leech_bound	Fires when standing still, on the most valuable enemy monster or character.
+spirit_leech_dlc25	Spirit Leech	enemy_single_drain	wh3_dlc25_spell_bound_spirit_leech	Fires when standing still, on the most valuable enemy monster or character.
+spirit_leech_gunnery_school	Spirit Leech	enemy_single_drain	wh3_dlc25_spell_bound_spirit_leech_gunnery_school	Fires when standing still, on the most valuable enemy monster or character.
+spirit_leech	Spirit Leech	enemy_single_drain	wh3_main_spell_bound_spirit_leech	Fires when standing still, on the most valuable enemy monster or character.
+spirit_leech_guo_ror	Spirit Leech	enemy_single_drain	wh3_twa08_spell_bound_spirit_leech_great_unclean_one_ror	Fires when standing still, on the most valuable enemy monster or character.
+liber_bubonicus	The Liber Bubonicus	enemy_single_drain	wh2_main_item_abilities_the_liber_bubonicus	Fires when standing still, on the most valuable enemy monster or character.
+deaths_timekeeper	Death's Timekeeper	enemy_single_drain	wh3_dlc25_item_abilities_deaths_timekeeper	Fires when standing still, on the most valuable enemy monster or character.
+rancid_visitations	Rancid Visitations	enemy_single_drain	wh3_main_spell_bound_rancid_visitations	Fires when standing still, on the most valuable enemy monster or character.
+effagee_of_da_git	'Effagee' of da Git	enemy_single_drain	wh_dlc06_character_abilities_effagee_of_da_git	Fires when standing still, on the most valuable enemy monster or character.
+punch_dagger	Punch-Dagger	enemy_single_drain	wh3_dlc29_item_abilities_punch_dagger	Fires when standing still, on the most valuable enemy monster or character.
+emperors_executioner	The Emperor's Executioner	enemy_execute	wh3_dlc24_lord_abilities_the_emperors_executioner	Fires on the most valuable enemy below 20% health; Lords and Heroes only.
+emperors_executioner_upgrade	The Emperor's Executioner	enemy_execute	wh3_dlc24_lord_abilities_the_emperors_executioner_upgrade	Fires on the most valuable enemy below 33% health.
+blood_statuette_of_spite	Blood Statuette of Spite	enemy_area_drain	wh2_main_item_abilities_blood_statuette_of_spite	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+darkened_mist	Darkened Mist	enemy_area_drain	wh3_dlc23_item_abilities_darkened_mist	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+fate_of_bjuna_dlc25	The Fate of Bjuna	enemy_area_drain	wh3_dlc25_spell_bound_the_fate_of_bjuna	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+fate_of_bjuna	The Fate of Bjuna	enemy_area_drain	wh3_main_spell_bound_the_fate_of_bjuna	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+maelstrom_of_change	Maelstrom of Change	enemy_area_drain	wh3_dlc24_unit_abilities_maelstrom_of_change	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+otherworldly_pestilence	Otherworldly Pestilence	enemy_area_drain	wh3_dlc29_lord_abilities_otherworldly_pestilence	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+staff_of_masks	Staff of Masks	enemy_area_drain	wh3_dlc27_item_abilities_staff_of_the_masque	Fires when standing still, on the most valuable enemy infantry of 15+ men.
+ethracs_brazier	Ethrac's Brazier	enemy_melee_or_fast	wh3_dlc29_item_active_ethracs_brazier	Fires on the nearest enemy in melee, else a fast enemy closing on allies.
+storm_of_the_night	Storm of the Night	enemy_melee_or_fast	wh2_dlc11_lord_abilities_storm_of_the_night	Fires on the nearest enemy in melee, else a fast enemy closing on allies; flying targets only.
+preyton_horns	Preyton Horns	enemy_melee	wh3_dlc27_item_abilities_preyton_horns	Fires on the nearest enemy in melee.
+the_amber_trance	The Amber Trance	enemy_wavering	wh2_dlc10_item_abilities_the_amber_trance	Fires on the nearest wavering enemy.
+dweomer_leach_orb	Dweomer Leach Orb	enemy_commander_value	wh3_dlc23_item_abilities_dweomer_leach_orb	Fires on the most valuable enemy Lord or Hero.
+burp_of_grom	Burp of Grom	melee_unwavering	wh2_dlc15_character_abilities_burp_of_grom_0;wh2_dlc15_character_abilities_burp_of_grom_1;wh2_dlc15_character_abilities_burp_of_grom_2	Fires in melee unless wavering.
+blood_forged_armour	Blood-Forged Armour	melee_unwavering	wh2_dlc15_item_abilities_blood_forged_armour	Fires in melee unless wavering.
+daemon_flask_of_ashak	Daemon Flask of Ashak	melee_unwavering	wh3_dlc23_item_abilities_daemon_flask_of_ashak	Fires in melee unless wavering; not in flight.
+feaster_of_souls	Feaster of Souls	melee_unwavering	wh3_dlc29_mount_abilities_feaster_of_souls	Fires in melee unless wavering; not in flight.
+spurting_bile_blood	Spurting Bile-Blood	melee_unwavering	wh3_dlc27_item_abilities_spurting_bile_blood	Fires in melee unless wavering.
+arsebelcher	Arsebelcher	melee_unwavering	wh3_main_character_abilities_arsebelcher	Fires in melee unless wavering.
+violent_wind	Violent Wind	melee_unwavering	wh3_dlc20_unit_abilities_violent_wind	Fires in melee unless wavering.
+whirlwind_of_pleasure	Whirlwind of Pleasure	melee_unwavering	wh3_dlc27_lord_abilities_whirlwind_of_pleasure	Fires in melee unless wavering.
+whirl_of_weeping_blades	Whirl of Weeping Blades	melee_unwavering	wh2_dlc14_weapon_abilities_whirl_of_weeping_blades	Fires in melee unless wavering.
+hurricane_of_death	Hurricane of Death	melee_unwavering	wh3_dlc25_character_abilities_hurricane_of_death	Fires in melee unless wavering.
+acid_burps	Acid Burps	melee_unwavering	wh3_dlc26_unit_abilities_acid_vomit	Fires in melee unless wavering.
+groundbreaker	Groundbreaker	melee_clear	wh3_main_character_abilities_groundbreaker	Fires in melee unless wavering, clear of allies.
+burning_rage	Burning Rage	melee_clear	wh3_main_lord_abilities_burning_rage	Fires in melee unless wavering, clear of allies.
+bloodbeast	Bloodbeast	melee_clear	wh2_dlc17_lord_abilities_bloodbeast	Fires in melee unless wavering, clear of allies.
+emergency_vent	Emergency Vent	melee_clear	wh2_dlc13_unit_abilities_emergency_vent	Fires in melee unless wavering, clear of allies.
+land_mine	Land Mine	melee_clear	wh3_dlc25_unit_abilities_marienburg_land_mines	Fires in melee unless wavering, clear of allies.
+emberstorm	Emberstorm	fly_dive	wh2_dlc15_unit_abilities_emberstorm	Fires while flying over an enemy, clear of allies.
+moon_flare	Moon Flare	fly_dive	wh3_dlc24_unit_abilities_moon_flare	Fires while flying over an enemy, clear of allies.
+maneater_smoke_bomb	Maneater Smoke Bomb	charge_or_melee	wh3_dlc26_unit_abilities_maneater_smoke_bomb	Fires when charging or in melee.
+verminous_valour	Verminous Valour	wavering_self	wh2_main_character_abilities_verminous_valour	Fires when wavering.
+heavens_flash	Heaven's Flash	enemy_ground_melee	wh3_main_unit_abilities_stun_bomb	Fires at the nearest enemy in melee.
+slime_smoothie	Slime Smoothie	health_aura_ground	wh2_dlc15_character_abilities_slimy_smoothie	Fires under the most hurt unit nearby, below 75% health.
+slann_gold	Slann Gold	enemy_commander_value	wh2_dlc11_item_abilities_slann_gold	Fires on the most valuable enemy Lord or Hero.
+deathmasters_sigil	Deathmaster's Sigil	enemy_commander_value	wh2_dlc14_lord_abilities_deathmasters_sigil	Fires on the most valuable enemy Lord or Hero; no flying targets, clear of allies.
+frost_dragon_scale	Ancient Chaos Frost Dragon Scale	enemy_blob_vortex	wh_dlc08_item_abilities_ancient_frost_wyrm_scale	Fires when standing still, where the blast hurts the enemy most, clear of allies.
+necrotic_explosion	Necrotic Explosion	last_stand_clear	wh3_main_unit_abilities_necrotic_explosion	Fires below 10% health in melee, clear of allies.
+wrath_of_manann	Wrath of Manann	enemy_wave	wh_dlc07_item_abilities_wrath_of_manann	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+wind_of_death	Wind of Death	enemy_wave	wh2_dlc15_spell_bound_wind_of_death	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+seafang	Seafang	enemy_wave	wh_dlc08_lord_abilities_seafang	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+the_burning_head	The Burning Head	enemy_wave	wh3_dlc25_spell_bound_fire_the_burning_head	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+burning_head_skull	The Burning Head	enemy_wave	wh3_dlc29_spell_bound_fire_skull_of_flaming_death	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+khaines_ring_of_fury	Bound Fiery Convocation	enemy_wave	wh2_main_spell_bound_khaines_ring_of_fury	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+fiery_convocation	Fiery Convocation	enemy_wave	wh2_dlc10_spell_bound_magic_fiery_convocation	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+burning_alignment	Burning Alignment	enemy_wave	wh2_dlc12_unit_abilities_burning_alignment	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+hell_hammer	Hell Hammer	enemy_wave	wh3_dlc23_spell_bound_hell_hammer	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+nightmaw	Nightmaw	enemy_wave	wh3_dlc27_character_abilities_nightmaw	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+penumbral_pendulum	The Penumbral Pendulum	enemy_wave	wh3_dlc20_spell_bound_the_penumbral_pendulum	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+arnizipals_black_horror	Arnzipal's Black Horror	enemy_wave	wh2_dlc10_item_bound_arnizipals_black_horror	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+banishment	Banishment	enemy_wander	wh3_main_spell_bound_banishment	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+banishment_dlc04	Banishment	enemy_wander	wh_dlc04_spell_bound_banishment	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+banishment_innate	Banishment	enemy_wander	wh_dlc04_spell_bound_banishment_innate	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+lesser_banishment	Lesser Banishment	enemy_wander	wh2_dlc17_spell_bound_lesser_banishment	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+lesser_chain_lightning	Lesser Chain Lightning	enemy_wander	wh2_dlc17_spell_bound_lesser_chain_lightning	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+flame_storm_dlc20	Flame Storm	enemy_wander	wh3_dlc20_spell_bound_flame_storm	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+flame_storm	Flame Storm	enemy_wander	wh3_main_spell_bound_flame_storm	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+gem_of_sunfire	The Gem of Sunfire	enemy_wander	wh2_main_spell_bound_the_gem_of_sunfire	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+gehennas_golden_hounds	Gehenna's Golden Hounds	enemy_wander	wh3_dlc20_spell_bound_gehennas_golden_hounds	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+gilded_horn	Gilded Horn of Galon Konook	enemy_wander	wh2_main_item_bound_gilded_horn_of_galon_konook	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+hounds_of_orion	Hounds of Orion	enemy_wander	wh_dlc05_lord_ablities_grey_wolves	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+sandstorm	Sandstorm	enemy_wander	wh2_dlc09_lord_abilities_sand_storm	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+soul_slaying_hunger	Soul-slaying Hunger	enemy_wander	wh3_dlc29_unit_abilities_soul_slaying_hunger	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+sword_of_khaine	Sword of Khaine	enemy_wander	wh2_dlc10_weapon_abilities_sword_of_khaine	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+purple_sun_of_xereus	The Purple Sun of Xereus	enemy_wander	wh2_dlc11_spell_bound_the_purple_sun_of_xereus	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+ruination_of_cities	The Ruination of Cities	enemy_wander	wh2_main_lord_abilities_the_ruination_of_cities	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+dwellers_below	The Dwellers Below	enemy_wander	wh3_main_spell_bound_the_dwellers_below	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+dwellers_below_dlc08	The Dwellers Below	enemy_wander	wh_dlc08_spell_bound_the_dwellers_below	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+heavens_gate	Heaven's Gate	enemy_wander	wh3_cp1_item_abilities_heavens_gate	Fires when it and the target stand still, where the blast hurts the enemy most.
+abyssal_swarm	The Abyssal Swarm	enemy_wander	wh3_dlc29_spell_bound_undeath_the_abyssal_swarm	Fires when it and the target stand still, where the blast hurts the enemy most.
+acorns_of_the_oak	Acorns of the Oak of Ages	enemy_wander	wh2_dlc16_item_abilities_acorns_of_the_oak_of_ages	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+blight_boil	Blight Boil	enemy_wander	wh3_main_item_abilities_deaths_head	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+frost_fang	Frost Fang	enemy_wander	wh3_main_weapon_abilities_frost_fang	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+hammer_of_smednir	The Hammer of Smednir	enemy_wander	wh3_dlc23_item_abilities_hammer_of_smednir	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+viletide	Viletide	enemy_wander	wh_dlc03_spell_bound_viletide	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies; no flying targets.
+crackleblaze	Crackleblaze	enemy_wander	wh3_main_item_abilities_crackleblaze	Fires when it and the target stand still, where the blast hurts the enemy most.
+lampreys_bite	Lamprey's Bite	enemy_wander	wh3_dlc24_unit_abilities_lampreys_bite	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+boiling_cauldron	Boiling Cauldron	enemy_wander	wh3_dlc26_lord_abilities_boiling_cauldron	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+simmering_pot	Simmering Pot	enemy_wander	wh3_dlc26_lord_abilities_simmering_pot	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+brass_orb	Brass Orb	enemy_wander	wh2_dlc12_character_abilities_brass_orb	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+brass_orb_doom_flayer	Brass Orb	enemy_wander	wh2_dlc12_character_abilities_brass_orb_tech_lab_doom_flayer	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+brass_orb_upgrade	Brass Orb Upgraded	enemy_wander	wh2_dlc12_character_abilities_brass_orb_upgrade	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+infernal_gateway	Infernal Gateway	enemy_wander	wh3_dlc20_spell_bound_infernal_gateway	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+pit_of_shades_dlc27	Pit of Shades	enemy_wander	wh3_dlc27_spell_bound_pit_of_shades	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+pit_of_shades_main	Pit of Shades	enemy_wander	wh3_main_spell_bound_pit_of_shades	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+pit_of_shades	Pit of Shades	enemy_wander	wh_dlc05_spell_shadow_pit_of_shades_bound	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+rubric_of_dark_dimensions	Rubric of Dark Dimensions	enemy_wander	wh2_main_spell_bound_rubric_of_dark_dimensions	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+irresistible_plague	Irresistible Plague!	enemy_wander	wh3_dlc29_spell_bound_plague	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+plaguemaster	Plaguemaster	enemy_wander	wh3_dlc29_spell_bound_plaguemaster	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+warp_junction	Warp Junction	enemy_wander	wh3_dlc29_lord_abilities_warp_junction	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+magma_storm	Magma Storm	enemy_wander	wh3_pro10_cataclysm_fire_magma_storm_bound	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+chain_lightning_ror	Chain Lightning	enemy_wander	wh_main_spell_bound_chain_lightning_ror	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+arcane_vassal	Arcane Vassal	ally_blast	wh2_main_character_abilities_arcane_vassal	Fires on itself or the ally amid the most enemies.
+befuddlement_of_mischiefs	Befuddlement of Mischiefs	enemy_fast_near_ally	wh2_dlc16_character_abilities_befuddlement_of_mischiefs	Fires on a fast enemy closing on allies.
+winged_staff	Winged Staff	enemy_area_drain	wh2_main_weapon_bound_winged_staff	Fires when standing still, on the most valuable enemy infantry of 25+ men.
+siegebreaker	Siegebreaker	enemy_strike	wh3_main_weapon_abilities_siegebreaker	Fires when standing still, under the most valuable standing monster or character, clear of allies.
+bangstick	Bangstick	enemy_wave	wh3_main_item_abilities_bangstick	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+black_dragon_egg	Black Dragon Egg	enemy_wave	wh2_main_item_abilities_black_dragon_egg	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+blue_fire	Blue Fire of Chaos	enemy_wave	wh3_main_daemon_arms_abilities_blue_fire	Fires when it and the target stand still, down the path with the most enemies, clear of allies; not in melee.
+blue_fire_upgraded	Blue Fire of Chaos Upgraded	enemy_wave	wh3_main_daemon_arms_abilities_blue_fire_upgraded	Fires when it and the target stand still, down the path with the most enemies, clear of allies; not in melee.
+fiery_ring_of_thori	Fiery Ring of Thori	enemy_wave	wh_main_item_abilities_fiery_ring_of_thori	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+gaze_of_malice	Gaze of Malice	enemy_wave	wh2_main_lord_abilities_gaze_of_malice	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+jade_lions_breath	Jade Lion's Breath	enemy_wave	wh3_dlc24_unit_abilities_jade_dragons_breath	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+kovsh_breath	Kovsh Breath	enemy_wave	wh3_main_item_abilities_kovsh_breath	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+lash_of_slaanesh_dlc27	Lash of Slaanesh	enemy_wave	wh3_dlc27_spell_bound_lash_of_slaanesh	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+lash_of_slaanesh	Lash of Slaanesh	enemy_wave	wh3_main_spell_bound_lash_of_slaanesh	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+lash_of_slaanesh_keeper	Lash of Slaanesh	enemy_wave	wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+pink_fire_dlc20	Pink Fire of Tzeentch	enemy_wave	wh3_dlc20_spell_bound_pink_fire_of_tzeentch	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+pink_fire	Pink Fire of Tzeentch	enemy_wave	wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+scorch	Scorch	enemy_wave	wh2_main_mount_bound_scorch	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+stream_of_corruption_dlc20	Stream of Corruption	enemy_wave	wh3_dlc20_spell_bound_stream_of_corruption	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+stream_of_corruption	Stream of Corruption	enemy_wave	wh3_main_spell_nurgle_stream_of_corruption_bound	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+sunfang	Sunfang	enemy_wave	wh2_main_weapon_abilities_sunfang	Fires when it and the target stand still, down the path with the most enemies, clear of allies.
+spear_slaupnir	The Spear Slaupnir	enemy_wave	wh3_dlc20_weapon_abilities_the_spear_slaupnir	Fires when it and the target stand still, down the path with the most enemies, clear of allies; no flying targets.
+tidecall	Tidecall	enemy_wave_charge	wh2_dlc11_spell_bound_tidecall	Fires when standing still, at a fast enemy closing on allies, its path clear of allies.
+wind_blast	Wind Blast	enemy_wave_charge	wh2_dlc11_spell_bound_wind_blast	Fires when standing still, at a fast enemy closing on allies, its path clear of allies.
+fishy_breath	Fishy Breath	enemy_cone	wh2_dlc15_character_abilities_fishy_breathe	Fires when standing still, through the standing enemies it hurts most, clear of allies.
+pestilent_breath_mount	Pestilent Breath	enemy_cone	wh2_main_mount_bound_pestilent_breath	Fires when standing still, through the standing enemies it hurts most, clear of allies.
+pestilent_breath	Pestilent Breath	enemy_cone	wh3_main_spell_bound_pestilent_breath	Fires when standing still, through the standing enemies it hurts most, clear of allies.
+shatter	Shatter	enemy_cone	wh2_dlc13_character_ability_shatter	Fires when standing still, through the standing enemies it hurts most, clear of allies; no flying targets.
+skabscrath	Skabscrath	enemy_cone	wh_main_weapon_abilities_skabscrath	Fires when standing still, through the standing enemies it hurts most, clear of allies; no flying targets.
+disembowelling_sweep	Disembowelling Sweep	enemy_sweep	wh3_dlc29_unit_active_ripping_blades	Fires in melee unless wavering, at the nearest enemy in melee, clear of allies.
+flesh_eating_scarabs	Flesh-eating Scarabs	enemy_sweep	wh3_dlc29_unit_abilities_flesh_eating_scarabs	Fires in melee unless wavering, at the nearest enemy in melee, clear of allies.
+da_boss_loons	Da Boss' Loons	enemy_wander	wh2_dlc15_lord_abilities_da_boss_loons	Fires when it and the target stand still, where the blast hurts the enemy most, clear of allies.
+restock	Restock!	ally_ammo_low	wh2_dlc17_hero_abilities_more_powder_generic	Fires on the shooting ally in range lowest on ammo, at 70% or less.
+ballistics_calibration	Ballistics Calibration	allies_firing_aura	wh_main_hero_abilities_ballistics_calibration	Fires when it or a nearby ally is shooting.
+gaze_of_usirian	Eternal Gaze	enemy_engaged_or_shot	wh3_dlc29_lord_abilities_gaze_of_usirian	Fires on the nearest enemy in melee, else one under missile fire; no undead targets.
+eternal_vigour	Eternal Vigour	melee_unwavering	wh3_dlc29_character_abilities_eternal_vigour	Fires in melee unless wavering.
+extra_ingredients	Extra Ingredients	when_ready	wh3_main_character_abilities_extra_ingredients	Fires when ready.
+favoured_by_the_matriarch	Favoured by the Matriarch	melee_unwavering	wh3_dlc27_hero_abilities_favoured_by_the_matriarch	Fires in melee unless wavering; not below 25% health.
+fear_of_aramar	Fear of Aramar	enemy_engaged_or_shot	wh2_dlc10_item_abilities_fear_of_aramar	Fires on the nearest enemy in melee, else one under missile fire.
+fearsome_roar	Fearsome Roar	melee_unwavering	wh3_dlc24_unit_abilities_fearsome_roar	Fires in melee unless wavering.
+mark_of_the_monster	Fecund Rebirth	enemy_engaged_or_shot	wh3_dlc29_character_active_mark_of_the_monster	Fires on the nearest enemy in melee, else one under missile fire; monsters and large characters only.
+fermented_fungi	Fermented Fungi	enemy_melee	wh2_dlc15_lord_abilities_fermented_fungi	Fires on the nearest enemy in melee.
+fight_or_die	Fight or Die!	melee_unwavering	wh_dlc08_lord_abilities_fight_or_die	Fires in melee unless wavering.
+fistful_of_laurels	Fistful of Laurels	melee_unwavering	wh3_main_item_abilities_fistful_of_laurels	Fires in melee unless wavering.
+flesh_to_stone	Flesh to Stone	melee_unwavering	wh2_dlc16_spell_bound_flesh_to_stone	Fires in melee unless wavering.
+focus_instincts	Focus Instincts	melee_unwavering	wh2_dlc12_lord_abilities_focus_instincts	Fires in melee unless wavering.
+forbidden_rod	Forbidden Rod	melee_unwavering	wh_main_item_abilities_forbidden_rod	Fires in melee unless wavering.
+frost_shard_glaive	Frost Shard Glaive	enemy_melee	wh3_main_weapon_abilities_frost_shard_glaive	Fires on the nearest enemy in melee.
+funnel_of_flame	Funnel of Flame	allies_firing_aura	wh2_dlc13_lord_abilities_funnel_of_flame	Fires when it or a nearby ally is shooting.
+gaze_of_fate	Gaze of Fate	enemy_fast_near_ally	wh3_main_lord_abilities_gaze_of_fate	Fires on a fast enemy closing on allies.
+get_em	Get 'Em!	enemy_ground_area	wh3_dlc25_character_abilities_get_em	Fires under the nearest enemy in melee, else one under missile fire.
+get_back_ere	Get Back 'Ere!	wavering_aura	wh_main_character_abilities_get_back_ere	Fires when it or a nearby ally wavers.
+soulnetter	Gilellion's Soulnetter	enemy_engaged_or_shot	wh3_main_weapon_abilities_soulnetter	Fires on the nearest enemy in melee, else one under missile fire.
+glacial_defence	Glacial Defence	melee_or_under_fire	wh3_twa08_unit_abilities_glacial_defence	Fires in melee unless wavering, or under missile fire.
+glory_seeker	Glory Seeker	enemy_engaged_or_shot	wh3_dlc29_hero_active_glory_seeker	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+glory_seeker_upgraded	Glory Seeker Upgraded	enemy_engaged_or_shot	wh3_dlc29_hero_active_glory_seeker_upgraded	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+gruts_sickle	Grut's Sickle	ally_winds	wh3_main_item_abilities_gruts_sickle	Fires on the healthiest ally in range.
+hagtree_fetish	Hagtree Fetish	melee_unwavering	wh_dlc03_item_abilities_hagtree_fetish	Fires in melee unless wavering.
+hail_of_fire	Hail of Fire	allies_firing_aura	wh2_dlc13_lord_abilities_hail_of_fire	Fires when it or a nearby ally is shooting.
+harmonic_convergence	Harmonic Convergence	melee_or_shooting_self_or_ally	wh3_main_spell_bound_harmonic_convergence	Fires in melee unless wavering or while shooting, else on the nearest ally in range doing either.
+headhunt	Headhunt	enemy_engaged_or_shot	wh3_dlc26_character_abilities_headhunt	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+hellish_vigour	Hellish Vigour	ally_melee_buff	wh3_dlc29_lord_abilities_hellish_vigour	Fires in melee unless wavering, on the nearest ally in range.
+hellish_vigour_upgraded	Hellish Vigour Upgraded	melee_unwavering	wh3_dlc29_lord_abilities_hellish_vigour_upgraded	Fires in melee unless wavering.
+hidden_huntress	Hidden Huntress	enemy_melee	wh3_cp1_lord_abilities_hidden_huntress	Fires on the nearest enemy in melee.
+hidden_huntress_upgraded	Hidden Huntress Upgraded	enemy_melee	wh3_cp1_lord_abilities_hidden_huntress_upgraded	Fires on the nearest enemy in melee.
+horn_of_the_wild_hunt	Horn of the Wild Hunt	melee_unwavering	wh_dlc05_item_abilities_horn_of_the_wild_hunt	Fires in melee unless wavering.
+horn_of_vaul	Horn of Vaul	melee_or_shooting_aura	wh2_main_item_abilities_dragonhorn	Fires when it or a nearby ally is in melee or shooting.
+hornswaggle	Hornswaggle	enemy_melee	wh2_dlc11_character_abilities_hornswaggle	Fires on the nearest enemy in melee.
+howl_of_the_great_beast	Howl of the Great Beast	melee_unwavering	wh3_dlc24_unit_abilities_howl_of_the_great_beast	Fires in melee unless wavering.
+hunter_of_champions	Hunter of Champions	enemy_engaged_or_shot	wh_dlc08_character_abilities_hunter_of_champions;wh2_dlc17_character_abilities_hunter_of_champions_upgraded	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+hunters_snare	Hunter's Snare	enemy_ground_area	wh2_dlc13_lord_abilities_hunters_snare	Fires under the nearest enemy in melee, else one under missile fire.
+hunters_trap	Hunter's Trap	enemy_ground_area	wh2_dlc13_lord_abilities_hunters_trap	Fires under the nearest enemy in melee, else one under missile fire.
+spell_slaanesh_hysterical_frenzy_bound	Hysterical Frenzy	melee_unwavering	wh3_main_spell_slaanesh_hysterical_frenzy_bound	Fires in melee unless wavering.
+inspired_marksmanship_i	Inspired Marksmanship I	ally_missile	wh3_main_lord_abilities_inspired_marksmanship_i	Fires on the nearest missile ally in range.
+inspired_marksmanship_ii	Inspired Marksmanship II	ally_missile	wh3_main_lord_abilities_inspired_marksmanship_ii	Fires on the nearest missile ally in range.
+inspired_marksmanship_iii	Inspired Marksmanship III	ally_missile	wh3_main_lord_abilities_inspired_marksmanship_iii	Fires on the nearest missile ally in range.
+iron_hand_captain	Iron-Handed Captain	ally_broken	wh3_dlc27_character_abilities_iron_hand_captain	Fires on the nearest routing ally in range.
+jagged_dagger	Jagged Dagger	when_ready	wh_dlc03_item_abilities_jagged_dagger	Fires when ready.
+locus_of_abjuration	Locus of Abjuration	melee_unwavering	wh3_main_character_abilities_locus_of_abjuration	Fires in melee unless wavering.
+locus_of_change	Locus of Change	allies_firing_aura	wh3_main_character_abilities_locus_of_change	Fires when it or a nearby ally is shooting.
+locus_of_conjuration	Locus of Conjuration	when_ready	wh3_main_character_abilities_locus_of_conjuration	Fires when ready.
+looming_dread	Looming Dread	enemy_engaged_or_shot	wh2_dlc14_lord_abilities_looming_dread	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+lord_of_dragons	Lord of Dragons	enemy_melee	wh2_dlc15_lord_abilities_lord_of_dragons	Fires on the nearest enemy in melee.
+magical_animus	Magical Animus	wavering_aura	wh_main_character_abilities_magical_animus	Fires when it or a nearby ally wavers.
+mark_of_the_plague_fleet	Mark of the Plague Fleet	enemy_engaged_or_shot	wh3_dlc29_item_active_mark_of_the_plague_fleet	Fires on the nearest enemy in melee, else one under missile fire.
+mark_of_yin	Mark of Yin	enemy_engaged_or_shot	wh3_dlc24_unit_abilities_mark_of_yin	Fires on the nearest enemy in melee, else one under missile fire.
+marked_by_ulthar	Marked by Ulthar	enemy_engaged_or_shot	wh_dlc06_unit_abilities_marked_by_ulthar	Fires on the nearest enemy in melee, else one under missile fire.
+marked_for_eatin	Marked for Eatin'	enemy_melee	wh3_dlc26_unit_abilities_marked_for_eatin	Fires on the nearest enemy in melee.
+beguile	Master of Beguilement	enemy_melee	wh_dlc04_lord_abilities_beguile	Fires on the nearest enemy in melee.
+master_of_the_black_arts	Master of the Black Arts	melee_unwavering	wh_main_lord_abilities_master_of_the_black_arts	Fires in melee unless wavering.
+master_rune_of_breaking	Master Rune of Breaking	melee_unwavering	wh2_dlc17_rune_abilities_master_rune_of_breaking	Fires in melee unless wavering.
+master_rune_of_negation	Master Rune of Negation	melee_unwavering	wh_dlc06_rune_abilities_master_rune_of_negation	Fires in melee unless wavering.
+master_rune_of_slowness	Master Rune of Slowness	enemy_fast_near_ally	wh2_dlc17_rune_abilities_master_rune_of_slowness	Fires on a fast enemy closing on allies.
+maw_shard	Maw Shard	melee_unwavering	wh3_main_item_abilities_maw_shard	Fires in melee unless wavering.
+miasma_of_despair	Miasma of Despair	melee_unwavering	wh2_dlc13_lord_abilities_miasma_of_despair	Fires in melee unless wavering.
+mighty_oath_stone	Mighty Oath Stone	melee_unwavering	wh_dlc06_lord_abilities_mighty_oath_stone	Fires in melee unless wavering.
+mighty_roar	Mighty Roar	melee_unwavering	wh2_dlc15_unit_abilities_mighty_roar	Fires in melee unless wavering.
+mimic_cold_blooded	Mirror (Cold-Blooded)	wavering_aura	wh2_dlc15_unit_abilities_mimic_cold_blooded	Fires when wavering.
+mimic_feint_and_riposte	Mirror (Feint & Riposte)	melee_unwavering	wh2_dlc15_unit_abilities_mimic_feint_and_riposte	Fires in melee unless wavering.
+mimic_grand_hammer_of_faith	Mirror (Grand Hammer of Faith)	melee_unwavering	wh2_dlc15_unit_abilities_mimic_grand_hammer_of_faith	Fires in melee unless wavering.
+unit_bound_missile_mirror	Missile Mirror	enemy_missile_shooting	wh3_dlc24_unit_bound_missile_mirror	Fires on the nearest shooting enemy missile unit.
+mither	Mither	enemy_fast_near_ally	wh2_dlc15_hero_abilities_mither	Fires on a fast enemy closing on allies.
+moonshine	Moonshine	melee_unwavering	wh2_dlc11_item_abilities_moonshine	Fires in melee unless wavering.
+morgrims_eye	Morgrim's Eye	allies_firing_aura	wh3_dlc23_item_abilities_morgrims_eye	Fires when it or a nearby ally is shooting.
+muster_of_malevolents	Muster of Malevolents	enemy_engaged_or_shot	wh2_dlc16_character_abilities_muster_of_malevolents	Fires on the nearest enemy in melee, else one under missile fire.
+neferras_scrolls_of_mighty_incantations	Neferra's Scrolls of Mighty Incantations	when_ready	wh2_dlc09_item_abilities_neferras_scrolls_of_mighty_incantations	Fires when ready.
+net_dem_up	Net Dem Up!	enemy_engaged_or_shot	wh3_dlc26_unit_abilities_net_dem_up	Fires on the nearest enemy in melee, else one under missile fire.
+net_of_amyntok	Net of Amyntok	enemy_engaged_or_shot	wh_dlc04_spell_bound_net_of_amyntok	Fires on the nearest enemy in melee, else one under missile fire.
+null_stone	Null Stone	melee_unwavering	wh3_dlc27_item_abilities_null_stone	Fires in melee unless wavering.
+oath_of_vengeance	Oath of Vengeance	enemy_melee	wh2_dlc10_lord_abilities_oath_of_vengeance	Fires on the nearest enemy in melee.
+oil_flask	Oil Flask	enemy_engaged_or_shot	wh2_dlc13_lord_abilities_oil_flask	Fires on the nearest enemy in melee, else one under missile fire.
+ottos_scythe	Otto's Scythe	enemy_melee	wh3_dlc29_item_active_ottos_scythe	Fires on the nearest enemy in melee.
+pack_trap	Pack Trap	enemy_engaged_or_shot	wh3_dlc24_unit_abilities_pack_trap	Fires on the nearest enemy in melee, else one under missile fire.
+pageant_of_shrikes	Pageant of Shrikes	enemy_engaged_or_shot	wh2_dlc16_character_abilities_pageant_of_shrikes	Fires on the nearest enemy in melee, else one under missile fire.
+pearl_of_infinite_bleakness	Pearl of Infinite Bleakness	wavering_aura	wh2_main_item_abilities_pearl_of_infinite_bleakness	Fires when it or a nearby ally wavers.
+pestilent_potions	Pestilent Potions	enemy_melee	wh3_dlc20_item_abilities_pestilent_potions	Fires on the nearest enemy in melee.
+phas_protection	Pha's Protection	melee_unwavering	wh3_main_spell_bound_phas_protection	Fires in melee unless wavering.
+pilgrimage_of_skulls	Pilgrimage of Skulls	wavering_ally_range	wh3_dlc26_lord_abilities_pilgrimage_of_skulls	Fires on the nearest wavering ally.
+plague_of_rust	Plague of Rust	enemy_engaged_or_shot	wh3_main_spell_bound_plague_of_rust	Fires on the nearest enemy in melee, else one under missile fire.
+plaque_of_dominion	Plaque of Dominion	melee_unwavering	wh2_main_item_abilities_plaque_of_dominion	Fires in melee unless wavering.
+potion_of_farsight	Potion of Farsight	no_enemy_in_range_within_boost	wh3_main_item_abilities_potion_of_farsight	Fires when an enemy is just beyond its missile range.
+potion_of_foolhardiness	Potion of Foolhardiness	melee_unwavering	wh_main_item_abilities_potion_of_foolhardiness	Fires in melee unless wavering.
+potion_of_speed	Potion of Speed	charge_only	wh_main_item_abilities_potion_of_speed	Fires when charging.
+power_familiar	Power Familiar	melee_unwavering	wh3_dlc27_item_abilities_power_familiar	Fires in melee unless wavering.
+power_siphon	Power Siphon	enemy_engaged_or_shot	wh2_dlc11_lord_abilities_power_siphon	Fires on the nearest enemy in melee, else one under missile fire.
+power_stone	Power Stone	when_ready	wh_main_item_abilities_power_stone	Fires when ready.
+predatory_instincts	Predatory Instincts	melee_unwavering	wh3_cp1_lord_abilities_predatory_instincts	Fires in melee unless wavering.
+prey_of_anath_raema	Prey of Anath Raema	enemy_engaged_or_shot	wh_dlc05_character_abilities_prey_of_anath_raema	Fires on the nearest enemy in melee, else one under missile fire.
+prey_of_the_blood_god	Prey of the Blood God	enemy_engaged_or_shot	wh3_pro12_hero_abilities_prey_of_the_blood_god	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+prismatic_amplifier	Prismatic Amplifier	when_ready	wh3_main_item_abilities_prismatic_amplifier	Fires when ready.
+rally	Rally!	wavering_aura	wh_main_character_abilities_rally	Fires when it or a nearby ally wavers.
+dispatch_the_swarm_attack	Ravaging Swarm	enemy_melee	wh3_dlc29_hero_active_dispatch_the_swarm_attack	Fires on the nearest enemy in melee.
+dispatch_the_swarm_attack_upgraded	Ravaging Swarm Upgraded	enemy_melee	wh3_dlc29_hero_active_dispatch_the_swarm_attack_upgraded	Fires on the nearest enemy in melee.
+tomb_king_rally	Reanimate	wavering_aura	wh2_dlc09_character_abilities_tomb_king_rally	Fires when it or a nearby ally wavers.
+tomb_king_rally_upgraded	Reanimate Upgraded	wavering_aura	wh2_dlc09_character_abilities_tomb_king_rally_upgraded	Fires when it or a nearby ally wavers.
+red_fury	Red Fury	melee_unwavering	wh_main_character_abilities_red_fury	Fires in melee unless wavering.
+item_passive_rock_eye	Rock Eye	melee_unwavering	wh3_main_item_passive_rock_eye	Fires in melee unless wavering.
+rune_of_breaking	Rune of Breaking	melee_unwavering	wh2_dlc17_rune_abilities_rune_of_breaking	Fires in melee unless wavering.
+rune_of_negation	Rune of Negation	melee_unwavering	wh_main_rune_abilities_rune_of_negation	Fires in melee unless wavering.
+rune_of_slowness	Rune of Slowness	enemy_fast_near_ally	wh2_dlc17_rune_abilities_rune_of_slowness	Fires on a fast enemy closing on allies.
+rune_of_thungni	Rune of Thungni	melee_unwavering	wh3_dlc23_item_abilities_rune_of_thungni	Fires in melee unless wavering.
+sadistic_snare	Sadistic Snare	enemy_fast_near_ally	wh3_dlc23_lord_abilities_sadistic_snare	Fires on a fast enemy closing on allies.
+sceptre_of_stability	Sceptre of Stability	melee_unwavering	wh_main_item_abilities_sceptre_of_stability	Fires in melee unless wavering.
+scroll_of_destiny	Scroll of Destiny	when_ready	wh3_main_item_abilities_scroll_of_destiny	Fires when ready.
+scroll_of_leeching	Scroll of Leeching	enemy_engaged_or_shot	wh_main_item_abilities_scroll_of_leeching	Fires on the nearest enemy in melee, else one under missile fire.
+scroll_of_shielding	Scroll of Shielding	melee_unwavering	wh_main_item_abilities_scroll_of_shielding	Fires in melee unless wavering.
+shield_of_chaqua	Shield of Chaqua	under_fire	wh2_dlc12_unit_abilities_shield_of_chaqua	Fires when it or a nearby ally is under missile fire.
+dispatch_the_swarm_protect	Shielding Swarm	melee_unwavering	wh3_dlc29_hero_active_dispatch_the_swarm_protect	Fires in melee unless wavering.
+dispatch_the_swarm_protect_upgraded	Shielding Swarm Upgraded	melee_unwavering	wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded	Fires in melee unless wavering.
+shock_collar	Shock Collar	ally_wavering	wh2_dlc16_hero_abilities_shock_collar	Fires on the nearest wavering ally in range.
+silence_the_prey	Silence the Prey	enemy_engaged_or_shot	wh3_main_character_abilities_silence_the_prey	Fires on the nearest enemy in melee, else one under missile fire.
+skavenbrew	Skavenbrew	melee_unwavering	wh2_main_item_abilities_skavenbrew	Fires in melee unless wavering.
+skjalandirs_fall	Skjalandir's Fall	melee_or_shooting_into_melee	wh3_dlc23_character_abilities_skjalandirs_fall	Fires in melee unless wavering, or when shooting into a melee.
+skull_of_rarkos	Skull of Rarkos	when_ready	wh_dlc03_item_abilities_skull_of_rarkos	Fires when ready.
+snowflake_pendant	Snowflake Pendant	when_ready	wh3_main_item_abilities_snowflake_pendant	Fires when ready.
+spearfishers_net	Spearfisher's Net	enemy_fast_near_ally	wh2_dlc11_lord_abilities_spearfishers_net	Fires on a fast enemy closing on allies; no flying targets.
+spell_wrought_sceptre	Spell-Wrought Sceptre	recharging_in_reach	wh3_dlc23_weapon_abilities_spell_wrought_sceptre	Fires on itself or an ally in range while one of their abilities recharges.
+spider_web_attack	Spiderweb Attack	enemy_engaged_or_shot	wh3_dlc26_character_abilities_spider_web_attack	Fires on the nearest enemy in melee, else one under missile fire.
+staff_of_damnation	Staff of Damnation	melee_unwavering	wh_main_spell_bound_staff_of_damnation	Fires in melee unless wavering.
+staff_of_nagash	Staff of Nagash	self_recharging	wh2_dlc09_item_abilities_staff_of_nagash	Fires while another of its abilities recharges.
+staff_of_tomorrow	Staff of Tomorrow	self_recharging	wh3_main_weapon_abilities_staff_of_tomorrow	Fires while another of its abilities recharges.
+staff_of_volans	Staff of Volans	when_ready	wh_main_item_abilities_staff_of_volans	Fires when ready.
+staff_of_wu_xing	Staff of Wu Xing	when_ready	wh3_main_item_abilities_staff_of_wu_xing	Fires when ready.
+starwood_staff	Starwood Staff	when_ready	wh2_main_item_abilities_starwood_staff	Fires when ready.
+stave_of_avelorn	Stave of Avelorn	when_ready	wh2_dlc10_item_abilities_stave_of_avelorn	Fires when ready.
+sword_of_filth	Sword of Filth	enemy_engaged_or_shot	wh3_dlc25_weapon_abilities_sword_of_filth	Fires on the nearest enemy in melee, else one under missile fire.
+tacticians_rally	Tacticians, Rally!	wavering_ally_range	wh3_dlc24_character_abilities_tacticians_rally	Fires on the nearest wavering ally.
+taunt	Taunt	enemy_melee	wh2_dlc11_character_abilities_taunt	Fires on the nearest enemy in melee.
+tendrils_of_the_sea	Tendrils of the Sea	enemy_melee	wh3_dlc29_hero_active_tendrils_of_the_sea	Fires on the nearest enemy in melee; large targets only.
+terrorgheist_skull	Terrorgheist Skull	melee_self_or_ally	wh_dlc08_item_abilities_terrorgheist_skull	Fires on itself or the nearest ally in melee.
+averland_runefang	The Averland Runefang	enemy_melee	wh2_dlc13_weapon_abilities_averland_runefang	Fires on the nearest enemy in melee.
+the_bane_shield	The Bane Shield	melee_or_under_fire	wh2_main_item_abilities_the_bane_shield	Fires in melee unless wavering, or under missile fire, or when a nearby ally is in melee or under fire.
+the_black_tongue	The Black Tongue	enemy_engaged_or_shot	wh3_dlc27_character_abilities_the_black_tongue	Fires on the nearest enemy in melee, else one under missile fire.
+the_chromatic_tome	The Chromatic Tome	when_ready	wh3_main_item_abilities_the_chromatic_tome	Fires when ready.
+the_dark_master	The Dark Master	enemy_melee	wh3_main_lord_abilities_the_dark_master	Fires on the nearest enemy in melee.
+enfeebling_foe	The Enfeebling Foe	enemy_melee	wh3_dlc23_spell_bound_enfeebling_foe;wh3_dlc27_spell_bound_enfeebling_foe;wh3_main_spell_bound_enfeebling_foe;wh3_twa08_spell_bound_enfeebling_foe_keeper_of_secrets_ror	Fires on the nearest enemy in melee.
+the_golden_eye_of_tzeentch	The Golden Eye of Tzeentch	under_fire	wh3_dlc24_item_abilities_the_golden_eye_of_tzeentch	Fires under missile fire.
+the_guiding_eye	The Guiding Eye	allies_firing_aura	wh2_main_item_abilities_the_guiding_eye	Fires when it or a nearby ally is shooting.
+the_hammer_of_karak_drazh	The Hammer of Karak Drazh	enemy_melee	wh_main_weapon_abilities_the_hammer_of_karak_drazh	Fires on the nearest enemy in melee.
+undeath_sulekhim_hand_of_dust	The Hand of Dust	melee_unwavering	wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust	Fires in melee unless wavering.
+the_liber_noctus	The Liber Noctus	self_recharging	wh_dlc04_item_abilities_the_liber_noctus	Fires while another of its abilities recharges.
+lions_shield	The Lion's Shield	under_fire	wh_dlc07_lord_abilities_lions_shield	Fires under missile fire.
+the_seerstaff_of_saphery	The Seerstaff of Saphery	melee_or_shooting_self_or_ally	wh2_main_spell_bound_the_seerstaff_of_saphery	Fires in melee unless wavering or while shooting, else on the nearest ally in range doing either.
+the_tricksters_pendant	The Trickster's Pendant	enemy_ground_area	wh2_main_item_abilities_the_tricksters_pendant	Fires under the nearest enemy in melee, else one under missile fire.
+the_vial_of_hashut	The Vial of Hashut	enemy_engaged_or_shot	wh3_dlc23_item_abilities_the_vial_of_hashut	Fires on the nearest enemy in melee, else one under missile fire.
+the_vortex_shard	The Vortex Shard	enemy_engaged_or_shot	wh2_main_item_abilities_the_vortex_shard	Fires on the nearest enemy in melee, else one under missile fire.
+the_wintertooth_crown	The Wintertooth Crown	melee_unwavering	wh_dlc08_item_abilities_the_wintertooth_crown	Fires in melee unless wavering.
+wissenland_runefang	The Wissenland Runefang	melee_unwavering	wh2_dlc13_weapon_abilities_wissenland_runefang	Fires in melee unless wavering.
+the_withering	The Withering	enemy_engaged_or_shot	wh3_dlc23_spell_bound_the_withering;wh3_twa08_spell_bound_the_withering	Fires on the nearest enemy in melee, else one under missile fire.
+they_needs_stabbin	They Needs Stabbin’	enemy_engaged_or_shot	wh2_dlc15_character_abilities_they_needs_stabbin	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+thorns_aura	Thorn's Aura	melee_unwavering	wh3_dlc24_hero_abilities_thorns_aura	Fires in melee unless wavering.
+titan_headsman	Titan Headsman	enemy_melee	wh3_dlc25_hero_abilities_titan_headsman	Fires on the nearest enemy in melee.
+torment_blade	Torment Blade	enemy_melee	wh3_main_weapon_abilities_torment_blade	Fires on the nearest enemy in melee.
+tricksters_shard	Trickster's Shard	enemy_ground_area	wh_main_item_abilities_tricksters_shard	Fires under the nearest enemy in melee, else one under missile fire.
+trophy_heads	Trophy Heads	enemy_melee	wh2_main_lord_abilities_trophy_heads;wh3_main_daemon_wings_abilities_trophy_heads	Fires on the nearest enemy in melee; Lords and Heroes only.
+twilight_horn_i	Twilight Horn I	charge_only	wh2_dlc16_item_abilities_twilight_horn_i	Fires when charging.
+undeath_resurgent	Undeath Resurgent	melee_unwavering	wh_main_character_abilities_undeath_resurgent	Fires in melee unless wavering.
+unholy_clamour	Unholy Clamour	wavering_aura	wh2_main_mount_abilities_unholy_clamour	Fires when it or any ally wavers.
+unlimited_power	Unlimited Power!	when_ready	wh2_dlc12_lord_abilities_unlimited_power	Fires when ready.
+ursuns_roar_2	Ursun's Mighty Roar	melee_unwavering	wh3_main_pro_character_abilities_ursuns_roar_2	Fires in melee unless wavering.
+ursuns_roar	Ursun's Roar	melee_unwavering	wh3_main_character_abilities_ursuns_roar;wh3_main_pro_character_abilities_ursuns_roar;wh3_main_pro_character_abilities_ursuns_roar_1;wh3_main_pro_character_abilities_ursuns_roar_3	Fires in melee unless wavering.
+van_horstmanns_speculum	Van Horstmann's Speculum	melee_unwavering	wh_main_item_abilities_van_horstmanns_speculum	Fires in melee unless wavering.
+verminous_fury	Verminous Fury	ally_melee_buff	wh3_dlc29_lord_abilities_verminous_fury	Fires in melee unless wavering, on the nearest ally in range.
+virulent_contagion	Virulent Contagion	enemy_melee	wh3_main_lord_abilities_virulent_contagion	Fires on the nearest enemy in melee.
+virulent_contagion_upgraded	Virulent Contagion Upgraded	enemy_melee	wh3_main_lord_abilities_virulent_contagion_upgraded	Fires on the nearest enemy in melee.
+void_pendulum	Void Pendulum	enemy_engaged_or_shot	wh3_main_item_abilities_void_pendulum	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+vorozhejas_foresight	Vorozheja's Foresight	enemy_engaged_or_shot	wh3_dlc24_hero_abilities_vorozhejas_foresight	Fires on the nearest enemy in melee, else one under missile fire.
+waaagh_in_combat	Waaagh!	melee_unwavering	wh3_dlc26_unit_abilities_waaagh_in_combat;wh_main_character_abilities_waaagh	Fires in melee unless wavering.
+wand_of_jet	Wand of Jet	melee_unwavering	wh_main_item_abilities_wand_of_jet	Fires in melee unless wavering.
+warp_gaze	Warp Gaze	enemy_engaged_or_shot	wh_pro04_unit_abilities_warp_gaze	Fires on the nearest enemy in melee, else one under missile fire.
+warpstiletto	Warpstiletto	enemy_engaged_or_shot	wh3_dlc29_item_abilities_warpstiletto	Fires on the nearest enemy in melee, else one under missile fire.
+warpstone_tokens	Warpstone Tokens	when_ready	wh3_dlc29_item_abilities_warpstone_tokens	Fires when ready.
+watched_by_the_watcher	Watched by the Watcher	melee_unwavering	wh3_dlc24_character_abilities_watched_by_the_watcher	Fires in melee unless wavering.
+were_you_goin	Where You Goin!?	ally_wavering	wh3_dlc26_character_abilities_were_you_goin	Fires on the nearest wavering ally in range.
+whip_of_agony	Whip of Agony	enemy_melee	wh2_twa03_weapon_abilities_whip_of_agony	Fires on the nearest enemy in melee.
+whip_of_misery	Whip of Misery	enemy_engaged_or_shot	wh2_main_spell_bound_whip_of_agony	Fires on the nearest enemy in melee, else one under missile fire; large targets only.
+whiplash	Whiplash!	ally_beast	wh2_dlc14_lord_abilities_whiplash	Fires on the nearest beast ally in range; no Lords or Heroes.
+whispering_mist	Whispering Mist	enemy_fast_near_ally	wh3_dlc29_hero_abilities_whispering_mist	Fires on a fast enemy closing on allies.
+whispering_skull	Whispering Skull	when_ready	wh3_dlc29_item_abilities_whispering_skull	Fires when ready.
+wild_abandon	Wild Abandon	melee_unwavering	wh3_dlc26_lord_abilities_wild_abandon	Fires in melee unless wavering.
+willing_prey	Willing Prey	enemy_melee	wh3_main_lord_abilities_willing_prey	Fires on the nearest enemy in melee.
+winds_of_change	Winds of Change	when_ready	wh3_main_daemon_body_abilities_winds_of_change	Fires when ready.
+word_of_change	Word of Change	enemy_engaged_or_shot	wh3_main_daemon_head_abilities_word_of_change	Fires on the nearest enemy in melee, else one under missile fire; Lords and Heroes only.
+word_of_pain	Word of Pain	enemy_engaged_or_shot	wh2_dlc10_spell_bound_word_of_pain;wh3_dlc27_spell_dark_magic_word_of_pain_bound_1use	Fires on the nearest enemy in melee, else one under missile fire.
+wrath_of_the_storm	Wrath of the Storm	melee_unwavering	wh3_main_lord_abilities_wrath_of_the_storm	Fires in melee unless wavering.
+wrathful_reaper	Wrathful Reaper	melee_unwavering	wh3_main_lord_abilities_wrathful_reaper	Fires in melee unless wavering.
+wristbands_of_black_gold	Wristbands of Black Gold	melee_unwavering	wh3_dlc29_item_abilities_wristbands_of_black_gold	Fires in melee unless wavering.
+youre_next	You're Next!	enemy_melee	wh2_dlc15_lord_abilities_youre_next	Fires on the nearest enemy in melee; Lords and Heroes only.
+berry_wine	Berry Wine	health_aura_ally	wh2_dlc16_item_abilities_berry_wine	Fires on the most hurt unit nearby, below 75% health.
+blood_chalice	Blood Chalice	ushoran_health	wh3_dlc29_hero_abilities_blood_chalice	Fires below 75% health.
+blood_chalice_of_bathori	Blood Chalice of Bathori	ushoran_health	wh_pro02_item_abilities_blood_chalice_of_bathori	Fires below 75% health.
+undeath_morkharn_breath_of_darkness	Breath of Darkness	ushoran_health	wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness	Fires below 75% health.
+undeath_morkharn_breath_of_darkness_upgraded	Breath of Darkness Upgraded	ushoran_health	wh3_dlc29_spell_bound_undeath_morkharn_breath_of_darkness_upgraded	Fires below 75% health.
+bugmans_xxxxxx	Bugman's XXXXXX	ushoran_health	wh3_dlc26_item_abilities_bugmans_xxxxxx	Fires below 75% health.
+dreaming_ring_i	Dreaming Ring I	health_aura_ally	wh2_dlc16_item_abilities_dreaming_ring_i	Fires on the most hurt unit nearby, below 75% health.
+dreaming_ring_ii	Dreaming Ring II	health_aura_ally	wh2_dlc16_item_abilities_dreaming_ring_ii	Fires on the most hurt unit nearby, below 75% health.
+dreaming_ring_iii	Dreaming Ring III	health_aura_ally	wh2_dlc16_item_abilities_dreaming_ring_iii	Fires on the most hurt unit nearby, below 75% health.
+earth_blood	Earth Blood	health_aura_ally	wh2_dlc16_spell_bound_earth_blood;wh3_main_spell_bound_earth_blood	Fires on the most hurt unit nearby, below 75% health.
+elfish_healing_herbs	Elvish Healing Herbs	ally_heal	wh3_dlc27_unit_abilities_elfish_healing_herbs	Fires on the most hurt ally in range below 75% health.
+fleshy_abundance	Fleshy Abundance	health_aura_ally	wh3_dlc20_spell_bound_fleshy_abundance	Fires on the most hurt unit nearby, below 75% health.
+hieratic_jar	Hieratic Jar	ushoran_health	wh2_dlc09_item_abilities_hieratic_jar	Fires below 75% health.
+immortal_will	Immortal Will	ushoran_health	wh_main_hero_abilities_immortal_will	Fires below 75% health.
+invocation_of_nehek	Invocation of Nehek	ushoran_health	wh3_dlc29_spell_bound_invocation_of_nehek	Fires below 75% health.
+locus_of_fecundity	Locus of Fecundity	health_aura_self	wh3_main_character_abilities_locus_of_fecundity	Fires when it or a nearby ally is below 75% health.
+makaissons_persuader	Makaisson's Persuader	ally_warmachine_heal	wh3_dlc25_weapon_abilities_makaissons_persuader	Fires on the most hurt war machine in range below 75% health.
+neuroparasites	Necroparasites	ushoran_health	wh2_dlc16_unit_abilities_neuroparasites	Fires below 75% health.
+necrotic_phylactry	Necrotic Phylactery	ushoran_health	wh3_dlc25_item_abilities_necrotic_phylactry	Fires below 75% health.
+patch_up	Patch Up	ally_heal	wh2_dlc13_character_abilities_patch_up	Fires on the most hurt ally in range below 75% health.
+pestilent_regeneration	Pestilent Regeneration	ushoran_health	wh3_main_daemon_head_abilities_pestilent_regeneration	Fires below 75% health.
+potion_of_charoi	Potion of Charoi	ushoran_health	wh2_main_lord_abilities_potion_of_charoi	Fires below 75% health.
+potion_of_healing	Potion of Healing	ushoran_health	wh_main_item_abilities_potion_of_healing	Fires below 75% health.
+radiant_gem_of_hoeth	Radiant Gem of Hoeth	health_aura_ally	wh2_main_spell_bound_radiant_gem_of_hoeth	Fires on the most hurt unit nearby, below 75% health.
+reforge	Reforge	ally_hellforged_heal	wh3_dlc23_character_abilities_reforge	Fires on the most hurt Hell-Forged unit in range below 75% health.
+regenerating_flesh	Regenerating Flesh	ushoran_health	wh_main_item_abilities_regenerating_flesh	Fires below 75% health.
+regrowth	Regrowth	health_aura_ally	wh2_dlc16_spell_bound_regrowth	Fires on the most hurt unit nearby, below 75% health.
+remouldered	Remouldered	ally_monster_heal	wh2_dlc16_lord_abilities_remouldered	Fires on the most hurt monster in range below 75% health.
+restore	Restore	ally_construct_heal	wh2_dlc09_character_abilities_restore	Fires on the most hurt construct in range below 75% health.
+revivification_crystal	Revivification Crystal	ally_heal	wh2_main_unit_abilities_revivification_crystal	Fires on the most hurt ally in range below 75% health.
+saint_annushkas_finger_bone	Saint Annushka's Finger Bone	ushoran_health	wh3_main_item_abilities_saint_annushkas_finger_bone	Fires below 75% health.
+salyaks_lullaby	Salyak's Lullaby	health_aura_self	wh3_main_character_abilities_salyaks_lullaby	Fires when it or a nearby ally is below 75% health.
+scroll_of_power	Scroll of Power	self_recharging_2	wh_main_item_abilities_scroll_of_power	Fires while two of its other abilities recharge.
+skalm	Skalm	ushoran_health	wh2_main_item_abilities_skalm	Fires below 75% health.
+skars_kraken_killer	Skar's Kraken-Killer	ushoran_health	wh3_main_weapon_abilities_skars_kraken_killer	Fires below 75% health.
+trollguts	Trollguts	health_aura_ally	wh3_dlc26_spell_bound_trollguts	Fires on the most hurt unit nearby, below 75% health.
+bloodthirst	Bloodthirst	charge_or_melee	wh3_main_lord_abilities_bloodthirst	Fires when charging or in melee.
+colossal_strike	Colossal Strike	charge_or_melee	wh3_dlc24_character_abilities_colossal_strike;wh3_dlc24_character_abilities_colossal_strike_summoned	Fires when charging or in melee.
+crimson_juggernaut	Crimson Juggernaut	charge_or_melee	wh3_dlc26_character_abilities_crimson_juggernaut	Fires when charging or in melee.
+daemonic_onslaught	Daemonic Onslaught	charge_or_melee	wh3_main_daemon_legs_abilities_daemonic_onslaught	Fires when charging or in melee.
+deadly_onslaught	Deadly Onslaught	charge_or_melee	wh_dlc03_character_abilities_deadly_onslaught	Fires when charging or in melee.
+full_power	Full Power!	charge_or_melee	wh3_dlc25_unit_abilities_full_power	Fires when charging or in melee.
+guiding_strike	Guiding Strike	charge_or_melee	wh3_cp1_lord_abilities_guiding_strike	Fires when charging or in melee.
+locus_of_fury	Locus of Fury	charge_or_melee	wh3_main_character_abilities_locus_of_fury	Fires when charging or in melee.
+locus_of_swiftness	Locus of Swiftness	charge_or_melee	wh3_main_character_abilities_locus_of_swiftness	Fires when charging or in melee.
+mastered_strike	Masterful Strike	charge_or_melee	wh3_cp1_lord_abilities_mastered_strike	Fires when charging or in melee.
+more_power	More Power!	charge_or_melee	wh3_dlc23_unit_abilities_more_power	Fires when charging or in melee.
+purge_the_weak	Purge the Weak!	charge_or_melee	wh3_main_daemon_wings_abilities_purge_the_weak	Fires when charging or in melee.
+shield_of_thorns	Shield of Thorns	charge_or_melee	wh2_dlc17_spell_bound_shield_of_thorns;wh_dlc05_spell_bound_shield_of_thorns	Fires when charging or in melee.
+storm_hammer	Storm Hammer	charge_or_melee	wh3_dlc29_spell_bound_storm_hammer	Fires when charging or in melee.
+blood_sacrifice	Blood Sacrifice	blood_sacrifice	wh3_dlc26_lord_abilities_blood_sacrifice	Fires on the most hurt nearby ally below 75% health.
+eat_da_runts	Eat da Runts!	eat_da_runts	wh3_dlc26_unit_abilities_eat_da_runts	Fires on itself, else the most hurt nearby ally, below 75% health.
+locus_of_virulence	Locus of Virulence	melee_unwavering	wh3_main_character_abilities_locus_of_virulence	Fires in melee unless wavering.
+ultimate_verdict	Ultimate Verdict	melee_unwavering	wh3_cp1_character_abilities_terrifying_presence	Fires in melee unless wavering.
+call_for_power	Call for Power	melee_unwavering	wh3_main_daemon_head_abilities_call_for_power	Fires in melee unless wavering.
+manus_of_ursun	Manus of Ursun	melee_unwavering	wh3_main_weapon_abilities_ursuns_claws	Fires in melee unless wavering.
+black_hammer_of_hashut	Black Hammer of Hashut	melee_unwavering	wh3_dlc23_weapon_abilities_black_hammer_of_hashut	Fires in melee unless wavering.
+the_graven_sceptre	The Graven Sceptre	melee_unwavering	wh3_dlc23_weapon_abilities_the_graven_sceptre	Fires in melee unless wavering.
+tyrants_talon	Tyrant's Talon	melee_unwavering	wh3_cp1_weapon_abilities_tyrants_talon	Fires in melee unless wavering.
+the_crimson_blade	The Crimson Blade	melee_unwavering	wh3_dlc29_item_abilities_crimson_blade	Fires in melee unless wavering.
+bloodstorm	Bloodstorm	melee_unwavering	wh2_dlc14_lord_abilities_bloodstorm	Fires in melee unless wavering.
+crooked_dice	Crooked Dice	melee_unwavering	wh3_dlc23_hero_abilities_crooked_dice	Fires in melee unless wavering.
+temptator	Temptator	melee_unwavering	wh3_dlc20_lord_abilities_temptator	Fires in melee unless wavering.
+all_consuming_hatred	All-Consuming Hatred	melee_unwavering	wh3_dlc27_unit_abilities_consuming_hatred	Fires in melee unless wavering.
+rival_hide_talisman	Rival Hide Talisman	melee_unwavering	wh2_main_item_abilities_rival_hide_talisman	Fires in melee unless wavering.
+seductive_glory	Seductive Glory	melee_unwavering	wh3_main_lord_abilities_seductive_glory	Fires in melee unless wavering.
+vine_dragon_scale	Vine Dragon Scale	melee_unwavering	wh2_dlc15_item_abilities_vine_dragon_scale	Fires in melee unless wavering.
+dark_mace	Dark Mace	melee_unwavering	wh3_dlc23_weapon_abilities_dark_mace	Fires in melee unless wavering.
+seduction	Seduction	charge_or_melee	wh2_dlc11_lord_abilities_seduction	Fires when charging or in melee.
+song_of_enthrallment	Song of Enthrallment	charge_or_melee	wh2_dlc11_lord_abilities_song_of_enthrallment	Fires when charging or in melee.
+smoke_bomb	Smoke Bomb	charge_or_melee	wh_dlc06_unit_abilities_smoke_bomb	Fires when charging or in melee.
+no_escape	No Escape	enemy_melee	wh3_main_character_abilities_no_escape	Fires on the nearest enemy in melee.
+transfix_hex	Transfix	enemy_melee	wh3_dlc29_lord_abilities_transfix	Fires on the nearest enemy in melee; Lords and Heroes only.
+flash_bomb	Flash Bomb	enemy_melee	wh_pro01_lord_abilities_flash_bomb	Fires on the nearest enemy in melee.
+ancestral_vengeance	Ancestral Vengeance	enemy_ground_melee	wh3_dlc23_item_abilities_ancestral_vengeance	Fires at the nearest enemy in melee.
+ancestral_warriors	Ancestral Warriors	enemy_ground_melee	wh3_main_spell_bound_ancestral_warriors	Fires at the nearest enemy in melee.
+arachnarok_eggs	Arachnarok Eggs	enemy_ground_melee	wh_dlc08_item_abilities_arachnarok_eggs	Fires at the nearest enemy in melee.
+beyond_the_realm	Beyond the Realm	enemy_ground_melee	wh2_dlc11_character_abilities_beyond_the_realm	Fires at the nearest enemy in melee.
+bloodstone	Bloodstone	enemy_ground_melee	wh3_main_item_abilities_bloodstone	Fires at the nearest enemy in melee.
+call_to_ceithin_har	Call to Ceithin-Har	enemy_ground_melee	wh2_dlc16_lord_abilities_call_to_ceithin_har	Fires at the nearest enemy in melee.
+captain_roths_moondial	Captain Roth's Moondial	enemy_ground_melee	wh2_dlc11_item_abilities_captain_roths_moondial	Fires at the nearest enemy in melee.
+children_of_the_forest	Children of the Forest	enemy_ground_melee	wh3_dlc25_character_abilities_children_of_the_forest	Fires at the nearest enemy in melee.
+dreaming_cloak_i	Dreaming Cloak I	enemy_ground_melee	wh2_dlc16_item_abilities_dreaming_cloak_i	Fires at the nearest enemy in melee.
+dreaming_cloak_ii	Dreaming Cloak II	enemy_ground_melee	wh2_dlc16_item_abilities_dreaming_cloak_ii	Fires at the nearest enemy in melee.
+dreaming_cloak_iii	Dreaming Cloak III	enemy_ground_melee	wh2_dlc16_item_abilities_dreaming_cloak_iii	Fires at the nearest enemy in melee.
+gate_of_chaos	Gate of Chaos	enemy_ground_melee	wh3_main_daemon_arms_abilities_gate_of_chaos	Fires at the nearest enemy in melee.
+gate_of_chaos_upgraded	Gate of Chaos Upgraded	enemy_ground_melee	wh3_main_daemon_arms_abilities_gate_of_chaos_upgraded	Fires at the nearest enemy in melee.
+gate_of_nurgle	Gate of Nurgle	enemy_ground_melee	wh3_main_character_abilities_gate_of_nurgle	Fires at the nearest enemy in melee.
+gate_of_slaanesh	Gate of Slaanesh	enemy_ground_melee	wh3_main_character_abilities_gate_of_slaanesh	Fires at the nearest enemy in melee.
+gate_of_tzeentch	Gate of Tzeentch	enemy_ground_melee	wh3_main_character_abilities_gate_of_tzeentch	Fires at the nearest enemy in melee.
+get_tha_gitz	Get Tha Gitz!	enemy_ground_melee	wh3_dlc23_hero_abilities_get_tha_gitz!	Fires at the nearest enemy in melee.
+ghosts_of_the_past	Ghosts of the Past	enemy_ground_melee	wh2_dlc11_character_abilities_ghosts_of_the_past_0;wh2_dlc11_character_abilities_ghosts_of_the_past_1;wh2_dlc11_character_abilities_ghosts_of_the_past_2	Fires at the nearest enemy in melee.
+gorger_onslaught	Gorger Onslaught	enemy_ground_melee	wh3_main_lord_abilities_gorger_onslaught	Fires at the nearest enemy in melee.
+gorger_onslaught_upgraded	Gorger Onslaught Upgraded	enemy_ground_melee	wh3_dlc26_lord_abilities_gorger_onslaught_upgraded	Fires at the nearest enemy in melee.
+greater_gate_of_khorne	Greater Gate of Khorne	enemy_ground_melee	wh3_main_character_abilities_greater_gate_of_khorne	Fires at the nearest enemy in melee.
+greater_gate_of_nurgle	Greater Gate of Nurgle	enemy_ground_melee	wh3_main_character_abilities_greater_gate_of_nurgle	Fires at the nearest enemy in melee.
+greater_gate_of_slaanesh	Greater Gate of Slaanesh	enemy_ground_melee	wh3_main_character_abilities_greater_gate_of_slaanesh	Fires at the nearest enemy in melee.
+greater_gate_of_tzeentch	Greater Gate of Tzeentch	enemy_ground_melee	wh3_main_character_abilities_greater_gate_of_tzeentch	Fires at the nearest enemy in melee.
+guardian_call	Guardian Call	enemy_ground_melee	wh3_main_character_abilities_guardian_call	Fires at the nearest enemy in melee.
+guardian_call_ii	Guardian Call II	enemy_ground_melee	wh3_main_character_abilities_guardian_call_ii	Fires at the nearest enemy in melee.
+guardian_call_iii	Guardian Call III	enemy_ground_melee	wh3_main_character_abilities_guardian_call_iii	Fires at the nearest enemy in melee.
+guardian_of_the_forest	Guardian of the Forest	enemy_ground_melee	wh3_dlc25_character_abilities_guardian_of_the_forest	Fires at the nearest enemy in melee.
+horn_of_the_ancestors	Horn of the Ancestors	enemy_ground_melee	wh2_dlc10_item_abilities_horn_of_the_ancestors	Fires at the nearest enemy in melee.
+inventory_of_hatchlings	Inventory of Hatchlings	enemy_ground_melee	wh3_dlc26_character_abilities_inventory_of_hatchlings	Fires at the nearest enemy in melee.
+inventory_of_hatchlings_upgraded	Inventory of Hatchlings Upgraded	enemy_ground_melee	wh3_dlc26_character_abilities_inventory_of_hatchlings_upgraded	Fires at the nearest enemy in melee.
+invocation_of_the_lichemaster	Invocation of the Lichemaster	enemy_ground_melee	wh3_dlc29_character_abilities_invocation_of_the_lichemaster;wh3_dlc29_character_abilities_invocation_of_the_lichemaster_0;wh3_dlc29_character_abilities_invocation_of_the_lichemaster_1	Fires at the nearest enemy in melee.
+karanaks_howl	Karanak's Howl	enemy_ground_melee	wh3_pro12_hero_abilities_karanaks_howl	Fires at the nearest enemy in melee.
+kettles_call	Kettle's Call	enemy_ground_melee	wh3_dlc25_character_abilities_kettles_call	Fires at the nearest enemy in melee.
+koldunjas_spirit	Koldunja's Spirit	enemy_ground_melee	wh3_dlc24_hero_abilities_koldunjas_spirit	Fires at the nearest enemy in melee.
+locus_of_transmogrification	Locus of Transmogrification	enemy_ground_melee	wh3_main_character_abilities_locus_of_transmogrification	Fires at the nearest enemy in melee.
+lord_of_undeath	Lord of Undeath	enemy_ground_melee	wh_pro03_lord_abilities_lord_of_undeath;wh_pro03_lord_abilities_lord_of_undeath_0;wh_pro03_lord_abilities_lord_of_undeath_1;wh_pro03_lord_abilities_lord_of_undeath_2;wh_pro03_lord_abilities_lord_of_undeath_3;wh_pro03_lord_abilities_lord_of_undeath_4	Fires at the nearest enemy in melee.
+mask_of_the_merlord	Mask of the Merlord	enemy_ground_melee	wh3_dlc27_item_abilities_mask_of_the_merlord	Fires at the nearest enemy in melee.
+maternal_instinct	Maternal Instinct	enemy_ground_melee	wh_dlc06_unit_abilities_maternal_instinct	Fires at the nearest enemy in melee.
+nurgling_birth	Nurgling Birth	enemy_ground_melee	wh3_dlc29_hero_active_nurgling_birth	Fires at the nearest enemy in melee.
+nurgling_birth_upgraded	Nurgling Birth Upgraded	enemy_ground_melee	wh3_dlc29_hero_active_nurgling_birth_upgraded	Fires at the nearest enemy in melee.
+ritual_of_the_beast	Ritual of the Beast	enemy_ground_melee	wh3_dlc24_item_abilities_ritual_of_the_beast	Fires at the nearest enemy in melee.
+roused_to_wrath	Roused to Wrath	enemy_ground_melee	wh2_dlc16_lord_abilities_roused_to_wrath;wh2_dlc16_lord_abilities_roused_to_wrath_2	Fires at the nearest enemy in melee.
+sacrilege	Sacrilege	enemy_ground_melee	wh2_dlc11_character_abilities_sacrilege	Fires at the nearest enemy in melee.
+stave_of_ruinous_corruption	Stave of Ruinous Corruption	enemy_ground_melee	wh_dlc05_weapon_abilities_stave_of_ruinous_corruption	Fires at the nearest enemy in melee.
+surprise_squig	Surprise Squig!	enemy_ground_melee	wh3_dlc25_character_abilities_surprise_squig	Fires at the nearest enemy in melee.
+sword_of_change	Sword of Change	enemy_ground_melee	wh_dlc01_weapon_abilities_sword_of_change	Fires at the nearest enemy in melee.
+the_awakening	The Awakening	enemy_ground_melee	wh3_dlc29_lord_abilities_the_awakening	Fires at the nearest enemy in melee.
+the_heralds_arrival	The Heralds' Arrival	enemy_ground_melee	wh3_dlc29_vmp_mon_morghast_archai_summon	Fires at the nearest enemy in melee.
+the_portalglyph	The Portalglyph	enemy_ground_melee	wh3_main_item_abilities_the_portalglyph	Fires at the nearest enemy in melee.
+the_tallymans_blades	The Tallyman's Blades	enemy_ground_melee	wh3_dlc25_character_abilities_tallymans_blades	Fires at the nearest enemy in melee.
+the_tallymans_blades_upgraded	The Tallyman's Blades Upgraded	enemy_ground_melee	wh3_dlc25_character_abilities_tallymans_blades_2	Fires at the nearest enemy in melee.
+the_tomb_blade_of_arkhan	The Tomb Blade of Arkhan	enemy_ground_melee	wh2_dlc09_weapon_abilities_tomb_blade_of_arkhan	Fires at the nearest enemy in melee.
+transformation_of_kadon	Transformation of Kadon	enemy_ground_melee	wh3_dlc27_spell_bound_transformation_of_kadon	Fires at the nearest enemy in melee.
+undeath_to_all	Undeath to All	enemy_ground_melee	wh3_dlc29_lord_abilities_raise_legion	Fires at the nearest enemy in melee.
+undeath_to_all_upgraded	Undeath to All Upgraded	enemy_ground_melee	wh3_dlc29_lord_abilities_raise_legion_upgraded	Fires at the nearest enemy in melee.
+viziers_kanopi	Vizier's Kanopi	enemy_ground_melee	wh3_dlc26_item_tmb_liche_priest_viziers_kanopi	Fires at the nearest enemy in melee.
+beast_pack	Beast Pack	enemy_ground_melee	wh2_dlc16_lord_abilities_beast_pack	Fires at the nearest enemy in melee.
+blacktoofs_conjuration	Blacktoof's Conjuration	enemy_ground_melee	wh2_dlc15_item_abilities_blacktoofs_conjuration	Fires at the nearest enemy in melee.
+call_to_gwindalor	Call to Gwindalor	enemy_ground_melee	wh2_dlc16_lord_abilities_call_to_gwindalor	Fires at the nearest enemy in melee.
+lesser_raise_dead	Lesser Raise Dead	enemy_ground_melee	wh2_dlc16_spell_bound_vampires_lesser_raise_dead	Fires at the nearest enemy in melee.
+savage_dominion	Savage Dominion	enemy_ground_melee	wh2_dlc17_spell_bound_savage_dominion	Fires at the nearest enemy in melee.
+savage_predators	Savage Predators	enemy_ground_melee	wh3_dlc26_hero_abilities_savage_predators	Fires at the nearest enemy in melee.
+tide_of_death	Tide of Death	enemy_ground_melee	wh2_dlc16_hero_abilities_tide_of_death	Fires at the nearest enemy in melee.
+tide_of_pox	Tide of Pox	enemy_ground_melee	wh2_dlc16_hero_abilities_tide_of_pox	Fires at the nearest enemy in melee.
+wake_da_idol	Wake Da Idol	enemy_ground_melee	wh3_main_item_abilities_zak_aloooog	Fires at the nearest enemy in melee.
+eye_of_khorne	Eye of Khorne	enemy_low_health_noncommander	wh3_dlc26_lord_abilities_eye_of_khorne	Fires on the most hurt enemy below 20% health, not Lords or Heroes.
+the_dreaded_thirteenth	The Dreaded Thirteenth	enemy_melee_noncommander	wh3_dlc29_spell_bound_the_dreaded_thirteenth;wh3_dlc29_spell_bound_the_dreaded_thirteenth_1;wh3_dlc29_spell_bound_the_dreaded_thirteenth_thanquol;wh3_dlc29_spell_bound_the_dreaded_thirteenth_thanquol_1	Fires on the nearest enemy in melee, not Lords or Heroes.
+nurgling_tide	Nurgling Tide	self_summon_melee	wh3_main_lord_abilities_nurgling_tide	Fires in melee.
+tzarkan	Tz'arkan	health_below_15	wh2_dlc14_lord_abilities_tzarkan;wh2_dlc14_lord_abilities_tzarkan_mp;wh2_dlc14_lord_abilities_tzarkan_snikch;wh2_dlc14_lord_abilities_tzarkan_spite;wh2_dlc14_lord_abilities_tzarkan_spite_mp	Fires below 15% health.
+soulfire	Soulfire	melee_skip_commanders	wh_main_spell_bound_soulfire;wh_dlc04_spell_bound_soulfire_upgraded	Fires in melee, unless fighting only Lords or Heroes.
+arachneruption	Arachneruption	melee_skip_commanders	wh2_dlc15_unit_abilities_arachneruption	Fires in melee, unless fighting only Lords or Heroes.
+call_of_tor	Call of Tor	melee_skip_commanders	wh3_twa07_spell_bound_call_of_tor	Fires in melee, unless fighting only Lords or Heroes.
+warp_lightning_rod	Warp Lightning Rod	melee_skip_commanders	wh2_dlc16_unit_abilities_warp_lightning_rod	Fires in melee, unless fighting only Lords or Heroes.
+assault_of_stone	Assault of Stone	enemy_ground_melee_infantry	wh2_dlc10_item_bound_assault_of_stone	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+axe_of_tor	Axe of Tor	enemy_ground_melee_infantry	wh3_main_weapon_abilities_axe_of_tor	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+celestial_comet	Celestial Comet	enemy_ground_melee_infantry	wh3_main_mount_bound_celestial_comet	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+celestial_lightning	Celestial Lightning	enemy_ground_melee_infantry	wh3_main_mount_bound_celestial_lightning	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+chalice_of_potions	Chalice of Potions	enemy_ground_melee_infantry	wh_dlc07_item_abilities_chalice_of_potions	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+comet_of_casandora	Comet of Casandora	enemy_ground_melee_infantry	wh3_main_spell_bound_comet_of_casandora	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+dragon_ogres_great_horn	Dragon Ogre's Great Horn	enemy_ground_melee_infantry	wh_dlc08_item_abilities_great_horn_of_dragon_ogre	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+flame_and_shadow	Flame & Shadow	enemy_ground_melee_infantry	wh3_dlc23_lord_abilities_flame_and_shadow	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+hawks_talon	Hawk's Talon	enemy_ground_melee_infantry	wh_dlc05_weapon_abilities_hawks_talon	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+ishas_rain	Isha's Rain	enemy_ground_melee_infantry	wh2_dlc13_character_ability_ishas_rain	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+klad_brakak	Klad Brakak	enemy_ground_melee_infantry	wh2_dlc17_spell_bound_urannons_thunderbolt_upgraded	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+lesser_doombolt	Lesser Doombolt	enemy_ground_melee_infantry	wh2_dlc10_spell_bound_lesser_doombolt	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+lightning_strike	Lightning Strike	enemy_ground_melee_infantry	wh3_dlc29_unit_abilities_lightning_strike	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+lord_of_the_storm	Lord of the Storm	enemy_ground_melee_infantry	wh_main_lord_abilities_lord_of_the_storm	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+master_of_lightning	Master of Lightning	enemy_ground_melee_infantry	wh3_dlc29_spell_bound_warp_lightning	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+meteor_strike	Meteor Strike	enemy_ground_melee_infantry	wh3_dlc29_unit_abilities_meteor_strike	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+nemesis_crown	Nemesis Crown	enemy_ground_melee_infantry	wh3_dlc25_lord_abilities_nemesis_crown	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+piercing_bolts_of_burning	Piercing Bolts of Burning	enemy_ground_melee_infantry	wh_main_spell_bound_piercing_bolts_of_burning	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+pigeon_bomb	Pigeon Bomb	enemy_ground_melee_infantry	wh3_dlc25_character_abilities_pigeon_bomb	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+rod_of_the_storm	Rod of the Storm	enemy_ground_melee_infantry	wh2_main_spell_bound_rod_of_the_storm	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+rod_of_torment	Rod of Torment	enemy_ground_melee_infantry	wh3_dlc20_item_abilities_rod_of_torment	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+sceptre_of_stone	Sceptre of Stone	enemy_ground_melee_infantry	wh2_dlc10_item_abilities_sceptre_of_stone	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+searing_doom	Searing Doom	enemy_ground_melee_infantry	wh3_twa08_spell_bound_searing_doom	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+slicing_shards	Slicing Shards	enemy_ground_melee_infantry	wh3_dlc20_spell_bound_slicing_shards;wh3_main_spell_slaanesh_slicing_shards_bound	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+the_bow_of_loren	The Bow of Loren	enemy_ground_melee_infantry	wh_dlc05_weapon_abilities_the_bow_of_loren	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+tome_of_furion	Tome of Furion	enemy_ground_melee_infantry	wh2_main_spell_bound_tome_of_furion	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+urannons_thunderbolt	Urannon's Thunderbolt	enemy_ground_melee_infantry	wh2_dlc17_spell_bound_urannons_thunderbolt	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+wand_of_the_kharaidon	Wand of the Kharaidon	enemy_ground_melee_infantry	wh2_main_spell_bound_wand_of_the_kharaidon	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+wolfs_howl	Wolf's Howl	enemy_ground_melee_infantry	wh3_main_weapon_abilities_the_traitors_sword	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+wraith_storm	Wraith Storm	enemy_ground_melee_infantry	wh2_dlc11_lord_abilities_wraith_storm	Fires at the nearest enemy infantry in melee, not Lords or Heroes.
+death_from_above	Death from Above	air_drop_on_infantry	wh2_dlc09_unit_abilities_death_from_above	Fires when over an enemy unit of more than 10 men; not in melee.
+drop_rocks	Drop Rocks	air_drop_on_infantry	wh2_main_unit_abilities_drop_rocks;wh2_dlc12_unit_abilities_drop_rocks_character;wh2_dlc12_unit_abilities_drop_rocks_of_chotec;wh2_dlc12_unit_abilities_drop_rocks_of_sundering	Fires when over an enemy unit of more than 10 men; not in melee.
+drop_sphere_of_tepok	Drop Sphere of Tepok	air_drop_on_infantry	wh2_dlc12_lord_abilities_drop_sphere_of_tepok;wh2_dlc12_lord_abilities_drop_sphere_of_tepok_upgraded	Fires when over an enemy unit of more than 10 men; not in melee.
+fire_bombs	Fire Bombs	air_drop_on_infantry	wh3_dlc25_unit_abilities_gyrobomber_fire_bomb;wh3_dlc25_unit_abilities_thunderbarge_fire_bomb	Fires when over an enemy unit of more than 10 men; only in flight.
+gyrobomber_bomb	Gyrobomber Bomb	air_drop_on_infantry	wh_main_unit_abilities_gyrobomber_bomb;wh_main_unit_abilities_gyrocopter_bomb	Fires when over an enemy unit of more than 10 men; only in flight.
+gyrocopter_bomb_anti_large	Gyrocopter Bomb (anti-large)	air_drop_on_infantry	wh3_dlc25_unit_abilities_gyrocopter_bomb_anti_large	Fires when over an enemy unit of more than 10 men; only in flight.
+sky_junk_bomb	Sky-Junk Bomb	air_drop_on_infantry	wh3_main_unit_abilities_sky_junk_bomb	Fires when over an enemy unit of more than 10 men.
+skyhammer_bomb	Skyhammer Bomb	air_drop_on_infantry	wh_dlc06_unit_abilities_skyhammer_bomb;wh_dlc06_unit_abilities_skyhammer_fire_bomb	Fires when over an enemy unit of more than 10 men; only in flight.
+wake_of_fire	Wake of Fire	air_drop_on_infantry	wh2_main_unit_abilities_wake_of_fire	Fires when over an enemy unit of more than 10 men; not in melee.
+searing_torrent	Searing Torrent	air_drop_on_infantry	wh3_twa07_unit_abilities_searing_torrent	Fires when over an enemy unit of more than 10 men; not in melee.
+nan_gau_grenades	Nan-Gau Grenades	air_drop_on_infantry	wh3_dlc24_unit_abilities_nan_gau_grenades	Fires when over an enemy unit of more than 10 men; only in flight.
+undeath_from_above	Undeath from Above	air_drop_on_infantry	wh3_dlc29_unit_abilities_undeath_from_above	Fires when over an enemy unit of more than 10 men; not in melee.

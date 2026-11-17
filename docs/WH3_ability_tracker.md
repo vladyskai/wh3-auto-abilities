@@ -7828,3 +7828,36 @@ Full report: `docs\WH3_overnight_audit_2026-11-17.md`; round document `docs\WH3_
 **Arithmetic:** no roster change (1,003 rows / keys implemented, 120 not, 36 skipped; 946 entries / 95 families).
 Harness 164 full suite **7,004 checks / 0 failures**, run twice byte-identical; RED 20/20. Pack md5
 `df53a1b19192d4afecf132049cecb6e0`.
+
+### 10.44 Round 166 - the short cards (2026-11-17)
+
+**Rulings (user, 2026-11-17, after the Daemons battle):**
+- remove the card's static note ("Automatic: click the M/A badge ...");
+- the ALL tooltip keeps only its first sentence;
+- the M/A badge card "is amazing, it works. But the text is too long and not thematic": condense each trigger into the
+  fewest words ("Deadly Onslaught might say 'fires when charging'");
+- "Vortex with affects_allies=false should have no friendly-fire check";
+- "'Caster doesn't count' for wanderers too? yes, do not count the caster."
+
+Round document `docs\WH3_round166_short_cards.md`.
+
+**Changes:**
+- **The card:** one short sentence per family, no distances, no name, no "on A:". Example: "Fires when charging or in
+  melee." Longest card 115 characters (round 165: 289). Sheet Cards of v50.
+- **The static note:** gone. The pack no longer ships `ui/common ui/special_ability_tooltip.twui.xml`; the game's own
+  layout applies. The pack holds four files.
+- **ALL tooltip:** "Arm or disarm every automatic ability of the selected unit(s)."
+- **Wanderers:** the caster never blocks its own wanderer (enemy_wander kinds 2 and 3 that can hit our units; 39 keys).
+- **Friendly fire:** already true for the four vortices that spare our units (Heaven's Gate, Abyssal Swarm, Crackleblaze,
+  Arcane Vassal). NEW build gate (`tools\ff_gate.py`, 95 keys) refuses any fixed friendly-fire check on a blast the game
+  says cannot hit our units.
+
+**Field (Daemons battle, log bytes 735,692,926-760,068,621, `archive\logs\battle_20261117_r165_daemons.txt`):** 86 casts
+accepted on 34 abilities, 0 script errors. Every card tooltip was set (37 badges, ok=true), and the user confirmed it shows.
+Ground casts: Searing Doom 2, The Portalglyph 1, Karanak's Howl 1. Two Karanak's Howl ground attempts were refused
+"does not support this special ability" (the second was a real recharge; the first, at 34.5 m, is unexplained and
+harmless). No caster-rule refusal was needed in this army.
+
+**Arithmetic:** no roster change (1,003 rows / keys implemented, 120 not, 36 skipped; 946 entries / 95 families).
+Harness 165 full suite **7,025 checks / 0 failures**, run twice byte-identical; RED 12/12. Pack md5
+`5fdc60d3685f343e1efd2dc5869fd39e`.
