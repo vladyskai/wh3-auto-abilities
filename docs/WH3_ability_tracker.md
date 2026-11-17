@@ -7861,3 +7861,29 @@ harmless). No caster-rule refusal was needed in this army.
 **Arithmetic:** no roster change (1,003 rows / keys implemented, 120 not, 36 skipped; 946 entries / 95 families).
 Harness 165 full suite **7,025 checks / 0 failures**, run twice byte-identical; RED 12/12. Pack md5
 `5fdc60d3685f343e1efd2dc5869fd39e`.
+
+### 10.45 Round 167 - no final period, the safer defaults (2026-11-17)
+
+**Rulings (user, 2026-11-17, after the Dark Elves battle):**
+- remove the final period from a one-sentence tooltip ("Check the other tooltips also");
+- "Safer defaults for Rampage and self-damage abilities. They stay on M even in families that start armed".
+
+Round document `docs\WH3_round167_periods_risky.md`.
+
+**Changes:**
+- **No final period:** neither the M/A badge card nor the ALL text ends with a period.
+- **Safer defaults:** GENERATED `FOURTH.RISKY_TEXT` (`tools\gen_risky_keys.py`: the game's rampage attribute on the
+  caster or its allies, and phases that damage the caster; 20 keys). 15 entries / 16 keys now start on M:
+  - rampage: Fury of Khaine, Verminous Fury, Witchbrew, Gaze of Khaine, Primal Roar, Toad Rage, Fluid Injection, Fury of
+    Ursun, Wrathful Reaper, Call for Power, Manus of Ursun;
+  - self-damage: The Blood Price, Black Staff, Forbidden Rod, Rock Bottom.
+
+**Open, waiting for a ruling:** Gaze of Malice did not stop its moving caster. The game's `wind_up_stance` (the cast
+animation) matches all four field cases. 63 standstill-gated entries have none. Options A / B (recommended: waves and
+cones keep the rule) / C.
+
+**Field (Dark Elves battle, log bytes 760,068,621-781,091,240, `archive\logs\battle_20261117_r166_darkelves.txt`):** 87
+casts accepted on 35 abilities, 0 script errors.
+
+**Arithmetic:** no roster change. Harness 166 full suite **7,048 checks / 0 failures**, run twice byte-identical; RED
+12/12. Pack md5 `a2a5f5daf538e74aa5f5e230bada04d9`.
