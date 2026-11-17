@@ -7887,3 +7887,18 @@ casts accepted on 35 abilities, 0 script errors.
 
 **Arithmetic:** no roster change. Harness 166 full suite **7,048 checks / 0 failures**, run twice byte-identical; RED
 12/12. Pack md5 `a2a5f5daf538e74aa5f5e230bada04d9`.
+
+### 10.46 Round 168 - the cast animation decides, the older pickers skip hidden enemies (2026-11-17)
+
+**Rulings (user, 2026-11-17):** "Option A, animation decides all. And please implement the visibility." Round document
+`docs\WH3_round168_anim_visibility.md`.
+
+**Changes:**
+- **Stand still:** GENERATED `FOURTH.ANIM_TEXT` (`tools\gen_anim_keys.py`: wind_up_stance not empty; 228 of 1,003 keys).
+  The one stand-still gate (`FOURTH.blob_still`) waits for the caster only on an animated cast. 63 entries may now fire
+  on the move (Fireball, Gaze of Malice, Wrath of Manann, the Banishments, ...). The target-still rules are unchanged.
+- **Visibility:** `FOURTH.enemy_not_hidden`: every enemy picker and the non-commander picker skip an enemy the game
+  reads as not visible to our alliance (an unreadable read passes).
+
+**Arithmetic:** no roster change. Harness 167 full suite **7,082 checks / 0 failures**, run twice byte-identical; RED
+16/16. Pack md5 `89258fddf65a5ca819df984941cb7773`.

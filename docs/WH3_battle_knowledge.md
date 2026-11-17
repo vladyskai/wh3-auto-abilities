@@ -50,8 +50,12 @@ trigger (CLAUDE.md section 5).
 ability rows carry the recharge. Whether recharge starts at cast or at effect end: the mod's field note says it
 starts when the effect ENDS (Restore: 24 s + 60 s). No web source found; the field note is the only evidence.
 
-**Casting with a wind-up; can the target escape.** Aimed abilities walk the caster to the target and stop it
-while it casts; a moving target can leave the area before it lands. Source: the mod's own field note (an aimed cast STOPS a moving caster, 2026-11-14). Web
+**Casting with a wind-up; can the target escape.** A cast stops its moving caster only when the ability plays a cast
+animation (`unit_special_abilities.wind_up_stance` not empty). Field, 4 of 4: Volley of High Arrows and Soporific
+Breath (`cast_forward_short`) stopped their casters (2026-11-14); Book of Hoeth (2026-11-14) and Gaze of Malice (the
+user's manual cast, 2026-11-17) have no stance and did not. ASSUMPTION level: good evidence, no documented rule. Since
+round 168 the mod's stand-still gate follows it (228 of our 1,003 keys are animated). A moving target can still leave
+the area before a delayed effect lands. Web
 sources: none found. For the target escaping, ASSUMPTION: area effects with a delay (breaths, vortexes) are placed at the target's
 position at click time, not tracked (`battle_vortexs.follow_target` is false for Purple Sun, Flame Storm,
 Banishment: game data).
