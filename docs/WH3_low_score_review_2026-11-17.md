@@ -11,7 +11,7 @@ is the 5/5 for that ability."
     abilities;
   - the five abilities the overnight report's summary table listed with them (Red Fury, Waaagh!, The Rock of
     Inevitability, The Wissenland Runefang, Locus of Abjuration);
-  - 49 abilities in all.
+  - 52 abilities in 50 rows (row 47 covers the three ranks of Inspired Marksmanship).
 - **Facts:** every stat comes from the game data (`tools\fact_sheet_open.py`, plus the phases, attribute and stat
   tables). Earlier decisions come from the tracker (rule 11).
 - **Proposals only (rule 9):** nothing is changed until you rule.
