@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-17 21:15 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-17 22:14 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -53,7 +53,7 @@ rows carry one of those keys. The tracker's own status column counts **1004 impl
 
 | Trigger family (Lua) | Plain English (the mod's own tooltip sentence) | Entries | Keys |
 |---|---|---:|---:|
-| `melee_unwavering` | When armed, fires when this unit is in melee | 299 | 310 |
+| `melee_unwavering` | When armed, fires when this unit is in melee | 298 | 309 |
 | `enemy_blob` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 77 | 77 |
 | `enemy_ground_melee` | When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground | 75 | 87 |
 | `enemy_engaged_or_shot` | When armed, fires when an enemy unit in range is in melee or under missile fire | 46 | 51 |
@@ -94,6 +94,7 @@ rows carry one of those keys. The tracker's own status column counts **1004 impl
 | `melee_or_wavering_aura` | When armed, fires when this unit or a friendly unit near it is in melee or wavering | 2 | 3 |
 | `melee_health75` | When armed, fires when this unit is in melee and at or below 75% health | 2 | 2 |
 | `wavering_self_or_ally` | When armed, fires when this unit or an ally in range is wavering | 2 | 2 |
+| `charge_or_wavering` | When armed, fires when this unit charges or is wavering | 2 | 2 |
 | `enemy_wavering` | When armed, fires on the closest wavering enemy in range | 2 | 2 |
 | `enemy_single_shot` | When armed and standing still, fires on the most valuable single-entity enemy in range (lord, hero or monster) with none of yours near it | 2 | 2 |
 | `enemy_execute` | When armed, fires on the most valuable enemy in range whose health is at or below the execute line | 2 | 2 |
@@ -110,7 +111,6 @@ rows carry one of those keys. The tracker's own status column counts **1004 impl
 | `verminking_wavering` | When armed, fires when an ally in range is wavering | 1 | 1 |
 | `ally_heal_melee` | When armed, fires when this unit is in melee, on the lowest-health ally in range at or below 75% health | 1 | 1 |
 | `ally_overseer` | When armed, fires on a non-commander, non-large ally in range | 1 | 1 |
-| `charge_or_wavering` | When armed, fires when this unit charges or is wavering | 1 | 1 |
 | `self_moving` | When armed, fires when this unit is moving | 1 | 1 |
 | `self_shooting` | When armed, fires when this unit is shooting | 1 | 1 |
 | `self_or_ally_shooting` | When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
@@ -258,7 +258,7 @@ plain-English description of WHEN it fires; the **Trigger / logic** column gives
 ability rides. **Range** shows the game's own range columns and — where the mod gates a distance — the
 named trigger bound it uses (`floor(real x 0.7)`). **Restrictions** quotes the engine's own flag names.
 
-### `melee_unwavering` — 299 entries / 310 keys
+### `melee_unwavering` — 298 entries / 309 keys
 
 In melee AND not routing/wobbling. The read is fail-open: an unreadable morale read still rides the plain in-melee condition. Casts on the UNIT ITSELF.
 
@@ -438,7 +438,6 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 | Pha's Protection | `wh3_main_spell_bound_phas_protection` | Armour: +30; Melee Defence: +24 (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 200 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Plaguefather's Oration | `wh3_main_lord_abilities_plaguefathers_oration` | Melee Defence: +24; Leadership: +16 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Plaque of Dominion | `wh2_main_item_abilities_plaque_of_dominion` | Leadership: -8 (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
-| Potion of Foolhardiness | `wh_main_item_abilities_potion_of_foolhardiness` | Charge Bonus: +40%; Unbreakable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Potion of Strength | `wh_main_item_abilities_potion_of_strength` | Armour-Piercing Weapon Damage: +50%; Base Weapon Damage: +50% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self - auto, trivial) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Power Familiar | `wh3_dlc27_item_abilities_power_familiar` | Spell Mastery: +20% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Predatory Instincts | `wh3_cp1_lord_abilities_predatory_instincts` | Melee Attack: +24; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25%; Causes Fear (positive) (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self · invalid-target: `unit_is_not_tiger_warrior` | cast reach 100 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
@@ -1597,6 +1596,19 @@ An ally in range is wavering. Casts on that ally.
 | Shock Collar | `wh2_dlc16_hero_abilities_shock_collar` | Melee Attack: +24; Leadership: +16; Immune to Psychology (positive) (to self and allies in range) | targeting: self=no friends=yes enemies=no ground=no · always affects self · invalid-target: `unit_is_moulder_monster` | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_wavering) | Fires: When armed, fires on a wavering ally in range. Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 | Where You Goin!? | `wh3_dlc26_character_abilities_were_you_goin` | Unbreakable (positive) (to allies in range) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_wavering) | Fires: When armed, fires on a wavering ally in range. Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 
+### `charge_or_wavering` — 2 entries / 2 keys
+
+The charge window OR the unit is wavering. Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit charges or is wavering.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Bangers & Smash | `wh2_dlc15_character_abilities_sausage_busta` | Charge Bonus: +20%; Leadership: +12 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented (charge or wavering) | Fires: When armed, fires when this unit charges or is wavering. Cast target: the unit itself |
+| Potion of Foolhardiness | `wh_main_item_abilities_potion_of_foolhardiness` | Charge Bonus: +40%; Unbreakable (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit charges or is wavering. Cast target: the unit itself |
+
 ### `enemy_execute` — 2 entries / 2 keys
 
 The most valuable enemy in range whose health is at or below the generated execute line (20% base, Lord/Hero only; 33% upgrade, single entities). Casts on that enemy; re-checked before the cast.
@@ -1924,18 +1936,6 @@ The charge window OR already in melee. Casts on the unit itself.
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
 | Deadly Onslaught | `wh_main_character_abilities_deadly_onslaught` | Charge Bonus: +60%; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented | Fires: When armed, fires when this unit charges or is in melee. Cast target: the unit itself |
-
-### `charge_or_wavering` — 1 entries / 1 keys
-
-The charge window OR the unit is wavering. Casts on the unit itself.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit charges or is wavering.*
-
-**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Bangers & Smash | `wh2_dlc15_character_abilities_sausage_busta` | Charge Bonus: +20%; Leadership: +12 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented (charge or wavering) | Fires: When armed, fires when this unit charges or is wavering. Cast target: the unit itself |
 
 ### `eat_da_runts` — 1 entries / 1 keys
 

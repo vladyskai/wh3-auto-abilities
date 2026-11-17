@@ -3209,9 +3209,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_potion_of_farsight",
 		keys = { "wh3_main_item_abilities_potion_of_farsight" },
 		ox = 0, oy = 0 },
-	{ marker = "potion_of_foolhardiness", name = "Potion of Foolhardiness", trigger = "melee_unwavering",
+	-- ROUND 170 (user ruling 2026-11-17, "Charge or wavering"): the charge bonus on its own charge, Unbreakable when
+	-- it wavers; it keeps starting armed (start_armed), as on its old in-melee family
+	{ marker = "potion_of_foolhardiness", name = "Potion of Foolhardiness", trigger = "charge_or_wavering",
 		badge = "zz_auto_badge_potion_of_foolhardiness",
 		keys = { "wh_main_item_abilities_potion_of_foolhardiness" },
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "potion_of_speed", name = "Potion of Speed", trigger = "charge_only",
 		badge = "zz_auto_badge_potion_of_speed",
@@ -19267,7 +19270,7 @@ for _, ability in ipairs(ABILITIES) do
 	ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]
 	-- ROUND 151: the family default. ZZ_AUTO_TEST_NO_DEFAULTS is a TEST-ONLY global the harness sets for
 	-- its older worlds (which arm by clicking); the game never defines it, so the defaults always apply there.
-	ability.default_on = (FOURTH.DEFAULT_ON_TRIGGERS[ability.trigger] == true)
+	ability.default_on = (FOURTH.DEFAULT_ON_TRIGGERS[ability.trigger] == true or ability.start_armed == true)   -- ROUND 170
 		and ZZ_AUTO_TEST_NO_DEFAULTS ~= true
 		and not FOURTH.entry_risky(ability)   -- ROUND 167: rampage and self-damage start on M
 	-- CLASS A (harness 97): an entry's REAL target_intercept_range (range_real)

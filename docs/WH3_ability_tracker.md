@@ -7911,3 +7911,15 @@ the game reads as not visible. Round document `docs\WH3_round169_sensor_visibili
 
 **Arithmetic:** no roster change; workbook stays v52. Harness 168 full suite **7,105 checks / 0 failures**, run twice
 byte-identical; RED 10/10. Pack md5 `c12c1eb107d4372b7fb343b1d61360a1`.
+
+### 10.48 Round 170 - Potion of Foolhardiness fires on its charge (2026-11-17)
+
+**Report (user, 2026-11-17):** in a test with two Empire Captains, the armed potion "did not fire while charging". The
+log shows it fired at contact (`in melee, morale not wavering`): it rode melee_unwavering.
+
+**Ruling:** "Charge or wavering" (the score 1-2 review's row 2). The potion now rides `charge_or_wavering`. It still
+starts armed (NEW entry field `start_armed`). Round document `docs\WH3_round170_foolhardiness.md`.
+
+**Arithmetic:** melee_unwavering 299 -> 298 entries, charge_or_wavering 1 -> 2; 946 entries / 1,003 keys unchanged.
+Harness 169 full suite **7,126 checks / 0 failures**, run twice byte-identical; RED 10/10. Pack md5
+`6a84ed8e067216679e7c4f50bb49c9f1`; workbook v53.
