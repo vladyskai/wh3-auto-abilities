@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-18 14:00 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-18 14:31 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -29,8 +29,8 @@ Generated 2026-11-18 14:00 by `tools/build_ability_database.py` (re-runnable; no
 |---|---:|
 | Tracker inventory rows (all three tables) | **1801** |
 | distinct ability keys in those rows | 1800 |
-| implemented keys (per the mod's `ABILITIES` table) | **994** |
-| implemented entries in the mod | **939** |
+| implemented keys (per the mod's `ABILITIES` table) | **992** |
+| implemented entries in the mod | **937** |
 | abilities carrying an **invalid-target** restriction flag | **424** |
 | abilities carrying an **invalid-usage** restriction flag | **414** |
 | abilities carrying an **auto-deactivate** flag | **2** |
@@ -39,21 +39,21 @@ Generated 2026-11-18 14:00 by `tools/build_ability_database.py` (re-runnable; no
 
 | Final status family | Abilities |
 |---|---:|
-| implemented | 995 |
+| implemented | 993 |
 | excluded (no automatic logic) | 679 |
-| skipped (deferred / unsuitable) | 85 |
+| skipped (deferred / unsuitable) | 87 |
 | rejected (user decision) | 27 |
 | excluded (impossible - engine limit) | 15 |
 | **TOTAL** | **1801** |
 
-Reconciliation: the mod's `ABILITIES` table holds **939 entries / 994 keys**; **995** of the inventory
-rows carry one of those keys. The tracker's own status column counts **995 implemented / 694 excluded (no automatic logic 679 + impossible 15) / 85 skipped / 27 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
+Reconciliation: the mod's `ABILITIES` table holds **937 entries / 992 keys**; **993** of the inventory
+rows carry one of those keys. The tracker's own status column counts **993 implemented / 694 excluded (no automatic logic 679 + impossible 15) / 87 skipped / 27 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
 
 ### 1.3 Implemented abilities by trigger family (what fires, in plain English)
 
 | Trigger family (Lua) | Plain English (the mod's own tooltip sentence) | Entries | Keys |
 |---|---|---:|---:|
-| `melee_unwavering` | When armed, fires when this unit is in melee | 282 | 291 |
+| `melee_unwavering` | When armed, fires when this unit is in melee | 280 | 289 |
 | `enemy_blob` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 77 | 77 |
 | `enemy_ground_melee` | When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground | 75 | 87 |
 | `enemy_engaged_or_shot` | When armed, fires when an enemy unit in range is in melee or under missile fire | 46 | 51 |
@@ -155,7 +155,7 @@ rows carry one of those keys. The tracker's own status column counts **995 imple
 | `enemy_melee_noncommander` | When armed, fires on the closest enemy in range that is fighting in melee and is not a Lord or Hero | 1 | 4 |
 | `self_summon_melee` | When armed, fires when this unit itself is fighting in melee and the summon is cast on it | 1 | 1 |
 | `health_below_15` | When armed, fires when this unit is below 15% health | 1 | 5 |
-| **TOTAL** | | **939** | **994** |
+| **TOTAL** | | **937** | **992** |
 
 ### 1.4 Restriction flags found in the game's own data (the newest, most valuable layer)
 
@@ -252,20 +252,20 @@ ability off by itself when the condition holds.
 
 * Inventory rows: **1801** = one row per ability key across §3a/3b/3c.
 * Distinct keys: **1800**; keys appearing on more than one row: `wh3_twa07_spell_bound_call_of_tor`.
-* Implemented: the tracker's status column marks **994** keys implemented; the mod's `ABILITIES` table carries **994** keys.
+* Implemented: the tracker's status column marks **992** keys implemented; the mod's `ABILITIES` table carries **992** keys.
 * Tracker status and the mod's table agree exactly.
-* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **679**, implemented **995**, rejected (user decision) **27**, skipped (deferred / unsuitable) **85**.
+* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **679**, implemented **993**, rejected (user decision) **27**, skipped (deferred / unsuitable) **87**.
 
 ---
 
 ## 2. IMPLEMENTED ABILITIES — grouped by trigger family
 
-Every row below is shipping in the mod today (939 entries / 994 keys). The family heading gives the
+Every row below is shipping in the mod today (937 entries / 992 keys). The family heading gives the
 plain-English description of WHEN it fires; the **Trigger / logic** column gives the rule that specific
 ability rides. **Range** shows the game's own range columns and — where the mod gates a distance — the
 named trigger bound it uses (`floor(real x 0.7)`). **Restrictions** quotes the engine's own flag names.
 
-### `melee_unwavering` — 282 entries / 291 keys
+### `melee_unwavering` — 280 entries / 289 keys
 
 In melee AND not routing/wobbling. The read is fail-open: an unreadable morale read still rides the plain in-melee condition. Casts on the UNIT ITSELF.
 
@@ -428,7 +428,6 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 | Mortal Blow (Upgraded) | `wh3_main_daemon_arms_abilities_mortal_blow_upgraded` | Armour-Piercing Weapon Damage: +50%; Base Weapon Damage: +50%; Imbues its target's attacks on contact: wh_dlc06_unit_contact_sundered_armour (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Mumbo-Jumbo Chant | `wh3_dlc26_character_abilities_mumbo_jumbo_chant` | Melee Attack: +24; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25%; Leadership: +16 (to allies in range); Cannot move (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Necrostrike | `wh2_dlc09_character_abilities_strike_of_nagash` | Base Weapon Damage: +90%; Causes Terror (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
-| Null Stone | `wh3_dlc27_item_abilities_null_stone` | Silenced (positive); Removes magical attacks (to allies in range) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Nurgle's Favoured Son | `wh3_dlc25_lord_abilities_nurgles_favoured_son` | Melee Defence: +24; Damage Resistance: +20 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Okkam's Mindrazor | `wh3_dlc29_spell_bound_okkams_mindrazor` | Armour-Piercing Weapon Damage: +50%; Base Weapon Damage: +50%; Imbues magical attacks (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self - auto, trivial) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Opal Amulet | `wh_main_item_abilities_opal_amulet` | Damage Resistance: +20 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
@@ -450,7 +449,6 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 | Refuse to Die | `wh2_dlc12_unit_abilities_refuse_to_die` | Cannot Die (positive) (to self); Entities cannot die while ability is active (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Revenge Incarnate | `wh_dlc06_lord_abilities_revenge_incarnate` | Melee Attack: +40; Base Weapon Damage: +60% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Rival Hide Talisman | `wh2_main_item_abilities_rival_hide_talisman` | Melee Attack: -40 (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
-| Rock Eye | `wh3_main_item_passive_rock_eye` | Forest Spotting: +10%; stat_spotting_scrub: +10% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Rok of Itza | `wh2_dlc13_lord_abilities_rock_of_itza` | Physical Resistance: +40; Fatigue: -0.03 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Rot or Die! | `wh3_dlc25_lord_abilities_rot_or_die` | Melee Damage Reflection: +20; Leadership: +16; Spreading area: wh3_dlc25_lord_abilities_rot_or_die (to self and allies in range); Will spread to friends within the Spread Range metres of affected unit (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Rot-pocked Axe | `wh3_dlc29_item_active_rot_pocked_axe` | Melee Attack: +24; Imbues its target's attacks on contact: wh2_dlc16_unit_contact_weakened (to self); Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25% (to allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
@@ -2385,7 +2383,7 @@ An ally IN RANGE is in melee AND wavering. Casts on the unit itself (the ally is
 
 ## 3. EXCLUDED / SKIPPED / REJECTED / IMPOSSIBLE — with reasons
 
-These 806 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
+These 808 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
 tracker's own final status/reason for that row. The Effect / Restrictions / Range columns are the same
 fresh game-data extraction used in §2, so a later re-decision has the mechanics at hand.
 
@@ -3339,6 +3337,13 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Locus of Abjuration | `wh3_main_character_abilities_locus_of_abjuration` | Spell Resistance: +65 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | skipped (user decision 2026-11-17: closed, no read against enemy magic) | Whenever the engine allows (no readable condition): cast on self. |
 | Sceptre of Stability | `wh_main_item_abilities_sceptre_of_stability` | Spell Resistance: +40 (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self | cast reach 100 m | skipped (user decision 2026-11-17: closed, no read against enemy magic) | Whenever the engine allows (no readable condition): cast on an ally. |
 
+### skipped (deferred / unsuitable) — user decision 2026-11-18: closed, 'Close Null stone, Rock Eye.' (2)
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
+|---|---|---|---|---|---|---|
+| Null Stone | `wh3_dlc27_item_abilities_null_stone` | Silenced (positive); Removes magical attacks (to allies in range) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | skipped (user decision 2026-11-18: closed, 'Close Null stone, Rock Eye.') | While the unit has an enemy in its sights: fire at it. |
+| Rock Eye | `wh3_main_item_passive_rock_eye` | Forest Spotting: +10%; stat_spotting_scrub: +10% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no | unlimited / no range column | skipped (user decision 2026-11-18: closed, 'Close Null stone, Rock Eye.') | While the unit has an enemy in its sights: fire at it. |
+
 ### skipped (deferred / unsuitable) — magic scope + self-damage (1)
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
@@ -3440,8 +3445,8 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 ## Reconciliation (repeat of §1.6)
 
 * §1 inventory rows: **1801**; distinct keys **1800**.
-* §2 implemented: **939** entries / **994** keys — equals the mod's `ABILITIES` count.
-* §3 non-implemented: **806** rows.
+* §2 implemented: **937** entries / **992** keys — equals the mod's `ABILITIES` count.
+* §3 non-implemented: **808** rows.
 * Rows whose EFFECT the game's tables cannot source (written `unknown`): **709** of 1801.
 * Abilities carrying a restriction flag (invalid-target / invalid-usage / auto-deactivate): **646**.
 

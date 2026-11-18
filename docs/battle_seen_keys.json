@@ -301,6 +301,7 @@
 "wh3_main_item_abilities_the_portalglyph",
 "wh3_main_item_abilities_the_rock_of_inevitability",
 "wh3_main_item_abilities_void_pendulum",
+"wh3_main_item_passive_rock_eye",
 "wh3_main_lord_abilities_ballet_of_blows",
 "wh3_main_lord_abilities_blight_swarm",
 "wh3_main_lord_abilities_bloodthirst",
@@ -434,6 +435,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 186,
+"logs_read": 187,
 "made": "2026-11-18"
 }

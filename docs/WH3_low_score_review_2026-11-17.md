@@ -38,7 +38,7 @@ is the 5/5 for that ability."
 | C. ARMY CHARGE: how many of our units are in A or B right now | NEW, built from A and B |
 | D. Winds of Magic pool and reserve (`WINDS` map row) | exists, field-proven (Dark Elves battle: pool 12 to 74, reserve 68 to 6) |
 | E. Hidden enemy: a living enemy that `is_visible_to_alliance` reads false | exists (rounds 168-169) |
-| F. SPELLCASTER class: the unit has a spell lore in the game's `special_ability_groups_to_units_junctions` (855 units, every wizard checked) | NEW, GENERATED; it misses a character who gets a lore only from campaign skills (a generic Vampire Lord) |
+| F. SPELLCASTER class: the unit has a spell lore in the game's `special_ability_groups_to_units_junctions` (855 units, every wizard checked) | NEW, GENERATED. **RULED 2026-11-18 (side session): "Okay, then let's use the caster list."** The list (`tools\list_casters.py`): the junction OR a campaign skill tree that grants a lore or a lore spell; 378 character types, 5 by the skill tree alone. Correction: the generic Vampire Lord IS in the junction. Never `agent_subtypes.is_caster` (it flags 27 non-casters) |
 | G. PRIMAL INSTINCTS class: the 124 Lizardmen land units with the passive. The game switches it off above 50% health, so it rampages only below 50% | NEW, GENERATED |
 | H. Fast enemy closing on our units (run speed 5 m/s or more, within 40 m) | exists (`fast_enemy_near`) |
 
@@ -71,14 +71,14 @@ is the 5/5 for that ability."
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 16 | Rock Eye (**OPEN: not a passive by the data (passive=false, source_type active, 1 use, 60 s); never cast in a battle**) | forest and scrub spotting x1.1, caster and army, 60 s; ONE use | in melee | **HIDDEN ENEMY:** fires when a living enemy reads not visible (read E). Note: the mod then acts on knowing a hidden unit exists, which you cannot see on screen. The alternative is `when_ready` at battle start. | 4 (+10% spotting is tiny whatever the moment) |
+| 16 | Rock Eye (**CLOSED round 173 ('Close Null stone, Rock Eye.')**) | forest and scrub spotting x1.1, caster and army, 60 s; ONE use | in melee | **HIDDEN ENEMY:** fires when a living enemy reads not visible (read E). Note: the mod then acts on knowing a hidden unit exists, which you cannot see on screen. The alternative is `when_ready` at battle start. | 4 (+10% spotting is tiny whatever the moment) |
 | 17 | Watched by the Watcher (**CLOSED round 171 ('close (no actuation)')**) | every enemy REVEALED for 60 s; 3 uses; recharge 120 s | in melee | **HIDDEN ENEMY** (read E), with the same note. | 5 |
 
 ## 4. Wards against magic
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 18 | Null Stone (**OPEN: NOT multiplayer-only (ancillaries: mp_exclusive=false, randomly_dropped=true, High Elves)**) | **every unit on BOTH sides** silenced and magical attacks removed, 35 s; 3 uses | in melee | **ENEMY MAGIC ONLY:** fires when a visible living enemy spellcaster exists (read F) and none of our units is a spellcaster. It silences our casters too. | 5 |
+| 18 | Null Stone (**CLOSED round 173 ('Close Null stone, Rock Eye.')**) | **every unit on BOTH sides** silenced and magical attacks removed, 35 s; 3 uses | in melee | **ENEMY MAGIC ONLY:** fires when a visible living enemy spellcaster exists (read F) and none of our units is a spellcaster. It silences our casters too. | 5 |
 | 19 | Sceptre of Stability (**CLOSED round 171 ('no read against enemy magic')**) | magic resistance +40, one unit (the caster or an ally within 100 m), 22 s; recharge 60 s | in melee | **ON THE UNIT UNDER FIRE:** on the caster or the most valuable ally within 70 m that is under missile fire while a visible enemy spellcaster (read F) is within 150 m of it. ASSUMPTION: magic missiles count as missile fire for `is_under_missile_attack`. | 4 (no read of an incoming spell) |
 | 20 | Locus of Abjuration (**CLOSED round 171 ('no read against enemy magic')**) | magic resistance +65, caster and allies within 55 m, 25 s; recharge 90 s | in melee | **AURA UNDER FIRE:** fires when the caster or an ally within 38 m is under missile fire while a visible enemy spellcaster is within 150 m. Same assumption. | 4 |
 | 21 | Necrotic Phylactery (**BUILT round 171 (the contact list: 503 land units)**) | magic resistance +15, immunity to enemy contact effects (poison, burning, ...), spreads to nearby allies, 18 s; ONE use | at or below 75% health | **IN MELEE, NOT WAVERING:** contact effects arrive with melee blows. A 5 would also need the list of enemy units with a contact effect (not extracted yet; feasible later). | 4 |
