@@ -76,7 +76,7 @@ None.
 | Ability | Marker | Trigger | Ruling |
 |---|---|---|---|
 | Armour of Caledor | `armour_of_caledor` | `melee_health75` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Berry Wine | `berry_wine` | `health_aura_ally` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Berry Wine | `berry_wine` | `health_aura_ally_deep` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blood Chalice of Bathori | `blood_chalice_of_bathori` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blooood! | `blooood` | `self_moving` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Breath of Darkness | `undeath_morkharn_breath_of_darkness` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
@@ -86,7 +86,7 @@ None.
 | Eat da Runts! | `eat_da_runts` | `eat_da_runts` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Elvish Healing Herbs | `elfish_healing_herbs` | `ally_heal` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Gulyas | `gulyas` | `health_aura_ground` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Hellish Vigour | `hellish_vigour` | `ally_melee_buff` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Hellish Vigour | `hellish_vigour` | `ally_in_melee` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Hellish Vigour Upgraded | `hellish_vigour_upgraded` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Icon of the King | `icon_of_the_king` | `health_aura_self_undead` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Locus of Fecundity | `locus_of_fecundity` | `health_aura_self` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |

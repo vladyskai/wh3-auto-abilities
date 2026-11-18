@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `b8622a7b2b6c9bb6ed1c8c5844cac5bf`, 1,520,627 bytes
-  (round 178, 2026-11-18: the score-3 review rows 23-55; 3 new families). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `d7588fbfd32a951c9c65b4b1b052c284`, 1,531,016 bytes
+  (round 179, 2026-11-18: the score-3 review rows 115-134; 6 new families). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,8 +142,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 178): 938 ABILITIES entries / 992 ability keys / 123 trigger evaluator families.
-Wheel audit (workbook v61): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
+Current roster (round 179): 938 ABILITIES entries / 992 ability keys / 129 trigger evaluator families.
+Wheel audit (workbook v62): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
 120 not implemented among the included: 65 decided by the user, 55 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
@@ -155,7 +155,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261118_score3_rows2_harness177/build_and_install178.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261118_score3_rows3_harness178/build_and_install179.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -187,7 +187,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness177: 7,476 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness178: 7,537 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -300,7 +300,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v61_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v61.py`, verified by `tools\verify_xlsx_v61.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v62_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v62.py`, verified by `tools\verify_xlsx_v62.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -330,6 +330,18 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 179 (2026-11-18, score-3 review rows 115-134; 'Items 115-134 approved'): NEW ally_charge_or_melee
+  (Inspired Assault x3), ally_melee_wavering_first (Inspired Defence x3, Da Boss), ally_value_melee (Orcs are da
+  Best!), ally_in_melee (Hellish Vigour), health_aura_ally_deep (Berry Wine, FOURTH.HEAL_DEEP_PCT 55),
+  heal_ground_best (Star of Avelorn: ally_range_real 200 + aura 15 -> 140 m reach, 10 m spot); ranked ally modes
+  charge_contact_melee, melee_wavering_first, value_melee, expendable_hp, cheap_healthy. Favour of the Fay on
+  melee_self_or_ally. wavering_self_or_ally lost its hidden ally-in-melee condition. Grut's Sickle (ally_winds):
+  winds low only, expendable first, else cheapest above FOURTH.GRUT_HEALTHY_PCT 75. The 12 moved entries keep
+  start_armed (33 plain lines). BUG FOUND: the shared heal re-check tests the ally against ah_range_m (the AREA);
+  ah_mode 'spot' re-checks against ab_range_m, 'deep' against 55%. Mock: the ally-to-ally gap is the OTHER unit's
+  dist_by_target[uid] (heal_ground_best's spot count). WAITING: row 128 Cold-Blooded's Lizardmen set (A: key prefix
+  lzd, 133 units, recommended; B: Lizardmen voice culture, 107). Row 92 (Heaven's Gate) says CLOSE IT in the doc,
+  not done (outside 115-134). Rows 57-114 wait. Next battle from byte 822,999,135.
 - ROUND 178 (2026-11-18, score-3 review rows 23-55; 'Approve rows 23-55. Row 56 stays the same.'): NEW
   enemy_most_models (Chain Lightning x2, The Soulstealer: most models counted up to the AREA cap, FOURTH.MODELS_FLOOR
   16, standing still), enemy_fast_or_melee (Glory Seeker x2, commander class on both arms), enemy_fast_fire_melee

@@ -196,26 +196,26 @@ The wind-ups matter: a 5 s wind-up on a moving target misses, so these keep the 
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 115 | Inspired Assault I | ONE ally within 100 m: charge bonus x1.2, melee attack +24, 29 s | the caster in melee, the closest ally | **ALLY CHARGE, ELSE MELEE:** the nearest ally within 70 m charging, else just in contact, else in melee; never a missile unit. | 5 |
-| 116 | Inspired Assault II | charge bonus x1.4, melee attack +24, 42 s | same | as #115 | 5 |
-| 117 | Inspired Assault III | charge bonus x1.4, melee attack +40, 43 s | same | as #115 | 5 |
-| 118 | Inspired Defence I | ONE ally: melee defence +24, leadership +16, 24 s | same | **ALLY IN MELEE, WAVERING FIRST:** the nearest wavering ally in melee within 70 m, else the nearest ally in melee. | 5 |
-| 119 | Inspired Defence II | the same, 31 s | same | as #118 | 5 |
-| 120 | Inspired Defence III | melee defence +40, leadership +16, 34 s | same | as #118 | 5 |
-| 121 | Da Boss 'as a Plan! | ONE ally within 150 m: melee defence +24, leadership +8, 20 s | same | as #118 (105 m) | 5 |
-| 122 | Favour of the Fay | the caster or ONE ally: melee attack +40, 44 s | same | **SELF OR ALLY IN MELEE** (the existing `melee_self_or_ally`). | 5 |
-| 123 | Orcs are da Best! | ONE ally within 150 m: melee attack +24, melee damage x1.5, 27 s | same | **MOST VALUABLE ALLY IN MELEE** within 105 m, never a missile unit. | 5 |
-| 124 | Hellish Vigour | ONE ally within 75 m: damage reflection +20, 25 s; 3 s wind-up | same | **ALLY IN MELEE:** the nearest ally in melee within 52 m (reflection pays when struck). | 5 |
-| 125 | Daemonic Whispers | ONE ally within 200 m: leadership +16, 26 s | same | **RULED** (round 137: "Keep all 5 for now"). Option: the nearest wavering ally (`ally_wavering`). | - |
-| 126 | Horn of Vaul | melee damage x1.3, missile damage x1.25, caster and allies within 35 m, 28 s; ONE use | 1 unit fighting or shooting within 24 m | **RULED, KEEP** (round 132: "Same as Metallurgy"; 2026-11-18: "no need of at least 3"). | - |
-| 127 | Berry Wine | a heal of about 45% over 14 s, the caster and allies within 60 m; ONE use | the lowest unit at 75% | **DEEPER LINE:** the lowest unit at or below 55%. At 75% about 20 points of the 45% heal are wasted. | 5 |
-| 128 | Cold-Blooded | ONE Lizardmen unit (the game's rule): leadership +16, 40 s | the wavering ally | **RULED** ("On the wavering ally"). Restriction to add: Lizardmen allies only (read I). | - |
-| 129 | Star of Avelorn | a heal on a 15 m area anywhere within 200 m, 27 s; 2 uses | the area around the caster's 10 m | **BEST SPOT:** on the ground under the hurt unit of ours, the caster included (at or below 75%), within 140 m with the most hurt units within 10 m of it. Today it reaches only 10 m from the caster. | 5 |
-| 130 | Commanding Presence | leadership +8, caster and allies within 35 m, 20 s | wavering self, or an ally IN MELEE and wavering | **AS YOUR RULING:** "Not related to melee, only to morale. The trigger should be when lord or nearby unit are wavering." Drop the hidden melee condition. | 5 |
-| 131 | Fury of Ulric | leadership +8, caster and allies within 35 m, 25 s | same | as #130 | 5 |
-| 132 | Hunter's Call | melee defence +24, caster and allies within 35 m, 32 s; 3 uses | the caster or one unit within 24 m in melee or wavering | **KEEP** (the same reasoning as #126, 2026-11-18: no minimum count): the caster, or one unit within 24 m, in melee or wavering, as now. | - |
-| 133 | Grut's Sickle | ONE ally takes 33 damage a second for 20 s to restore winds; 3 uses | when ready, on the sturdiest ally | **WINDS LOW, CHEAPEST ALLY** (user, 2026-11-18: "on expendable ally first (highest hp), then on the ally with lowest value above 75%"): when the winds pool is below 30 with reserve 20+, the target is an EXPENDABLE ally within 70 m (the game's 'expendable' attribute, the GENERATED set from round 163), the one with the most hit points; with none, the ally with the LOWEST live value among those above 75% health. | 5 |
-| 134 | Captain of the Phoenix Guard | ONE ally (never a Lord, Hero or large): heal, physical resistance +30, 43 s | in melee and 75%, the lowest ally | **RULED** (2026-10-08: "In melee and below 75% health"). Keep. | - |
+| 115 | Inspired Assault I (**BUILT round 179**) | ONE ally within 100 m: charge bonus x1.2, melee attack +24, 29 s | the caster in melee, the closest ally | **ALLY CHARGE, ELSE MELEE:** the nearest ally within 70 m charging, else just in contact, else in melee; never a missile unit. | 5 |
+| 116 | Inspired Assault II (**BUILT round 179**) | charge bonus x1.4, melee attack +24, 42 s | same | as #115 | 5 |
+| 117 | Inspired Assault III (**BUILT round 179**) | charge bonus x1.4, melee attack +40, 43 s | same | as #115 | 5 |
+| 118 | Inspired Defence I (**BUILT round 179**) | ONE ally: melee defence +24, leadership +16, 24 s | same | **ALLY IN MELEE, WAVERING FIRST:** the nearest wavering ally in melee within 70 m, else the nearest ally in melee. | 5 |
+| 119 | Inspired Defence II (**BUILT round 179**) | the same, 31 s | same | as #118 | 5 |
+| 120 | Inspired Defence III (**BUILT round 179**) | melee defence +40, leadership +16, 34 s | same | as #118 | 5 |
+| 121 | Da Boss 'as a Plan! (**BUILT round 179**) | ONE ally within 150 m: melee defence +24, leadership +8, 20 s | same | as #118 (105 m) | 5 |
+| 122 | Favour of the Fay (**BUILT round 179**) | the caster or ONE ally: melee attack +40, 44 s | same | **SELF OR ALLY IN MELEE** (the existing `melee_self_or_ally`). | 5 |
+| 123 | Orcs are da Best! (**BUILT round 179**) | ONE ally within 150 m: melee attack +24, melee damage x1.5, 27 s | same | **MOST VALUABLE ALLY IN MELEE** within 105 m, never a missile unit. | 5 |
+| 124 | Hellish Vigour (**BUILT round 179**) | ONE ally within 75 m: damage reflection +20, 25 s; 3 s wind-up | same | **ALLY IN MELEE:** the nearest ally in melee within 52 m (reflection pays when struck). | 5 |
+| 125 | Daemonic Whispers (**KEPT round 179**) | ONE ally within 200 m: leadership +16, 26 s | same | **RULED** (round 137: "Keep all 5 for now"). Option: the nearest wavering ally (`ally_wavering`). | - |
+| 126 | Horn of Vaul (**KEPT round 179**) | melee damage x1.3, missile damage x1.25, caster and allies within 35 m, 28 s; ONE use | 1 unit fighting or shooting within 24 m | **RULED, KEEP** (round 132: "Same as Metallurgy"; 2026-11-18: "no need of at least 3"). | - |
+| 127 | Berry Wine (**BUILT round 179**) | a heal of about 45% over 14 s, the caster and allies within 60 m; ONE use | the lowest unit at 75% | **DEEPER LINE:** the lowest unit at or below 55%. At 75% about 20 points of the 45% heal are wasted. | 5 |
+| 128 | Cold-Blooded (**KEPT round 179; the Lizardmen restriction waits for your look at the set**) | ONE Lizardmen unit (the game's rule): leadership +16, 40 s | the wavering ally | **RULED** ("On the wavering ally"). Restriction to add: Lizardmen allies only (read I). | - |
+| 129 | Star of Avelorn (**BUILT round 179**) | a heal on a 15 m area anywhere within 200 m, 27 s; 2 uses | the area around the caster's 10 m | **BEST SPOT:** on the ground under the hurt unit of ours, the caster included (at or below 75%), within 140 m with the most hurt units within 10 m of it. Today it reaches only 10 m from the caster. | 5 |
+| 130 | Commanding Presence (**BUILT round 179**) | leadership +8, caster and allies within 35 m, 20 s | wavering self, or an ally IN MELEE and wavering | **AS YOUR RULING:** "Not related to melee, only to morale. The trigger should be when lord or nearby unit are wavering." Drop the hidden melee condition. | 5 |
+| 131 | Fury of Ulric (**BUILT round 179**) | leadership +8, caster and allies within 35 m, 25 s | same | as #130 | 5 |
+| 132 | Hunter's Call (**KEPT round 179**) | melee defence +24, caster and allies within 35 m, 32 s; 3 uses | the caster or one unit within 24 m in melee or wavering | **KEEP** (the same reasoning as #126, 2026-11-18: no minimum count): the caster, or one unit within 24 m, in melee or wavering, as now. | - |
+| 133 | Grut's Sickle (**BUILT round 179**) | ONE ally takes 33 damage a second for 20 s to restore winds; 3 uses | when ready, on the sturdiest ally | **WINDS LOW, CHEAPEST ALLY** (user, 2026-11-18: "on expendable ally first (highest hp), then on the ally with lowest value above 75%"): when the winds pool is below 30 with reserve 20+, the target is an EXPENDABLE ally within 70 m (the game's 'expendable' attribute, the GENERATED set from round 163), the one with the most hit points; with none, the ally with the LOWEST live value among those above 75% health. | 5 |
+| 134 | Captain of the Phoenix Guard (**KEPT round 179**) | ONE ally (never a Lord, Hero or large): heal, physical resistance +30, 43 s | in melee and 75%, the lowest ally | **RULED** (2026-10-08: "In melee and below 75% health"). Keep. | - |
 
 ## 5. A finding for the finishers section
 

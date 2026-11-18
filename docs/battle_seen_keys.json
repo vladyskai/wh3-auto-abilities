@@ -222,6 +222,7 @@
 "wh3_dlc26_character_abilities_headhunt",
 "wh3_dlc26_character_abilities_inevitable_horror",
 "wh3_dlc26_character_abilities_mumbo_jumbo_chant",
+"wh3_dlc26_character_abilities_orcs_are_da_best",
 "wh3_dlc26_character_abilities_puncture",
 "wh3_dlc26_character_abilities_squig_thinkin",
 "wh3_dlc26_lord_abilities_blood_sacrifice",
@@ -265,6 +266,7 @@
 "wh3_dlc29_item_abilities_punch_dagger",
 "wh3_dlc29_item_active_ethracs_brazier",
 "wh3_dlc29_lord_abilities_gaze_of_usirian",
+"wh3_dlc29_lord_abilities_hellish_vigour",
 "wh3_dlc29_lord_abilities_lightning_reflexes",
 "wh3_dlc29_lord_abilities_transfix",
 "wh3_dlc29_lord_abilities_verminous_fury",
@@ -333,6 +335,8 @@
 "wh3_main_lord_abilities_eye_of_the_storm",
 "wh3_main_lord_abilities_fury_of_ursun",
 "wh3_main_lord_abilities_gaze_of_fate",
+"wh3_main_lord_abilities_inspired_assault_i",
+"wh3_main_lord_abilities_inspired_defence_i",
 "wh3_main_lord_abilities_inspired_marksmanship_i",
 "wh3_main_lord_abilities_nurgling_tide",
 "wh3_main_lord_abilities_oracle_of_eternity",
@@ -459,6 +463,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 192,
+"logs_read": 193,
 "made": "2026-11-18"
 }

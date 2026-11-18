@@ -1038,10 +1038,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_curse_of_years",
 		keys = { "wh3_dlc29_spell_bound_curse_of_years" },
 		ox = 0, oy = 0 },
-	{ marker = "da_boss_as_a_plan", name = "Da Boss 'as a Plan!", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_melee_wavering_first
+	{ marker = "da_boss_as_a_plan", name = "Da Boss 'as a Plan!", trigger = "ally_melee_wavering_first",
 		badge = "zz_auto_badge_da_boss_as_a_plan",
 		keys = { "wh3_dlc26_character_abilities_da_boss_as_a_plan" },
 		ally_range_real = 150,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "dazs_song_of_winter_sunlight", name = "Dazh's Song of Winter Sunlight", trigger = "tired",
 		badge = "zz_auto_badge_dazs_song_of_winter_sunlight",
@@ -1062,10 +1064,12 @@ local ABILITIES = {
 		ally_range_real = 100,
 		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "favour_of_the_fay", name = "Favour of the Fay", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): melee_self_or_ally
+	{ marker = "favour_of_the_fay", name = "Favour of the Fay", trigger = "melee_self_or_ally",
 		badge = "zz_auto_badge_favour_of_the_fay",
 		keys = { "wh_dlc07_lord_abilities_favour_of_the_fay" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "ferocious_battle_howl", name = "Ferocious Battle Howl", trigger = "charge_only",
 		badge = "zz_auto_badge_ferocious_battle_howl",
@@ -1116,35 +1120,47 @@ local ABILITIES = {
 		ally_range_real = 50,
 		start_armed = true,   -- ROUND 174: keeps its default (ally_melee_buff started armed)
 		ox = 0, oy = 0 },
-	{ marker = "inspired_assault_i", name = "Inspired Assault I", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_charge_or_melee
+	{ marker = "inspired_assault_i", name = "Inspired Assault I", trigger = "ally_charge_or_melee",
 		badge = "zz_auto_badge_inspired_assault_i",
 		keys = { "wh3_main_lord_abilities_inspired_assault_i" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "inspired_assault_ii", name = "Inspired Assault II", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_charge_or_melee
+	{ marker = "inspired_assault_ii", name = "Inspired Assault II", trigger = "ally_charge_or_melee",
 		badge = "zz_auto_badge_inspired_assault_ii",
 		keys = { "wh3_main_lord_abilities_inspired_assault_ii" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "inspired_assault_iii", name = "Inspired Assault III", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_charge_or_melee
+	{ marker = "inspired_assault_iii", name = "Inspired Assault III", trigger = "ally_charge_or_melee",
 		badge = "zz_auto_badge_inspired_assault_iii",
 		keys = { "wh3_main_lord_abilities_inspired_assault_iii" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "inspired_defence_i", name = "Inspired Defence I", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_melee_wavering_first
+	{ marker = "inspired_defence_i", name = "Inspired Defence I", trigger = "ally_melee_wavering_first",
 		badge = "zz_auto_badge_inspired_defence_i",
 		keys = { "wh3_main_lord_abilities_inspired_defence_i" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "inspired_defence_ii", name = "Inspired Defence II", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_melee_wavering_first
+	{ marker = "inspired_defence_ii", name = "Inspired Defence II", trigger = "ally_melee_wavering_first",
 		badge = "zz_auto_badge_inspired_defence_ii",
 		keys = { "wh3_main_lord_abilities_inspired_defence_ii" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "inspired_defence_iii", name = "Inspired Defence III", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_melee_wavering_first
+	{ marker = "inspired_defence_iii", name = "Inspired Defence III", trigger = "ally_melee_wavering_first",
 		badge = "zz_auto_badge_inspired_defence_iii",
 		keys = { "wh3_main_lord_abilities_inspired_defence_iii" },
 		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "lord_of_grand_cathay", name = "Lord of Grand Cathay", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_lord_of_grand_cathay",
@@ -1186,10 +1202,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_okkams_mindrazor",
 		keys = { "wh3_dlc29_spell_bound_okkams_mindrazor" },
 		ox = 0, oy = 0 },
-	{ marker = "orcs_are_da_best", name = "Orcs are da Best!", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_value_melee
+	{ marker = "orcs_are_da_best", name = "Orcs are da Best!", trigger = "ally_value_melee",
 		badge = "zz_auto_badge_orcs_are_da_best",
 		keys = { "wh3_dlc26_character_abilities_orcs_are_da_best" },
 		ally_range_real = 150,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "overseer_of_the_unseen", name = "Overseer of the Unseen", trigger = "ally_melee_risk",
 		badge = "zz_auto_badge_overseer_of_the_unseen",
@@ -1234,10 +1252,13 @@ local ABILITIES = {
 		badge = "zz_auto_badge_spite_of_da_bad_moon",
 		keys = { "wh_dlc06_lord_abilities_spite_of_da_bad_moon" },
 		ox = 0, oy = 0 },
-	{ marker = "star_of_avelorn", name = "Star of Avelorn", trigger = "health_aura_ground",
+	-- ROUND 179 (score-3 review): heal_ground_best
+	{ marker = "star_of_avelorn", name = "Star of Avelorn", trigger = "heal_ground_best",
 		badge = "zz_auto_badge_star_of_avelorn",
 		keys = { "wh2_dlc10_item_abilities_star_of_avelorn" },
 		aura_real = 15,
+		ally_range_real = 200,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "stay_here_ill_get_help", name = "\"Stay Here, I'll Get Help!\"", trigger = "wavering_ally_range",
 		badge = "zz_auto_badge_stay_here_ill_get_help",
@@ -2942,10 +2963,12 @@ local ABILITIES = {
 		range_real = 150,
 		target_class = "commander",
 		ox = 0, oy = 0 },
-	{ marker = "hellish_vigour", name = "Hellish Vigour", trigger = "ally_melee_buff",
+	-- ROUND 179 (score-3 review): ally_in_melee
+	{ marker = "hellish_vigour", name = "Hellish Vigour", trigger = "ally_in_melee",
 		badge = "zz_auto_badge_hellish_vigour",
 		keys = { "wh3_dlc29_lord_abilities_hellish_vigour" },
 		ally_range_real = 75,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "hellish_vigour_upgraded", name = "Hellish Vigour Upgraded", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_hellish_vigour_upgraded",
@@ -3747,10 +3770,12 @@ local ABILITIES = {
 		target_class = "commander",
 		ox = 0, oy = 0 },
 	-- health<=75, no melee gate (the R1 heal / replenish batch) (36 entries)
-	{ marker = "berry_wine", name = "Berry Wine", trigger = "health_aura_ally",
+	-- ROUND 179 (score-3 review): health_aura_ally_deep
+	{ marker = "berry_wine", name = "Berry Wine", trigger = "health_aura_ally_deep",
 		badge = "zz_auto_badge_berry_wine",
 		keys = { "wh2_dlc16_item_abilities_berry_wine" },
 		ally_range_real = 60,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "blood_chalice", name = "Blood Chalice", trigger = "ushoran_health",
 		badge = "zz_auto_badge_blood_chalice",
@@ -8153,8 +8178,14 @@ local function attempt_activation(script_unit, unit, ability_key, reason, ui_id,
 		if FOURTH.ah_ally ~= nil then
 			gap_now = FOURTH.ab_ally_gap(unit, chosen)
 			in_reach = (FOURTH.ah_range_m == nil) or (gap_now == nil) or (gap_now <= FOURTH.ah_range_m)
+			if FOURTH.ah_mode == "spot" then   -- ROUND 179: Star of Avelorn reaches its 70% cast bound, not its area
+				in_reach = (FOURTH.ab_range_m == nil) or (gap_now == nil) or (gap_now <= FOURTH.ab_range_m)
+			end
 		end
 		local hp_ok = (type(hp_now) ~= "number") or (hp_now <= 75)
+		if FOURTH.ah_mode == "deep" then   -- ROUND 179: Berry Wine's deeper line
+			hp_ok = (type(hp_now) ~= "number") or (hp_now <= FOURTH.HEAL_DEEP_PCT)
+		end
 		-- ROUND 142: Master of Mists re-checks its own condition, not health
 		if FOURTH.ah_mode == "mist" then
 			hp_ok = (FOURTH.before_range(chosen, FOURTH.MIST_BAND) ~= nil)
@@ -9421,7 +9452,7 @@ function FOURTH.evaluate_wavering_self_or_ally(unit, routing)
 				local other = tracked_units[i] and tracked_units[i].unit
 				if other ~= nil and other ~= unit and other:number_of_men_alive() > 0 then
 					if tostring(other:unique_ui_id()) ~= self_id
-						and other:is_in_melee() and not unit_is_routing(other)
+						and not unit_is_routing(other)   -- ROUND 179: no melee condition (the user's ruling)
 						and FOURTH.wavering(other) == true then
 						local gap = FOURTH.ws_ally_gap(unit, other)
 						if (gap == nil) or (gap <= FOURTH.WAVERING_RANGE_M) then
@@ -11977,8 +12008,16 @@ end
 -- HIGHEST ABSOLUTE HIT POINTS REMAINING (max HealthValue), not the lowest -
 -- the recipient pays a health COST for the winds recharge, so the sturdiest
 -- unit can best afford it. No health-percentage gate.
+-- ROUND 179 (user, 2026-11-18: "on expendable ally first (highest hp), then on the ally with lowest value above
+-- 75%"): only when the winds pool is low (the round-171 winds_low line: pool below 30, reserve 20 or more).
+FOURTH.GRUT_HEALTHY_PCT = 75
 function FOURTH.evaluate_ally_winds(unit, routing)
-	return FOURTH.ab_pick_ally(unit, routing, "winds")
+	if routing then return nil end
+	local c, r = FOURTH.winds_now()
+	if c == nil or c >= FOURTH.WINDS_LOW_POOL or r < FOURTH.WINDS_LOW_RESERVE then return nil end
+	local res = FOURTH.ab_pick_ally(unit, routing, "expendable_hp")
+	if res then return res end
+	return FOURTH.ab_pick_ally(unit, routing, "cheap_healthy")
 end
 
 -- ACCUSATION (this round) - the FIRST ENEMY-TARGETED trigger, and the first
@@ -19783,8 +19822,34 @@ FOURTH.AB_RANKED = {
 	value_melee_risk = "the most valuable ally in melee, wavering or at or below 50% health",
 	routing = "the most valuable routing ally",
 	value_under_fire = "the most valuable ally under missile fire",   -- ROUND 177
+	charge_contact_melee = "the closest ally charging, else in fresh contact, else in melee",   -- ROUND 179
+	melee_wavering_first = "the closest ally in melee, a wavering one first",   -- ROUND 179
+	value_melee = "the most valuable ally in melee",   -- ROUND 179
+	expendable_hp = "the expendable ally with the most hit points",   -- ROUND 179
+	cheap_healthy = "the cheapest ally above 75% health (score = minus its value)",   -- ROUND 179
 }
 function FOURTH.ab_rank(u, family)
+	if family == "charge_contact_melee" then   -- ROUND 179: Inspired Assault
+		local w = FOURTH.charge_moment(u)
+		if w == "charging" then return 3 end
+		if w ~= nil then return 2 end
+		local ok_c, mc = pcall(function() return u:is_in_melee() end)
+		if ok_c and mc == true then return 1 end
+		return nil
+	end
+	if family == "expendable_hp" then   -- ROUND 179: Grut's Sickle, an expendable ally first
+		local t = FOURTH.type_plain(u)
+		if t == nil or FOURTH.class_keys.expendable[t] ~= true then return nil end
+		local v = FOURTH.context_value(u, "HealthValue")
+		if type(v) == "number" then return v end
+		return nil
+	end
+	if family == "cheap_healthy" then   -- ROUND 179: Grut's Sickle, else the cheapest ally above 75%
+		local hp = FOURTH.health_pct(u)
+		local v = FOURTH.unit_value(u)
+		if type(hp) == "number" and hp > FOURTH.GRUT_HEALTHY_PCT and type(v) == "number" then return -v end
+		return nil
+	end
 	if family == "value_under_fire" then   -- ROUND 177: Shielding Swarm
 		if FOURTH.under_fire(u) then return FOURTH.unit_value(u) end
 		return nil
@@ -19809,6 +19874,11 @@ function FOURTH.ab_rank(u, family)
 		if FOURTH.wavering(u) == true then return FOURTH.unit_value(u) end
 		return nil
 	end
+	if family == "melee_wavering_first" then   -- ROUND 179: Inspired Defence, Da Boss
+		if FOURTH.wavering(u) == true then return 2 end
+		return 1
+	end
+	if family == "value_melee" then return FOURTH.unit_value(u) end   -- ROUND 179: Orcs are da Best!
 	if family == "value_melee_risk" then
 		local hp = FOURTH.health_pct(u)
 		if FOURTH.wavering(u) == true or (type(hp) == "number" and hp <= 50) then return FOURTH.unit_value(u) end
@@ -19844,6 +19914,108 @@ end
 -- Iron-Handed Captain: the caster may cast while the ally routs; the picker keeps routing allies for this family
 function FOURTH.evaluate_ally_routing(unit, routing)
 	return FOURTH.ab_pick_ally(unit, routing, "routing")
+end
+
+-- ============================================================================
+-- ROUND 179 - THE SCORE-3 REVIEW, ROWS 115-134 (user, 2026-11-18: "Items 115-134 approved").
+--   ally_charge_or_melee (Inspired Assault I-III): the nearest ally charging, else in fresh contact, else in melee;
+--     never a missile unit.
+--   ally_melee_wavering_first (Inspired Defence I-III, Da Boss 'as a Plan!): the nearest ally in melee, a wavering one
+--     first.
+--   ally_value_melee (Orcs are da Best!): the most valuable ally in melee, never a missile unit.
+--   ally_in_melee (Hellish Vigour): the nearest ally in melee (the reflection pays when it is struck).
+--   health_aura_ally_deep (Berry Wine): the health_aura_ally rule with the line at 55% (a 45% heal wastes less).
+--   heal_ground_best (Star of Avelorn): the ground under the hurt unit of ours (the caster included, 75% or less)
+--     within the 70% cast bound with the most OTHER hurt units within the 70% area (10 m of its 15 m); the lower
+--     health on a tie.
+-- ============================================================================
+function FOURTH.evaluate_ally_charge_or_melee(unit, routing)
+	FOURTH.ab_filter = "not_missile"
+	return FOURTH.ab_pick_ally(unit, routing, "charge_contact_melee")
+end
+function FOURTH.evaluate_ally_melee_wavering_first(unit, routing)
+	return FOURTH.ab_pick_ally(unit, routing, "melee_wavering_first")
+end
+function FOURTH.evaluate_ally_value_melee(unit, routing)
+	FOURTH.ab_filter = "not_missile"
+	return FOURTH.ab_pick_ally(unit, routing, "value_melee")
+end
+function FOURTH.evaluate_ally_in_melee(unit, routing)
+	return FOURTH.ab_pick_ally(unit, routing, "melee")
+end
+
+FOURTH.HEAL_DEEP_PCT = 55   -- Berry Wine (user approval 2026-11-18, review row 127)
+function FOURTH.evaluate_health_aura_ally_deep(unit, routing)
+	local chosen, hp, gap = FOURTH.ah_pick_where(unit, routing, function(u)
+		local h = FOURTH.health_pct(u)
+		return type(h) == "number" and h <= FOURTH.HEAL_DEEP_PCT
+	end)
+	if chosen == nil then return nil end
+	FOURTH.ah_mode = "deep"
+	FOURTH.ah_chosen = chosen
+	FOURTH.ah_caster_su = FOURTH.ab_fresh_friend_su(unit)
+	if chosen == unit then
+		return string.format("health %d%% (<= %d%%)", math.floor(hp), FOURTH.HEAL_DEEP_PCT)
+	end
+	FOURTH.ah_ally = chosen
+	FOURTH.ah_ally_su = FOURTH.ab_fresh_friend_su(chosen)
+	FOURTH.cast_target = chosen
+	FOURTH.ah_log_ally(chosen, hp, gap, "cast on that ally")
+	return string.format("%s: lowest-health unit in range is an ALLY at %d%% (<= %d%%), distance %s of %sm %s - cast on the ally",
+		tostring(FOURTH.ah_marker or "ally"), math.floor(hp), FOURTH.HEAL_DEEP_PCT,
+		((gap ~= nil) and string.format("%.1f", gap) or "?"), tostring(FOURTH.ah_range_m), tostring(FOURTH.ah_range_word))
+end
+
+FOURTH.HEAL_SPOT_PCT = 75   -- Star of Avelorn: a unit at or below this health counts as hurt
+function FOURTH.evaluate_heal_ground_best(unit, routing)
+	if routing then return nil end
+	local reach, spot = FOURTH.ab_range_m, FOURTH.ah_range_m
+	if reach == nil or spot == nil then return nil end
+	local hurt = {}
+	local self_hp = FOURTH.health_pct(unit)
+	if type(self_hp) == "number" and self_hp <= FOURTH.HEAL_SPOT_PCT then hurt[#hurt + 1] = { u = unit, hp = self_hp, gap = 0 } end
+	local self_id = tostring(unit:unique_ui_id())
+	for i = 1, #tracked_units do
+		local other = tracked_units[i] and tracked_units[i].unit
+		if other ~= nil and other ~= unit and other:number_of_men_alive() > 0
+			and tostring(other:unique_ui_id()) ~= self_id and not unit_is_routing(other) then
+			local hp = FOURTH.health_pct(other)
+			if type(hp) == "number" and hp <= FOURTH.HEAL_SPOT_PCT then
+				local gap = FOURTH.ab_ally_gap(unit, other)
+				if gap ~= nil and gap <= reach then hurt[#hurt + 1] = { u = other, hp = hp, gap = gap } end
+			end
+		end
+	end
+	local best, best_n = nil, nil
+	for i = 1, #hurt do
+		local n = 0
+		for j = 1, #hurt do
+			if j ~= i then
+				local g = FOURTH.ab_ally_gap(hurt[i].u, hurt[j].u)
+				if g ~= nil and g <= spot then n = n + 1 end
+			end
+		end
+		if best == nil or n > best_n or (n == best_n and hurt[i].hp < best.hp) then best, best_n = hurt[i], n end
+	end
+	if best == nil then return nil end
+	FOURTH.ah_mode = "spot"
+	FOURTH.ah_chosen = best.u
+	FOURTH.ah_ground = true
+	FOURTH.ah_caster_su = FOURTH.ab_fresh_friend_su(unit)
+	if best.u == unit then
+		return string.format("heal spot: the caster at %d%% (<= %d%%), %d other hurt unit(s) within %dm - cast at its feet",
+			math.floor(best.hp), FOURTH.HEAL_SPOT_PCT, best_n, spot)
+	end
+	FOURTH.ah_ally = best.u
+	FOURTH.ah_ally_su = FOURTH.ab_fresh_friend_su(best.u)
+	local atype = "ally"
+	pcall(function() atype = tostring(best.u:type()) end)
+	log("  " .. tostring(FOURTH.ah_marker) .. " ally: '" .. atype .. "' is the chosen spot (health "
+		.. string.format("%.0f", best.hp) .. "%, distance " .. string.format("%.1f", best.gap) .. "m of "
+		.. tostring(reach) .. "m cast bound, " .. best_n .. " other hurt unit(s) within " .. tostring(spot)
+		.. "m) - cast on the ground under that ally")
+	return string.format("heal spot: an ally at %d%% (<= %d%%), %d other hurt unit(s) within %dm, distance %.1f of %dm - cast under the ally",
+		math.floor(best.hp), FOURTH.HEAL_SPOT_PCT, best_n, spot, best.gap, reach)
 end
 
 -- ============================================================================
@@ -21172,6 +21344,12 @@ FOURTH.evaluators = {
 	slow_army = FOURTH.evaluate_slow_army,   -- ROUND 177
 	melee_vs_large = FOURTH.evaluate_melee_vs_large,
 	ally_squig_melee = FOURTH.evaluate_ally_squig_melee,
+	ally_charge_or_melee = FOURTH.evaluate_ally_charge_or_melee,   -- ROUND 179
+	ally_melee_wavering_first = FOURTH.evaluate_ally_melee_wavering_first,
+	ally_value_melee = FOURTH.evaluate_ally_value_melee,
+	ally_in_melee = FOURTH.evaluate_ally_in_melee,
+	health_aura_ally_deep = FOURTH.evaluate_health_aura_ally_deep,
+	heal_ground_best = FOURTH.evaluate_heal_ground_best,
 	enemy_melee_near = FOURTH.evaluate_enemy_melee_near,
 	aura_charge_or_melee = FOURTH.evaluate_aura_charge_or_melee,
 	melee_health25 = FOURTH.evaluate_melee_health25,
@@ -21369,6 +21547,12 @@ FOURTH.TRIGGER_TIP = {
 	slow_army = "When armed, fires when a fast enemy closes on any of our units, or this unit is in melee",   -- ROUND 177
 	melee_vs_large = "When armed, fires when this unit or one in its aura is fighting a large enemy",
 	ally_squig_melee = "When armed, fires on the nearest squig ally in melee",
+	ally_charge_or_melee = "When armed, fires on the nearest ally charging, else just in contact, else in melee (never a missile unit)",   -- ROUND 179
+	ally_melee_wavering_first = "When armed, fires on the nearest ally in melee, a wavering one first",
+	ally_value_melee = "When armed, fires on the most valuable ally in melee (never a missile unit)",
+	ally_in_melee = "When armed, fires on the nearest ally in melee",
+	health_aura_ally_deep = "When armed, fires when this unit or a friendly unit in range is at or below 55% health, cast on it",
+	heal_ground_best = "When armed, fires on the ground under the hurt unit (75% or less) with the most hurt units around it",
 	enemy_melee_near = "When armed, fires when this unit, or an enemy in its aura, is in melee",
 	aura_charge_or_melee = "When armed, fires when this unit or a unit in its aura charges, has just made contact, or fights",
 	melee_health25 = "When armed, fires in melee at or below 25% health",
@@ -21476,7 +21660,7 @@ FOURTH.TRIGGER_TIP = {
 	ally_monster_heal = "When armed, fires on the lowest-health monster ally in range that is at or below 75% health",
 	ally_construct_heal = "When armed, fires on the lowest-health construct ally in range that is at or below 75% health",
 	ally_infinite_buff = "When armed, fires on an ally anywhere on the field (infinite range), cast on that ally",
-	ally_winds = "When armed, fires on the ally with the most hit points remaining, cast on that ally",
+	ally_winds = "When armed and the winds run low, fires on the expendable ally with the most hit points, else on the cheapest ally above 75% health",   -- ROUND 179
 	melee_skip_commanders = "When armed, fires when this unit is in melee, unless every enemy it is fighting is a Lord or Hero",
 	enemy_ground_melee_infantry = "When armed, fires on the closest infantry unit in range that is fighting in melee",
 	air_drop_on_infantry = "When armed, fires when the nearest enemy unit with more than 10 models comes within 6 m of this unit's centre, and casts immediately on that evaluation - no delay at all - airborne where the ability requires it",
@@ -21594,6 +21778,12 @@ FOURTH.CARD_TIP = {
 	slow_army = "Fires when an enemy charges your army, or in melee",   -- ROUND 177
 	melee_vs_large = "Fires when it or a nearby ally fights a large enemy",
 	ally_squig_melee = "Fires on a squig ally in melee",
+	ally_charge_or_melee = "Fires on an ally charging, else just in contact, else in melee; no missile units",   -- ROUND 179
+	ally_melee_wavering_first = "Fires on the nearest ally in melee, a wavering one first",
+	ally_value_melee = "Fires on the most valuable ally in melee; no missile units",
+	ally_in_melee = "Fires on the nearest ally in melee",
+	health_aura_ally_deep = "Fires on the most hurt unit nearby, below 55% health",
+	heal_ground_best = "Fires under the hurt unit with the most hurt units around it",
 	enemy_melee_near = "Fires when it or a nearby enemy is in melee",
 	aura_charge_or_melee = "Fires when it or a nearby ally charges or fights",
 	melee_health25 = "Fires in melee at 25% health or less",
@@ -21624,7 +21814,7 @@ FOURTH.CARD_TIP = {
 	verminking_wavering = "Fires when a nearby ally wavers in melee",
 	metallurgy_melee = "Fires when it or a nearby ally is in melee",
 	wavering_self = "Fires when wavering",
-	wavering_self_or_ally = "Fires when it wavers, or a nearby ally wavers in melee",
+	wavering_self_or_ally = "Fires when it wavers, or a nearby ally wavers",   -- ROUND 179
 	wavering_ally_range = "Fires on the nearest wavering ally",
 	wavering_aura = "Fires when it or {ALLYA} wavers",
 	melee_or_wavering_aura = "Fires when it or {ALLYA} is in melee or wavering",
@@ -21643,7 +21833,7 @@ FOURTH.CARD_TIP = {
 	ally_broken = "Fires on the nearest routing ally in range",
 	ally_missile = "Fires on the nearest missile ally in range",
 	ally_infinite_buff = "Fires on the nearest ally",
-	ally_winds = "Fires on the healthiest ally in range",
+	ally_winds = "Fires when the winds run low, on an expendable ally, else the cheapest healthy one",   -- ROUND 179
 	ally_ammo_low = "Fires on the shooting ally in range lowest on ammo, at {AMMO}% or less",
 	ally_blast = "Fires on itself or the ally amid the most enemies",
 	allies_firing_aura = "Fires when it or {ALLYA} is shooting",

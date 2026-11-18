@@ -34,7 +34,9 @@ OUT = os.path.join(r"C:\Users\vlady\Desktop\WH3_mod\docs",
 MELEE_ONLY_TRIG = {"melee_unwavering", "melee", "melee_low_morale", "melee_health75", "melee_skip_commanders",
                    "ally_melee_buff", "metallurgy_melee", "enemy_melee", "enemy_ground_melee",
                    "enemy_ground_melee_infantry", "enemy_melee_noncommander", "self_summon_melee", "glorious_death",
-                   "verminking_wavering"}
+                   "verminking_wavering",
+                   # round 179: the ally melee picks (no shooting arm)
+                   "ally_melee_wavering_first", "ally_value_melee", "ally_in_melee"}
 SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_ally_shooting",
               "melee_or_shooting_into_melee", "ally_ammo_low", "ally_missile", "no_enemy_in_range_within_boost",
               "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting",
@@ -48,7 +50,8 @@ MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_o
                                           "enemy_melee_or_fast",  # round 156: enemy in melee OR fast-closing (rule 10)
                                           "slow_aura",  # round 171: the caster in melee OR a fast enemy entering the aura
                                           "slow_army",  # round 177: the caster in melee OR a fast enemy closing on ours
-                                          "enemy_fast_or_melee", "enemy_fast_fire_melee"}  # round 178: the roots
+                                          "enemy_fast_or_melee", "enemy_fast_fire_melee",  # round 178: the roots
+                                          "ally_charge_or_melee"}  # round 179: Inspired Assault
 # Rows the user has explicitly ruled on for a rule: listed apart, never counted as candidates again.
 RULED = {"R4": {
     "hunter_of_champions": "round 123: 'Hunter of champions is okay for enemy_engaged_or_shot'",
@@ -75,7 +78,8 @@ RULED["R4"]["hammer_of_smednir"] = ("round 163: 'Keep the blast rule' (the x0.4 
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
                "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura",
                # round 174: the routing ally (Iron-Handed Captain), the wavering / at-risk allies, the wavering Lord
-               "ally_routing", "ally_wavering_melee", "ally_melee_risk", "enemy_commander_wavering"}
+               "ally_routing", "ally_wavering_melee", "ally_melee_risk", "enemy_commander_wavering",
+               "ally_melee_wavering_first"}   # round 179: Inspired Defence, Da Boss (a wavering ally first)
 
 STAT = re.compile(r"([A-Z][A-Za-z\- .'/]+?):\s*([+\-][0-9.]+%?)")
 MISSILE_UP = re.compile(r"^(Base Missile Damage|Armour-Piercing Missile Damage|Reload Skill|Accuracy|Range|"
