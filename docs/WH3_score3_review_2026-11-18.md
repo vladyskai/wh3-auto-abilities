@@ -38,47 +38,47 @@ trigger exists").
 
 | # | Ability | Every effect (game data) | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 1 | Blood Omens | EVERY enemy: speed and charge speed x0.75, 26 s; ONE use | in melee | **SLOW, ARMY-WIDE:** fires when a visible fast enemy is closing on any of our units (read B), or the caster is in melee. Rule 10: an enemy speed cut pays on their charge. | 5 |
-| 2 | Creature-Killer | bonus vs large +16, caster and allies within 35 m, 38 s; recharge 120 s | in melee | **MELEE VS LARGE:** the caster, or a unit of ours within 24 m (70% of 35), is in melee with a LARGE enemy (read C). Against infantry the bonus does nothing. | 5 |
-| 3 | Daemonshield | the caster is invulnerable, 13 s; recharge 120 s | in melee | **IN MELEE AND HURT:** in melee at or below 75% health (the existing `melee_health75`). 13 s of invulnerability pays when damage is flowing, not on a healthy unit's first contact. Option: 50%. | 4 (no read of incoming damage) |
-| 4 | Empowering Shrooms | SQUIG allies within 35 m (the game's rule: squigs only): melee attack +24, leadership +16, 35 s | in melee | **SQUIG IN MELEE:** a squig ally within 24 m is in melee (read I, a NEW squig set). Today it fires with no squig near. | 5 |
-| 5 | Everyone Has Their Price | enemies within 35 m: melee attack -24, leadership -8, 15 s | in melee | **ENEMIES FIGHTING NEAR:** the caster is in melee, or an enemy within 24 m is in melee with one of ours. | 5 |
-| 6 | Fury of the Land | allies within 55 m: Fear, magical attacks, Strider, 35 s | in melee | **AURA CHARGE OR MELEE:** the caster or a unit within 38 m is charging, just made contact, or in melee. Fear pays at contact; Strider before it. | 4 (Strider's terrain value has no read) |
-| 7 | Terrorgheist Skull | abilities recharge faster, caster or ally within 100 m, 44 s | caster or ally in melee | **RULED** (round 141: "Self or ally in melee"). Option: the caster or an ally with an ability recharging (the `recharging_in_reach` read), melee as a second arm. | - |
-| 8 | Primal Roar | melee attack +40, physical resistance +20, caster and allies within 35 m, 25 s (Rampage) | in melee | **KEEP:** melee is the moment; the Rampage risk is handled by the round-167 default (it starts on M). | 4 |
-| 9 | Rage Embodied | enemies within 35 m: Rampage, 15 s | in melee | **KEEP:** no read says when enemy Rampage helps us. | 3 |
-| 10 | Rage Incarnate | enemies within 55 m: Rampage, 15 s | in melee | **KEEP**, as Rage Embodied. | 3 |
-| 11 | Refuse to Die | the caster cannot die, 20 s; recharge 60 s | in melee | **LAST STAND:** in melee at or below 25% health. Cannot Die only matters near death; on first contact it burns 20 s early. Option: 10% (your Hag's Denial line). | 5 |
-| 12 | Rune of Oath & Steel | armour +30, caster and allies within 35 m, 44 s; 3 s wind-up | in melee | **MELEE OR UNDER FIRE** (the existing `melee_or_under_fire`): armour also stops arrows. | 5 |
-| 13 | Seductive Glory | enemies within 35 m: melee defence -24 (Rampage) | in melee | **RULED** (2026-10-28: kept, starts unarmed). | - |
-| 14 | Shield of Aeons | armour +60, caster and allies within 55 m, 23 s | in melee | **GUARD:** the caster is in melee or under fire, or a fast enemy is closing within 38 m (read B: an enemy charge). | 5 |
-| 15 | Shielding Swarm | ONE unit (the caster or an ally within 100 m): melee defence +24, missile block +36, 30 s | in melee, on self | **SELF OR ALLY UNDER FIRE OR IN MELEE:** the caster under fire or in melee; else the most valuable ally within 70 m under fire; else the nearest ally in melee. The missile block is the bigger part. | 5 |
-| 16 | Shielding Swarm Upgraded | as #15: melee defence +36, missile block +48 | in melee, on self | as #15 | 5 |
-| 17 | Slayer for Chaos | the caster cannot die, melee attack +12, 24 s; ONE use | in melee | **LAST STAND, as Hag's Denial** (the existing `self_last_stand`: at or below 10% health, in melee or under fire; your round-144 ruling for a one-use Cannot Die). | 5 |
-| 18 | Steppe Hunter's Horn | bonus vs large x2, caster and allies within 35 m, 20 s | in melee | **MELEE VS LARGE**, as #2. | 5 |
-| 19 | The Armour of Morkar | melee defence +24 and charge reflection, caster and allies within 35 m, 29 s | in melee | **GUARD**, as #14 (the reflection pays when the enemy charges in). | 5 |
-| 20 | The Blood Price | melee damage x1.6, all resistances +20; the caster takes 60 damage every 2 s for 22 s (660) | in melee | **IN MELEE AND HEALTHY:** in melee above 50% health (the winds-items guard). It starts on M (self-damage, round 167). | 5 |
-| 21 | The Ostermark Runefang | bonus vs large +32, caster and allies within 35 m, 27 s | in melee | **MELEE VS LARGE**, as #2. | 5 |
-| 22 | Toad Rage | melee damage x1.5 (Rampage), self, 18 s | in melee | **KEEP:** melee is the moment; it starts on M (Rampage). | 4 |
+| 1 | Blood Omens (**BUILT round 177**) | EVERY enemy: speed and charge speed x0.75, 26 s; ONE use | in melee | **SLOW, ARMY-WIDE:** fires when a visible fast enemy is closing on any of our units (read B), or the caster is in melee. Rule 10: an enemy speed cut pays on their charge. | 5 |
+| 2 | Creature-Killer (**BUILT round 177**) | bonus vs large +16, caster and allies within 35 m, 38 s; recharge 120 s | in melee | **MELEE VS LARGE:** the caster, or a unit of ours within 24 m (70% of 35), is in melee with a LARGE enemy (read C). Against infantry the bonus does nothing. | 5 |
+| 3 | Daemonshield (**KEPT round 177 (user: stays the same)**) | the caster is invulnerable, 13 s; recharge 120 s | in melee | **IN MELEE AND HURT:** in melee at or below 75% health (the existing `melee_health75`). 13 s of invulnerability pays when damage is flowing, not on a healthy unit's first contact. Option: 50%. | 4 (no read of incoming damage) |
+| 4 | Empowering Shrooms (**BUILT round 177**) | SQUIG allies within 35 m (the game's rule: squigs only): melee attack +24, leadership +16, 35 s | in melee | **SQUIG IN MELEE:** a squig ally within 24 m is in melee (read I, a NEW squig set). Today it fires with no squig near. | 5 |
+| 5 | Everyone Has Their Price (**BUILT round 177**) | enemies within 35 m: melee attack -24, leadership -8, 15 s | in melee | **ENEMIES FIGHTING NEAR:** the caster is in melee, or an enemy within 24 m is in melee with one of ours. | 5 |
+| 6 | Fury of the Land (**BUILT round 177**) | allies within 55 m: Fear, magical attacks, Strider, 35 s | in melee | **AURA CHARGE OR MELEE:** the caster or a unit within 38 m is charging, just made contact, or in melee. Fear pays at contact; Strider before it. | 4 (Strider's terrain value has no read) |
+| 7 | Terrorgheist Skull (**KEPT (ruled)**) | abilities recharge faster, caster or ally within 100 m, 44 s | caster or ally in melee | **RULED** (round 141: "Self or ally in melee"). **REOPENED (user, 2026-11-18: "Remove the melee fallback"):** the caster or an ally within 70 m with an ability the mod cast still recharging (the `recharging_in_reach` read), no melee arm. Limit: abilities you cast by hand are not seen. | 5 |
+| 8 | Primal Roar (**KEPT**) | melee attack +40, physical resistance +20, caster and allies within 35 m, 25 s (Rampage) | in melee | **KEEP:** melee is the moment; the Rampage risk is handled by the round-167 default (it starts on M). | 4 |
+| 9 | Rage Embodied (**KEPT**) | enemies within 35 m: Rampage, 15 s | in melee | **KEEP:** no read says when enemy Rampage helps us. | 3 |
+| 10 | Rage Incarnate (**KEPT**) | enemies within 55 m: Rampage, 15 s | in melee | **KEEP**, as Rage Embodied. | 3 |
+| 11 | Refuse to Die (**BUILT round 177**) | the caster cannot die, 20 s; recharge 60 s | in melee | **RULED (user, 2026-11-18: "change to 10% as my hag's denial"): LAST STAND, as Hag's Denial** (the existing `self_last_stand`: at or below 10% health, in melee or under fire). Cannot Die only matters near death; on first contact it burns 20 s early. | 5 |
+| 12 | Rune of Oath & Steel (**BUILT round 177**) | armour +30, caster and allies within 35 m, 44 s; 3 s wind-up | in melee | **MELEE OR UNDER FIRE** (the existing `melee_or_under_fire`): armour also stops arrows. | 5 |
+| 13 | Seductive Glory (**KEPT (ruled)**) | enemies within 35 m: melee defence -24 (Rampage) | in melee | **RULED** (2026-10-28: kept, starts unarmed). | - |
+| 14 | Shield of Aeons (**BUILT round 177**) | armour +60, caster and allies within 55 m, 23 s | in melee | **GUARD AURA** (user, 2026-11-18: "the caster or any ally in range"): the caster, or ANY unit of ours within 38 m (70% of the 55 m aura), is in melee or under fire, or a fast enemy is closing on one of them (read B: an enemy charge). Cast on the caster, so the aura covers them. | 5 |
+| 15 | Shielding Swarm (**BUILT round 177**) | ONE unit (the caster or an ally within 100 m): melee defence +24, missile block +36, 30 s | in melee, on self | **SELF OR ALLY UNDER FIRE OR IN MELEE:** the caster under fire or in melee; else the most valuable ally within 70 m under fire; else the nearest ally in melee. The missile block is the bigger part. | 5 |
+| 16 | Shielding Swarm Upgraded (**BUILT round 177**) | as #15: melee defence +36, missile block +48 | in melee, on self | as #15 | 5 |
+| 17 | Slayer for Chaos (**BUILT round 177**) | the caster cannot die, melee attack +12, 24 s; ONE use | in melee | **LAST STAND, as Hag's Denial** (the existing `self_last_stand`: at or below 10% health, in melee or under fire; your round-144 ruling for a one-use Cannot Die). | 5 |
+| 18 | Steppe Hunter's Horn (**BUILT round 177**) | bonus vs large x2, caster and allies within 35 m, 20 s | in melee | **MELEE VS LARGE**, as #2. | 5 |
+| 19 | The Armour of Morkar (**BUILT round 177**) | melee defence +24 and charge reflection, caster and allies within 35 m, 29 s | in melee | **GUARD AURA**, as #14, with the units within 24 m (70% of its 35 m aura) (the reflection pays when the enemy charges in). | 5 |
+| 20 | The Blood Price (**BUILT round 177**) | melee damage x1.6, all resistances +20; the caster takes 60 damage every 2 s for 22 s (660) | in melee | **IN MELEE AND HEALTHY:** in melee above 50% health (the winds-items guard). It starts on M (self-damage, round 167). | 5 |
+| 21 | The Ostermark Runefang (**BUILT round 177**) | bonus vs large +32, caster and allies within 35 m, 27 s | in melee | **MELEE VS LARGE**, as #2. | 5 |
+| 22 | Toad Rage (**KEPT**) | melee damage x1.5 (Rampage), self, 18 s | in melee | **KEEP:** melee is the moment; it starts on M (Rampage). | 4 |
 
 ## 2. Enemy-targeted
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 23 | Chain Lightning (bound) | 4 damage a second for 5 s, up to 75 models, chaining to 10 units; 2 uses; 5 s wind-up | blob | **AREA DRAIN** (the existing `enemy_area_drain`): the enemy infantry with at least 75 models and the most value per soldier, standing still. The chain spreads, a 1-model blast does not describe it. | 5 |
+| 23 | Chain Lightning (bound) | 4 damage a second for 5 s, up to 75 models, chaining to 10 units; 2 uses; 5 s wind-up | blob | **MOST MODELS, NEVER BLOCKED** (user, 2026-11-18: "should not be unused if there are less models in the unit. Maybe preference for numerous entities units"): the visible enemy unit in range with the most models alive, counted up to 75 (every unit with 75 or more ranks as full; among those, the most value per soldier wins); with no unit of 75, the one with the most models still qualifies, down to a floor of 16 models (user, 2026-11-18: "a minimum of 16 units for both"). Standing still. NEW: a variant of `enemy_area_drain` with the 16-model floor in place of its minimum. The chain spreads, a 1-model blast does not describe it. | 5 |
 | 24 | Chain Lightning (bound, unit) | the same; ONE use | blob | **AREA DRAIN**, as #23. | 5 |
 | 25 | Blacktoof's Conjuration | a summon at a ground spot within 50 m; ONE use | ground under an enemy in melee | **KEEP:** a summon that joins a fight is right next to one. | 4 (the summon's own stats not reviewed) |
 | 26 | Wake Da Idol | a summon at a ground spot within 50 m; ONE use | same | **KEEP**, as #25. | 4 |
 | 27 | Transformation of Kadon | transforms at a ground spot within 50 m; 5 s wind-up; ONE use | same | **KEEP**, as #25 (ASSUMPTION: the transformation is a summoned monster at the spot; if it transforms the caster, "caster in melee" is better). | 3 |
 | 28 | Surprise Squig! | an explosion at the enemy's feet; 5 uses | ground under an enemy in melee | **BLOB WITH CLEARANCE** (read H): the standing enemy block with the most value in the blast, none of ours within blast + 10 m. Today it lands in a melee next to our own troops. | 5 |
-| 29 | The Soulstealer | 4 damage a second for 11 s to up to 25 models, a 35 m area; ONE use | same | **AREA DRAIN** (25 models), as #23. | 5 |
+| 29 | The Soulstealer | 4 damage a second for 11 s to up to 25 models, a 35 m area; ONE use | same | **MOST MODELS, NEVER BLOCKED**, as #23, counted up to 25 (its cap), with the same 16-model floor (user, 2026-11-18). | 5 |
 | 30 | Whip of Misery | ONE large enemy: accuracy -30, melee attack -24, 31 s; 3 uses | enemy in melee or under fire | **MELEE OR SHOOTING** (the existing `enemy_melee_or_shooting`, large class kept): the closest large enemy in melee, else the closest shooting one. Each half pays on its own target. | 5 |
 | 31 | Word of Pain (2 keys) | ONE enemy: accuracy -30, melee attack -40, 40 s; 2 uses / 1 use | same | **MELEE OR SHOOTING**, as #30 (any class). | 5 |
 | 32 | Book of Secrets | three phases: 10 damage a second to 25 models; speed x0.75 and flame weakness; melee attack and defence -24; 3 uses | same | **RULED** (round 135: "Keep as is"). Option: `enemy_melee_or_fast` (rule 10). | - |
 | 33 | Fecund Rebirth | ONE large single enemy: 38 damage a second, speed and charge speed x0.5, no healing, 32 s | same | **RULED** (round 135: "Keep as is", large single class). | - |
 | 34 | Looming Dread | ONE Lord or Hero: speed x0.55, melee defence -24, missile resistance -20, 31 s | same | **RULED** (round 135: "Keep as is, but make sure the trigger filters for the enemy unit type"). | - |
 | 35 | Hunter of Champions (2 keys) | ONE Lord or Hero: speed x0.55 (upgrade: rooted), armour -60, melee defence -40, 24 s | same | **RULED** (round 123: "Hunter of champions is okay for enemy_engaged_or_shot"). | - |
-| 36 | Gilellion's Soulnetter | ONE enemy rooted, 26 s; recharge 120 s | same | **ROOT:** a fast enemy closing on ours (stops the charge), else the closest enemy in melee. A NEW order of the existing reads (fast first). | 5 |
+| 36 | Gilellion's Soulnetter | ONE enemy rooted, 26 s; recharge 120 s | same | **ROOT, FAST ONLY** (user, 2026-11-18: "Yes pls", no melee arm, for #36-#41): a fast enemy closing on ours (read B); the root stops the charge before impact. No melee arm: a rooted unit already in melee still fights. The existing `enemy_fast_near_ally` pick. | 5 |
 | 37 | Net of Amyntok | ONE enemy rooted, 20 s; 3 uses; 3 s wind-up | same | **ROOT**, as #36. | 5 |
 | 38 | Spiderweb Attack | ONE enemy rooted, 18 s; 2 uses | same | **ROOT**, as #36. | 5 |
 | 39 | Warp Gaze | ONE enemy rooted, 12 s; 3 uses | same | **ROOT**, as #36. | 5 |
@@ -86,7 +86,7 @@ trigger exists").
 | 41 | Pack Trap | ONE enemy rooted, 10 s; 3 uses | same | **ROOT**, as #36. | 5 |
 | 42 | Prey of Anath Raema | ONE enemy rooted, missile resistance -20, 16 s; 3 uses | same | **ROOT, ELSE UNDER OUR FIRE:** a fast enemy closing; else an enemy our shooters are hitting (read D on the enemy); else the closest in melee. | 5 |
 | 43 | Net Dem Up! | ONE enemy rooted, missile block -50, 18 s | same | **ROOT, ELSE UNDER OUR FIRE**, as #42. | 5 |
-| 44 | Glory Seeker | ONE Lord or Hero: rooted, melee defence -24, no healing, 24 s | same | **LORD OR HERO IN MELEE** (the existing `enemy_melee`, commander class): the defence cut and the root pay in a duel. | 5 |
+| 44 | Glory Seeker | ONE Lord or Hero: rooted, melee defence -24, no healing, 24 s | same | **LORD OR HERO: FAST, ELSE MELEE** (user, 2026-11-18: "makes sense to also add root"): an enemy Lord or Hero closing fast on ours (the root stops its charge, read B), else an enemy Lord or Hero in melee (the defence cut and the no-healing pay in a duel). Commander class on both arms. | 5 |
 | 45 | Glory Seeker Upgraded | the same, melee defence -36, 36 s | same | as #44 | 5 |
 | 46 | Prey of the Blood God | ONE Lord or Hero: 33 damage a second for 22 s (726), rooted; 3 uses | same | **MOST VALUABLE LORD OR HERO** (the existing `enemy_commander_value`): the damage pays whatever it does. | 5 |
 | 47 | Void Pendulum | ONE enemy spellcaster (the game's rule), 25 s; 3 uses | same, Lord/Hero proxy | **ENEMY SPELLCASTER** (round 174, read G). | 5 |
@@ -148,7 +148,7 @@ The wind-ups matter: a 5 s wind-up on a moving target misses, so these keep the 
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 87 | Entangle | enemies in a 15 m area rooted, flame weakness, 15 s; 2 uses | ground under an enemy in melee or under fire | **GROUND ROOT:** under a fast enemy closing on ours, else under the closest enemy in melee (the ground form of #36). | 5 |
+| 87 | Entangle | enemies in a 15 m area rooted, flame weakness, 15 s; 2 uses | ground under an enemy in melee or under fire | **GROUND ROOT:** under a fast enemy closing on ours, else under the closest enemy in melee. Open question: #36-#41 dropped their melee arm (user, 2026-11-18); should the ground roots too? | 5 |
 | 88 | Get 'Em! | enemies in a 35 m area rooted, 11 s | same | **GROUND ROOT**, as #87. | 5 |
 | 89 | Hunter's Snare | the same, 11 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |
 | 90 | Hunter's Trap | the same, 22 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |

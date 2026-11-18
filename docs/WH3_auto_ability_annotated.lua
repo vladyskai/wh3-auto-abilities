@@ -291,9 +291,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_coat_in_blood",
 		keys = { "wh3_dlc29_hero_abilities_coat_in_blood" },
 		ox = 0, oy = 0 },
-	{ marker = "creature_killer", name = "Creature-Killer", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_vs_large
+	{ marker = "creature_killer", name = "Creature-Killer", trigger = "melee_vs_large",
 		badge = "zz_auto_badge_creature_killer",
 		keys = { "wh2_dlc16_weapon_abilities_creature_killer" },
+		aura_real = 35,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "da_great_un_iz_ere", name = "Da Great 'Un Iz 'Ere!", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_da_great_un_iz_ere",
@@ -362,9 +365,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_entice",
 		keys = { "wh3_dlc29_unit_abilities_entice" },
 		ox = 0, oy = 0 },
-	{ marker = "everyone_has_their_price", name = "Everyone Has Their Price", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): enemy_melee_near
+	{ marker = "everyone_has_their_price", name = "Everyone Has Their Price", trigger = "enemy_melee_near",
 		badge = "zz_auto_badge_everyone_has_their_price",
 		keys = { "wh3_main_lord_abilities_everyone_has_their_price" },
+		aura_real = 35,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "evisceration", name = "Evisceration", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_evisceration",
@@ -406,9 +412,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_gaze_of_khorne",
 		keys = { "wh3_dlc26_lord_abilities_gaze_of_khorne" },
 		ox = 0, oy = 0 },
-	{ marker = "fury_of_the_land", name = "Fury of the Land", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): aura_charge_or_melee
+	{ marker = "fury_of_the_land", name = "Fury of the Land", trigger = "aura_charge_or_melee",
 		badge = "zz_auto_badge_fury_of_the_land",
 		keys = { "wh3_dlc24_character_abilities_fury_of_the_land" },
+		aura_real = 55,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "fury_of_ursun", name = "Fury of Ursun", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_fury_of_ursun",
@@ -675,9 +684,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_nordland_runefang",
 		keys = { "wh2_dlc13_weapon_abilities_nordland_runefang" },
 		ox = 0, oy = 0 },
-	{ marker = "ostermark_runefang", name = "The Ostermark Runefang", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_vs_large
+	{ marker = "ostermark_runefang", name = "The Ostermark Runefang", trigger = "melee_vs_large",
 		badge = "zz_auto_badge_ostermark_runefang",
 		keys = { "wh2_dlc13_weapon_abilities_ostermark_runefang" },
+		aura_real = 35,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "ostland_runefang", name = "The Ostland Runefang", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_ostland_runefang",
@@ -715,9 +727,11 @@ local ABILITIES = {
 		badge = "zz_auto_badge_red_ruin",
 		keys = { "wh2_dlc10_lord_abilities_red_ruin" },
 		ox = 0, oy = 0 },
-	{ marker = "refuse_to_die", name = "Refuse to Die", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_health25
+	{ marker = "refuse_to_die", name = "Refuse to Die", trigger = "melee_health25",
 		badge = "zz_auto_badge_refuse_to_die",
 		keys = { "wh2_dlc12_unit_abilities_refuse_to_die" },
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "revenge_incarnate", name = "Revenge Incarnate", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_revenge_incarnate",
@@ -779,9 +793,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_shadow_shroud",
 		keys = { "wh3_main_lord_abilities_shadow_shroud" },
 		ox = 0, oy = 0 },
-	{ marker = "shield_of_aeons", name = "Shield of Aeons", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): guard_aura
+	{ marker = "shield_of_aeons", name = "Shield of Aeons", trigger = "guard_aura",
 		badge = "zz_auto_badge_shield_of_aeons",
 		keys = { "wh2_dlc13_item_abilities_shield_of_aeons" },
+		aura_real = 55,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "shield_of_faith", name = "Shield of Faith", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_shield_of_faith",
@@ -819,9 +836,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_starcrusher",
 		keys = { "wh_dlc01_weapon_abilities_starcrusher" },
 		ox = 0, oy = 0 },
-	{ marker = "steppe_hunters_horn", name = "Steppe Hunter's Horn", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_vs_large
+	{ marker = "steppe_hunters_horn", name = "Steppe Hunter's Horn", trigger = "melee_vs_large",
 		badge = "zz_auto_badge_steppe_hunters_horn",
 		keys = { "wh3_main_item_abilities_steppe_hunters_horn" },
+		aura_real = 35,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "stinky_giant_club", name = "Stinky Giant Club", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_stinky_giant_club",
@@ -867,15 +887,19 @@ local ABILITIES = {
 		badge = "zz_auto_badge_tenebrous_forge_hammer",
 		keys = { "wh3_dlc27_weapon_abilities_tenebrous_forge_hammer" },
 		ox = 0, oy = 0 },
-	{ marker = "the_armour_of_morkar", name = "The Armour of Morkar", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): guard_aura
+	{ marker = "the_armour_of_morkar", name = "The Armour of Morkar", trigger = "guard_aura",
 		badge = "zz_auto_badge_the_armour_of_morkar",
 		keys = { "wh3_dlc20_item_abilities_the_armour_of_morkar" },
+		aura_real = 35,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "the_black_cleaver", name = "The Black Cleaver", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_the_black_cleaver",
 		keys = { "wh3_dlc25_weapon_abilities_the_black_cleaver" },
 		ox = 0, oy = 0 },
-	{ marker = "the_blood_price", name = "The Blood Price", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_healthy
+	{ marker = "the_blood_price", name = "The Blood Price", trigger = "melee_healthy",
 		badge = "zz_auto_badge_the_blood_price",
 		keys = { "wh2_dlc14_lord_abilities_the_blood_price" },
 		ox = 0, oy = 0 },
@@ -1048,9 +1072,12 @@ local ABILITIES = {
 		badge = "zz_auto_badge_dragonhorn",
 		keys = { "wh2_dlc15_lord_abilities_dragonhorn" },
 		ox = 0, oy = 0 },
-	{ marker = "empowering_shrooms", name = "Empowering Shrooms", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): ally_squig_melee
+	{ marker = "empowering_shrooms", name = "Empowering Shrooms", trigger = "ally_squig_melee",
 		badge = "zz_auto_badge_empowering_shrooms",
 		keys = { "wh3_dlc26_character_abilities_empowering_shrooms" },
+		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "favour_of_the_fay", name = "Favour of the Fay", trigger = "ally_melee_buff",
 		badge = "zz_auto_badge_favour_of_the_fay",
@@ -1198,7 +1225,8 @@ local ABILITIES = {
 		badge = "zz_auto_badge_rune_of_doom",
 		keys = { "wh2_dlc17_lord_abilities_rune_of_doom" },
 		ox = 0, oy = 0 },
-	{ marker = "rune_of_oath_and_steel", name = "Rune of Oath & Steel", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): melee_or_under_fire
+	{ marker = "rune_of_oath_and_steel", name = "Rune of Oath & Steel", trigger = "melee_or_under_fire",
 		badge = "zz_auto_badge_rune_of_oath_and_steel",
 		keys = { "wh_main_rune_abilities_rune_of_oath_and_steel" },
 		ox = 0, oy = 0 },
@@ -1214,7 +1242,8 @@ local ABILITIES = {
 		badge = "zz_auto_badge_shield_of_the_old_ones",
 		keys = { "wh2_main_character_abilities_shield_of_the_old_ones" },
 		ox = 0, oy = 0 },
-	{ marker = "slayer_for_chaos", name = "Slayer for Chaos", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): self_last_stand
+	{ marker = "slayer_for_chaos", name = "Slayer for Chaos", trigger = "self_last_stand",
 		badge = "zz_auto_badge_slayer_for_chaos",
 		keys = { "wh3_dlc23_item_abilities_slayer_for_chaos" },
 		ox = 0, oy = 0 },
@@ -1395,9 +1424,11 @@ local ABILITIES = {
 		keys = { "wh3_main_lord_abilities_blight_swarm" },
 		range_real = 200,
 		ox = 0, oy = 0 },
-	{ marker = "blood_omens", name = "Blood Omens", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): slow_army
+	{ marker = "blood_omens", name = "Blood Omens", trigger = "slow_army",
 		badge = "zz_auto_badge_blood_omens",
 		keys = { "wh3_dlc29_unit_abilities_blood_omens" },
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "bloody_onslaught", name = "Bloody Onslaught", trigger = "enemy_engaged_or_shot",
 		badge = "zz_auto_badge_bloody_onslaught",
@@ -3304,13 +3335,19 @@ local ABILITIES = {
 		keys = { "wh2_dlc12_unit_abilities_shield_of_chaqua" },
 		aura_real = 55,
 		ox = 0, oy = 0 },
-	{ marker = "dispatch_the_swarm_protect", name = "Shielding Swarm", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): self_or_ally_fire_melee
+	{ marker = "dispatch_the_swarm_protect", name = "Shielding Swarm", trigger = "self_or_ally_fire_melee",
 		badge = "zz_auto_badge_dispatch_the_swarm_protect",
 		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect" },
+		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
-	{ marker = "dispatch_the_swarm_protect_upgraded", name = "Shielding Swarm Upgraded", trigger = "melee_unwavering",
+	-- ROUND 177 (score-3 review): self_or_ally_fire_melee
+	{ marker = "dispatch_the_swarm_protect_upgraded", name = "Shielding Swarm Upgraded", trigger = "self_or_ally_fire_melee",
 		badge = "zz_auto_badge_dispatch_the_swarm_protect_upgraded",
 		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded" },
+		ally_range_real = 100,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "shock_collar", name = "Shock Collar", trigger = "ally_wavering",
 		badge = "zz_auto_badge_shock_collar",
@@ -18528,8 +18565,13 @@ FOURTH.AB_RANKED = {
 	value_shooting = "the most valuable ally shooting past its cast point",
 	value_melee_risk = "the most valuable ally in melee, wavering or at or below 50% health",
 	routing = "the most valuable routing ally",
+	value_under_fire = "the most valuable ally under missile fire",   -- ROUND 177
 }
 function FOURTH.ab_rank(u, family)
+	if family == "value_under_fire" then   -- ROUND 177: Shielding Swarm
+		if FOURTH.under_fire(u) then return FOURTH.unit_value(u) end
+		return nil
+	end
 	if family == "charge_first" then
 		local w = FOURTH.charge_moment(u)
 		if w == "charging" then return 2 end
@@ -18585,6 +18627,183 @@ end
 -- Iron-Handed Captain: the caster may cast while the ally routs; the picker keeps routing allies for this family
 function FOURTH.evaluate_ally_routing(unit, routing)
 	return FOURTH.ab_pick_ally(unit, routing, "routing")
+end
+
+-- ============================================================================
+-- ROUND 177 - THE SCORE-3 REVIEW, ROWS 1-22 (user, 2026-11-18: "Implement all until item 22, except the number 3").
+--   slow_army: a visible fast enemy closing on any unit of ours (FOURTH.fast_enemy_near), or the caster in melee.
+--   melee_vs_large: the caster, or a unit of ours inside the 70% aura, is in melee with a LARGE enemy (the engagement
+--     set x the GENERATED large set).
+--   ally_squig_melee: the shared ally picker, the GENERATED squig set (the game's unit_is_not_squig rule), "melee".
+--   enemy_melee_near: the caster in melee, or a visible living enemy inside the 70% aura in melee.
+--   aura_charge_or_melee: the caster, or a unit of ours inside the 70% aura, charging, in fresh contact or in melee.
+--   melee_health25: in melee (exact true) at or below MELEE_LOW_PCT health.
+--   guard_aura: in melee or under missile fire, or a visible fast enemy moving inside the 70% aura (an enemy charge).
+--   self_or_ally_fire_melee: the caster in melee or under fire -> self; else the most valuable ally under fire; else the
+--     nearest ally in melee (both within the 70% ally bound).
+--   melee_healthy: in melee, not wavering, above MELEE_HEALTHY_PCT health (the item hurts its bearer).
+-- ============================================================================
+-- GENERATED by tools/gen_squig_keys.py from unit_attributes_to_groups_junctions and land_units (the game's 'squig'
+-- attribute); the build refuses a pack whose table differs. Do not hand-edit.
+FOURTH.SQUIG_TEXT = "wh2_dlc15_grn_cav_squig_hoppers_waaagh_0;wh3_dlc26_grn_cav_mangler_squig;wh3_dlc26_grn_inf_squig_herd_0_summoned;wh3_dlc26_grn_mon_colossal_squig;wh3_dlc26_grn_mon_colossal_squig_ror;wh_dlc06_grn_cav_durkits_squigs_0;wh_dlc06_grn_cav_squig_hoppers_0;wh_dlc06_grn_inf_squig_explosive_0;wh_dlc06_grn_inf_squig_herd_0;wh_twa03_def_inf_squig_explosive_0"
+FOURTH.class_keys.squig = {}
+function FOURTH.load_squigs()   -- a function, so the loop adds no main-chunk locals
+	for k in string.gmatch(FOURTH.SQUIG_TEXT, "[^;]+") do FOURTH.class_keys.squig[k] = true end
+end
+FOURTH.load_squigs()
+FOURTH.MELEE_LOW_PCT = 25       -- user approval 2026-11-18 (review row 11: Cannot Die near death)
+FOURTH.MELEE_HEALTHY_PCT = 50   -- user approval 2026-11-18 (review row 20: the item hurts its bearer)
+
+-- exact true / false: is u in melee?
+function FOURTH.in_melee_now(u)
+	local ok, m = pcall(function() return u:is_in_melee() end)
+	return ok and m == true
+end
+
+-- the units of ours (not the caster, alive, not routing) inside the current entry's reach that pass test(u): the closest
+function FOURTH.ours_in_reach(unit, test)
+	local reach = FOURTH.ah_range_m
+	if reach == nil or tracked_units == nil then return nil, nil end
+	local self_id = nil
+	pcall(function() self_id = tostring(unit:unique_ui_id()) end)
+	local best, best_gap = nil, nil
+	for i = 1, #tracked_units do
+		local u = tracked_units[i] and tracked_units[i].unit
+		if u ~= nil then
+			local ok_id, id = pcall(function() return tostring(u:unique_ui_id()) end)
+			local ok_a, men = pcall(function() return u:number_of_men_alive() end)
+			if ok_id and id ~= self_id and ok_a and type(men) == "number" and men > 0 and not unit_is_routing(u) then
+				local ok_g, g = pcall(function() return unit:unit_distance(u) end)
+				if ok_g and type(g) == "number" and g <= reach and test(u) and (best == nil or g < best_gap) then
+					best, best_gap = u, g
+				end
+			end
+		end
+	end
+	return best, best_gap
+end
+
+-- the visible living enemies; test(e) picks; returns the first that passes and its gap to the caster
+function FOURTH.enemy_where(unit, test)
+	local ok_coll, coll = pcall(function() return bm:get_scriptunits_for_main_enemy_army_to_local_player() end)
+	if not ok_coll or coll == nil then return nil end
+	local ok_n, n = pcall(function() return coll:count() end)
+	if not ok_n or type(n) ~= "number" then return nil end
+	for i = 1, n do
+		local e = nil
+		pcall(function() e = coll:item(i).unit end)
+		if e ~= nil and FOURTH.enemy_not_hidden(e) then
+			local ok_a, men = pcall(function() return e:number_of_men_alive() end)
+			if ok_a and type(men) == "number" and men > 0 then
+				local ok, a, b = pcall(test, e)
+				if ok and a then return e, a, b end
+			end
+		end
+	end
+	return nil
+end
+
+function FOURTH.evaluate_slow_army(unit, routing)
+	if routing then return nil end
+	if FOURTH.in_melee_now(unit) then return "in melee (army slow)" end
+	local e, g, sp = FOURTH.enemy_where(unit, function(x) return FOURTH.fast_enemy_near(x, unit) end)
+	if e == nil then return nil end
+	return string.format("a fast enemy (run speed %.1f m/s) is closing, %.1fm from one of ours (army slow)", sp or 0, g or 0)
+end
+
+-- true when u is in melee with a LARGE enemy (the engagement set x the GENERATED large set)
+function FOURTH.fights_large(u)
+	if not FOURTH.in_melee_now(u) then return false end
+	local members = FOURTH.engagement_set(u)
+	if members == nil then return false end
+	for i = 1, #members do
+		local t = members[i].type
+		if t ~= nil and FOURTH.class_keys.large[t] == true then return true end
+	end
+	return false
+end
+
+function FOURTH.evaluate_melee_vs_large(unit, routing)
+	if routing then return nil end
+	if FOURTH.fights_large(unit) then return "the caster is fighting a large enemy" end
+	local u, g = FOURTH.ours_in_reach(unit, FOURTH.fights_large)
+	if u == nil then return nil end
+	return string.format("a unit of ours %.1fm away (aura %sm) is fighting a large enemy", g, tostring(FOURTH.ah_range_m))
+end
+
+function FOURTH.evaluate_ally_squig_melee(unit, routing)
+	FOURTH.ab_filter = "squig"
+	return FOURTH.ab_pick_ally(unit, routing, "melee")
+end
+
+function FOURTH.evaluate_enemy_melee_near(unit, routing)
+	if routing then return nil end
+	if FOURTH.in_melee_now(unit) then return "the caster is in melee" end
+	local reach = FOURTH.ah_range_m
+	if reach == nil then return nil end
+	local e, g = FOURTH.enemy_where(unit, function(x)
+		if not FOURTH.in_melee_now(x) then return nil end
+		local ok_g, gap = pcall(function() return unit:unit_distance(x) end)
+		if ok_g and type(gap) == "number" and gap <= reach then return gap end
+		return nil
+	end)
+	if e == nil then return nil end
+	return string.format("an enemy %.1fm away (aura %sm) is in melee", g, tostring(reach))
+end
+
+function FOURTH.evaluate_aura_charge_or_melee(unit, routing)
+	if routing then return nil end
+	local own = FOURTH.charge_moment(unit)
+	if own ~= nil then return "the caster: " .. own end
+	if FOURTH.in_melee_now(unit) then return "the caster is in melee" end
+	local u, g = FOURTH.ours_in_reach(unit, function(x) return FOURTH.charge_moment(x) ~= nil or FOURTH.in_melee_now(x) end)
+	if u == nil then return nil end
+	return string.format("a unit of ours %.1fm away (aura %sm) is charging or fighting", g, tostring(FOURTH.ah_range_m))
+end
+
+function FOURTH.evaluate_melee_health25(unit, routing)
+	if routing or not FOURTH.in_melee_now(unit) then return nil end
+	local hp = FOURTH.health_pct(unit)
+	if type(hp) ~= "number" or hp > FOURTH.MELEE_LOW_PCT then return nil end
+	return string.format("in melee at %d%% health (<= %d%%)", math.floor(hp), FOURTH.MELEE_LOW_PCT)
+end
+
+function FOURTH.evaluate_guard_aura(unit, routing)
+	if routing then return nil end
+	if FOURTH.in_melee_now(unit) then return "in melee (guard)" end
+	if FOURTH.under_fire(unit) then return "under missile fire (guard)" end
+	local reach = FOURTH.ah_range_m
+	if reach == nil then return nil end
+	local e, g, sp = FOURTH.enemy_where(unit, function(x)
+		local ok_mv, mv = pcall(function() return x:is_moving() end)
+		local ok_sp, s = pcall(function() return x:fast_speed() end)
+		local ok_g, gap = pcall(function() return unit:unit_distance(x) end)
+		if ok_mv and mv == true and ok_sp and type(s) == "number" and s >= FOURTH.FAST_ENEMY_MPS
+			and ok_g and type(gap) == "number" and gap <= reach then
+			return gap, s
+		end
+		return nil
+	end)
+	if e == nil then return nil end
+	return string.format("a fast enemy (run speed %.1f m/s) %.1fm away, inside the %sm aura (guard)", sp or 0, g, tostring(reach))
+end
+
+function FOURTH.evaluate_self_or_ally_fire_melee(unit, routing)
+	if routing then return nil end
+	if FOURTH.in_melee_now(unit) or FOURTH.under_fire(unit) then
+		return "the caster is in melee or under missile fire, cast on self"
+	end
+	local r = FOURTH.ab_pick_ally(unit, routing, "value_under_fire")
+	if r then return r end   -- the reading copy's picker answers false, the live one nil
+	return FOURTH.ab_pick_ally(unit, routing, "melee")
+end
+
+function FOURTH.evaluate_melee_healthy(unit, routing)
+	if routing or not FOURTH.in_melee_now(unit) then return nil end
+	if FOURTH.wavering(unit) == true then return nil end
+	local hp = FOURTH.health_pct(unit)
+	if type(hp) ~= "number" or hp <= FOURTH.MELEE_HEALTHY_PCT then return nil end
+	return string.format("in melee at %d%% health (> %d%%)", math.floor(hp), FOURTH.MELEE_HEALTHY_PCT)
 end
 
 -- the current entry's SHOT row { no_melee, prefer_large, min_range } (nil when it has none)
@@ -19606,6 +19825,15 @@ FOURTH.evaluators = {
 	ally_melee_risk = FOURTH.evaluate_ally_melee_risk,
 	ally_beast_charge = FOURTH.evaluate_ally_beast_charge,
 	ally_routing = FOURTH.evaluate_ally_routing,
+	slow_army = FOURTH.evaluate_slow_army,   -- ROUND 177
+	melee_vs_large = FOURTH.evaluate_melee_vs_large,
+	ally_squig_melee = FOURTH.evaluate_ally_squig_melee,
+	enemy_melee_near = FOURTH.evaluate_enemy_melee_near,
+	aura_charge_or_melee = FOURTH.evaluate_aura_charge_or_melee,
+	melee_health25 = FOURTH.evaluate_melee_health25,
+	guard_aura = FOURTH.evaluate_guard_aura,
+	self_or_ally_fire_melee = FOURTH.evaluate_self_or_ally_fire_melee,
+	melee_healthy = FOURTH.evaluate_melee_healthy,
 	ally_warmachine_heal = FOURTH.evaluate_ally_warmachine_heal,
 	ally_hellforged_heal = FOURTH.evaluate_ally_hellforged_heal,
 	ally_monster_heal = FOURTH.evaluate_ally_monster_heal,
@@ -19790,6 +20018,15 @@ FOURTH.TRIGGER_TIP = {
 	ally_melee_risk = "When armed, fires on the most valuable ally in melee that wavers or is at or below 50% health",
 	ally_beast_charge = "When armed, fires on the nearest charging beast ally, else one that just made contact",
 	ally_routing = "When armed, fires on the most valuable routing ally",
+	slow_army = "When armed, fires when a fast enemy closes on any of our units, or this unit is in melee",   -- ROUND 177
+	melee_vs_large = "When armed, fires when this unit or one in its aura is fighting a large enemy",
+	ally_squig_melee = "When armed, fires on the nearest squig ally in melee",
+	enemy_melee_near = "When armed, fires when this unit, or an enemy in its aura, is in melee",
+	aura_charge_or_melee = "When armed, fires when this unit or a unit in its aura charges, has just made contact, or fights",
+	melee_health25 = "When armed, fires in melee at or below 25% health",
+	guard_aura = "When armed, fires in melee or under missile fire, or when a fast enemy enters the aura",
+	self_or_ally_fire_melee = "When armed, fires on this unit in melee or under fire, else on an ally under fire, else on an ally in melee",
+	melee_healthy = "When armed, fires in melee while above 50% health",
 	-- the legacy Deadly Onslaught family: the charge window OR already in melee
 	charge = "When armed, fires when this unit charges or is in melee",
 	tired = "When armed, fires when this unit is tired or worse",
@@ -19997,6 +20234,15 @@ FOURTH.CARD_TIP = {
 	ally_melee_risk = "Fires on an ally in melee that wavers or is badly hurt",
 	ally_beast_charge = "Fires on a charging beast ally",
 	ally_routing = "Fires on the most valuable routing ally",
+	slow_army = "Fires when an enemy charges your army, or in melee",   -- ROUND 177
+	melee_vs_large = "Fires when it or a nearby ally fights a large enemy",
+	ally_squig_melee = "Fires on a squig ally in melee",
+	enemy_melee_near = "Fires when it or a nearby enemy is in melee",
+	aura_charge_or_melee = "Fires when it or a nearby ally charges or fights",
+	melee_health25 = "Fires in melee at 25% health or less",
+	guard_aura = "Fires in melee, under fire, or when an enemy charges in",
+	self_or_ally_fire_melee = "Fires on itself or an ally under fire, else on an ally in melee",
+	melee_healthy = "Fires in melee while above 50% health",
 	tired = "Fires when tired",
 	melee = "Fires in melee",
 	melee_low_morale = "Fires in melee when wavering",
@@ -20113,7 +20359,8 @@ FOURTH.CARD_ALLY_FAMILY = { ally_heal = true, ally_heal_melee = true, ally_waver
 	ally_winds = true, ally_ammo_low = true, self_or_ally_shooting = true, melee_or_shooting_self_or_ally = true,
 	recharging_in_reach = true, melee_self_or_ally = true, melee_or_self_or_ally_shooting = true,
 	self_or_ally_charge = true,   -- ROUND 171
-	ally_charge_melee = true, ally_wavering_melee = true, ally_lord_melee = true, ally_missile_shooting = true, ally_melee_risk = true, ally_beast_charge = true, ally_routing = true }   -- ROUND 174
+	ally_charge_melee = true, ally_wavering_melee = true, ally_lord_melee = true, ally_missile_shooting = true, ally_melee_risk = true, ally_beast_charge = true, ally_routing = true,   -- ROUND 174
+	ally_squig_melee = true, self_or_ally_fire_melee = true }   -- ROUND 177
 -- the four aura families without an aura (the caster alone)
 FOURTH.CARD_TIP_NOAURA = { wavering_aura = "Fires when wavering", melee_or_wavering_aura = "Fires in melee or when wavering",
 	allies_firing_aura = "Fires while shooting", under_fire = "Fires under missile fire" }
