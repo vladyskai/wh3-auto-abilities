@@ -23,7 +23,8 @@ FAMILIES = ("enemy_large_shot", "enemy_single_shot", "enemy_infantry_shot", "ene
             "enemy_single_drain", "enemy_execute",   # ROUND 157
             "enemy_area_drain", "enemy_commander_value",   # ROUND 158
             "enemy_large_value_shot", "enemy_spellcaster", "enemy_ground_spellcasters",
-            "enemy_commander_wavering")   # ROUND 174
+            "enemy_commander_wavering",   # ROUND 174
+            "enemy_most_models")   # ROUND 178: shares the AREA caps
 
 
 def tsv(name):

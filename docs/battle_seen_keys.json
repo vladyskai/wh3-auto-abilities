@@ -247,6 +247,7 @@
 "wh3_dlc27_item_abilities_staff_of_the_masque",
 "wh3_dlc27_qb_unit_abilities_bitter_sting",
 "wh3_dlc27_spell_bound_acquiescence",
+"wh3_dlc27_spell_heavens_chain_lightning_bound",
 "wh3_dlc27_unit_abilities_consuming_hatred",
 "wh3_dlc29_character_active_mark_of_the_monster",
 "wh3_dlc29_hero_abilities_coat_in_blood",
@@ -254,6 +255,7 @@
 "wh3_dlc29_hero_active_dispatch_the_swarm_attack",
 "wh3_dlc29_hero_active_dispatch_the_swarm_protect",
 "wh3_dlc29_hero_active_ghostly_howl",
+"wh3_dlc29_hero_active_glory_seeker",
 "wh3_dlc29_hero_active_overseer_of_the_unseen",
 "wh3_dlc29_hero_active_tendrils_of_the_sea",
 "wh3_dlc29_item_abilities_crimson_blade",
@@ -312,6 +314,7 @@
 "wh3_main_daemon_head_abilities_call_for_power",
 "wh3_main_daemon_legs_abilities_daemonic_onslaught",
 "wh3_main_daemon_wings_abilities_purge_the_weak",
+"wh3_main_daemon_wings_abilities_trophy_heads",
 "wh3_main_item_abilities_gruts_sickle",
 "wh3_main_item_abilities_kovsh_breath",
 "wh3_main_item_abilities_potion_of_farsight",
@@ -382,6 +385,7 @@
 "wh_dlc04_spell_bound_net_of_amyntok",
 "wh_dlc04_spell_bound_shield_of_faith_upgraded",
 "wh_dlc04_spell_bound_soulfire_upgraded",
+"wh_dlc05_character_abilities_prey_of_anath_raema",
 "wh_dlc05_item_abilities_horn_of_the_wild_hunt",
 "wh_dlc05_weapon_abilities_spear_of_kurnous",
 "wh_dlc05_weapon_abilities_stave_of_ruinous_corruption",
@@ -455,6 +459,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 191,
+"logs_read": 192,
 "made": "2026-11-18"
 }
