@@ -1549,11 +1549,13 @@ local ABILITIES = {
 		keys = { "wh3_dlc25_abilities_restock_gunnery_school" },
 		ally_range_real = 100,
 		ox = 0, oy = 0 },
+	-- ROUND 176: starts armed (user, 2026-11-18: "Start it on A")
 	{ marker = "master_of_mists", name = "Master of Mists", trigger = "ground_ally_before_range",
 		badge = "zz_auto_badge_master_of_mists",
 		keys = { "wh3_dlc27_character_abilities_master_of_mists",
 			"wh3_dlc27_character_abilities_master_of_mists_custom" },
 		ally_range_real = 250,
+		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "of_warp_and_ruin", name = "Of Warp and Ruin", trigger = "self_shooting_clear",
 		badge = "zz_auto_badge_of_warp_and_ruin",
