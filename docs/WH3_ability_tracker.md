@@ -4870,8 +4870,8 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Locus of Conjuration `wh3_main_character_abilities_locus_of_conjuration` | `implemented (Winds of Magic, when ready: when_ready)` | ready | When armed, fires as soon as it is ready. | cd 90s · 20s · self · **round 150 (2026-11-14):** user ruling for the Winds of Magic abilities: "All when ready". |
 | Loec's Blessing `wh2_dlc16_lord_abilities_loecs_blessing` | `excluded (impossible: already rejected by user (tactical escape/stealth))` | ready | Whenever the engine allows (no readable condition): cast on an ally. | cd 90s · 32s · friend/self |
 | Loec's Shroud `wh_pro04_unit_abilities_loecs_shroud` | `excluded (auto: flanking / ambush (stealth/escape, family decision 2026-10-09))` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 120s · 44s · self · triage-family: Flanking / ambush (flanking_opportunity) |
-| Master of Mists `wh3_dlc27_character_abilities_master_of_mists` | `implemented (ground under a unit just out of range: ground_ally_before_range)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 58s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
-| Master of Mists `wh3_dlc27_character_abilities_master_of_mists_custom` | `implemented (ground under a unit just out of range: ground_ally_before_range)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 36s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
+| Master of Mists `wh3_dlc27_character_abilities_master_of_mists` | `implemented (ground_ally_before_range: before range, else shooting, round 175)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 58s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
+| Master of Mists `wh3_dlc27_character_abilities_master_of_mists_custom` | `implemented (ground_ally_before_range: before range, else shooting, round 175)` | ready | When armed, placed on the ground under the closest friendly missile unit within 175 m that has no enemy in its range but one within range x 1.35. | cd 120s · 36s · ground · ×2 uses · **round 142 (2026-11-13):** open batch 1, user ruling "Before range (Farsight-like)". |
 | Master of the Black Arts `wh_main_lord_abilities_master_of_the_black_arts` | `skipped (user decision 2026-11-17: closed, rule 10, helps only before a friendly spell)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 90s · 15s · self |
 | Master Predator `wh2_dlc17_lord_abilities_master_predator` | `skipped (user decision 2026-11-01: stances are not automated; a stance chooser is last priority)` | skipped | Not automated: a stance. | cd 1s · -1s · self · wind-up 1s · **round 131 (user ruling 2026-11-01):** "For now, all stances should not have any automation ... the stance logic should evaluate all the available mutually exclusive stances to the unit and decide which to activate." Removed from the mod. |
 | Maw Shard `wh3_main_item_abilities_maw_shard` | `skipped (user decision 2026-11-17: closed, rule 10, helps only before a friendly spell)` | ready | Whenever the engine allows (no readable condition): cast on self. | cd 60s · 22s · self · ×1 uses |
@@ -7996,3 +7996,15 @@ then let's use the caster list". Round document `docs\WH3_round174_review_rows.m
 
 **Arithmetic:** 937 entries / 992 keys / 111 families. Harness 173 full suite **7,304 checks / 0 failures**, run twice
 byte-identical; RED 40/40. Pack md5 `c012cfbddab5240cb080b712d5217c0c`; workbook v57.
+
+### 10.53 Round 175 - Master of Mists: before range, else shooting (2026-11-18)
+
+**Ruling (user, 2026-11-18, after the Aislinn battle):** "But it also has plain damage boost!"; "A: before range, else
+shooting". Earlier decision (round 142): "Before range (Farsight-like)". Round document
+`docs\WH3_round175_master_of_mists.md`.
+
+**Change:** the before-range arm stays first; else the ground under the friendly missile unit within 175 m that is shooting
+past its cast point with the most shooting units within 24 m (70% of the 35 m area), the closest on a tie.
+
+**Arithmetic:** 937 entries / 992 keys / 111 families. Harness 174 full suite **7,319 checks / 0 failures**, run twice
+byte-identical; RED 6/6. Pack md5 `0d6cb8ad1c3171b61c8e6adb4c43b53a`; workbook v58.

@@ -7519,6 +7519,9 @@ local function attempt_activation(script_unit, unit, ability_key, target)
 		if FOURTH.ah_mode == "mist" then
 			hp_ok = (FOURTH.before_range(chosen, FOURTH.MIST_BAND) ~= nil)
 		end
+		if FOURTH.ah_mode == "mist_shoot" then   -- ROUND 175: still shooting
+			hp_ok = FOURTH.shooting_past_cast_point(chosen)
+		end
 		-- ROUND 144: The Gold Standard - the chosen ally must still be in melee
 		if FOURTH.ah_mode == "melee" then
 			hp_ok = hp_ok and (FOURTH.ah_in_melee(chosen) == true)
@@ -17261,6 +17264,60 @@ function FOURTH.target_in_melee(unit)
 	return m == true
 end
 
+-- ROUND 175: Master of Mists also raises missile damage x1.25 and reload +20 for its whole duration (user: "But it
+-- also has plain damage boost!"; ruling 'A: before range, else shooting'). When no missile unit of ours is just out of
+-- range, the ground under the SHOOTING missile unit with the most shooting units within MIST_AREA_M of it (the 35 m area
+-- at the 70% rule), the closest on a tie.
+FOURTH.MIST_AREA_REAL_M = 35   -- unit_special_abilities.effect_range of both Master of Mists keys
+FOURTH.MIST_AREA_M = math.floor(FOURTH.MIST_AREA_REAL_M * 0.70)
+
+function FOURTH.mist_shooting(unit)
+	local cands = {}
+	if FOURTH.shooting_past_cast_point(unit) then cands[#cands + 1] = { u = unit, gap = 0 } end
+	local self_id = tostring(unit:unique_ui_id())
+	for i = 1, #(tracked_units or {}) do
+		local other = tracked_units[i] and tracked_units[i].unit
+		if other ~= nil and other ~= unit then
+			local ok_m, men = pcall(function() return other:number_of_men_alive() end)
+			local ok_i, oid = pcall(function() return tostring(other:unique_ui_id()) end)
+			if ok_m and type(men) == "number" and men > 0 and ok_i and oid ~= self_id and not unit_is_routing(other)
+				and FOURTH.shooting_past_cast_point(other) then
+				local gap = FOURTH.ab_ally_gap(unit, other)
+				if gap ~= nil and FOURTH.ab_range_m ~= nil and gap <= FOURTH.ab_range_m then
+					cands[#cands + 1] = { u = other, gap = gap }
+				end
+			end
+		end
+	end
+	local best, bn = nil, nil
+	for i = 1, #cands do
+		local c = cands[i]
+		local n = 0
+		for j = 1, #cands do
+			local near = (i == j)
+			if not near then
+				local ok_g, g = pcall(function() return c.u:unit_distance(cands[j].u) end)
+				near = (ok_g and type(g) == "number" and g <= FOURTH.MIST_AREA_M)
+			end
+			if near then n = n + 1 end
+		end
+		if best == nil or n > bn or (n == bn and c.gap < best.gap) then best, bn = c, n end
+	end
+	if best == nil then return nil end
+	FOURTH.ah_mode = "mist_shoot"
+	FOURTH.ah_chosen = best.u
+	FOURTH.ah_ground = true
+	FOURTH.ah_caster_su = FOURTH.ab_fresh_friend_su(unit)
+	local who = "the caster"
+	if best.u ~= unit then
+		FOURTH.ah_ally = best.u
+		FOURTH.ah_ally_su = FOURTH.ab_fresh_friend_su(best.u)
+		who = string.format("a friendly unit %.1fm away", best.gap)
+	end
+	return string.format("no missile unit is just out of range; %s is shooting with %d shooting unit(s) within %dm"
+		.. " - cast on the ground under it (damage x1.25, reload +20)", who, bn, FOURTH.MIST_AREA_M)
+end
+
 function FOURTH.evaluate_ground_ally_before_range(unit, routing)
 	if routing then return false end
 	FOURTH.ah_mode = "mist"
@@ -17283,7 +17340,7 @@ function FOURTH.evaluate_ground_ally_before_range(unit, routing)
 			end
 		end
 	end
-	if best == nil then return false end
+	if best == nil then return FOURTH.mist_shooting(unit) ~= nil end   -- ROUND 175: else the shooting units
 	FOURTH.ah_chosen = best
 	FOURTH.ah_ground = true
 	FOURTH.ah_caster_su = FOURTH.ab_fresh_friend_su(unit)
@@ -19789,7 +19846,7 @@ FOURTH.TRIGGER_TIP = {
 	self_recharging_2 = "When armed, fires when two other abilities of this unit are recharging",
 	recharging_in_reach = "When armed, fires when this unit or a friendly unit near it has an ability recharging",
 	melee_self_or_ally = "When armed, fires when this unit or a friendly unit near it is in melee",
-	ground_ally_before_range = "When armed, fires under a friendly missile unit when the enemy is just out of its range",
+	ground_ally_before_range = "When armed, fires under a friendly missile unit when the enemy is just out of its range, else under the shooting missile units",   -- ROUND 175
 	self_shooting_clear = "When armed, fires when this unit is shooting at a target that is not in melee",
 	self_shooting_healthy = "When armed, fires when this unit is shooting and above half health",
 	self_moving = "When armed, fires when this unit is moving",
@@ -19994,7 +20051,7 @@ FOURTH.CARD_TIP = {
 	self_moving = "Fires when moving",
 	self_running = "Fires when running",
 	no_enemy_in_range_within_boost = "Fires when an enemy is just beyond its missile range",
-	ground_ally_before_range = "Fires under the nearest missile ally whose enemy is just beyond its range",
+	ground_ally_before_range = "Fires under missile allies just before their enemy is in range, else while they shoot",   -- ROUND 175
 	under_fire = "Fires when it or {ALLYA} is under missile fire",
 	melee_or_under_fire = "Fires in melee unless wavering, or under missile fire[, or when {ALLYA} is in melee or under fire]",
 	self_recharging = "Fires while another of its abilities recharges",

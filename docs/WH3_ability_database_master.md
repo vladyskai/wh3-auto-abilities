@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-18 15:16 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-18 15:39 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -123,7 +123,7 @@ rows carry one of those keys. The tracker's own status column counts **993 imple
 | `enemy_ground_shooters` | When armed, fires on the ground under the shooting enemy with the most shooting value near it | 1 | 1 |
 | `self_or_ally_shooting` | When armed, fires on this unit when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
 | `melee_or_self_or_ally_shooting` | When armed, fires on this unit in melee or when it is shooting, otherwise on the closest friendly unit in range that is shooting | 1 | 1 |
-| `ground_ally_before_range` | When armed, fires under a friendly missile unit when the enemy is just out of its range | 1 | 2 |
+| `ground_ally_before_range` | When armed, fires under a friendly missile unit when the enemy is just out of its range, else under the shooting missile units | 1 | 2 |
 | `self_shooting_clear` | When armed, fires when this unit is shooting at a target that is not in melee | 1 | 1 |
 | `self_shooting_healthy` | When armed, fires when this unit is shooting and above half health | 1 | 1 |
 | `enemy_ground_shooting` | When armed, fires on the ground under the closest enemy missile unit in range that is shooting | 1 | 1 |
@@ -2233,14 +2233,14 @@ A SLAYER ally in range is in melee (Slayer status = exact whole-key membership o
 
 The closest friendly missile unit in range with NO enemy inside its own missile range but one inside range x 1.35. Placed on the ground under that unit.
 
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires under a friendly missile unit when the enemy is just out of its range.*
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires under a friendly missile unit when the enemy is just out of its range, else under the shooting missile units.*
 
 **Cast target:** the unit itself. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
-| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground under a unit just out of range: ground_ally_before_range) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
-| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists_custom` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground under a unit just out of range: ground_ally_before_range) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
+| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground_ally_before_range: before range, else shooting, round 175) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range, else under the shooting missile units. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
+| Master of Mists | `wh3_dlc27_character_abilities_master_of_mists_custom` | Armour-Piercing Missile Damage: +25%; Base Missile Damage: +25%; Range: +50%; Reload Skill: +20; Snipe (positive); Stalk (positive) (to self and allies in range) | targeting: self=no friends=no enemies=no ground=yes · always affects self | cast reach 250 m · effect range (aura) 35 m · targets ground · trigger bound 175 m (70% of the game's 250 m reach) | implemented (ground_ally_before_range: before range, else shooting, round 175) | Fires: When armed, fires under a friendly missile unit when the enemy is just out of its range, else under the shooting missile units. Cast target: the unit itself. Bound: 175 m (70% of the game's 250 m reach) |
 
 ### `health_aura_self_undead` — 1 entries / 1 keys
 
