@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-18
 
-Every automated ability (938 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (935 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -77,20 +77,21 @@ None.
 |---|---|---|---|
 | Armour of Caledor | `armour_of_caledor` | `melee_health75` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Berry Wine | `berry_wine` | `health_aura_ally_deep` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Blood Chalice of Bathori | `blood_chalice_of_bathori` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Blood Chalice of Bathori | `blood_chalice_of_bathori` | `health_aura_ally_rule` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Blooood! | `blooood` | `self_moving` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Breath of Darkness | `undeath_morkharn_breath_of_darkness` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Breath of Darkness Upgraded | `undeath_morkharn_breath_of_darkness_upgraded` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Bugman's XXXXXX | `bugmans_xxxxxx` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Breath of Darkness | `undeath_morkharn_breath_of_darkness` | `health_aura_ally_rule` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Breath of Darkness Upgraded | `undeath_morkharn_breath_of_darkness_upgraded` | `health_aura_ally_rule` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Bugman's XXXXXX | `bugmans_xxxxxx` | `self_heal_clear` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Dreaming Ring III | `dreaming_ring_iii` | `health_aura_ally` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Eat da Runts! | `eat_da_runts` | `eat_da_runts` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Elvish Healing Herbs | `elfish_healing_herbs` | `ally_heal` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Foe-Seeker | `foe_seeker` | `charge_or_tired` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Gulyas | `gulyas` | `health_aura_ground` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Hellish Vigour | `hellish_vigour` | `ally_in_melee` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Hellish Vigour Upgraded | `hellish_vigour_upgraded` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Icon of the King | `icon_of_the_king` | `health_aura_self_undead` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Locus of Fecundity | `locus_of_fecundity` | `health_aura_self` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Mantra of Invigoration | `protection_prayer` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Mantra of Invigoration | `protection_prayer` | `health_aura_ally_rule` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Mirror (Cold-Blooded) | `mimic_cold_blooded` | `wavering_aura` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Pilgrimage of Skulls | `pilgrimage_of_skulls` | `wavering_ally_range` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Potion of Speed | `potion_of_speed` | `charge_only` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
@@ -100,6 +101,6 @@ None.
 | Rok of Itza | `rock_of_itza` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Sacred Spawning of Xhotl | `sacred_spawning_of_xhotl` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Sands of Sickness | `sands_of_sickness` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
-| Skar's Kraken-Killer | `skars_kraken_killer` | `ushoran_health` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
+| Skar's Kraken-Killer | `skars_kraken_killer` | `self_hurt_attacked` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | The Drakwald Runefang | `drakwald_runefang` | `melee_unwavering` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |
 | Unholy Clamour | `unholy_clamour` | `wavering_aura` | 2026-11-09: no vigour trigger ('Skip the exercise ... there is no need to add this trigger'); keeps its current trigger |

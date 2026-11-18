@@ -93,7 +93,9 @@ TARGET = {"unit_is_not_commander_class": "C",   # the target must be a Lord or H
           "living_unit": "U",                   # the target must be undead (the GENERATED undead set)
           "undead_unit": "u",                   # never an undead unit
           "unit_is_not_single_entity": "S",     # the target must be a single entity (the GENERATED single set)
-          "is_not_missile_unit": "P"}           # the target must be a missile unit (the missile set)
+          "is_not_missile_unit": "P",           # the target must be a missile unit (the missile set)
+          "unit_is_not_a_lizard_unit": "Z",     # ROUND 180: a Lizardmen unit (the GENERATED lizard set, user 'set A')
+          "unit_is_not_tiger_warrior": "T"}     # ROUND 180: a Tiger Warrior unit (the GENERATED tiger set)
 
 
 def derive_target(src_txt=None):

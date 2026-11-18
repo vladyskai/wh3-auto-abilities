@@ -148,49 +148,49 @@ The wind-ups matter: a 5 s wind-up on a moving target misses, so these keep the 
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 87 | Entangle | enemies in a 15 m area rooted, flame weakness, 15 s; 2 uses | ground under an enemy in melee or under fire | **GROUND ROOT:** under a fast enemy closing on ours, else under the closest enemy in melee. Open question: #36-#41 dropped their melee arm (user, 2026-11-18); should the ground roots too? | 5 |
-| 88 | Get 'Em! | enemies in a 35 m area rooted, 11 s | same | **GROUND ROOT**, as #87. | 5 |
-| 89 | Hunter's Snare | the same, 11 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |
-| 90 | Hunter's Trap | the same, 22 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |
+| 87 | Entangle (**BUILT round 180**) | enemies in a 15 m area rooted, flame weakness, 15 s; 2 uses | ground under an enemy in melee or under fire | **GROUND ROOT:** under a fast enemy closing on ours, else under the closest enemy in melee. Open question: #36-#41 dropped their melee arm (user, 2026-11-18); should the ground roots too? | 5 |
+| 88 | Get 'Em! (**BUILT round 180**) | enemies in a 35 m area rooted, 11 s | same | **GROUND ROOT**, as #87. | 5 |
+| 89 | Hunter's Snare (**BUILT round 180**) | the same, 11 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |
+| 90 | Hunter's Trap (**BUILT round 180**) | the same, 22 s; 3 uses | same | **GROUND ROOT**, as #87. | 5 |
 
 ### 2d. The wandering winds and waves (your rulings, rounds 162-166)
 
 | # | Ability | The issue | Proposal |
 |---|---|---|---|
-| 91 | Sandstorm | its safety ring (worst-case 95% reach) leaves a few metres of window inside the 70 m bound: it rarely fires | **RULED** ("worst-case reach"). Option: an 80% simulated reach for this key. |
-| 92 | Heaven's Gate | the caster teleports INTO the blob; nothing checks the caster's own safety | **CLOSE IT** (user, 2026-11-18: "remove the ruling. This is a teleportation and requires player control"): out of automation, cast by hand. |
-| 93 | Lamprey's Bite | 59 m clearance against a 70 m bound: rarely fires | **RULED.** Option as #91. |
-| 94 | Da Boss' Loons | 98 m ring around the caster free of ours: almost never true in a battle line | **RULED** (round 164: "Loons as wanderer"). Option: a smaller ring if the fanatics do not hit our units (needs a battle test). |
-| 95 | The Burning Head (2 keys) | the end-of-path buffer (84-126 m) exceeds the bound (70-105 m): rarely fires | **RULED.** Option as #91. |
-| 96 | Arnzipal's Black Horror | the same | **RULED.** Option as #91. |
+| 91 | Sandstorm (**BUILT round 180**) | its safety ring (worst-case 95% reach) leaves a few metres of window inside the 70 m bound: it rarely fires | **RULED** ("worst-case reach"). Option: an 80% simulated reach for this key. |
+| 92 | Heaven's Gate (**CLOSED round 180**) | the caster teleports INTO the blob; nothing checks the caster's own safety | **CLOSE IT** (user, 2026-11-18: "remove the ruling. This is a teleportation and requires player control"): out of automation, cast by hand. |
+| 93 | Lamprey's Bite (**BUILT round 180**) | 59 m clearance against a 70 m bound: rarely fires | **RULED.** Option as #91. |
+| 94 | Da Boss' Loons (**KEPT round 180: the data says the fanatics hit our units**) | 98 m ring around the caster free of ours: almost never true in a battle line | **RULED** (round 164: "Loons as wanderer"). Option: a smaller ring if the fanatics do not hit our units (needs a battle test). |
+| 95 | The Burning Head (2 keys) (**BUILT round 180**) | the end-of-path buffer (84-126 m) exceeds the bound (70-105 m): rarely fires | **RULED.** Option as #91. |
+| 96 | Arnzipal's Black Horror (**BUILT round 180**) | the same | **RULED.** Option as #91. |
 
 ### 2e. Kept by your rulings
 
 | # | Ability | Ruling |
 |---|---|---|
 | 97 | Curse of Djaf | "Shooting enemy" (round 143). |
-| 98 | Land Mine | "Melee, no friend near" (round 159). Option: also require half a packed block of enemies inside the blast, so 3 charges do not go into one small fight. |
+| 98 | Land Mine (**NOT BUILT round 180: the blast is 25 m, half a packed block = 415 soldiers; options to the user**) | "Melee, no friend near" (round 159). Option: also require half a packed block of enemies inside the blast, so 3 charges do not go into one small fight. |
 
 ## 3. Self-cast items
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 99 | Shield of Thorns (2 keys) | ONE unit (the caster or an ally within 200 m): damage reflection +20, 30 s; 2 uses | charge or melee, on self | **SELF OR ALLY IN MELEE** (the existing `melee_self_or_ally`): the caster if it fights, else the nearest ally in melee within 140 m. Reflection only pays when struck; the charge arm spends it up to 4 s before contact. | 5 |
-| 100 | Snowflake Pendant | miscast chance x0.5, 25 s | when ready (round 150) | **CLOSE IT** (rule 10, as Earthing Rod and Hagtree Fetish, closed in round 171): it only helps before a friendly spell. | 5 (as a decision) |
-| 101 | Stave of Avelorn | miscast chance x0, 40 s; ONE use | when ready (round 150) | **CLOSE IT**, as #100. | 5 (as a decision) |
-| 102 | Power Stone | winds (the game's phase carries winds effects only), 31 s; ONE use | when ready (round 150) | **WINDS LOW** (round 171, as Black Staff, without the health guard: no self-damage). | 5 |
-| 103 | The Chromatic Tome | winds, caster and allies, 27 s | when ready (round 150) | **WINDS LOW**, as #102. | 5 |
-| 104 | Blood Chalice of Bathori | a heal (1.6% a second, 26 s) on ONE Lord or Hero (the game's rule), the caster or an ally within 60 m | the caster at 75% | **LORD OR HERO HEAL:** the lowest-health Lord or Hero (the caster or an ally within 42 m) at or below 75%. Today the ally side is wasted. | 5 |
-| 105 | Breath of Darkness (2 keys) | a heal (0.8% a second, 14 s) on undead units only (the game's rule), range 200 m; 2 uses | the caster at 75% | **UNDEAD HEAL** (the existing `health_aura_self_undead` pick): the lowest undead unit (the caster or an ally within 140 m) at or below 75%. | 5 |
-| 106 | Bugman's XXXXXX | a self heal (1.7% a second, 18 s); the game refuses it with an enemy in its intercept range | the caster at 75% | **HEAL AWAY FROM THE ENEMY:** at or below 75% AND no visible enemy within 38 m (70% of its 55 m reach). Today it is refused in every fight. | 5 |
-| 107 | Mantra of Invigoration | a heal on Tiger Warriors only (the game's rule), the caster or an ally within 100 m, 32 s | the caster at 75% | **RULED** (2026-10-08: "Below 75% health (no melee gate)"). Option: the lowest Tiger Warrior unit at or below 75% (read I). | - |
-| 108 | Potion of Charoi | all resistances +40, a small heal, 9 s; 4 uses | the caster at 75% | **HURT AND HIT:** at or below 75% AND in melee or under fire. A 9 s resistance burst is wasted while marching hurt. | 5 |
-| 109 | Saint Annushka's Finger Bone | a tiny heal (0.2% a second, 13 s) | the caster at 75% | **KEEP.** | 4 |
-| 110 | Skar's Kraken-Killer | invulnerable, a heal (1.6% a second), 29 s | the caster at 75% | **LAST STAND:** in melee at or below 50%. | 5 |
-| 111 | Foe-Seeker (3 keys) | speed and charge speed x1.25, 25 s | tired | **RULED** (2026-11-15: "Foe-Seeker + tired"). Option: charge or melee. | - |
-| 112 | Rock Bottom | refills ammunition; the unit takes 350 damage | out of ammunition | **RULED** ("wait until no ammo left"). Option: add "and more than 700 hit points left" (read E), so the refill never kills it. | - |
-| 113 | Blooood! | speed x1.25, acceleration x1.18, 18 s | moving | **RULED** (round 142: "When moving"). | - |
-| 114 | Eat da Runts! | heals the caster by hurting an ally | its own family | **QUESTION** (a battle test): does the self arm land? | - |
+| 99 | Shield of Thorns (2 keys) (**BUILT round 180**) | ONE unit (the caster or an ally within 200 m): damage reflection +20, 30 s; 2 uses | charge or melee, on self | **SELF OR ALLY IN MELEE** (the existing `melee_self_or_ally`): the caster if it fights, else the nearest ally in melee within 140 m. Reflection only pays when struck; the charge arm spends it up to 4 s before contact. | 5 |
+| 100 | Snowflake Pendant (**CLOSED round 180**) | miscast chance x0.5, 25 s | when ready (round 150) | **CLOSE IT** (rule 10, as Earthing Rod and Hagtree Fetish, closed in round 171): it only helps before a friendly spell. | 5 (as a decision) |
+| 101 | Stave of Avelorn (**CLOSED round 180**) | miscast chance x0, 40 s; ONE use | when ready (round 150) | **CLOSE IT**, as #100. | 5 (as a decision) |
+| 102 | Power Stone (**KEPT round 180**) | winds (the game's phase carries winds effects only), 31 s; ONE use | when ready (round 150) | **RULED, KEEP** (round 150: "All when ready"; 2026-11-18: "A", keep when ready). The phase is mana_regen_mod 0.8 and mana_max_depletion_mod 0.1 (meaning unknown) for 31 s; at battle start "winds low" fires at the same moment as "when ready", so it adds nothing in the common case. | - |
+| 103 | The Chromatic Tome (**KEPT round 180**) | winds, caster and allies, 27 s | when ready (round 150) | **RULED, KEEP** (round 150: "All when ready"), as #102 (2026-11-18). | - |
+| 104 | Blood Chalice of Bathori (**BUILT round 180**) | a heal (1.6% a second, 26 s) on ONE Lord or Hero (the game's rule), the caster or an ally within 60 m | the caster at 75% | **LORD OR HERO HEAL:** the lowest-health Lord or Hero (the caster or an ally within 42 m) at or below 75%. Today the ally side is wasted. | 5 |
+| 105 | Breath of Darkness (2 keys) (**BUILT round 180**) | a heal (0.8% a second, 14 s) on undead units only (the game's rule), range 200 m; 2 uses | the caster at 75% | **UNDEAD HEAL** (the existing `health_aura_self_undead` pick): the lowest undead unit (the caster or an ally within 140 m) at or below 75%. | 5 |
+| 106 | Bugman's XXXXXX (**BUILT round 180**) | a self heal (1.7% a second, 18 s); the game refuses it with an enemy in its intercept range | the caster at 75% | **HEAL AWAY FROM THE ENEMY:** at or below 75% AND no visible enemy within 38 m (70% of its 55 m reach). Today it is refused in every fight. | 5 |
+| 107 | Mantra of Invigoration (**BUILT round 180**) | a heal on Tiger Warriors only (the game's rule), the caster or an ally within 100 m, 32 s | the caster at 75% | **RULED** (2026-10-08: "Below 75% health (no melee gate)"). Option: the lowest Tiger Warrior unit at or below 75% (read I). | - |
+| 108 | Potion of Charoi (**BUILT round 180**) | all resistances +40, a small heal, 9 s; 4 uses | the caster at 75% | **HURT AND HIT:** at or below 75% AND in melee or under fire. A 9 s resistance burst is wasted while marching hurt. | 5 |
+| 109 | Saint Annushka's Finger Bone (**KEPT round 180**) | a tiny heal (0.2% a second, 13 s) | the caster at 75% | **KEEP.** | 4 |
+| 110 | Skar's Kraken-Killer (**BUILT round 180**) | invulnerable, a heal (1.6% a second), 29 s | the caster at 75% | **RULED (user, 2026-11-18: "caster at 75% and in melee or being shot at is better"; unlimited uses, 120 s recharge): HURT AND UNDER ATTACK:** the caster at or below 75% health AND in melee or under missile fire. NEW family (the self_last_stand test with a 75% line; `melee_health75` exists but has no missile arm). | 5 |
+| 111 | Foe-Seeker (3 keys) (**BUILT round 180**) | speed and charge speed x1.25, 25 s | tired | **RULED (user, 2026-11-18: "include charge. Do not include melee, tired is enough in melee"): CHARGE OR TIRED:** in the charge window, or Tired or worse (the 2026-11-15 tired arm stays). No melee arm. NEW family (charge_only OR tired). | 5 |
+| 112 | Rock Bottom (**BUILT round 180**) | refills ammunition; the unit takes 350 damage | out of ammunition | **RULED (user, 2026-11-18: "option above 50% health"): OUT OF AMMO AND HEALTHY:** out of ammunition (the old ruling) AND above 50% health, so the 350-damage refill is never taken by a badly hurt unit. Owner: the Rogue Idol RoR. | 5 |
+| 113 | Blooood! (**KEPT round 180**) | speed x1.25, acceleration x1.18, 18 s | moving | **RULED** (round 142: "When moving"). | - |
+| 114 | Eat da Runts! (**BUILT round 180**) | the TARGET ally takes 144 damage a second for 10 s (one model per tick); the CASTER heals 1.5% a second for 10 s (15%); 3 uses; range 100 m | itself at 75%, else the most hurt ally at 75% | **RULED (user, 2026-11-18: "A: cheapest ally"): option A below.** CLARIFIED 2026-11-18 (the game data): the ally arm is a DEFECT: it casts on the most HURT ally, which then takes the damage, while the caster heals without needing it. Options: A. the caster at or below 75%, cast on the cheapest ally in range (expendable first, then the lowest value per soldier), never a hurt one (recommended); B. self cast only, if the game accepts it (a battle test); C. close it. | - |
 
 ## 4. Ally-targeted
 
@@ -209,7 +209,7 @@ The wind-ups matter: a 5 s wind-up on a moving target misses, so these keep the 
 | 125 | Daemonic Whispers (**KEPT round 179**) | ONE ally within 200 m: leadership +16, 26 s | same | **RULED** (round 137: "Keep all 5 for now"). Option: the nearest wavering ally (`ally_wavering`). | - |
 | 126 | Horn of Vaul (**KEPT round 179**) | melee damage x1.3, missile damage x1.25, caster and allies within 35 m, 28 s; ONE use | 1 unit fighting or shooting within 24 m | **RULED, KEEP** (round 132: "Same as Metallurgy"; 2026-11-18: "no need of at least 3"). | - |
 | 127 | Berry Wine (**BUILT round 179**) | a heal of about 45% over 14 s, the caster and allies within 60 m; ONE use | the lowest unit at 75% | **DEEPER LINE:** the lowest unit at or below 55%. At 75% about 20 points of the 45% heal are wasted. | 5 |
-| 128 | Cold-Blooded (**KEPT round 179; the Lizardmen restriction waits for your look at the set**) | ONE Lizardmen unit (the game's rule): leadership +16, 40 s | the wavering ally | **RULED** ("On the wavering ally"). Restriction to add: Lizardmen allies only (read I). | - |
+| 128 | Cold-Blooded (**KEPT round 179; the Lizardmen restriction waits for your look at the set**) (**BUILT round 180**) | ONE Lizardmen unit (the game's rule): leadership +16, 40 s | the wavering ally | **RULED** ("On the wavering ally"). Restriction to add: Lizardmen allies only (read I). | - |
 | 129 | Star of Avelorn (**BUILT round 179**) | a heal on a 15 m area anywhere within 200 m, 27 s; 2 uses | the area around the caster's 10 m | **BEST SPOT:** on the ground under the hurt unit of ours, the caster included (at or below 75%), within 140 m with the most hurt units within 10 m of it. Today it reaches only 10 m from the caster. | 5 |
 | 130 | Commanding Presence (**BUILT round 179**) | leadership +8, caster and allies within 35 m, 20 s | wavering self, or an ally IN MELEE and wavering | **AS YOUR RULING:** "Not related to melee, only to morale. The trigger should be when lord or nearby unit are wavering." Drop the hidden melee condition. | 5 |
 | 131 | Fury of Ulric (**BUILT round 179**) | leadership +8, caster and allies within 35 m, 25 s | same | as #130 | 5 |
