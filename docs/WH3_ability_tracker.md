@@ -4363,7 +4363,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Heroic Killing Blow `wh_main_character_abilities_heroic_killing_blow` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 25s · self · questionnaire §2 #95 |
 | Horn of Khorne `wh3_main_army_abilities_horn_of_khorne` | `skipped (army-bar ability)` | melee_self | When in melee: cast on self (self-cast allowed; nearest-ally picker later). | cd 90s · 31s · friend/self · army · questionnaire §2 #311 |
 | Horn of the First Beast `wh_dlc03_item_abilities_horn_of_the_first_beast` | `implemented (charge and in-melee)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 35s · self · questionnaire §2 #96 · user: charge window or in melee (like Fangspike) |
-| Horn of the Wild Hunt `wh_dlc05_item_abilities_horn_of_the_wild_hunt` | `implemented (army_charge, round 171)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 24s · self · questionnaire §2 #97 |
+| Horn of the Wild Hunt `wh_dlc05_item_abilities_horn_of_the_wild_hunt` | `implemented (army_charge, round 172)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 24s · self · questionnaire §2 #97 |
 | Hurricane of Death `wh3_dlc25_character_abilities_hurricane_of_death` | `implemented (in melee: melee_unwavering)` | melee_self | When armed, casts on self when this unit is in melee and not wavering (a blast centred on the caster that cannot hurt our units; the look-alikes Bloodstorm, Halo of Maidenly Wrath, Evisceration, Giant Leap, Gaze of Khorne). | cd 120s · 6s · self · questionnaire §2 #98 · **round 159 (2026-11-15):** group E, user ruling "Like Bloodstorm". |
 | Hydra Blade `wh2_main_weapon_abilities_hydra_blade` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 38s · self · questionnaire §2 #99 |
 | Hysterical Frenzy `wh3_main_spell_slaanesh_hysterical_frenzy_bound` | `implemented (in-melee self)` | melee_self | When in melee: cast on self for now (nearest-ally picker later). | cd 43s · 28s · friend · ×2 uses · wind-up 3s · bound · questionnaire §2 #406 |
@@ -4589,7 +4589,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Vial of Troll Blood `wh_dlc08_item_abilities_vial_of_troll_blood` | `implemented (wavering self)` | melee_self | When wavering: cast on self. (trigger variant — wavering self) | cd 90s · 73s · self · ×1 uses · questionnaire §2 #261 · user: “Only when wavering” |
 | Violent Wind `wh3_dlc20_unit_abilities_violent_wind` | `implemented (in melee: melee_unwavering)` | melee_self | When armed, casts on self when this unit is in melee and not wavering (a blast centred on the caster that cannot hurt our units; the look-alikes Bloodstorm, Halo of Maidenly Wrath, Evisceration, Giant Leap, Gaze of Khorne). | cd 120s · 4s · self · unit · questionnaire §2 #220 · **round 159 (2026-11-15):** group E, user ruling "Like Bloodstorm". |
 | Waaagh! `wh3_dlc26_unit_abilities_waaagh_in_combat` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 18s · self · questionnaire §2 #221 |
-| Waaagh! `wh_main_character_abilities_waaagh` | `implemented (army_charge, round 171)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 30s · self · questionnaire §2 #221 |
+| Waaagh! `wh_main_character_abilities_waaagh` | `implemented (army_charge_or_melee, round 172)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 30s · self · questionnaire §2 #221 |
 | Warp Frenzy `wh2_dlc16_hero_abilities_warp_frenzy` | `implemented (in-melee self - auto, trivial)` | melee_self | When in melee (and not fleeing): cast on self. | cd 90s · 29s · self · questionnaire §2 #222 |
 | Warpbomb `wh2_main_army_abilities_warpbomb` | `excluded (auto: army-bar ability (standing rule 10))` | melee_self | When in melee: cast on self for now (nearest-ally picker later). | cd 60s · 16s · friend · ×1 uses · wind-up 1s · army · questionnaire §2 #413 |
 | Warpstone Addiction `wh3_dlc29_lord_abilities_warpstone_addiction` | `implemented (in-melee self)` | melee_self | When in melee (and not fleeing): cast on self. | cd 120s · 33s · self · ×2 uses · questionnaire §2 #262 |
@@ -4765,7 +4765,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | The Wintertooth Crown `wh_dlc08_item_abilities_the_wintertooth_crown` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 120s · 24s · self |
 | Unholy Clamour `wh2_main_mount_abilities_unholy_clamour` | `implemented (morale: self or ally wavering: wavering_aura)` | self | When armed, fires when this unit, or a friendly unit inside the aura, is wavering: cast on self (the aura). | cd 120s · 18s · self · **round 137 (2026-11-09):** audit batch 6: user ruling "Self or ally wavering". The aura covers the whole army. |
 | Ursun's Mighty Roar `wh3_main_pro_character_abilities_ursuns_roar_2` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 30s · self |
-| Ursun's Roar `wh3_main_character_abilities_ursuns_roar` | `implemented (aura_charge, round 171)` | morale | When morale falls to wavering: cast. | cd 60s · 9s · self |
+| Ursun's Roar `wh3_main_character_abilities_ursuns_roar` | `implemented (aura_charge, round 172)` | morale | When morale falls to wavering: cast. | cd 60s · 9s · self |
 | Ursun's Roar `wh3_main_pro_character_abilities_ursuns_roar` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 20s · self |
 | Ursun's Roar `wh3_main_pro_character_abilities_ursuns_roar_1` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 30s · self |
 | Ursun's Roar `wh3_main_pro_character_abilities_ursuns_roar_3` | `implemented (in-melee self)` | morale | When morale falls to wavering: cast. | cd 60s · 30s · self |
@@ -7950,3 +7950,20 @@ Round document `docs\WH3_round171_review_rows.md`.
 **Arithmetic:** 939 entries / 994 keys / 101 families; implemented 994, not implemented 129 (45 skipped). Harness 170
 full suite **7,199 checks / 0 failures**, run twice byte-identical; RED 36/36. Pack md5
 `1b034829db0943b35e777f06d31a2914`; workbook v54.
+
+### 10.50 Round 172 - rows 1, 3 and 5 of the review as RULED in the doc (2026-11-18)
+
+**Why:** round 171 built the first proposals for these rows; `docs\WH3_low_score_review_2026-11-17.md` already carried
+the user's rulings (user: "I feel like you ignored the current version of the WH_3_low_score_review"; "Yes, fix them
+now"). Round document `docs\WH3_round172_ruled_rows.md`.
+
+**Changes:**
+- **Horn of the Wild Hunt (row 1, army_charge):** 3 of our units charging or in fresh contact, or every living unit
+  when the army has fewer than 3.
+- **Ursun's Roar, the charge key (row 3, aura_charge):** ONE unit, the caster or any unit within its 24 m aura,
+  charging, in fresh contact or wavering ("Agreed, and include the wavering").
+- **Waaagh!, the wh_main key (row 5):** NEW family army_charge_or_melee: the army charge as Horn, OR the same count in
+  melee.
+
+**Arithmetic:** 939 entries / 994 keys / 102 families. Harness 171 full suite **7,240 checks / 0 failures**, run twice
+byte-identical; RED 20/20. Pack md5 `239b195b95d7734233d50a7ed1c75698`; workbook v55.

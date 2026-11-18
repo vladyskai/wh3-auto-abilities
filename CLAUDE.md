@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `1b034829db0943b35e777f06d31a2914`, 1,445,218 bytes
-  (round 171, 2026-11-17: the score 1-2 review rows 1-15 and 21; 9 abilities closed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `239b195b95d7734233d50a7ed1c75698`, 1,447,876 bytes
+  (round 172, 2026-11-18: review rows 1, 3 and 5 rebuilt as RULED in the doc). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,8 +142,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 171): 939 ABILITIES entries / 994 ability keys / 101 trigger evaluator families.
-Wheel audit (workbook v54): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
+Current roster (round 172): 939 ABILITIES entries / 994 ability keys / 102 trigger evaluator families.
+Wheel audit (workbook v55): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
 120 not implemented among the included: 65 decided by the user, 55 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
@@ -155,7 +155,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261117_review_rows_harness170/build_and_install171.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261118_ruled_rows_harness171/build_and_install172.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -185,7 +185,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness170: 7,199 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness171: 7,240 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -298,7 +298,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v54_2026-11-17.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v54.py`, verified by `tools\verify_xlsx_v54.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v55_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v55.py`, verified by `tools\verify_xlsx_v55.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -328,6 +328,14 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 172 (2026-11-18): round 171 had built the FIRST proposals of review rows 1, 3, 5; the doc already held the
+  user's RULED lines (user: 'I feel like you ignored the current version'). LESSON: before building from a proposal
+  doc, re-read it FROM DISK (git diff vs its last commit) and quote every row's RULED text in the round doc.
+  FOURTH.army_moments(): living / charging / fresh / melee counts; need = min(ARMY_CHARGE_MIN, living) (routing units
+  are living but never count). Horn = army_charge; Waaagh! wh_main = NEW army_charge_or_melee; Ursun's Roar charge
+  key = ONE unit (caster or within 24 m) charging, fresh contact or WAVERING (AURA_CHARGE_ALLIES removed). Still
+  ruled in the doc but not built: row 23 + section 7 (finishers, lowest health % first). Rows 6-7 'and closing' is
+  not checked (fast_enemy_near reads fast + moving only); flagged, no ruling.
 - ROUND 171 (2026-11-17, the score 1-2 review rows 1-15 and 21): NEW families army_charge (Horn of the Wild Hunt,
   Waaagh! wh_main key = its own entry waaagh_army), aura_charge (Ursun's Roar charge key = own entry ursuns_roar_charge),
   self_or_ally_charge (Red Fury; ally picker family 'charging'), slow_aura (Rock of Inevitability, Wissenland Runefang),

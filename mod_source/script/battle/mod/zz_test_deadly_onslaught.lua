@@ -2922,6 +2922,7 @@ local ABILITIES = {
 		range_real = 75,
 		ox = 0, oy = 0 },
 	-- ROUND 171 (review row 1): the whole army's charge bonus x1.6 - when 3+ of our units charge at once
+	-- (ROUND 172: or every living unit in a smaller army)
 	{ marker = "horn_of_the_wild_hunt", name = "Horn of the Wild Hunt", trigger = "army_charge",
 		badge = "zz_auto_badge_horn_of_the_wild_hunt",
 		keys = { "wh_dlc05_item_abilities_horn_of_the_wild_hunt" },
@@ -3549,6 +3550,7 @@ local ABILITIES = {
 			"wh3_main_pro_character_abilities_ursuns_roar_3" },
 		ox = 0, oy = 0 },
 	-- ROUND 171 (review row 3): the charge-bonus key (9 s, 35 m aura) gets its own entry
+	-- (ROUND 172: one unit charging or wavering is enough)
 	{ marker = "ursuns_roar_charge", name = "Ursun's Roar", trigger = "aura_charge",
 		badge = "zz_auto_badge_ursuns_roar_charge",
 		keys = { "wh3_main_character_abilities_ursuns_roar" },
@@ -3590,7 +3592,8 @@ local ABILITIES = {
 		keys = { "wh3_dlc26_unit_abilities_waaagh_in_combat" },
 		ox = 0, oy = 0 },
 	-- ROUND 171 (review row 5): the Warboss's army-wide Waaagh! (speed, charge, melee attack) gets its own entry
-	{ marker = "waaagh_army", name = "Waaagh!", trigger = "army_charge",
+	-- ROUND 172: the doc's ruling - army charge OR army melee
+	{ marker = "waaagh_army", name = "Waaagh!", trigger = "army_charge_or_melee",
 		badge = "zz_auto_badge_waaagh_army",
 		keys = { "wh_main_character_abilities_waaagh" },
 		start_armed = true,
@@ -8546,9 +8549,12 @@ end
 --   FRESH CONTACT: FOURTH.track_melee runs once per poll for every unit of ours and remembers the tick it entered
 --     melee; a unit is in FRESH CONTACT for FRESH_CONTACT_S after that (a charge bonus still pays about 80% 2 s
 --     after impact, docs\WH3_battle_knowledge.md).
---   army_charge (Horn of the Wild Hunt, Waaagh!): ARMY_CHARGE_MIN or more of our units charging or in fresh contact.
---   aura_charge (Ursun's Roar, the charge key): the caster charging or in fresh contact, or AURA_CHARGE_ALLIES other
---     units within its 70% aura doing so.
+--   army_charge (Horn of the Wild Hunt): ARMY_CHARGE_MIN or more of our units charging or in fresh contact; when the
+--     army has fewer living units than that, every living unit (ROUND 172, the doc's ruling).
+--   army_charge_or_melee (Waaagh!, the wh_main key; ROUND 172): the same count charging or in fresh contact, OR the
+--     same count in melee (its +20 melee attack pays in any fight).
+--   aura_charge (Ursun's Roar, the charge key; ROUND 172): ONE unit, the caster or any unit within its 70% aura,
+--     charging, in fresh contact or wavering (its leadership +8; user: "Agreed, and include the wavering").
 --   self_or_ally_charge (Red Fury): the caster charging -> self; else the nearest ally within the 70% bound charging or
 --     in fresh contact -> that ally; else the caster in melee -> self.
 --   slow_aura (The Rock of Inevitability, The Wissenland Runefang): the caster in melee, or a visible fast enemy (run
@@ -8560,7 +8566,6 @@ end
 -- ============================================================================
 FOURTH.FRESH_CONTACT_S = 2
 FOURTH.ARMY_CHARGE_MIN = 3
-FOURTH.AURA_CHARGE_ALLIES = 2
 FOURTH.WINDS_LOW_POOL = 30
 FOURTH.WINDS_LOW_RESERVE = 20
 FOURTH.WINDS_LOW_HEALTH = 50
@@ -8613,48 +8618,86 @@ function FOURTH.charge_moment(u)
 	return nil
 end
 
-function FOURTH.evaluate_army_charge(unit, routing)
-	if routing or tracked_units == nil then return nil end
-	local nc, nf = 0, 0
+-- ROUND 172: count the army once - living units, charging, in fresh contact, in melee (routing units are living but
+-- never count as charging or fighting)
+function FOURTH.army_moments()
+	local c = { living = 0, charging = 0, fresh = 0, melee = 0 }
+	if tracked_units == nil then return c end
 	for i = 1, #tracked_units do
 		local u = tracked_units[i] and tracked_units[i].unit
-		if u ~= nil and not unit_is_routing(u) then
+		if u ~= nil then
 			local ok_a, men = pcall(function() return u:number_of_men_alive() end)
 			if ok_a and type(men) == "number" and men > 0 then
-				local w = FOURTH.charge_moment(u)
-				if w == "charging" then nc = nc + 1 elseif w ~= nil then nf = nf + 1 end
+				c.living = c.living + 1
+				if not unit_is_routing(u) then
+					local w = FOURTH.charge_moment(u)
+					if w == "charging" then c.charging = c.charging + 1 elseif w ~= nil then c.fresh = c.fresh + 1 end
+					local ok_m, m = pcall(function() return u:is_in_melee() end)
+					if ok_m and m == true then c.melee = c.melee + 1 end
+				end
 			end
 		end
 	end
-	if nc + nf >= FOURTH.ARMY_CHARGE_MIN then
-		return string.format("army charge: %d unit(s) charging and %d in fresh contact (need %d)", nc, nf,
-			FOURTH.ARMY_CHARGE_MIN)
+	-- the ruling: N = ARMY_CHARGE_MIN, or every living unit when the army has fewer
+	c.need = math.min(FOURTH.ARMY_CHARGE_MIN, c.living)
+	return c
+end
+
+function FOURTH.evaluate_army_charge(unit, routing)
+	if routing or tracked_units == nil then return nil end
+	local c = FOURTH.army_moments()
+	if c.need >= 1 and c.charging + c.fresh >= c.need then
+		return string.format("army charge: %d unit(s) charging and %d in fresh contact (need %d of %d living)",
+			c.charging, c.fresh, c.need, c.living)
 	end
 	return nil
 end
 
+-- ROUND 172 (Waaagh!): the army charge, or the same count of our units in melee
+function FOURTH.evaluate_army_charge_or_melee(unit, routing)
+	if routing or tracked_units == nil then return nil end
+	local c = FOURTH.army_moments()
+	if c.need < 1 then return nil end
+	if c.charging + c.fresh >= c.need then
+		return string.format("army charge: %d unit(s) charging and %d in fresh contact (need %d of %d living)",
+			c.charging, c.fresh, c.need, c.living)
+	end
+	if c.melee >= c.need then
+		return string.format("army melee: %d unit(s) in melee (need %d of %d living)", c.melee, c.need, c.living)
+	end
+	return nil
+end
+
+-- ROUND 172 (Ursun's Roar): ONE unit - the caster or any unit within the 70% aura - charging, in fresh contact or
+-- wavering
 function FOURTH.evaluate_aura_charge(unit, routing)
 	if routing then return nil end
 	local own = FOURTH.charge_moment(unit)
 	if own ~= nil then return "the caster: " .. own .. " (aura charge)" end
+	if FOURTH.wavering(unit) == true then return "the caster is wavering (aura charge or wavering)" end
 	local reach = FOURTH.ah_range_m
 	if reach == nil or tracked_units == nil then return nil end
 	local self_id = nil
 	pcall(function() self_id = tostring(unit:unique_ui_id()) end)
-	local n = 0
 	for i = 1, #tracked_units do
 		local u = tracked_units[i] and tracked_units[i].unit
 		if u ~= nil then
 			local ok_id, id = pcall(function() return tostring(u:unique_ui_id()) end)
-			if ok_id and id ~= self_id and not unit_is_routing(u) then
+			local ok_a, men = pcall(function() return u:number_of_men_alive() end)
+			if ok_id and id ~= self_id and ok_a and type(men) == "number" and men > 0 and not unit_is_routing(u) then
 				local ok_g, g = pcall(function() return unit:unit_distance(u) end)
-				if ok_g and type(g) == "number" and g <= reach and FOURTH.charge_moment(u) ~= nil then n = n + 1 end
+				if ok_g and type(g) == "number" and g <= reach then
+					local w = FOURTH.charge_moment(u)
+					if w ~= nil then
+						return string.format("a unit %.1fm away (aura %sm): %s (aura charge)", g, tostring(reach), w)
+					end
+					if FOURTH.wavering(u) == true then
+						return string.format("a unit %.1fm away (aura %sm) is wavering (aura charge or wavering)", g,
+							tostring(reach))
+					end
+				end
 			end
 		end
-	end
-	if n >= FOURTH.AURA_CHARGE_ALLIES then
-		return string.format("aura charge: %d unit(s) within %sm charging or in fresh contact (need %d)", n,
-			tostring(reach), FOURTH.AURA_CHARGE_ALLIES)
 	end
 	return nil
 end
@@ -20461,6 +20504,7 @@ FOURTH.evaluators = {
 	-- ROUND 150
 	when_ready = FOURTH.evaluate_when_ready,
 	army_charge = FOURTH.evaluate_army_charge,   -- ROUND 171
+	army_charge_or_melee = FOURTH.evaluate_army_charge_or_melee,   -- ROUND 172
 	aura_charge = FOURTH.evaluate_aura_charge,
 	self_or_ally_charge = FOURTH.evaluate_self_or_ally_charge,
 	slow_aura = FOURTH.evaluate_slow_aura,
@@ -20631,8 +20675,9 @@ end
 -- ability fires by itself while the unit charges ...") is REMOVED: it
 -- described a charge behaviour most abilities do not have.
 FOURTH.TRIGGER_TIP = {
-	army_charge = "When armed, fires when 3 or more of our units charge or have just made contact",   -- ROUND 171
-	aura_charge = "When armed, fires when this unit, or 2 or more units in its aura, charge or have just made contact",
+	army_charge = "When armed, fires when 3 or more of our units (every unit in a smaller army) charge or have just made contact",   -- ROUND 171/172
+	army_charge_or_melee = "When armed, fires when 3 or more of our units (every unit in a smaller army) charge, have just made contact, or fight in melee",
+	aura_charge = "When armed, fires when this unit or a unit in its aura charges, has just made contact, or wavers",
 	self_or_ally_charge = "When armed, fires on this unit or the nearest charging ally, else when this unit is in melee",
 	slow_aura = "When armed, fires in melee, or when a fast enemy enters the aura",
 	winds_low = "When armed, fires when the winds pool is low with reserve left, the caster above 50% health",
@@ -20830,8 +20875,9 @@ FOURTH.CARD_TIP = {
 	charge_or_melee = "Fires when charging or in melee",
 	charge_only = "Fires when charging",
 	charge_or_wavering = "Fires when charging or wavering",
-	army_charge = "Fires when {ACN}+ of your units charge at once",   -- ROUND 171
-	aura_charge = "Fires when charging, or when {ACA}+ nearby allies charge",
+	army_charge = "Fires when {ACN}+ of your units charge at once (all of them in a smaller army)",   -- ROUND 171/172
+	army_charge_or_melee = "Fires when {ACN}+ of your units charge or fight at once (all of them in a smaller army)",
+	aura_charge = "Fires when it or a nearby ally charges or wavers",
 	self_or_ally_charge = "Fires on itself or the nearest charging ally, else in melee",
 	slow_aura = "Fires in melee, or when a fast enemy comes near",
 	winds_low = "Fires when the winds pool is low, above {WLH}% health",
@@ -21026,7 +21072,7 @@ function FOURTH.card_tokens(ability)
 	if type(ability.aura_m) == "number" then t.ALLYA = (ability.aura_m < 0) and "any ally" or "a nearby ally" end
 	if not (row ~= nil and not row.allies) then t.FF = "" end
 	-- ROUND 171: the review's constants
-	t.ACN, t.ACA = FOURTH.card_num(FOURTH.ARMY_CHARGE_MIN), FOURTH.card_num(FOURTH.AURA_CHARGE_ALLIES)
+	t.ACN = FOURTH.card_num(FOURTH.ARMY_CHARGE_MIN)   -- ROUND 172: AURA_CHARGE_ALLIES is gone (one unit is enough)
 	t.WLH = FOURTH.card_num(FOURTH.WINDS_LOW_HEALTH)
 	-- ROUND 168: the stand-still words only for a cast that stops its caster
 	local anim = false

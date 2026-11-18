@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-17 23:19 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-18 14:00 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -104,7 +104,6 @@ rows carry one of those keys. The tracker's own status column counts **995 imple
 | `enemy_wave_charge` | When armed and standing still, fires its wave at a charging enemy whose path holds none of our units | 2 | 2 |
 | `enemy_sweep` | When armed, sweeps the closest enemy in melee when none of our other units are within its reach | 2 | 2 |
 | `melee_or_shooting_self_or_ally` | When armed, fires on this unit when it is in melee or shooting, otherwise on the closest friendly unit in range that is | 2 | 2 |
-| `army_charge` | When armed, fires when 3 or more of our units charge or have just made contact | 2 | 2 |
 | `ally_wavering` | When armed, fires on a wavering ally in range | 2 | 2 |
 | `health_aura_self` | When armed, fires when this unit or a friendly unit in its aura is at or below 75% health, cast on itself | 2 | 2 |
 | `charge` | When armed, fires when this unit charges or is in melee | 1 | 1 |
@@ -133,6 +132,7 @@ rows carry one of those keys. The tracker's own status column counts **995 imple
 | `ally_blast` | When armed, fires on the friendly unit (or itself) with the most enemy value around it | 1 | 1 |
 | `enemy_strike` | When armed and standing still, strikes the ground under the most valuable standing single enemy, with none of our units near | 1 | 1 |
 | `ally_winds` | When armed, fires on the ally with the most hit points remaining, cast on that ally | 1 | 1 |
+| `army_charge` | When armed, fires when 3 or more of our units (every unit in a smaller army) charge or have just made contact | 1 | 1 |
 | `ally_broken` | When armed, fires on a broken-morale ally in range | 1 | 1 |
 | `enemy_missile_shooting` | When armed, fires on the closest enemy missile unit in range that is shooting | 1 | 1 |
 | `no_enemy_in_range_within_boost` | When armed, fires when no enemy is in this unit's missile range but one is just beyond it | 1 | 1 |
@@ -140,7 +140,8 @@ rows carry one of those keys. The tracker's own status column counts **995 imple
 | `melee_or_shooting_into_melee` | When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee | 1 | 1 |
 | `recharging_in_reach` | When armed, fires when this unit or a friendly unit near it has an ability recharging | 1 | 1 |
 | `melee_self_or_ally` | When armed, fires when this unit or a friendly unit near it is in melee | 1 | 1 |
-| `aura_charge` | When armed, fires when this unit, or 2 or more units in its aura, charge or have just made contact | 1 | 1 |
+| `aura_charge` | When armed, fires when this unit or a unit in its aura charges, has just made contact, or wavers | 1 | 1 |
+| `army_charge_or_melee` | When armed, fires when 3 or more of our units (every unit in a smaller army) charge, have just made contact, or fight in melee | 1 | 1 |
 | `ally_beast` | When armed, fires on a beast ally in range | 1 | 1 |
 | `ally_warmachine_heal` | When armed, fires on the lowest-health war machine ally in range that is at or below 75% health | 1 | 1 |
 | `contact_melee` | When armed, fires in melee against an enemy whose blows carry a contact effect | 1 | 1 |
@@ -1584,19 +1585,6 @@ An ally in range is wavering. Casts on that ally.
 | Shock Collar | `wh2_dlc16_hero_abilities_shock_collar` | Melee Attack: +24; Leadership: +16; Immune to Psychology (positive) (to self and allies in range) | targeting: self=no friends=yes enemies=no ground=no · always affects self · invalid-target: `unit_is_moulder_monster` | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_wavering) | Fires: When armed, fires on a wavering ally in range. Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 | Where You Goin!? | `wh3_dlc26_character_abilities_were_you_goin` | Unbreakable (positive) (to allies in range) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: ally_wavering) | Fires: When armed, fires on a wavering ally in range. Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 
-### `army_charge` — 2 entries / 2 keys
-
-unknown - see the mod's own `FOURTH.evaluate_army_charge`.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when 3 or more of our units charge or have just made contact.*
-
-**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Horn of the Wild Hunt | `wh_dlc05_item_abilities_horn_of_the_wild_hunt` | Charge Bonus: +60% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (army_charge, round 171) | Fires: When armed, fires when 3 or more of our units charge or have just made contact. Cast target: the unit itself |
-| Waaagh! | `wh_main_character_abilities_waaagh` | Speed: +25%; Charge Bonus: +20%; Melee Attack: +20 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (army_charge, round 171) | Fires: When armed, fires when 3 or more of our units charge or have just made contact. Cast target: the unit itself |
-
 ### `charge_or_wavering` — 2 entries / 2 keys
 
 The charge window OR the unit is wavering. Casts on the unit itself.
@@ -1928,17 +1916,41 @@ The ally with the MOST hit points remaining, anywhere in range. Casts on that al
 |---|---|---|---|---|---|---|
 | Grut's Sickle | `wh3_main_item_abilities_gruts_sickle` | Damage: 33 per hit (max 1 entities); Winds of Magic recharge: -20%; Winds of Magic reserves per second: +0.4 (to allies in range); Causes damage to self (negative) | targeting: self=no friends=yes enemies=no ground=no | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (ally-targeted: winds_maxhp) | Fires: When armed, fires on the ally with the most hit points remaining, cast on that ally. Cast target: the chosen ally in range. Bound: 70 m (70% of the game's 100 m reach) |
 
+### `army_charge` — 1 entries / 1 keys
+
+unknown - see the mod's own `FOURTH.evaluate_army_charge`.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when 3 or more of our units (every unit in a smaller army) charge or have just made contact.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Horn of the Wild Hunt | `wh_dlc05_item_abilities_horn_of_the_wild_hunt` | Charge Bonus: +60% (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (army_charge, round 172) | Fires: When armed, fires when 3 or more of our units (every unit in a smaller army) charge or have just made contact. Cast target: the unit itself |
+
+### `army_charge_or_melee` — 1 entries / 1 keys
+
+unknown - see the mod's own `FOURTH.evaluate_army_charge_or_melee`.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when 3 or more of our units (every unit in a smaller army) charge, have just made contact, or fight in melee.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Waaagh! | `wh_main_character_abilities_waaagh` | Speed: +25%; Charge Bonus: +20%; Melee Attack: +20 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (army_charge_or_melee, round 172) | Fires: When armed, fires when 3 or more of our units (every unit in a smaller army) charge, have just made contact, or fight in melee. Cast target: the unit itself |
+
 ### `aura_charge` — 1 entries / 1 keys
 
 unknown - see the mod's own `FOURTH.evaluate_aura_charge`.
 
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit, or 2 or more units in its aura, charge or have just made contact.*
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit or a unit in its aura charges, has just made contact, or wavers.*
 
 **Cast target:** the unit itself. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
-| Ursun's Roar | `wh3_main_character_abilities_ursuns_roar` | Charge Bonus: +36%; Leadership: +8 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (aura_charge, round 171) | Fires: When armed, fires when this unit, or 2 or more units in its aura, charge or have just made contact. Cast target: the unit itself. Bound: 24 m (70% of the mod's 35 m aura) |
+| Ursun's Roar | `wh3_main_character_abilities_ursuns_roar` | Charge Bonus: +36%; Leadership: +8 (to self and allies in range) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (aura_charge, round 172) | Fires: When armed, fires when this unit or a unit in its aura charges, has just made contact, or wavers. Cast target: the unit itself. Bound: 24 m (70% of the mod's 35 m aura) |
 
 ### `barrier_broken` — 1 entries / 1 keys
 
