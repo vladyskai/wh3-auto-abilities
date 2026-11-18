@@ -39,7 +39,8 @@ SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_a
               "melee_or_shooting_into_melee", "ally_ammo_low", "ally_missile", "no_enemy_in_range_within_boost",
               "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting",
               # round 142: the before-range ground form and the two guarded self-shooting forms
-              "ground_ally_before_range", "self_shooting_clear", "self_shooting_healthy"}
+              "ground_ally_before_range", "self_shooting_clear", "self_shooting_healthy",
+              "ally_missile_shooting"}   # round 174: Inspired Marksmanship waits for a shooting missile ally
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area"}
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",
@@ -70,7 +71,9 @@ RULED["R6"]["preyton_horns"] = ("round 158: 'Horns melee, Trance waver' (enemy_m
 RULED["R4"]["hammer_of_smednir"] = ("round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, "
                                     "possibly the wielder's drawback; the 15 m blast decides the trigger)")
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",
-               "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura"}
+               "charge_or_wavering", "ally_broken", "verminking_wavering", "wavering_aura",
+               # round 174: the routing ally (Iron-Handed Captain), the wavering / at-risk allies, the wavering Lord
+               "ally_routing", "ally_wavering_melee", "ally_melee_risk", "enemy_commander_wavering"}
 
 STAT = re.compile(r"([A-Z][A-Za-z\- .'/]+?):\s*([+\-][0-9.]+%?)")
 MISSILE_UP = re.compile(r"^(Base Missile Damage|Armour-Piercing Missile Damage|Reload Skill|Accuracy|Range|"

@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `b64667d0b84ef3257f3943c7ccc4a7ca`, 1,447,398 bytes
-  (round 173, 2026-11-18: Null Stone and Rock Eye closed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c012cfbddab5240cb080b712d5217c0c`, 1,499,237 bytes
+  (round 174, 2026-11-18: the score 1-2 review rows 24-50; 13 new families). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,8 +142,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 173): 937 ABILITIES entries / 992 ability keys / 102 trigger evaluator families.
-Wheel audit (workbook v56): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
+Current roster (round 174): 937 ABILITIES entries / 992 ability keys / 111 trigger evaluator families.
+Wheel audit (workbook v57): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
 120 not implemented among the included: 65 decided by the user, 55 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
@@ -155,7 +155,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets python ../mod_source/releases/20261118_close_two_harness172/build_and_install173.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261118_review_rows_harness173/build_and_install174.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -168,6 +168,8 @@ cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets pyth
 - Verify the INSTALLED artifact, not just the built one: `md5sum` the pack in the game `data\`
   folder and report that hash. Pack files are stored uncompressed, so
   `grep -cF "<new log string>" <installed.pack>` also proves the change shipped.
+- Since round 174 the builder COMPILES the script (lupa; hence `--with lupa`) and refuses one that does not compile:
+  every other gate compares text, and a broken table regeneration once passed them all.
 - The build asserts all four shipped files are byte-identical to source (`MATCHES SOURCE:
   True` four times) and refuses to ship any `zz_probe_` path.
 
@@ -185,7 +187,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness172: 7,251 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness173: 7,304 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -298,7 +300,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v56_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v56.py`, verified by `tools\verify_xlsx_v56.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v57_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v57.py`, verified by `tools\verify_xlsx_v57.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -328,6 +330,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 174 (2026-11-18, review rows 24-50; read F 'use the caster list'): GENERATED FOURTH.SPELLCASTER_TEXT
+  (tools\gen_spellcaster_keys.py, 865 land units; class 'spellcaster' in eg_class_ok). NEW enemy_large_value_shot,
+  enemy_spellcaster, enemy_ground_spellcasters / enemy_ground_shooters (FOURTH.cluster_pick, CLUSTER_M 24 = 70% of 35),
+  enemy_missile_value, enemy_commander_wavering (shot kind 'waver'); ally scores FOURTH.AB_RANKED / FOURTH.ab_rank
+  (charge_first, value_melee_wavering, value_shooting, value_melee_risk, routing; ab_filter 'not_missile'); the ally
+  picker keeps routing allies only for 'routing'. ally_overseer/beast/broken/missile now empty (code kept). GOTCHAS:
+  the reading copy has no FOURTH.shot_reason (answer true there); the mock's ally gap is the ALLY's dist field; a
+  GENERATED block must be cut at '\nFOURTH.load_X()\n' (line start), never 'FOURTH.load_X()' (round174 blob bug).
+  Row 23 + section 7 (finishers) RULED, not built: waiting for the user's go-ahead.
 - ROUND 173 (2026-11-18): Null Stone and Rock Eye CLOSED ('Close Null stone, Rock Eye.'). h127's hold tests now use
   Doom Glaive. Read F (spellcaster class) RULED in a side session: 'Okay, then let's use the caster list'
   (tools\list_casters.py: junction OR a skill tree granting a lore/lore spell; never agent_subtypes.is_caster).

@@ -21,7 +21,9 @@ import gamedata_paths as GP  # noqa: E402
 FAMILIES = ("enemy_large_shot", "enemy_single_shot", "enemy_infantry_shot", "enemy_melee_or_fast",
             "enemy_melee_or_shooting",
             "enemy_single_drain", "enemy_execute",   # ROUND 157
-            "enemy_area_drain", "enemy_commander_value")   # ROUND 158
+            "enemy_area_drain", "enemy_commander_value",   # ROUND 158
+            "enemy_large_value_shot", "enemy_spellcaster", "enemy_ground_spellcasters",
+            "enemy_commander_wavering")   # ROUND 174
 
 
 def tsv(name):

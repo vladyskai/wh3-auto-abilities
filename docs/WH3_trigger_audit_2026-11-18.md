@@ -70,7 +70,6 @@ None.
 | Scrying Stone | `scrying_stone` | `melee_unwavering` | round 137: kept (morale plus a combat stat, 'Keep in melee') |
 | Shield of the Old Ones | `shield_of_the_old_ones` | `melee_unwavering` | round 137: kept (morale plus a combat stat, 'Keep in melee') |
 | The Liber Mortis | `the_liber_mortis` | `melee_unwavering` | round 137: kept (morale plus a combat stat, 'Keep in melee') |
-| Verminous Fury | `verminous_fury` | `ally_melee_buff` | round 137: kept (dedicated trigger, 'Keep all 5 for now') |
 
 ## R8: kept by the user's ruling (not candidates)
 
