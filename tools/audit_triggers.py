@@ -52,7 +52,8 @@ MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_o
                                           "slow_aura",  # round 171: the caster in melee OR a fast enemy entering the aura
                                           "slow_army",  # round 177: the caster in melee OR a fast enemy closing on ours
                                           "enemy_fast_or_melee", "enemy_fast_fire_melee",  # round 178: the roots
-                                          "ally_charge_or_melee"}  # round 179: Inspired Assault
+                                          "ally_charge_or_melee",  # round 179: Inspired Assault
+                                          "enemy_ground_melee_cluster"}  # round 184: Raging Tornado (enemies in melee)
 # Rows the user has explicitly ruled on for a rule: listed apart, never counted as candidates again.
 RULED = {"R4": {
     "hunter_of_champions": "round 123: 'Hunter of champions is okay for enemy_engaged_or_shot'",
@@ -74,6 +75,7 @@ RULED["R6"] = {m: "round 137: kept (%s)" % why for m, why in (
     ("verminous_fury", "dedicated trigger, 'Keep all 5 for now'"))}
 RULED["R6"]["preyton_horns"] = ("round 158: 'Horns melee, Trance waver' (enemy_melee: our fighting units +8, the "
                                "enemy -8)")
+RULED["R4"]["warpstorm_scroll"] = ("round 184: 'Recommended' (enemy_single_drain, flying only); the x0.55 slow rides a trigger with no melee or charge arm: put to the user on 2026-11-20")
 RULED["R4"]["hammer_of_smednir"] = ("round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, "
                                     "possibly the wielder's drawback; the 15 m blast decides the trigger)")
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",

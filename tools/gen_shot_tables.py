@@ -25,7 +25,8 @@ FAMILIES = ("enemy_large_shot", "enemy_single_shot", "enemy_infantry_shot", "ene
             "enemy_large_value_shot", "enemy_spellcaster", "enemy_ground_spellcasters",
             "enemy_commander_wavering",   # ROUND 174
             "enemy_most_models",   # ROUND 178: shares the AREA caps
-            "enemy_finisher")   # ROUND 182: the Executioner (its min range and melee rule)
+            "enemy_finisher",   # ROUND 182: the Executioner (its min range and melee rule)
+            "enemy_area_drain_hurt")   # ROUND 184: Soul Stealer x2 (the area drain with the 75% gate)
 
 
 def tsv(name):

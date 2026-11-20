@@ -1,6 +1,6 @@
 # Trigger audit, 2026-11-20
 
-Every automated ability (945 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
+Every automated ability (955 entries) checked against the rules below by `tools/audit_triggers.py`. The effect is the game's own data; a flagged row is a candidate for review, not a decision.
 
 | Rule | Candidates |
 |---|---:|
@@ -54,6 +54,7 @@ None.
 | Hunter of Champions | `hunter_of_champions` | `enemy_engaged_or_shot` | round 123: 'Hunter of champions is okay for enemy_engaged_or_shot' |
 | Looming Dread | `looming_dread` | `enemy_engaged_or_shot` | round 135: 'Keep as is, but make sure the trigger filters for the enemy unit type' (Lord/Hero filter) |
 | The Hammer of Smednir | `hammer_of_smednir` | `enemy_wander` | round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, possibly the wielder's drawback; the 15 m blast decides the trigger) |
+| Warpstorm Scroll | `warpstorm_scroll` | `enemy_single_drain` | round 184: 'Recommended' (enemy_single_drain, flying only); the x0.55 slow rides a trigger with no melee or charge arm: put to the user on 2026-11-20 |
 
 ## R6: kept by the user's ruling (not candidates)
 
