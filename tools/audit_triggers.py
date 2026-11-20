@@ -42,7 +42,8 @@ SHOOT_TRIG = {"allies_firing_aura", "self_or_ally_shooting", "melee_or_self_or_a
               "melee_or_shooting_aura", "melee_or_shooting_self_or_ally", "self_shooting",
               # round 142: the before-range ground form and the two guarded self-shooting forms
               "ground_ally_before_range", "self_shooting_clear", "self_shooting_healthy",
-              "ally_missile_shooting"}   # round 174: Inspired Marksmanship waits for a shooting missile ally
+              "ally_missile_shooting",   # round 174: Inspired Marksmanship waits for a shooting missile ally
+              "melee_or_self_shooting"}   # round 182: Skjalandir's Fall (in melee or shooting)
 MISSILE_ARM_TRIG = {"enemy_engaged_or_shot", "enemy_ground_area", "enemy_fast_fire_melee"}   # round 178: under our fire
 MELEE_OR_CHARGE_TRIG = MELEE_ONLY_TRIG | {"charge_or_melee", "charge", "charge_only", "charge_or_wavering",
                                           "melee_or_self_or_ally_shooting", "melee_or_shooting_into_melee",

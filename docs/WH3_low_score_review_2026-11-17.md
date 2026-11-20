@@ -88,7 +88,7 @@ is the 5/5 for that ability."
 
 | # | Ability | Every effect | Now | Proposed trigger | Score after |
 |---|---|---|---|---|---|
-| 23 | Executioner | 1 shot: 200 damage, 420 AP, +240 vs large; **damage x1 at full health rising to x4 at 1% health** (`projectiles_scaling_damages`: kill_shot, the user caught it 2026-11-17); 3 uses; 5 s wind-up; range 250 m | blob (1 m blast) | **FINISHER** (**RULED 2026-11-17**: "No need for a max-hit-points table, let's just rely on percentages ... All of them should have priority, if possible, for the entity with the lowest health percentage"): the visible single-entity enemy within 175 m with the LOWEST live health percentage, clear of allies; a tie goes to the most valuable. It fires whenever such a target exists (no health line). ASSUMPTION: the multiplier reads the target entity's own health. | 5 |
+| 23 | Executioner (**BUILT round 182: 90% bound, user 2026-11-20**) | 1 shot: 200 damage, 420 AP, +240 vs large; **damage x1 at full health rising to x4 at 1% health** (`projectiles_scaling_damages`: kill_shot, the user caught it 2026-11-17); 3 uses; 5 s wind-up; range 250 m | blob (1 m blast) | **FINISHER** (**RULED 2026-11-17**: "No need for a max-hit-points table, let's just rely on percentages ... All of them should have priority, if possible, for the entity with the lowest health percentage"): the visible single-entity enemy within 175 m with the LOWEST live health percentage, clear of allies; a tie goes to the most valuable. It fires whenever such a target exists (no health line). ASSUMPTION: the multiplier reads the target entity's own health. | 5 |
 | 24 | Amber Bow (**BUILT round 174**) | 5 shots: 50 damage, 115 AP, +60 vs large, + a 30 / 65 AP burst; 2 uses | blob | **`enemy_large_shot`** (exists): the most valuable large enemy, else the most armoured infantry (the high AP suits armour). | 5 |
 | 25 | Gaze of Nagash (**BUILT round 174**) | 5 bolts: 30 damage, 75 AP, +50 vs large; 3 uses | blob | **`enemy_large_shot`** (AP 75: armour fallback). | 5 |
 | 26 | Hand of Gods (**BUILT round 174**) | 15 bolts: 20 damage, 50 AP, +33 vs large; 2 uses | blob | **LARGE, ELSE VALUE:** the most valuable large enemy, else the most valuable infantry per soldier. The armour fallback does not suit 50 AP. A small variant of `enemy_large_shot`. | 5 |
@@ -122,7 +122,7 @@ is the 5/5 for that ability."
 | 49 | Whiplash! (**BUILT round 174**) | ONE beast ally (never a Lord or Hero): charge speed x1.25, charge bonus x1.2, melee damage x1.5, 21 s | the closest beast ally, at once | **BEAST CHARGE OR FRESH CONTACT:** the nearest beast ally within 70 m in its charge window, else in fresh contact. | 5 |
 | 50 | Iron-Handed Captain (**BUILT round 174**) | ONE ally whose morale is BROKEN (the game's rule): leadership +100, **Force Rally**, 42 s; range 200 m | broken ally, but the shared picker skips routing units, so it probably never fires | **ROUTING ALLY:** the most valuable routing ally within 140 m. Force Rally exists to bring a routing unit back. The picker must stop skipping routing units for this entry (a defect). | 5 |
 
-## 7. FINISHERS (user ruling 2026-11-17)
+## 7. FINISHERS (user ruling 2026-11-17) - BUILT round 182 (the execute: the highest health % below the line, user 2026-11-20; Skjalandir's Fall: in melee or shooting, every hit blinds)
 
 A finisher is an ability whose damage grows as its target's health falls. Ruling: "All of them should have priority,
 if possible, for the entity with the lowest health percentage", read from live percentages (no hit-point table).

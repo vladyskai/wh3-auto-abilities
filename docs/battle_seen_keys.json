@@ -51,6 +51,7 @@
 "wh2_dlc13_character_ability_hunters_call",
 "wh2_dlc13_character_ability_ishas_rain",
 "wh2_dlc13_item_abilities_shield_of_aeons",
+"wh2_dlc13_lord_abilities_executioner",
 "wh2_dlc13_lord_abilities_hail_of_fire",
 "wh2_dlc13_lord_abilities_kill_shot",
 "wh2_dlc13_lord_abilities_monstrous_strength",
@@ -477,6 +478,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 195,
+"logs_read": 196,
 "made": "2026-11-20"
 }

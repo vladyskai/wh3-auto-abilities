@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-20 12:34 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-20 13:11 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -55,7 +55,7 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 |---|---|---:|---:|
 | `melee_unwavering` | When armed, fires when this unit is in melee | 265 | 274 |
 | `enemy_ground_melee` | When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground | 74 | 85 |
-| `enemy_blob` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 69 | 69 |
+| `enemy_blob` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 68 | 68 |
 | `enemy_wander` | When armed and standing still, fires at a standing enemy blob worth the most, with none of our units within the blast's wandering reach | 42 | 42 |
 | `charge_or_melee` | When armed, fires when this unit charges or is in melee | 36 | 37 |
 | `enemy_melee` | When armed, fires on the closest enemy unit in range that is fighting in melee | 35 | 38 |
@@ -108,7 +108,7 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `winds_low` | When armed, fires when the winds pool is low with reserve left, the caster above 50% health | 2 | 2 |
 | `enemy_wavering` | When armed, fires on the closest wavering enemy in range | 2 | 2 |
 | `enemy_single_shot` | When armed and standing still, fires on the most valuable single-entity enemy in range (lord, hero or monster) with none of yours near it | 2 | 2 |
-| `enemy_execute` | When armed, fires on the most valuable enemy in range whose health is at or below the execute line | 2 | 2 |
+| `enemy_execute` | When armed, fires on the enemy in range with the most health left at or below the execute line | 2 | 2 |
 | `fly_dive` | When armed, fires when this unit is flying over an enemy and none of our other units are inside its blast | 2 | 2 |
 | `enemy_wave_charge` | When armed and standing still, fires its wave at a charging enemy whose path holds none of our units | 2 | 2 |
 | `enemy_sweep` | When armed, sweeps the closest enemy in melee when none of our other units are within its reach | 2 | 2 |
@@ -152,6 +152,7 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `self_out_of_ammo` | When armed, fires when this unit has no ammunition left and is above 50% health | 1 | 1 |
 | `health_aura_self_undead` | When armed, fires when this unit or a non-living friendly unit in its aura is hurt | 1 | 1 |
 | `ally_hurt_melee` | When armed, fires on the most hurt friendly unit in range that is in melee | 1 | 1 |
+| `enemy_finisher` | When armed and standing still, fires on the single-entity enemy in range with the lowest health, none of yours near it | 1 | 1 |
 | `enemy_infantry_shot` | When armed and standing still, fires on the enemy infantry in range worth the most per soldier, with none of yours near it | 1 | 1 |
 | `melee_clear_block` | When armed, fires in melee when none of our other units is inside its blast and at least 60 enemy soldiers are | 1 | 1 |
 | `enemy_blob_vortex` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 1 | 1 |
@@ -166,7 +167,7 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `enemy_missile_value` | When armed, fires at the most valuable enemy missile unit that is shooting | 1 | 1 |
 | `no_enemy_in_range_within_boost` | When armed, fires when no enemy is in this unit's missile range but one is just beyond it | 1 | 1 |
 | `self_or_ally_charge` | When armed, fires on this unit or the nearest charging ally, else when this unit is in melee | 1 | 1 |
-| `melee_or_shooting_into_melee` | When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee | 1 | 1 |
+| `melee_or_self_shooting` | When armed, fires when this unit is in melee or shooting | 1 | 1 |
 | `recharging_in_reach` | When armed, fires when this unit or a friendly unit near it has an ability recharging | 1 | 1 |
 | `aura_charge` | When armed, fires when this unit or a unit in its aura charges, has just made contact, or wavers | 1 | 1 |
 | `ally_wavering_melee` | When armed, fires on the most valuable wavering ally in melee, never a missile unit | 1 | 1 |
@@ -679,7 +680,7 @@ unknown - see the mod's own `FOURTH.evaluate_enemy_ground_melee`.
 | Vizier's Kanopi | `wh3_dlc26_item_tmb_liche_priest_viziers_kanopi` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: summons the unit: wh2_dlc09_tmb_inf_skeleton_warriors_0_summoned; AI melee CP: 100; AI missile CP: 100; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "From dust to bone, from bone to battle; in sands enchanted and encased, the Nehekharan desert reminds its enemies of its fiercest warriors." | targeting: self=yes friends=yes enemies=no ground=yes · invalid-target: `climbing_manning_eq_on_platform` | cast reach 50 m · targets ground · trigger bound 35 m (70% of the game's 50 m reach) | implemented (enemy-ground: closest FIGHTING enemy) | Fires: When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
 | Wake Da Idol | `wh3_main_item_abilities_zak_aloooog` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: summons the unit: wh2_dlc15_grn_mon_rogue_idol_summoned_0; miscast explosion: wh_main_big_waaagh_miscast; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Thrumming with the magic of Wazwhoompa, Shaman of the 'Eadhuntaz, the Idol of Zak-Aloooog unleashes the might of the Greenskin gods themselves." | targeting: self=yes friends=yes enemies=no ground=yes · always affects self | cast reach 50 m · targets ground · trigger bound 35 m (70% of the game's 50 m reach) | implemented (enemy-ground: closest FIGHTING enemy) | Fires: When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
 
-### `enemy_blob` — 69 entries / 69 keys
+### `enemy_blob` — 68 entries / 68 keys
 
 With the caster STANDING STILL and the game's usage rules met (flying where it must not be grounded, out of melee where it must be): the 53 prefer_central_targets attacks hit a safe visible LARGE enemy in range first (the most value lost), never a FLYING one, and never hold for one out of range; otherwise the safe visible enemy INFANTRY unit whose blast destroys the most value (at least half a packed block in the blast; TRASH below 2 value per soldier only when the blast covers 3 packed blocks; AP-heavy attacks never at armour below 50; the prefer-central attacks and breaths prefer a side-on target within 20% of the best value). Casts on that enemy; re-checked before the cast.
 
@@ -711,7 +712,6 @@ With the caster STANDING STILL and the game's usage rules met (flying where it m
 | Doomrocket | `wh2_main_hero_abilities_doomrocket` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh2_main_hero_abilities_doomrocket; AI missile CP: 150; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Built with secrets stolen from the mysterious east, Warlock Engineers seek to improve the propulsion and payload of these devastating weapons." | targeting: self=no friends=no enemies=yes ground=no · invalid-usage: `climbing`, `manning_equipment` | cast reach 200 m · trigger bound 140 m (70% of the game's 200 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 140 m (70% of the game's 200 m reach) |
 | Eagle Quiver | `wh2_dlc16_item_abilities_eagle_quiver` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh2_dlc16_item_abilities_eagle_quiver; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "At opportune moments, an arrow pulled from this enchanted quiver is willed by Talyn's spirit to fly truer towards cruel hearts." | targeting: self=no friends=no enemies=yes ground=no | cast reach 400 m · trigger bound 280 m (70% of the game's 400 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 280 m (70% of the game's 400 m reach) |
 | Elemental Breath | `wh3_main_unit_abilities_elemental_breath` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh3_main_unit_abilities_elemental_breath; AI missile CP: 50; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "When the land itself fights back, the enemy is petrified by its freezing touch, meaning the slightest gust will see them shatter into dust." | targeting: self=no friends=no enemies=yes ground=no · invalid-usage: `engaged_in_melee` | cast reach 90 m · trigger bound 63 m (70% of the game's 90 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 63 m (70% of the game's 90 m reach) |
-| Executioner | `wh2_dlc13_lord_abilities_executioner` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh2_dlc13_lord_abilities_executioner; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Wulfhart considers it his sworn duty to dispatch the Emperor's enemies without the slightest hesitation." | targeting: self=no friends=no enemies=yes ground=no | cast reach 250 m · trigger bound 175 m (70% of the game's 250 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 175 m (70% of the game's 250 m reach) |
 | Experimental Explosive | `wh3_dlc25_weapon_abilities_experimental_explosive` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh3_dlc25_weapon_abilities_experimental_explosive; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "This compound of highly volatile powder ignites with the slightest jostle – perfectly suitable for the battlefield if you can get it there unexploded!" | targeting: self=no friends=no enemies=yes ground=no · invalid-usage: `climbing`, `engaged_in_melee`, `manning_equipment` | cast reach 70 m · trigger bound 49 m (70% of the game's 70 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 49 m (70% of the game's 70 m reach) |
 | Fiery Breath | `wh2_main_unit_abilities_fiery_breath` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh2_main_def_war_hydra_breath; AI missile CP: 50; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Just give the order and the Hydra's heads will spew forth their fiery breath, each competing for the brightest flame." | targeting: self=no friends=no enemies=yes ground=no · invalid-usage: `engaged_in_melee` | cast reach 90 m · trigger bound 63 m (70% of the game's 90 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 63 m (70% of the game's 90 m reach) |
 | Fire Breath | `wh3_main_character_abilities_fire_breath` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh3_main_character_abilities_fire_breath; AI missile CP: 50; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "When you've had just the right cocktail of incendiary ingredients for lunch, nothing with an ounce of sense will stand in your way…" | targeting: self=no friends=no enemies=yes ground=no · invalid-usage: `engaged_in_melee` | cast reach 90 m · trigger bound 63 m (70% of the game's 90 m reach) | implemented (infantry blob, most value destroyed: enemy_blob) | Fires: When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near. Cast target: the chosen enemy unit. Bound: 63 m (70% of the game's 90 m reach) |
@@ -1661,14 +1661,14 @@ The charge window OR the unit is wavering. Casts on the unit itself.
 
 The most valuable enemy in range whose health is at or below the generated execute line (20% base, Lord/Hero only; 33% upgrade, single entities). Casts on that enemy; re-checked before the cast.
 
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires on the most valuable enemy in range whose health is at or below the execute line.*
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires on the enemy in range with the most health left at or below the execute line.*
 
 **Cast target:** the chosen enemy unit. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
-| The Emperor's Executioner | `wh3_dlc24_lord_abilities_the_emperors_executioner` | Damage: 732 per hit (max 1 entities); Executes below 0.2 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 20% hit points threshold. (positive); Strong vs a single combatant (positive) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `unit_is_not_commander_class` | cast reach 50 m · trigger bound 35 m (70% of the game's 50 m reach) | implemented (at the execute line: enemy_execute) | Fires: When armed, fires on the most valuable enemy in range whose health is at or below the execute line. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
-| The Emperor's Executioner | `wh3_dlc24_lord_abilities_the_emperors_executioner_upgrade` | Damage: 732 per hit (max 1 entities); Executes below 0.33 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 33% hit points threshold. (magic); Strong vs a single combatant (positive) | targeting: self=no friends=no enemies=yes ground=no | cast reach 50 m · trigger bound 35 m (70% of the game's 50 m reach) | implemented (at the execute line: enemy_execute) | Fires: When armed, fires on the most valuable enemy in range whose health is at or below the execute line. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
+| The Emperor's Executioner | `wh3_dlc24_lord_abilities_the_emperors_executioner` | Damage: 732 per hit (max 1 entities); Executes below 0.2 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 20% hit points threshold. (positive); Strong vs a single combatant (positive) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `unit_is_not_commander_class` | cast reach 50 m · trigger bound 35 m (70% of the game's 50 m reach) | implemented (enemy_execute, round 182) | Fires: When armed, fires on the enemy in range with the most health left at or below the execute line. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
+| The Emperor's Executioner | `wh3_dlc24_lord_abilities_the_emperors_executioner_upgrade` | Damage: 732 per hit (max 1 entities); Executes below 0.33 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 33% hit points threshold. (magic); Strong vs a single combatant (positive) | targeting: self=no friends=no enemies=yes ground=no | cast reach 50 m · trigger bound 35 m (70% of the game's 50 m reach) | implemented (enemy_execute, round 182) | Fires: When armed, fires on the enemy in range with the most health left at or below the execute line. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
 
 ### `enemy_fast_fire_melee` — 2 entries / 2 keys
 
@@ -2306,6 +2306,18 @@ unknown - see the mod's own `FOURTH.evaluate_enemy_commander_wavering`.
 |---|---|---|---|---|---|---|
 | Transfix | `wh3_dlc29_lord_abilities_transfix` | Melee Defence: -40; Silenced (positive); Cannot move (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `morale_is_higher_than_half_of_base_morale`, `unit_is_not_commander_class` | cast reach 100 m · trigger bound 70 m (70% of the game's 100 m reach) | implemented (enemy_commander_wavering, round 174) | Fires: When armed, fires at a wavering or routing enemy Lord or Hero, one in melee first. Cast target: the chosen enemy unit. Bound: 70 m (70% of the game's 100 m reach) |
 
+### `enemy_finisher` — 1 entries / 1 keys
+
+unknown - see the mod's own `FOURTH.evaluate_enemy_finisher`.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed and standing still, fires on the single-entity enemy in range with the lowest health, none of yours near it.*
+
+**Cast target:** the chosen enemy unit. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Executioner | `wh2_dlc13_lord_abilities_executioner` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: fires projectile: wh2_dlc13_lord_abilities_executioner; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Wulfhart considers it his sworn duty to dispatch the Emperor's enemies without the slightest hesitation." | targeting: self=no friends=no enemies=yes ground=no | cast reach 250 m · trigger bound 175 m (70% of the game's 250 m reach) | implemented (enemy_finisher, round 182) | Fires: When armed and standing still, fires on the single-entity enemy in range with the lowest health, none of yours near it. Cast target: the chosen enemy unit. Bound: 175 m (70% of the game's 250 m reach) |
+
 ### `enemy_ground_shooters` — 1 entries / 1 keys
 
 unknown - see the mod's own `FOURTH.evaluate_enemy_ground_shooters`.
@@ -2579,17 +2591,17 @@ In melee and not wavering (as melee_unwavering): cast on itself. Otherwise as se
 |---|---|---|---|---|---|---|
 | Entrenchment | `wh_main_unit_abilities_entrenchment` | Armour-Piercing Missile Damage: +40%; Physical Resistance: +20; Cannot move (to self and allies in range) | targeting: self=yes friends=yes enemies=no ground=no · always affects self · invalid-target: `climbing`, `flying_currently`, `manning_equipment` | cast reach 150 m · trigger bound 105 m (70% of the game's 150 m reach) | implemented (melee, or self or a shooting ally: melee_or_self_or_ally_shooting) | Fires: When armed, fires on this unit in melee or when it is shooting, otherwise on the closest friendly unit in range that is shooting. Cast target: the caster in melee or when it shoots, otherwise the closest shooting ally. Bound: 105 m (70% of the game's 150 m reach) |
 
-### `melee_or_shooting_into_melee` — 1 entries / 1 keys
+### `melee_or_self_shooting` — 1 entries / 1 keys
 
-In melee and not wavering (as melee_unwavering), OR shooting past its cast point at a current target that is in melee. Casts on the unit itself.
+unknown - see the mod's own `FOURTH.evaluate_melee_or_self_shooting`.
 
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee.*
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is in melee or shooting.*
 
 **Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
 |---|---|---|---|---|---|---|
-| Skjalandir's Fall | `wh3_dlc23_character_abilities_skjalandirs_fall` | Accuracy: +90; Imbues its target's attacks on contact: wh3_dlc23_unit_contact_blinded (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (melee or shooting into melee) | Fires: When armed, fires when this unit is in melee, or is shooting at an enemy that is in melee. Cast target: the unit itself |
+| Skjalandir's Fall | `wh3_dlc23_character_abilities_skjalandirs_fall` | Accuracy: +90; Imbues its target's attacks on contact: wh3_dlc23_unit_contact_blinded (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (melee_or_self_shooting, round 182) | Fires: When armed, fires when this unit is in melee or shooting. Cast target: the unit itself |
 
 ### `no_enemy_in_range_within_boost` — 1 entries / 1 keys
 
