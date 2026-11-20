@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-20 13:11 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-20 14:15 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -29,8 +29,8 @@ Generated 2026-11-20 13:11 by `tools/build_ability_database.py` (re-runnable; no
 |---|---:|
 | Tracker inventory rows (all three tables) | **1801** |
 | distinct ability keys in those rows | 1800 |
-| implemented keys (per the mod's `ABILITIES` table) | **989** |
-| implemented entries in the mod | **936** |
+| implemented keys (per the mod's `ABILITIES` table) | **998** |
+| implemented entries in the mod | **945** |
 | abilities carrying an **invalid-target** restriction flag | **424** |
 | abilities carrying an **invalid-usage** restriction flag | **414** |
 | abilities carrying an **auto-deactivate** flag | **2** |
@@ -39,21 +39,21 @@ Generated 2026-11-20 13:11 by `tools/build_ability_database.py` (re-runnable; no
 
 | Final status family | Abilities |
 |---|---:|
-| implemented | 990 |
-| excluded (no automatic logic) | 679 |
+| implemented | 999 |
+| excluded (no automatic logic) | 670 |
 | skipped (deferred / unsuitable) | 90 |
 | rejected (user decision) | 27 |
 | excluded (impossible - engine limit) | 15 |
 | **TOTAL** | **1801** |
 
-Reconciliation: the mod's `ABILITIES` table holds **936 entries / 989 keys**; **990** of the inventory
-rows carry one of those keys. The tracker's own status column counts **990 implemented / 694 excluded (no automatic logic 679 + impossible 15) / 90 skipped / 27 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
+Reconciliation: the mod's `ABILITIES` table holds **945 entries / 998 keys**; **999** of the inventory
+rows carry one of those keys. The tracker's own status column counts **999 implemented / 685 excluded (no automatic logic 670 + impossible 15) / 90 skipped / 27 rejected = 1801 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
 
 ### 1.3 Implemented abilities by trigger family (what fires, in plain English)
 
 | Trigger family (Lua) | Plain English (the mod's own tooltip sentence) | Entries | Keys |
 |---|---|---:|---:|
-| `melee_unwavering` | When armed, fires when this unit is in melee | 265 | 274 |
+| `melee_unwavering` | When armed, fires when this unit is in melee | 268 | 277 |
 | `enemy_ground_melee` | When armed, fires when an enemy in range is fighting in melee and the summon is placed on its ground | 74 | 85 |
 | `enemy_blob` | When armed and standing still, fires at the enemy infantry where the blast destroys the most value, when it hits enough soldiers and none of ours are near | 68 | 68 |
 | `enemy_wander` | When armed and standing still, fires at a standing enemy blob worth the most, with none of our units within the blast's wandering reach | 42 | 42 |
@@ -75,9 +75,11 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `health_aura_ally` | When armed, fires when this unit or a friendly unit in range is at or below 75% health, cast on it | 8 | 9 |
 | `enemy_large_shot` | When armed, fires on the most valuable large enemy in range with none of yours near it, otherwise on the most armoured enemy infantry | 7 | 7 |
 | `wavering_ally_range` | When armed, fires when an ally in range is wavering | 6 | 6 |
+| `enemy_melee_near` | When armed, fires when this unit, or an enemy in its aura, is in melee | 5 | 5 |
 | `melee_or_under_fire` | When armed, fires when this unit (or, for an aura, a friendly unit near it) is in melee or under missile fire | 5 | 5 |
 | `self_recharging` | When armed, fires when another ability of this unit is recharging | 5 | 5 |
 | `enemy_cone` | When armed and standing still, breathes at a standing enemy when the cone holds the most enemy value and none of our other units | 5 | 5 |
+| `melee_health75` | When armed, fires when this unit is in melee and at or below 75% health | 4 | 4 |
 | `ally_melee_wavering_first` | When armed, fires on the nearest ally in melee, a wavering one first | 4 | 4 |
 | `charge_only` | When armed, fires when this unit charges | 4 | 4 |
 | `wavering_self` | When armed, fires when this unit is wavering | 4 | 4 |
@@ -97,7 +99,6 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `ally_missile_shooting` | When armed, fires on the most valuable missile ally that is shooting | 3 | 3 |
 | `ally_heal` | When armed, fires on the lowest-health ally in range when it is at or below 75% health | 3 | 3 |
 | `melee_or_wavering_aura` | When armed, fires when this unit or a friendly unit near it is in melee or wavering | 2 | 3 |
-| `melee_health75` | When armed, fires when this unit is in melee and at or below 75% health | 2 | 2 |
 | `guard_aura` | When armed, fires in melee or under missile fire, or when a fast enemy enters the aura | 2 | 2 |
 | `slow_aura` | When armed, fires in melee, or when a fast enemy enters the aura | 2 | 2 |
 | `wavering_self_or_ally` | When armed, fires when this unit or an ally in range is wavering | 2 | 2 |
@@ -123,7 +124,6 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `charge` | When armed, fires when this unit charges or is in melee | 1 | 1 |
 | `charge_or_tired` | When armed, fires when charging or tired | 1 | 3 |
 | `melee` | When armed, fires when this unit is in melee | 1 | 2 |
-| `enemy_melee_near` | When armed, fires when this unit, or an enemy in its aura, is in melee | 1 | 1 |
 | `aura_charge_or_melee` | When armed, fires when this unit or a unit in its aura charges, has just made contact, or fights | 1 | 1 |
 | `barrier_broken` | When armed, fires when this unit's barrier breaks | 1 | 1 |
 | `glorious_death` | When armed, fires when a Slayer ally in range is in melee | 1 | 1 |
@@ -189,7 +189,7 @@ rows carry one of those keys. The tracker's own status column counts **990 imple
 | `enemy_melee_noncommander` | When armed, fires on the closest enemy in range that is fighting in melee and is not a Lord or Hero | 1 | 4 |
 | `self_summon_melee` | When armed, fires when this unit itself is fighting in melee and the summon is cast on it | 1 | 1 |
 | `health_below_15` | When armed, fires when this unit is below 15% health | 1 | 5 |
-| **TOTAL** | | **936** | **989** |
+| **TOTAL** | | **945** | **998** |
 
 ### 1.4 Restriction flags found in the game's own data (the newest, most valuable layer)
 
@@ -286,20 +286,20 @@ ability off by itself when the condition holds.
 
 * Inventory rows: **1801** = one row per ability key across §3a/3b/3c.
 * Distinct keys: **1800**; keys appearing on more than one row: `wh3_twa07_spell_bound_call_of_tor`.
-* Implemented: the tracker's status column marks **989** keys implemented; the mod's `ABILITIES` table carries **989** keys.
+* Implemented: the tracker's status column marks **998** keys implemented; the mod's `ABILITIES` table carries **998** keys.
 * Tracker status and the mod's table agree exactly.
-* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **679**, implemented **990**, rejected (user decision) **27**, skipped (deferred / unsuitable) **90**.
+* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **670**, implemented **999**, rejected (user decision) **27**, skipped (deferred / unsuitable) **90**.
 
 ---
 
 ## 2. IMPLEMENTED ABILITIES — grouped by trigger family
 
-Every row below is shipping in the mod today (936 entries / 989 keys). The family heading gives the
+Every row below is shipping in the mod today (945 entries / 998 keys). The family heading gives the
 plain-English description of WHEN it fires; the **Trigger / logic** column gives the rule that specific
 ability rides. **Range** shows the game's own range columns and — where the mod gates a distance — the
 named trigger bound it uses (`floor(real x 0.7)`). **Restrictions** quotes the engine's own flag names.
 
-### `melee_unwavering` — 265 entries / 274 keys
+### `melee_unwavering` — 268 entries / 277 keys
 
 In melee AND not routing/wobbling. The read is fail-open: an unreadable morale read still rides the plain in-melee condition. Casts on the UNIT ITSELF.
 
@@ -498,6 +498,7 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 | Seduction of the Serpent | `wh_dlc08_lord_abilities_seduction_of_the_serpent` | Melee Defence: +24; Leadership: +16; Imbues its target's attacks on contact: wh_dlc06_unit_contact_discouraged (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Seductive Glory | `wh3_main_lord_abilities_seductive_glory` | Melee Defence: -24; Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Shadow Shroud | `wh3_main_lord_abilities_shadow_shroud` | Damage Resistance: +60 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
+| Shard Blade | `wh3_main_weapon_abilities_shard_blade` | Speed: -45%; Damage: 67 per hit (max 1 entities) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 15 m | implemented (melee_unwavering, round 183) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Shield of Faith | `wh_main_spell_bound_shield_of_faith` | Damage Resistance: +20 (to self and allies in range); Good against AP damage (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Shield of Faith (Upgraded) | `wh_dlc04_spell_bound_shield_of_faith_upgraded` | Damage Resistance: +20 (to self and allies in range); Extended effect duration (magic) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Shield of the Old Ones | `wh2_main_character_abilities_shield_of_the_old_ones` | Leadership: +8; Damage Resistance: +20 (to self and allies in range) | targeting: self=yes friends=no enemies=no ground=yes · always affects self | cast reach 150 m · effect range (aura) 35 m · targets ground | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
@@ -567,9 +568,11 @@ In melee AND not routing/wobbling. The read is fail-open: an unreadable morale r
 | Violent Wind | `wh3_dlc20_unit_abilities_violent_wind` | Stance: rebirth (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee: melee_unwavering) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Waaagh! | `wh3_dlc26_unit_abilities_waaagh_in_combat` | Melee Attack: +24; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25%; Immune to Psychology (positive) (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Warp Frenzy | `wh2_dlc16_hero_abilities_warp_frenzy` | Melee Attack: +24; Armour-Piercing Weapon Damage: +25%; Base Weapon Damage: +25% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self - auto, trivial) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
+| Warp-Quake | `wh2_dlc14_unit_abilities_warp_quake` | Speed: -25%; Damage: 5 per hit (max 18 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no · invalid-target: `flying_currently` | effect range (aura) 35 m | implemented (melee_unwavering, round 183) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Warpstone Addiction | `wh3_dlc29_lord_abilities_warpstone_addiction` | Damage Resistance: +33 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Warrior Familiar | `wh3_dlc27_item_abilities_warrior_familiar` | Melee Attack: +24; Melee Defence: +24 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self - auto, trivial) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Warrior's Crest | `wh2_dlc12_lord_abilities_warriors_crest` | Melee Attack: +40; Melee Defence: +24 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in-melee self - auto, trivial) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
+| Web of Shadows | `wh2_main_weapon_abilities_web_of_shadows` | Speed: -25%; Damage: 67 per hit (max 1 entities) (to enemies in range); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | implemented (melee_unwavering, round 183) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Whirl of Weeping Blades | `wh2_dlc14_weapon_abilities_whirl_of_weeping_blades` | Cannot move (to self); Good against armour (positive); Huge, stationary area of effect (positive); Strong vs multiple units (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `climbing`, `manning_equipment`, `on_a_platform` | unlimited / no range column | implemented (in melee: melee_unwavering) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Whirlwind of Pleasure | `wh3_dlc27_lord_abilities_whirlwind_of_pleasure` | Stance: rebirth; Cannot move (to self); Good against armour (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee: melee_unwavering) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
 | Wild Abandon | `wh3_dlc26_lord_abilities_wild_abandon` | Melee Attack: +40; Melee Defence: -24; Cannot Die (positive) (to self and allies in range) | targeting: self=no friends=yes enemies=no ground=no · always affects self | cast reach 100 m | implemented (in-melee self) | Fires: When armed, fires when this unit is in melee. Cast target: the unit itself |
@@ -1334,6 +1337,22 @@ The caster STANDING STILL; a STANDING enemy in range; the zone from the caster t
 | Shatter | `wh2_dlc13_character_ability_shatter` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh2_dlc13_character_ability_shatter; AI melee CP: 50; AI missile CP: 150; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "He hits the ground with such force that anyone nearby is shaken to their very core!" | targeting: self=no friends=no enemies=yes ground=yes · invalid-target: `climbing`, `flying_currently`, `on_a_platform` · invalid-usage: `climbing`, `on_a_platform` | cast reach 30 m · targets ground · trigger bound 21 m (70% of the game's 30 m reach) | implemented (clear cone, most value: enemy_cone) | Fires: When armed and standing still, breathes at a standing enemy when the cone holds the most enemy value and none of our other units. Cast target: the chosen enemy unit. Bound: 21 m (70% of the game's 30 m reach) |
 | Skabscrath | `wh_main_weapon_abilities_skabscrath` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh_main_weapon_abilities_skabscrath; AI missile CP: 150; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "The legendary sword of an Undead mercenary, it is said the blade cannot be sheathed without first taking a life and will emit a terrifying squeal until it does." | targeting: self=no friends=no enemies=yes ground=yes · invalid-target: `flying_currently`, `on_a_platform` · invalid-usage: `climbing` | cast reach 25 m · targets ground · trigger bound 17 m (70% of the game's 25 m reach) | implemented (clear cone, most value: enemy_cone) | Fires: When armed and standing still, breathes at a standing enemy when the cone holds the most enemy value and none of our other units. Cast target: the chosen enemy unit. Bound: 17 m (70% of the game's 25 m reach) |
 
+### `enemy_melee_near` — 5 entries / 5 keys
+
+unknown - see the mod's own `FOURTH.evaluate_enemy_melee_near`.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit, or an enemy in its aura, is in melee.*
+
+**Cast target:** the chosen enemy unit. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Defiling Deluge | `wh3_twa08_unit_abilities_defiling_deluge` | Damage: 5 per hit (max 25 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Replenishes hit points of combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 183) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
+| Everyone Has Their Price | `wh3_main_lord_abilities_everyone_has_their_price` | Melee Attack: -24; Leadership: -8; Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 177) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
+| Murderous Exhortations | `wh3_dlc26_lord_abilities_murderous_exhortations` | Leadership: -8; Damage: 5 per hit (max 10 entities) (to enemies in range); Strong vs units with 10 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 183) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
+| Rod of Corruption | `wh2_main_item_abilities_rod_of_corruption` | Damage: 10 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 183) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
+| Wail of Malice | `wh2_dlc14_unit_abilities_wail_of_malice` | Damage: 10 per hit (max 18 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 183) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
+
 ### `melee_or_under_fire` — 5 entries / 5 keys
 
 The unit in melee (not wavering) or under missile fire; for an aura also any friendly unit within the aura bound in melee or under fire. Casts on the unit itself.
@@ -1470,6 +1489,21 @@ In melee and not wavering (the melee_unwavering rule) AND none of our OTHER unit
 | Burning Rage | `wh3_main_lord_abilities_burning_rage` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh3_main_lord_abilities_burning_rage; AI melee CP: 150; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "The physical manifestation of their endless, furious anger is an explosion of fiery death all around the Blood God's Daemonic servant." | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee, no friend near: melee_clear) | Fires: When armed, fires when this unit is in melee and none of our other units are inside its blast. Cast target: the unit itself |
 | Emergency Vent | `wh2_dlc13_unit_abilities_emergency_vent` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh2_dlc13_unit_abilities_emergency_vent; AI missile CP: 100; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "Steam must be let off from time to time, which leads to screaming, scalding death for any foe too close to the Emperor's Wrath during battle." | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee, no friend near: melee_clear) | Fires: When armed, fires when this unit is in melee and none of our other units are inside its blast. Cast target: the unit itself |
 | Groundbreaker | `wh3_main_character_abilities_groundbreaker` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: vortex/area key: wh3_main_weapon_abilities_thundermace; AI melee CP: 50; AI missile CP: 100; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "This Ogre is infamous for thudding his club on the ground, making it shake and shatter, and taking the enemy with it." | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee, no friend near: melee_clear) | Fires: When armed, fires when this unit is in melee and none of our other units are inside its blast. Cast target: the unit itself |
+
+### `melee_health75` — 4 entries / 4 keys
+
+In melee AND the unit's own health at or below 75%. Casts on the unit itself.
+
+**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is in melee and at or below 75% health.*
+
+**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
+|---|---|---|---|---|---|---|
+| Armour of Caledor | `wh2_dlc15_item_abilities_armour_of_caledor` | Heals: 0.016 per tick every 1 s; Fatigue: -0.1; Cannot move; Own ability recharge: -120 s (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee, health 75% or less: melee_health75) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
+| Plaguereaper | `wh3_dlc29_item_abilities_plaguereaper` | Damage: 12 per hit (max 4 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Converts damage dealt into health in targeting self (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 15 m | implemented (melee_health75, round 183) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
+| Potion of Toughness | `wh_main_item_abilities_potion_of_toughness` | Armour: +30; Melee Defence: +24; Heals: 0.008 per tick every 1 s (to self); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `morale_is_broken_or_lower` | unlimited / no range column | implemented (melee_health75) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
+| Reaper of Souls | `wh2_dlc14_lord_abilities_reaper_of_souls` | Damage: 96 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Absorbs hitpoints from enemies (positive); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | implemented (melee_health75, round 183) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
 
 ### `melee_skip_commanders` — 4 entries / 5 keys
 
@@ -1825,19 +1859,6 @@ The OWNER or a friendly unit inside the self-centred aura (`floor(effect_range x
 |---|---|---|---|---|---|---|
 | Locus of Fecundity | `wh3_main_character_abilities_locus_of_fecundity` | Heals: 0.008 per tick every 1 s; Fatigue: -0.01 (to self and allies in range); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 55 m · trigger bound 38 m (70% of the mod's 55 m aura) | implemented (health<=75, ally-aware) | Fires: When armed, fires when this unit or a friendly unit in its aura is at or below 75% health, cast on itself. Cast target: the caster. Bound: 38 m (70% of the mod's 55 m aura) |
 | Salyak's Lullaby | `wh3_main_character_abilities_salyaks_lullaby` | Heals: 0.008 per tick every 1 s (to self and allies in range); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (health<=75, ally-aware) | Fires: When armed, fires when this unit or a friendly unit in its aura is at or below 75% health, cast on itself. Cast target: the caster. Bound: 24 m (70% of the mod's 35 m aura) |
-
-### `melee_health75` — 2 entries / 2 keys
-
-In melee AND the unit's own health at or below 75%. Casts on the unit itself.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit is in melee and at or below 75% health.*
-
-**Cast target:** the unit itself. **Trigger bound:** none - the trigger is self-referential.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Armour of Caledor | `wh2_dlc15_item_abilities_armour_of_caledor` | Heals: 0.016 per tick every 1 s; Fatigue: -0.1; Cannot move; Own ability recharge: -120 s (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (in melee, health 75% or less: melee_health75) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
-| Potion of Toughness | `wh_main_item_abilities_potion_of_toughness` | Armour: +30; Melee Defence: +24; Heals: 0.008 per tick every 1 s (to self); Replenishes hit points of combatants (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self · invalid-usage: `morale_is_broken_or_lower` | unlimited / no range column | implemented (melee_health75) | Fires: When armed, fires when this unit is in melee and at or below 75% health. Cast target: the unit itself |
 
 ### `melee_or_shooting_self_or_ally` — 2 entries / 2 keys
 
@@ -2366,18 +2387,6 @@ unknown - see the mod's own `FOURTH.evaluate_enemy_low_health_noncommander`.
 |---|---|---|---|---|---|---|
 | Eye of Khorne | `wh3_dlc26_lord_abilities_eye_of_khorne` | Damage: 2660 per hit (max 100 entities) (to enemies in range); Summons a unit of Chaos Spawn (positive); Causes severe damage to combatants (positive); Summoned units degrade over time (negative) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `climbing_manning_eq_on_platform`, `health_above_20%`, `unit_is_commander_class` | cast reach 50 m · trigger bound 35 m (70% of the game's 50 m reach) | implemented (enemy_low_health_noncommander, value first, round 178) | Fires: When armed, fires on the most valuable enemy in range that is below 20% health and is not a Lord or Hero. Cast target: the chosen enemy unit. Bound: 35 m (70% of the game's 50 m reach) |
 
-### `enemy_melee_near` — 1 entries / 1 keys
-
-unknown - see the mod's own `FOURTH.evaluate_enemy_melee_near`.
-
-**Plain English (the sentence the mod ships in that ability's tooltip):** *When armed, fires when this unit, or an enemy in its aura, is in melee.*
-
-**Cast target:** the chosen enemy unit. **Trigger bound:** the per-ability 70% constant shown in each row's Range column.
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Trigger / logic |
-|---|---|---|---|---|---|---|
-| Everyone Has Their Price | `wh3_main_lord_abilities_everyone_has_their_price` | Melee Attack: -24; Leadership: -8; Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m · trigger bound 24 m (70% of the mod's 35 m aura) | implemented (enemy_melee_near, round 177) | Fires: When armed, fires when this unit, or an enemy in its aura, is in melee. Cast target: the chosen enemy unit. Bound: 24 m (70% of the mod's 35 m aura) |
-
 ### `enemy_melee_noncommander` — 1 entries / 4 keys
 
 unknown - see the mod's own `FOURTH.evaluate_enemy_melee_noncommander`.
@@ -2788,7 +2797,7 @@ An ally IN RANGE is in melee AND wavering. Casts on the unit itself (the ally is
 
 ## 3. EXCLUDED / SKIPPED / REJECTED / IMPOSSIBLE — with reasons
 
-These 811 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
+These 802 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
 tracker's own final status/reason for that row. The Effect / Restrictions / Range columns are the same
 fresh game-data extraction used in §2, so a later re-decision has the mechanics at hand.
 
@@ -3406,35 +3415,6 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Warpstorm Doomrocket | `wh3_dlc24_tze_changeling_theatre_scheme_grand_cathay_doom_rocket` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: bombardment key: wh2_dlc12_army_abilities_warpstorm_doomrocket; AI missile CP: 600; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "This dread projectile causes an enormous explosion on impact, sending entire units – and no doubt their limbs – flying off in all directions." | targeting: self=no friends=no enemies=yes ground=yes | targets ground | excluded (auto: bombardment / ground artillery (friendly fire, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. (FF — keep off until proven) |
 | Xapati's Sanctum | `wh2_dlc17_army_abilities_xapatis_sanctum` | unknown (no stat or phase rows in the game's tables; the game's own delivery columns: bombardment key: wh2_dlc17_army_abilities_xapatis_sanctum; AI missile CP: 200; its effect is carried by that projectile / vortex / summoned-unit definition, whose tables are NOT part of this extraction) — the game's own description: "A toxic barrage of noxious vengeance rains down upon the foe, poisoning enemies and permeating their armour." | targeting: self=no friends=no enemies=yes ground=yes | targets ground | excluded (auto: bombardment / ground artillery (friendly fire, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. (FF — keep off until proven) |
 
-### excluded (no automatic logic) — own-troop-damage AoE (24)
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
-|---|---|---|---|---|---|---|
-| Defiling Deluge | `wh3_twa08_unit_abilities_defiling_deluge` | Damage: 5 per hit (max 25 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Replenishes hit points of combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | When in melee (and not fleeing): cast on self. |
-| Descent Into Dissolution | `wh3_dlc27_army_abilities_eternal_dance_tempo_3_jesters_laughter` | Charge Bonus: -50%; Rampage (positive); Damage: 6 per hit (max 20 entities) (to enemies in range); Good against flying (positive) | targeting: self=no friends=no enemies=no ground=yes · invalid-target: `ground_unit` | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Eshin Clanstone | `wh2_main_army_abilities_eshin_clanstone` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes · invalid-target: `on_a_platform` | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Flock of Doom | `wh3_dlc27_spell_bound_runecaller_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Flock of Doom | `wh3_main_spell_bound_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Flock of Doom | `wh_dlc08_spell_bound_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 120 or more entities (positive); Causes damage to combatants (positive) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Gust of the Grave | `wh3_dlc29_unit_abilities_lesser_tomb_swarm` | Damage: 4 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Murderous Exhortations | `wh3_dlc26_lord_abilities_murderous_exhortations` | Leadership: -8; Damage: 5 per hit (max 10 entities) (to enemies in range); Strong vs units with 10 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | When in melee (and not fleeing): cast on self. |
-| Plaguereaper | `wh3_dlc29_item_abilities_plaguereaper` | Damage: 12 per hit (max 4 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Converts damage dealt into health in targeting self (positive) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 15 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Raging Tornado | `wh3_dlc29_unit_abilities_raging_tornado` | Speed: -10%; Damage: 2 per hit (max 25 entities) (to enemies in range); Speed: -25%; Damage: 4 per hit (max 25 entities) (to enemies in range); Speed: -40%; Damage: 6 per hit (max 25 entities) (to enemies in range); Speed: -60%; Damage: 8 per hit (max 25 entities) (to enemies in range) | targeting: self=no friends=no enemies=no ground=yes · invalid-usage: `climbing`, `manning_equipment` | cast reach 100 m · effect range (aura) 30 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Reaper of Souls | `wh2_dlc14_lord_abilities_reaper_of_souls` | Damage: 96 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to self); Absorbs hitpoints from enemies (positive); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=no ground=no · always affects self | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Ring of Corin | `wh2_main_spell_bound_ring_of_corin` | Damage: 67 per hit (max 1 entities); Own ability recharge: 30 s (to enemies in range); Strong vs characters (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Rod of Corruption | `wh2_main_item_abilities_rod_of_corruption` | Damage: 10 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | When in melee (and not fleeing): cast on self. |
-| Shard Blade | `wh3_main_weapon_abilities_shard_blade` | Speed: -45%; Damage: 67 per hit (max 1 entities) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 15 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Soul Stealer | `wh2_dlc10_spell_bound_soul_stealer_ror` | Damage: 75 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to enemies in range); Absorbs hitpoints from enemies (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Soul Stealer | `wh3_dlc27_spell_bound_soul_stealer` | Damage: 75 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to enemies in range); Absorbs hitpoints from enemies (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Sword of Daith | `wh_dlc05_weapon_abilities_daiths_sword` | Armour: -30; Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| The Divestment | `wh3_dlc27_army_abilities_eternal_dance_tempo_3_insidious_allure` | Armour: -50; Damage: 6 per hit (max 50 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive) | targeting: self=no friends=no enemies=no ground=yes | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Tomb Swarm | `wh2_dlc09_army_abilities_tomb_swarm` | Damage: 6 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
-| Wail of Malice | `wh2_dlc14_unit_abilities_wail_of_malice` | Damage: 10 per hit (max 18 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Warp-Quake | `wh2_dlc14_unit_abilities_warp_quake` | Speed: -25%; Damage: 5 per hit (max 18 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=no · invalid-target: `flying_currently` | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Warpstorm Scroll | `wh2_main_item_abilities_warpstorm_scroll` | Speed: -45%; Damage: 67 per hit (max 1 entities) (to enemies in range); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes · invalid-target: `ground_unit` | cast reach 100 m · effect range (aura) 55 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-| Web of Shadows | `wh2_main_weapon_abilities_web_of_shadows` | Speed: -25%; Damage: 67 per hit (max 1 entities) (to enemies in range); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: fire at it. |
-| Zefet-nebtar, the Mortis Blade | `wh3_dlc29_item_abilities_zefet_nebtar_the_mortis_blade` | Damage: 50 per hit (max 25 entities) (to enemies in range); Converts damage dealt into health in targeting self (positive) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 15 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
-
 ### skipped (deferred / unsuitable) — army-bar ability (18)
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
@@ -3499,6 +3479,26 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 | Servants of Nagash | `wh_dlc04_quest_abilities_servant_of_nagash` | Damage: 266 per hit (max 50 entities) (to self and allies in range); Summons a unit of Grave Guard (positive); Causes severe damage to combatants (positive) | targeting: self=yes friends=yes enemies=no ground=no · invalid-target: `climbing_manning_eq_on_platform`, `health_above_20%` | cast reach 600 m | excluded (not in wheel: boss-only unit) | While the unit has an enemy in its sights: fire at it. |
 | Terrible Malice | `wh3_dlc27_qb_unit_abilities_terrible_malice` | Damage: 732 per hit (max 1 entities); Executes below 0.2 of HP (to enemies in range); Will [[b]][[col:white]]execute[[/col]][[/b]] units in combat below a 20% hit points threshold. (positive) | targeting: self=no friends=no enemies=yes ground=no | cast reach 15 m | excluded (not in wheel: boss-only unit) | While the unit has an enemy in its sights: fire at it. |
 | Visions of Madness | `wh3_dlc27_qb_unit_abilities_visions_of_madness` | Leadership: -16; Rampage (positive); Fatigue: 0.025; Spreading area: wh3_dlc27_qb_unit_abilities_visions_of_madness (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no | cast reach 30 m | excluded (not in wheel: boss-only unit) | — |
+
+### excluded (no automatic logic) — own-troop-damage AoE (15)
+
+| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
+|---|---|---|---|---|---|---|
+| Descent Into Dissolution | `wh3_dlc27_army_abilities_eternal_dance_tempo_3_jesters_laughter` | Charge Bonus: -50%; Rampage (positive); Damage: 6 per hit (max 20 entities) (to enemies in range); Good against flying (positive) | targeting: self=no friends=no enemies=no ground=yes · invalid-target: `ground_unit` | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Eshin Clanstone | `wh2_main_army_abilities_eshin_clanstone` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes · invalid-target: `on_a_platform` | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Flock of Doom | `wh3_dlc27_spell_bound_runecaller_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Flock of Doom | `wh3_main_spell_bound_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Flock of Doom | `wh_dlc08_spell_bound_flock_of_doom` | Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 120 or more entities (positive); Causes damage to combatants (positive) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Gust of the Grave | `wh3_dlc29_unit_abilities_lesser_tomb_swarm` | Damage: 4 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Raging Tornado | `wh3_dlc29_unit_abilities_raging_tornado` | Speed: -10%; Damage: 2 per hit (max 25 entities) (to enemies in range); Speed: -25%; Damage: 4 per hit (max 25 entities) (to enemies in range); Speed: -40%; Damage: 6 per hit (max 25 entities) (to enemies in range); Speed: -60%; Damage: 8 per hit (max 25 entities) (to enemies in range) | targeting: self=no friends=no enemies=no ground=yes · invalid-usage: `climbing`, `manning_equipment` | cast reach 100 m · effect range (aura) 30 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Ring of Corin | `wh2_main_spell_bound_ring_of_corin` | Damage: 67 per hit (max 1 entities); Own ability recharge: 30 s (to enemies in range); Strong vs characters (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 200 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Soul Stealer | `wh2_dlc10_spell_bound_soul_stealer_ror` | Damage: 75 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to enemies in range); Absorbs hitpoints from enemies (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Soul Stealer | `wh3_dlc27_spell_bound_soul_stealer` | Damage: 75 per hit (max 1 entities) (to enemies in range); Heals: 0.008 per tick every 1 s (to enemies in range); Absorbs hitpoints from enemies (positive); Causes damage to combatants (positive); Strong vs a single combatant (positive); Weak vs multiple combatants (negative) | targeting: self=no friends=no enemies=yes ground=yes · always affects self | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Sword of Daith | `wh_dlc05_weapon_abilities_daiths_sword` | Armour: -30; Damage: 5 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| The Divestment | `wh3_dlc27_army_abilities_eternal_dance_tempo_3_insidious_allure` | Armour: -50; Damage: 6 per hit (max 50 entities) (to enemies in range); Causes damage to combatants (positive); Strong vs multiple combatants (positive) | targeting: self=no friends=no enemies=no ground=yes | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Tomb Swarm | `wh2_dlc09_army_abilities_tomb_swarm` | Damage: 6 per hit (max 25 entities) (to enemies in range); Strong vs units with 25 or more entities (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=no ground=yes | effect range (aura) 35 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast at the target's position (placement policy needed). |
+| Warpstorm Scroll | `wh2_main_item_abilities_warpstorm_scroll` | Speed: -45%; Damage: 67 per hit (max 1 entities) (to enemies in range); Strong vs characters (positive); Causes damage to combatants (positive); Strong vs multiple combatants (positive); Weak vs a single combatant (negative) | targeting: self=no friends=no enemies=yes ground=yes · invalid-target: `ground_unit` | cast reach 100 m · effect range (aura) 55 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
+| Zefet-nebtar, the Mortis Blade | `wh3_dlc29_item_abilities_zefet_nebtar_the_mortis_blade` | Damage: 50 per hit (max 25 entities) (to enemies in range); Converts damage dealt into health in targeting self (positive) | targeting: self=no friends=no enemies=yes ground=yes | cast reach 100 m · effect range (aura) 15 m · targets ground | excluded (auto: own-troop-damage AoE (friendly fire by design, family decision 2026-10-09)) | While the unit has an enemy in its sights: cast on the ground under the target. |
 
 ### excluded (no automatic logic) — not in wheel: army-bar ability - army_spec junction - no battle-wheel button, so it can never be cast; user ruling round 121 (13)
 
@@ -3868,8 +3868,8 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 ## Reconciliation (repeat of §1.6)
 
 * §1 inventory rows: **1801**; distinct keys **1800**.
-* §2 implemented: **936** entries / **989** keys — equals the mod's `ABILITIES` count.
-* §3 non-implemented: **811** rows.
+* §2 implemented: **945** entries / **998** keys — equals the mod's `ABILITIES` count.
+* §3 non-implemented: **802** rows.
 * Rows whose EFFECT the game's tables cannot source (written `unknown`): **709** of 1801.
 * Abilities carrying a restriction flag (invalid-target / invalid-usage / auto-deactivate): **646**.
 
