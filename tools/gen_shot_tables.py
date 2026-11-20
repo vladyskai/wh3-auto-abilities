@@ -26,7 +26,8 @@ FAMILIES = ("enemy_large_shot", "enemy_single_shot", "enemy_infantry_shot", "ene
             "enemy_commander_wavering",   # ROUND 174
             "enemy_most_models",   # ROUND 178: shares the AREA caps
             "enemy_finisher",   # ROUND 182: the Executioner (its min range and melee rule)
-            "enemy_area_drain_hurt")   # ROUND 184: Soul Stealer x2 (the area drain with the 75% gate)
+            "enemy_area_drain_hurt",   # ROUND 184: Soul Stealer x2 (the area drain with the 75% gate)
+            "enemy_most_valuable")   # ROUND 186: Warpstorm Scroll (its min range and melee rule)
 
 
 def tsv(name):

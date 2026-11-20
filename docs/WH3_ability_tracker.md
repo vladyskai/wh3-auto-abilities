@@ -5323,7 +5323,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Warp-Fireball `wh2_dlc14_spell_bound_warpfireball` | `implemented (infantry blob, most value destroyed: enemy_blob)` | target | When armed and standing still, fires at the visible enemy infantry within 210 m where its 5 m blast destroys the most enemy value (armour, hit points, live value), when it hits at least 17 soldiers and none of ours are within 15 m. | cd 60s · -1s · enemy unit · ×4 uses · bound · **round 146 (2026-11-13):** the blob trigger, user rulings "A. Density line", "10 m", "79 open attacks". · **round 150 (2026-11-14):** the target is the one whose blast destroys the most enemy value; never while the caster moves; user rulings "Most value destroyed", "For now, only the Blob attacks". |
 | Warp-Quake `wh2_dlc14_unit_abilities_warp_quake` | `implemented (melee_unwavering, round 183)` | target | While the unit has an enemy in its sights: fire at it. | cd 90s · 17s · self · triage-family: Own-troop-damage AoE |
 | Warpstiletto `wh3_dlc29_item_abilities_warpstiletto` | `implemented (enemy_fast_near_ally, round 178)` | enemy_unit | When an enemy unit within the 70% bound (70 m of 100 m) is in melee or under missile fire: cast at the ENEMY (unit hex, fresh-handle route). | cd 120s · 20s · enemy unit · ×2 uses · enemy-targeting mechanism (harness 97) |
-| Warpstorm Scroll `wh2_main_item_abilities_warpstorm_scroll` | `implemented (enemy_single_drain, round 184)` | target | While the unit has an enemy in its sights: cast on the ground under the target. | cd 60s · 29s · enemy ground · ×1 uses · triage-family: Own-troop-damage AoE |
+| Warpstorm Scroll `wh2_main_item_abilities_warpstorm_scroll` | `implemented (enemy_most_valuable, round 186)` | target | While the unit has an enemy in its sights: cast on the ground under the target. | cd 60s · 29s · enemy ground · ×1 uses · triage-family: Own-troop-damage AoE |
 | Watched by the Watcher `wh3_dlc24_character_abilities_watched_by_the_watcher` | `skipped (user decision 2026-11-17: closed, close (no actuation))` | target | While the unit has an enemy in its sights: fire at it. | cd 120s · 60s · self · ×3 uses |
 | Web of Shadows `wh2_main_weapon_abilities_web_of_shadows` | `implemented (melee_unwavering, round 183)` | target | While the unit has an enemy in its sights: fire at it. | cd 60s · 17s · self · ×1 uses · triage-family: Own-troop-damage AoE |
 | Wind Bow `wh3_dlc24_item_abilities_wind_bow` | `implemented (infantry blob, most value destroyed: enemy_blob)` | target | When armed and standing still, fires at the visible enemy infantry within 245 m where its 3 m blast destroys the most enemy value (armour, hit points, live value), when it hits at least 6 soldiers and none of ours are within 13 m. Armour-piercing: never at armour below 50. | cd 120s · -1s · enemy unit · ×3 uses · wind-up 5s · item · **round 146 (2026-11-13):** the blob trigger, user rulings "A. Density line", "10 m", "79 open attacks". · **round 150 (2026-11-14):** the target is the one whose blast destroys the most enemy value; never while the caster moves; user rulings "Most value destroyed", "For now, only the Blob attacks". |
@@ -8195,3 +8195,15 @@ Seismic Snares on `slow_aura`; the Black Gem of Gnar on `self_last_stand`.
 
 **Arithmetic:** 988 entries / 1,041 keys / 140 families. Harness 184 full suite **7,831 checks / 0 failures**, twice
 byte-identical; RED 34/34. Pack md5 `0779eb3ef6eaf41e929b86d890270e4e`; workbook v68.
+
+### 10.64 Round 186 - Warpstorm Scroll as a damage dealer (2026-11-20)
+
+**Ruling (user, 2026-11-20):** "No need to enforce single-entity. No need to enforce charge, treat it just as a damage
+dealer. The slow is not so relevant in this case." (the round-184 rule-10 question). Round document
+`docs\WH3_round186_warpstorm.md`.
+
+**Change:** Warpstorm Scroll leaves `enemy_single_drain` for NEW `enemy_most_valuable`: the most valuable visible flying
+enemy within 70 m, any number of models, no charge condition, no clearance. The trigger audit records the ruling (R4).
+
+**Arithmetic:** 988 entries / 1,041 keys / 141 families. Harness 185 full suite **7,844 checks / 0 failures**, twice
+byte-identical; RED 6/6. Pack md5 `8bf23234706e1647946a84cc0e33a969`; workbook v69.

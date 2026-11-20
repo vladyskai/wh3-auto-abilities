@@ -2930,8 +2930,8 @@ local ABILITIES = {
 		keys = { "wh3_dlc27_spell_bound_soul_stealer" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	-- ROUND 184 (rule-shut review row 18)
-	{ marker = "warpstorm_scroll", name = "Warpstorm Scroll", trigger = "enemy_single_drain",
+	-- ROUND 184 (rule-shut review row 18); ROUND 186 (user: "treat it just as a damage dealer"): enemy_most_valuable
+	{ marker = "warpstorm_scroll", name = "Warpstorm Scroll", trigger = "enemy_most_valuable",
 		badge = "zz_auto_badge_warpstorm_scroll",
 		keys = { "wh2_main_item_abilities_warpstorm_scroll" },
 		range_real = 100,
@@ -21812,6 +21812,25 @@ function FOURTH.evaluate_ally_offering(unit, routing)
 	return FOURTH.ab_pick_ally(unit, routing, "value_melee")
 end
 
+
+-- ============================================================================
+-- ROUND 186 - WARPSTORM SCROLL (user 2026-11-20: "No need to enforce single-entity. No need to enforce charge, treat it
+--   just as a damage dealer").
+--   enemy_most_valuable: the most valuable visible enemy within the entry's bound that its target class allows, any
+--     number of models; no clearance (a direct effect on the enemy); the caster standing still only for an animated
+--     cast.
+-- ============================================================================
+function FOURTH.evaluate_enemy_most_valuable(unit, routing)
+	FOURTH.eg_mode = "shot"
+	FOURTH.shot_kind = nil
+	if routing or not FOURTH.blob_still(unit) then return nil end
+	local m = FOURTH.blob_map(false)
+	local e, s = FOURTH.shot_pick(unit, m, "value", false, true)
+	if e == nil then return nil end
+	FOURTH.shot_take(unit, e, "value", false, true)
+	return FOURTH.shot_reason(unit, e, "most valuable enemy its rule allows", string.format("value %.0f", s))
+end
+
 FOURTH.evaluators = {
 	charge = FOURTH.evaluate_charge,
 	tired = FOURTH.evaluate_tired,
@@ -21922,6 +21941,7 @@ FOURTH.evaluators = {
 	enemy_ground_melee_cluster = FOURTH.evaluate_enemy_ground_melee_cluster,
 	aura_charge_only = FOURTH.evaluate_aura_charge_only,   -- ROUND 185
 	ally_offering = FOURTH.evaluate_ally_offering,
+	enemy_most_valuable = FOURTH.evaluate_enemy_most_valuable,   -- ROUND 186
 	enemy_commander_value = FOURTH.evaluate_enemy_commander_value,
 	-- ROUND 159
 	melee_clear = FOURTH.evaluate_melee_clear,
@@ -22284,6 +22304,7 @@ FOURTH.TRIGGER_TIP = {
 	enemy_ground_melee_cluster = "When armed and standing still, fires on the ground under the enemy in melee with the most enemy value fighting near it",
 	aura_charge_only = "When armed, fires when this unit or a friendly unit within its aura charges",   -- ROUND 185
 	ally_offering = "When armed, fires on the most valuable friendly unit of 30 or more soldiers in melee (no missile units), cast on it",
+	enemy_most_valuable = "When armed, fires on the most valuable enemy in range that its target rule allows",   -- ROUND 186
 	enemy_commander_value = "When armed, fires on the most valuable enemy lord or hero in range",
 	melee_clear = "When armed, fires when this unit is in melee and none of our other units are inside its blast",
 	fly_dive = "When armed, fires when this unit is flying over an enemy and none of our other units are inside its blast",
@@ -22539,6 +22560,7 @@ FOURTH.CARD_TIP = {
 	enemy_ground_melee_cluster = "Fires[ when standing still{ANIM},] under the thickest melee of enemies",
 	aura_charge_only = "Fires when it or a nearby ally charges",   -- ROUND 185
 	ally_offering = "Fires on the most valuable ally of 30+ men in melee; no missile units",
+	enemy_most_valuable = "Fires[ when standing still{ANIM},] on the most valuable enemy",   -- ROUND 186
 	enemy_large_shot = "Fires on the most valuable large enemy clear of allies, else armoured infantry",
 	enemy_single_shot = "Fires[ when standing still{ANIM},] on the most valuable enemy monster or character clear of allies",
 	enemy_infantry_shot = "Fires[ when standing still{ANIM},] on the most valuable enemy infantry clear of allies",

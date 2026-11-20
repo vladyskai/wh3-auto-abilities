@@ -75,7 +75,7 @@ RULED["R6"] = {m: "round 137: kept (%s)" % why for m, why in (
     ("verminous_fury", "dedicated trigger, 'Keep all 5 for now'"))}
 RULED["R6"]["preyton_horns"] = ("round 158: 'Horns melee, Trance waver' (enemy_melee: our fighting units +8, the "
                                "enemy -8)")
-RULED["R4"]["warpstorm_scroll"] = ("round 184: 'Recommended' (enemy_single_drain, flying only); the x0.55 slow rides a trigger with no melee or charge arm: put to the user on 2026-11-20")
+RULED["R4"]["warpstorm_scroll"] = ("round 186: 'No need to enforce charge, treat it just as a damage dealer. The slow is not so relevant in this case.' (enemy_most_valuable, flying only)")
 RULED["R4"]["hammer_of_smednir"] = ("round 163: 'Keep the blast rule' (the x0.4 speed sits on the ability's self slot, "
                                     "possibly the wielder's drawback; the 15 m blast decides the trigger)")
 MORALE_TRIG = {"wavering_self", "wavering_self_or_ally", "ally_wavering", "wavering_ally_range", "melee_low_morale",

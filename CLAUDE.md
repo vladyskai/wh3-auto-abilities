@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `0779eb3ef6eaf41e929b86d890270e4e`, 1,577,941 bytes
-  (round 185, 2026-11-20: the rule-shut review rows 20-64). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `8bf23234706e1647946a84cc0e33a969`, 1,579,341 bytes
+  (round 186, 2026-11-20: Warpstorm Scroll as a damage dealer). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -144,8 +144,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 185): 988 ABILITIES entries / 1,041 ability keys / 140 trigger evaluator families.
-Wheel audit (workbook v68): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
+Current roster (round 186): 988 ABILITIES entries / 1,041 ability keys / 141 trigger evaluator families.
+Wheel audit (workbook v69): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
 82 not implemented among the included: 82 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
 the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
@@ -158,7 +158,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_ruleshut3_harness184/build_and_install185.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_warpstorm_harness185/build_and_install186.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -190,7 +190,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness184: 7,831 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness185: 7,844 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -253,8 +253,18 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 - Game version 9.0.5 (patch 2026-11-03) is the data baseline since round 132: `gamedata\wh3\` was re-extracted,
   drift in `docs\DRIFT_2026-11-08_patch905.md`. After every game patch: re-extract, diff, fix the mod's
   derived data (ranges, uses, wind-ups, reload table) BEFORE any other work.
-- Claude cannot click in Warhammer III (2026-11-08): screenshots, mouse movement and keys work, clicks
-  are ignored (plain and SendInput modifier clicks). The user builds and fights the QA battle.
+- Claude CAN click in Warhammer III (2026-11-20; the 2026-11-08 'cannot click' was wrong): the game moves its own
+  cursor only from RELATIVE mouse input and ignores the computer-use tool's absolute cursor jumps, so those clicks
+  land at the game's stale cursor. Use `tools\game_mouse.ps1 -x X -y Y [-click|-right]` (corner, then relative
+  SendInput steps; x, y in the DPI-unaware 1600 x 900 space = screenshot frame x 1600/1456). Proven at the main
+  menu (Battle submenu opened and closed). The game window must be in front; it starts MINIMIZED when launched
+  from Claude (restore it with ShowWindow), and open_application on Warhammer3 starts a SECOND copy (Mutex error).
+  The user still builds and fights the QA battle (no self-playing build). Positions in the mod's INVENTORY log lines
+  use the same 1600 x 900 space (game at 2560 x 1440, ui_scale 1.6), so they can be aimed at directly.
+- BADGE PLACEMENT DEPENDS ON UI SCALE (found 2026-11-20): the M/A badges and the ALL button dock to hud_battle's
+  BOTTOM-CENTRE with fixed offsets (slot 1 -865,-209; ALL -923,0) while the wheel docks bottom-LEFT. At ui_scale 1.6
+  (UI 1600 x 900) the wheel sits at (96,629), 216 px above the WHEEL_SLOT table, and the badges land at x = -65 /
+  -123 (off screen); only the slot-2 badge peeks in at x = 5. Not fixed; waiting for the user.
 - Inline Python in a bash heredoc turns Windows paths like `\round132` into escape characters. Put any
   generator with Windows paths in a FILE with raw strings (it broke the round-133 builder once). Round 158 again:
   a heredoc turned `\b` into a backspace byte and `\n` into a real newline. Write generators with the Write tool.
@@ -303,7 +313,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v68_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v68.py`, verified by `tools\verify_xlsx_v68.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v69_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v69.py`, verified by `tools\verify_xlsx_v69.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -337,6 +347,10 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 186 (2026-11-20): Warpstorm Scroll on NEW enemy_most_valuable (shot kind 'value', any model count, its
+  target_class flying; no charge arm). User: 'No need to enforce single-entity. No need to enforce charge, treat it
+  just as a damage dealer. The slow is not so relevant in this case.' Rule 10 does not bind it (audit R4 ruled). The
+  first install hit WinError 32 (the game was running); the user closed it.
 - ROUND 185 (2026-11-20, review rows 20-64; 'Review ended, implement pls'): 33 built (13 safe blasts melee_unwavering;
   Glacial Blast, Thundermace melee_clear; Cellular Instability melee_clear_block; Splode da Big 'Un! and the Master Rune
   of Immolation last_stand_clear; Battle Howl x2 + Silver Horn on NEW aura_charge_only; Twilight Horn II; Itzl;
