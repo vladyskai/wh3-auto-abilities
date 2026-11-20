@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `18aac090ab99114b1ac3c83eb483dd8c`, 1,562,718 bytes
-  (round 184, 2026-11-20: the rule-shut review rows 10-19). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `0779eb3ef6eaf41e929b86d890270e4e`, 1,577,941 bytes
+  (round 185, 2026-11-20: the rule-shut review rows 20-64). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -144,9 +144,10 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 184): 955 ABILITIES entries / 1,008 ability keys / 138 trigger evaluator families.
-Wheel audit (workbook v67): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,008 implemented,
-115 not implemented among the included: 79 decided by the user, 36 OPEN = shut by an old RULE (the 2026-10-09
+Current roster (round 185): 988 ABILITIES entries / 1,041 ability keys / 140 trigger evaluator families.
+Wheel audit (workbook v68): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
+82 not implemented among the included: 82 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
+the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
 
@@ -157,7 +158,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_ruleshut2_harness183/build_and_install184.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_ruleshut3_harness184/build_and_install185.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -189,7 +190,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness183: 7,762 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness184: 7,831 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -302,7 +303,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v67_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v67.py`, verified by `tools\verify_xlsx_v67.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v68_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v68.py`, verified by `tools\verify_xlsx_v68.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -336,6 +337,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 185 (2026-11-20, review rows 20-64; 'Review ended, implement pls'): 33 built (13 safe blasts melee_unwavering;
+  Glacial Blast, Thundermace melee_clear; Cellular Instability melee_clear_block; Splode da Big 'Un! and the Master Rune
+  of Immolation last_stand_clear; Battle Howl x2 + Silver Horn on NEW aura_charge_only; Twilight Horn II; Itzl;
+  Bonecrusher; Beastlord's Gaze; Fog of the Damned (enemy_ground_melee_cluster, ground); Locus of Contagion; Mad Cap
+  Mushrooms; Mirror of Knowledge (unbounded, ground); Offering to the Gods on NEW ally_offering, OFFERING_MIN_MEN 30;
+  Seismic Snare x2; Black Gem). 12 CLOSED (7 stealth, 5 mutual exclusivity = stances). gen_vortex_tables reads a
+  self-centred BOMBARDMENT (explosion radius + radius_spread). The progress page shows 0 open. MOCK GOTCHA: an ally's
+  dist field is both its gap to the caster AND to its own target (a charging ally must sit near 20 m). A blanket
+  count swap (1008 -> 1041) hit a unit id in C6: exclude ids when rebasing.
 - ROUND 184 (2026-11-20, review rows 10-19; 'Up to #19 ruled'): Flock of Doom x3, Sword of Daith, Zefet-nebtar on
   enemy_area_drain (it NEVER checked the enemy standing still: its gate is the caster's, for animated casts; a doc
   thread reply had said otherwise); Ring of Corin, Warpstorm Scroll (target_class flying) on enemy_single_drain; Soul

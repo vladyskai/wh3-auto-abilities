@@ -61,12 +61,36 @@ def chain(vx, v):
     return out
 
 
+def bombardment_r(usa, k):
+    """ROUND 185: a self-centred BOMBARDMENT (the Master Rune of Immolation): (radius, affects_allies) = the shell's
+    explosion detonation_radius + the bombardment's radius_spread, and the explosion's affects_allies; None when the
+    ability has no bombardment with an explosion."""
+    bk = usa[k].get("bombardment", "")
+    if not bk:
+        return None
+    bomb = {r["bombardment_key"]: r for r in tsv("projectile_bombardments.tsv")}.get(bk)
+    if bomb is None:
+        return None
+    prj = {r["key"]: r for r in tsv("projectiles.tsv")}.get(bomb["projectile_type"])
+    if prj is None:
+        return None
+    ex = {r["key"]: r for r in tsv("projectiles_explosions.tsv")}.get(prj["explosion_type"])
+    if ex is None:
+        return None
+    return (float(ex["detonation_radius"] or 0) + float(bomb["radius_spread"] or 0), ex["affects_allies"] == "true")
+
+
 def derive(key_fams):
     usa = {r["key"]: r for r in tsv("unit_spec_abil.tsv")}
     vx = {r["vortex_key"]: r for r in tsv("battle_vortexs.tsv")}
     out = {}
     for k, fam in sorted(key_fams.items()):
         rows = chain(vx, usa[k]["vortex"])
+        if not rows and fam in SELF_FAMILIES and bombardment_r(usa, k) is not None:   # ROUND 185
+            r, allies = bombardment_r(usa, k)
+            assert allies, "%s is on %s but its bombardment does not affect allies" % (k, fam)
+            out[k] = r
+            continue
         if not rows:
             assert fam == "enemy_commander_value", "%s (%s) has no vortex" % (k, fam)
             continue
