@@ -26,13 +26,13 @@ for m in re.finditer(r'\t\{ marker = "([^"]+)", name = "[^"]+", trigger = "([^"]
         if not fm:
             continue
         v = int(fm.group(1))
-        k = keys[0]
-        d = usa.get(k)
-        if d is None:
-            continue
-        ir = float(d["target_intercept_range"] or 0)
-        er = float(d["effect_range"] or 0)
-        if abs(ir - v) > 0.5:
-            bad += 1
-            print("%-45s %-28s %-15s %4d  intercept %6.1f  effect %6.1f" % (marker, fam, field, v, ir, er))
+        for k in keys:   # every key of the entry (round 181: Lord of Undeath mixes 50 m and 200 m keys)
+            d = usa.get(k)
+            if d is None:
+                continue
+            ir = float(d["target_intercept_range"] or 0)
+            er = float(d["effect_range"] or 0)
+            if abs(ir - v) > 0.5:
+                bad += 1
+                print("%-45s %-28s %-15s %4d  intercept %6.1f  effect %6.1f  %s" % (marker, fam, field, v, ir, er, k))
 print(bad, "mismatches")

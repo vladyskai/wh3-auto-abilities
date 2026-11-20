@@ -24,7 +24,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gamedata_paths as GP  # noqa: E402
 
-SELF_FAMILIES = ("melee_clear", "fly_dive", "last_stand_clear")
+SELF_FAMILIES = ("melee_clear", "fly_dive", "last_stand_clear",
+                 "melee_clear_block")   # ROUND 181: Land Mine (melee_clear + 60 soldiers in its 25 m blast)
 FAMILIES = SELF_FAMILIES + ("enemy_blob_vortex", "enemy_commander_value")
 
 

@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `6fbdf834e0a2e7cee83d529d7a3c3700`, 1,543,625 bytes
-  (round 180, 2026-11-18: the score-3 review rows 87-114 and 128; 4 new families, 3 closed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `3e567bc557f624b8298378fb8107d156`, 1,548,820 bytes
+  (round 181, 2026-11-20: Land Mine, Surprise Squig!, the range fixes). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -142,8 +142,8 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 180): 935 ABILITIES entries / 989 ability keys / 133 trigger evaluator families.
-Wheel audit (workbook v63): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
+Current roster (round 181): 936 ABILITIES entries / 989 ability keys / 135 trigger evaluator families.
+Wheel audit (workbook v64): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,003 implemented,
 120 not implemented among the included: 65 decided by the user, 55 OPEN = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
@@ -155,7 +155,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261118_score3_rows4_harness179/build_and_install180.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_landmine_squig_harness180/build_and_install181.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -187,7 +187,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness179: 7,622 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness180: 7,663 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -300,7 +300,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v63_2026-11-18.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v63.py`, verified by `tools\verify_xlsx_v63.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v64_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v64.py`, verified by `tools\verify_xlsx_v64.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -330,6 +330,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
 
 ## 9. OPEN ITEMS
 
+- ROUND 181 (2026-11-20; 'Row 98, Land Mine: A / Fix the range mismatches / 28 Surprise Squig! implement blob with
+  clearance'): NEW melee_clear_block (Land Mine: melee_clear + FOURTH.LAND_MINE_MIN_MEN 60 soldiers in its 25 m
+  blast; FOURTH.blast_cover caps each unit at its strength), NEW enemy_summon_blob (Surprise Squig!: shot kind
+  'summon', the standing block worth the most in the 21 m explosion, none of ours within 31 m; GENERATED
+  FOURTH.SUMMON_BLAST_TEXT, tools\gen_summon_blast.py: spawned_unit -> its abilities -> bombardment; no density line).
+  Range fixes: Curse of Khsar 100, Ravaging Swarm x2 100, Lord of Undeath split (lord_of_undeath_4 = the 200 m key).
+  tools\scan_range_real.py checks EVERY key and is a build gate (0 mismatches). gen_vortex_tables.SELF_FAMILIES
+  gained melee_clear_block. Curse of Khsar's game rule: refused above 50% caster health. Next battle from byte
+  822,999,135. Still not built: the last review's row 23 + finishers.
 - ROUND 180 (2026-11-18, score-3 review rows 87-114 and 128; 'Row 128 set A / Rows 57-86 do not touch / Rows 87-90
   implement without melee / Row 91-96 implement as in the doc / Row 98 improve / Rows 99-114 implement / 107 ... I like
   the option'). The 4 ground roots on enemy_fast_near_ally (the key forces the ground form) and on their REAL 100 m

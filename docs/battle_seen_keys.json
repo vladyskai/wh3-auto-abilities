@@ -210,6 +210,7 @@
 "wh3_dlc25_abilities_restock_gunnery_school",
 "wh3_dlc25_character_abilities_get_em",
 "wh3_dlc25_character_abilities_pigeon_bomb",
+"wh3_dlc25_character_abilities_surprise_squig",
 "wh3_dlc25_item_abilities_necrotic_phylactry",
 "wh3_dlc25_item_abilities_ominous_powder",
 "wh3_dlc25_item_abilities_the_gold_standard",
@@ -470,10 +471,12 @@
 "wh_pro01_lord_abilities_flash_bomb",
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro02_item_abilities_blood_chalice_of_bathori",
+"wh_pro03_lord_abilities_lord_of_undeath_0",
+"wh_pro03_lord_abilities_lord_of_undeath_4",
 "wh_pro04_unit_abilities_apocalyptic_charge",
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 194,
-"made": "2026-11-18"
+"logs_read": 195,
+"made": "2026-11-20"
 }

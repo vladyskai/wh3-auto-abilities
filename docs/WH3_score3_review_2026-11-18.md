@@ -70,7 +70,7 @@ trigger exists").
 | 25 | Blacktoof's Conjuration (**KEPT round 178**) | a summon at a ground spot within 50 m; ONE use | ground under an enemy in melee | **KEEP:** a summon that joins a fight is right next to one. | 4 (the summon's own stats not reviewed) |
 | 26 | Wake Da Idol (**KEPT round 178**) | a summon at a ground spot within 50 m; ONE use | same | **KEEP**, as #25. | 4 |
 | 27 | Transformation of Kadon (**KEPT round 178**) | transforms at a ground spot within 50 m; 5 s wind-up; ONE use | same | **KEEP**, as #25 (ASSUMPTION: the transformation is a summoned monster at the spot; if it transforms the caster, "caster in melee" is better). | 3 |
-| 28 | Surprise Squig! (**NOT BUILT round 178: the data shows it SUMMONS Explosive Squigs; a new proposal follows**) | an explosion at the enemy's feet; 5 uses | ground under an enemy in melee | **BLOB WITH CLEARANCE** (read H): the standing enemy block with the most value in the blast, none of ours within blast + 10 m. Today it lands in a melee next to our own troops. | 5 |
+| 28 | Surprise Squig! (**NOT BUILT round 178: the data shows it SUMMONS Explosive Squigs; a new proposal follows**) (**BUILT round 181: blob with clearance (21 m explosion)**) | an explosion at the enemy's feet; 5 uses | ground under an enemy in melee | **BLOB WITH CLEARANCE** (read H): the standing enemy block with the most value in the blast, none of ours within blast + 10 m. Today it lands in a melee next to our own troops. | 5 |
 | 29 | The Soulstealer (**BUILT round 178**) | 4 damage a second for 11 s to up to 25 models, a 35 m area; ONE use | same | **MOST MODELS, NEVER BLOCKED**, as #23, counted up to 25 (its cap), with the same 16-model floor (user, 2026-11-18). | 5 |
 | 30 | Whip of Misery (**BUILT round 178**) | ONE large enemy: accuracy -30, melee attack -24, 31 s; 3 uses | enemy in melee or under fire | **MELEE OR SHOOTING** (the existing `enemy_melee_or_shooting`, large class kept): the closest large enemy in melee, else the closest shooting one. Each half pays on its own target. | 5 |
 | 31 | Word of Pain (2 keys) (**BUILT round 178**) | ONE enemy: accuracy -30, melee attack -40, 40 s; 2 uses / 1 use | same | **MELEE OR SHOOTING**, as #30 (any class). | 5 |
@@ -169,7 +169,7 @@ The wind-ups matter: a 5 s wind-up on a moving target misses, so these keep the 
 | # | Ability | Ruling |
 |---|---|---|
 | 97 | Curse of Djaf | "Shooting enemy" (round 143). |
-| 98 | Land Mine (**NOT BUILT round 180: the blast is 25 m, half a packed block = 415 soldiers; options to the user**) | "Melee, no friend near" (round 159). Option: also require half a packed block of enemies inside the blast, so 3 charges do not go into one small fight. |
+| 98 | Land Mine (**NOT BUILT round 180: the blast is 25 m, half a packed block = 415 soldiers; options to the user**) (**BUILT round 181: option A (60 soldiers)**) | "Melee, no friend near" (round 159). Option: also require half a packed block of enemies inside the blast, so 3 charges do not go into one small fight. |
 
 ## 3. Self-cast items
 
