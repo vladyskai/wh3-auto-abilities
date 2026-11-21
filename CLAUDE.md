@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `c308f766e509d0ca839f795c296a8b9f`, 1,615,263 bytes
-  (round 195, 2026-11-21: the MCT page fixed: no "?" marker, a named section, Done / Forgotten feedback). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `9d1c2c8fc15aeb4a4a7181d4d88119ee`, 1,615,586 bytes
+  (round 196, 2026-11-21: the MCT label "Forget the remembered M/A choices" back, no tooltip). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_mctpage_harness194/build_and_install195.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_mctlabel_harness195/build_and_install196.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness194: 8,082 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness195: 8,083 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -355,6 +355,12 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 196 (2026-11-21): the MCT reset FIELD-CONFIRMED ("it worked, well done"). The user prefers the long label
+  "Forget the remembered M/A choices": a wrapped label is fine as long as the page sets NO tooltip (no "?" marker).
+  Arrow of Kurnous (enemy_blob) held a whole Wood Elves battle: Skeleton Warriors have armour 20 and the blob family's
+  armour-piercing rule needs 50 (FOURTH.BLOB_AP_ARMOUR_MIN); the Wight King is a single model. Open point 21: fire
+  anyway when no unit in the whole enemy army (visible or hidden) passes the save-it rules, PROPOSED. Next battle from
+  byte 946,588,829.
 - ROUND 195 (2026-11-21): the MCT page (user screenshot): MCT docks its icon row ("?" tooltip marker, global/floppy
   icons) to the BOTTOM-LEFT of the label box, so a label must fit ONE line (about 14 characters) and the page sets no
   tooltip. Section "Remembered M/A choices" (else MCT shows "Default Category"). After Reset: the button reads Done and

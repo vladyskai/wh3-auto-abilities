@@ -8,8 +8,9 @@
 -- The control is MCT's button type when this MCT version has it (add_new_action), else a checkbox: tick it and close
 -- the MCT panel. Everything is guarded: an error here never reaches MCT or the game.
 -- ROUND 195 (user 2026-11-21, screenshot): no tooltip (MCT pins its "?" marker to the bottom-left of the label, so a
--- wrapped label ran into it), a short one-line label under a named section (not "Default Category"), and feedback:
--- after a reset the button reads "Done" and greys out and the label reads "Forgotten" until the panel is reopened.
+-- wrapped label ran into it), a named section (not "Default Category"), and feedback: after a reset the button reads
+-- "Done" and greys out and the label reads "Forgotten" until the panel is reopened. ROUND 196: the label is the long
+-- original text again (the user preferred it), which is safe now that there is no tooltip marker.
 -- ============================================================================
 if type(get_mct) ~= "function" then return end
 
@@ -42,7 +43,9 @@ pcall(function()
 			local label = opt:get_uic_with_key("text")
 			if label then label:SetStateText("Forgotten") end
 		end
-		opt = mod:add_new_action("reset_remembered", "All unit types", pressed)
+		-- ROUND 196 (user: "I liked the previous text, just not the misaligned '?'"): the long label is back. With no
+		-- tooltip MCT draws no "?" marker, so the wrapped label has nothing to collide with.
+		opt = mod:add_new_action("reset_remembered", "Forget the remembered M/A choices", pressed)
 		if type(opt.set_button_text) == "function" then opt:set_button_text("Reset") end
 	else
 		local opt = mod:add_new_option("reset_remembered", "checkbox")

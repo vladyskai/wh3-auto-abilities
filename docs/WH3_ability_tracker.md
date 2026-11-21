@@ -8348,3 +8348,15 @@ marker), and after Reset the button reads "Done" and greys out, the label reads 
 
 **Proof:** harness 194 full suite **8,082 checks / 0 failures**, twice identical. RED on the round-194 page. Pack md5
 `c308f766e509d0ca839f795c296a8b9f`. Not seen in game yet.
+
+### 10.74 Round 196 - the MCT label back, why Arrow of Kurnous held (2026-11-21)
+
+**Report (user, 2026-11-21):** the MCT reset works ("well done"). "I liked the previous text, just not the misaligned
+'?'." Arrow of Kurnous did not fire in a Wood Elves battle. Round document `docs\WH3_round196_label_kurnous.md`.
+
+**Change:** the MCT label is "Forget the remembered M/A choices" again, still without a tooltip. Harness 195 full suite
+**8,083 checks / 0 failures**, twice identical. Pack md5 `9d1c2c8fc15aeb4a4a7181d4d88119ee`. No roster change.
+
+**Finding:** Arrow of Kurnous (enemy_blob, 150 armour-piercing damage) never had a legal target: Skeleton Warriors have
+armour 20 (the armour-piercing rule needs 50) and the Wight King is a single model. A fallback when nothing better exists
+in the enemy army is PROPOSED (open point 21).
