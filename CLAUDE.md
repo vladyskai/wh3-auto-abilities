@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `8bf23234706e1647946a84cc0e33a969`, 1,579,341 bytes
-  (round 186, 2026-11-20: Warpstorm Scroll as a damage dealer). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `816abe086cd75efbb8297bd237a8470e`, 1,582,433 bytes
+  (round 187, 2026-11-21: the badges follow the wheel at any resolution or UI scale). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -158,7 +158,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261120_warpstorm_harness185/build_and_install186.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_uiscale_harness186/build_and_install187.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -190,7 +190,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness185: 7,844 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness186: 7,863 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -264,7 +264,10 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 - BADGE PLACEMENT DEPENDS ON UI SCALE (found 2026-11-20): the M/A badges and the ALL button dock to hud_battle's
   BOTTOM-CENTRE with fixed offsets (slot 1 -865,-209; ALL -923,0) while the wheel docks bottom-LEFT. At ui_scale 1.6
   (UI 1600 x 900) the wheel sits at (96,629), 216 px above the WHEEL_SLOT table, and the badges land at x = -65 /
-  -123 (off screen); only the slot-2 badge peeks in at x = 5. Not fixed; waiting for the user.
+  -123 (off screen); only the slot-2 badge peeks in at x = 5. FIXED in round 187: FOURTH.ui_shift_tick moves every
+  badge and the ALL button by (wheel shift - bottom-centre shift) from the tuned 1984 x 1116 frame (refs
+  ability_parent 42,893 / orders_parent 691,1055; Position() only; every 40 ui ticks = 2 s; the ui tick runs every
+  50 ms). Not yet seen in game at 1.6.
 - Inline Python in a bash heredoc turns Windows paths like `\round132` into escape characters. Put any
   generator with Windows paths in a FILE with raw strings (it broke the round-133 builder once). Round 158 again:
   a heredoc turned `\b` into a backspace byte and `\n` into a real newline. Write generators with the Write tool.
@@ -347,6 +350,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 187 (2026-11-21): the badges follow the wheel (see ENGINE FACTS, badge placement). The Wulfhart battle
+  (archive\logs\battle_20261121_r186_wulfhart.txt, bytes 822,999,135-845,604,523): Hunter's Snare caught a real
+  charge (open point 2 DONE); Focused Shot's first cast made Markus walk 25 m past our own Swordsmen standing across
+  the line of fire (flat shot, trajectory_sight low; the cast never fired, the second did): a line-of-fire check is
+  proposed (open point 13), NOT built. Next battle from byte 845,604,523.
 - ROUND 186 (2026-11-20): Warpstorm Scroll on NEW enemy_most_valuable (shot kind 'value', any model count, its
   target_class flying; no charge arm). User: 'No need to enforce single-entity. No need to enforce charge, treat it
   just as a damage dealer. The slow is not so relevant in this case.' Rule 10 does not bind it (audit R4 ruled). The

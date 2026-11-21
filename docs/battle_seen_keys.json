@@ -55,6 +55,7 @@
 "wh2_dlc13_item_abilities_shield_of_aeons",
 "wh2_dlc13_lord_abilities_executioner",
 "wh2_dlc13_lord_abilities_hail_of_fire",
+"wh2_dlc13_lord_abilities_hunters_snare",
 "wh2_dlc13_lord_abilities_kill_shot",
 "wh2_dlc13_lord_abilities_monstrous_strength",
 "wh2_dlc13_lord_abilities_oil_flask",
@@ -503,6 +504,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 200,
-"made": "2026-11-20"
+"logs_read": 201,
+"made": "2026-11-21"
 }

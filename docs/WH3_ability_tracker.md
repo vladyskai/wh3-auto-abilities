@@ -8207,3 +8207,21 @@ enemy within 70 m, any number of models, no charge condition, no clearance. The 
 
 **Arithmetic:** 988 entries / 1,041 keys / 141 families. Harness 185 full suite **7,844 checks / 0 failures**, twice
 byte-identical; RED 6/6. Pack md5 `8bf23234706e1647946a84cc0e33a969`; workbook v69.
+
+### 10.65 Round 187 - the badges follow the wheel at any resolution or UI scale (2026-11-21)
+
+**Request (user, 2026-11-21):** "we need to fix the UI scale ... when I change Resolution in the game, the A/M and the arm
+all buttons are not aligned anymore" (screenshot: the "A" at the left edge, away from its icon). Round document
+`docs\WH3_round187_uiscale.md`.
+
+**Cause:** the badges and the ALL button dock to the screen's bottom centre with offsets tuned on a 1984 x 1116 UI space;
+the wheel hangs from the bottom-left corner. At UI scale 1.6 (1600 x 900) the centre moved 192 px left of the wheel.
+
+**Fix:** `FOURTH.ui_shift_tick` reads the wheel (`ability_parent`) and the bottom centre (`orders_parent`) every 2 s and
+moves every badge and the ALL button by the difference from the tuned frame. No roster change.
+
+**Also from the 2026-11-21 battle:** Hunter's Snare caught a real charge (one cast); Focused Shot's first cast made
+Markus walk past our own Swordsmen (line of fire), a ruling is pending.
+
+**Proof:** harness 186 full suite **7,863 checks / 0 failures**, twice byte-identical; RED 8/8. Pack md5
+`816abe086cd75efbb8297bd237a8470e`.
