@@ -20327,6 +20327,7 @@ function FOURTH.evaluate_enemy_spellcaster(unit, routing)
 	FOURTH.shot_kind = nil
 	FOURTH.eg_class = "spellcaster"
 	if routing then return nil end
+	if not FOURTH.blob_still(unit) then return nil end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	local m = FOURTH.blob_map(false)
 	local e, s = FOURTH.shot_pick(unit, m, "value", false, true)
 	if e == nil then return nil end
@@ -20339,6 +20340,7 @@ function FOURTH.evaluate_enemy_commander_wavering(unit, routing)
 	FOURTH.shot_kind = nil
 	FOURTH.eg_class = "commander"
 	if routing then return nil end
+	if not FOURTH.blob_still(unit) then return nil end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	local m = FOURTH.blob_map(false)
 	local e, s = FOURTH.shot_pick(unit, m, "waver", false, true)
 	if e == nil then return nil end
@@ -20633,6 +20635,7 @@ function FOURTH.evaluate_enemy_summon_blob(unit, routing)
 	FOURTH.eg_mode = "shot"
 	FOURTH.shot_kind = nil
 	if routing or FOURTH.entry_blast_r() == nil then return nil end
+	if not FOURTH.blob_still(unit) then return nil end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	local m = FOURTH.blob_map(false)
 	local e, s = FOURTH.shot_pick(unit, m, "summon", false, false)
 	if e == nil or s == nil or s <= 0 then return nil end
@@ -21065,7 +21068,7 @@ end
 function FOURTH.shot_caster_ok(unit, still)
 	local ok, mel = pcall(function() return unit:is_in_melee() end)
 	if not (ok and mel == false) then return false end
-	if still and not FOURTH.blob_still(unit) then return false end
+	if not FOURTH.blob_still(unit) then return false end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	return true
 end
 
@@ -21191,6 +21194,7 @@ end
 function FOURTH.shot_still_ok(enemy, unit)
 	local kind = FOURTH.shot_kind
 	if kind == nil then return false end
+	if not FOURTH.blob_still(unit) then return false end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	if kind == "drain" or kind == "area" or kind == "models" then   -- ROUND 178: models
 		if not FOURTH.blob_still(unit) then return false end   -- ROUND 157: standing still, melee allowed
 	elseif kind ~= "execute" and kind ~= "value" and kind ~= "waver" and kind ~= "summon" then   -- ROUND 181: no caster gate for the squig;   -- ROUND 174: waver has no caster gate   -- ROUND 158: value has no caster gate
@@ -21349,6 +21353,7 @@ function FOURTH.evaluate_enemy_execute(unit, routing)
 	FOURTH.eg_mode = "shot"
 	FOURTH.shot_kind = nil
 	if routing then return nil end
+	if not FOURTH.blob_still(unit) then return nil end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	local m = FOURTH.blob_map(false)
 	local e, s = FOURTH.shot_pick(unit, m, "execute", false, true)
 	if e == nil then return nil end
@@ -21386,6 +21391,7 @@ function FOURTH.evaluate_enemy_commander_value(unit, routing)
 	FOURTH.eg_mode = "shot"
 	FOURTH.shot_kind = nil
 	if routing then return nil end
+	if not FOURTH.blob_still(unit) then return nil end   -- ROUND 190: the animation decides (Amber Bow stopped a walking Markus)
 	local m = FOURTH.blob_map(false)
 	-- ROUND 159: a blast that hits our units too (Deathmaster's Sigil: the VORTEX table) keeps the target safe
 	local nosafe = (FOURTH.entry_blast_r() == nil)

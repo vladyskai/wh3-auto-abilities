@@ -8259,3 +8259,18 @@ unit (ours and the enemy's; estimated rectangles, 2.5 m / 6 m tops) and of the g
 
 **Proof:** harness 188 full suite **7,921 checks / 0 failures**, twice identical; RED on the pre-189 snapshot (the old
 code casts through our Swordsmen). Pack md5 `dab056dfb3b0508d31575de3b78e8a95`. Not seen in game yet.
+
+### 10.68 Round 190 - the animation decides in every shot trigger (2026-11-21)
+
+**Field report (user, 2026-11-21):** "Amber Bow canceled his movement, not good." Then: "Fix the 8 and also audit all the
+triggers." Round document `docs\WH3_round190_shotstill.md`.
+
+**Change:** the shot triggers that skipped the round-168 stand-still check now ask it (`FOURTH.shot_caster_ok`,
+`FOURTH.shot_still_ok`, five evaluators). The 8 animated abilities wait for the caster to stand still: Amber Bow, Gaze of
+Nagash, Damned Pistol, Schalkain's Teeth, Goggly Glare, Vindictive Glare, Shem's Burning Gaze, The Black Tongue. No
+roster change.
+
+**Audit:** `docs\WH3_stand_still_audit_2026-11-21.md`: 33 more triggers, 103 animated abilities, waiting for rulings.
+
+**Proof:** harness 189 full suite **7,944 checks / 0 failures**, twice identical; RED on the pre-190 snapshot (Amber Bow
+fires while Markus walks). Pack md5 `1b749a4d7c6815722a94db93f420eff0`. Workbook v72. Not seen in game yet.
