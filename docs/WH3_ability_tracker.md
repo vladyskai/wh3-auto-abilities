@@ -8389,3 +8389,18 @@ Shielding Swarm x2 are never cast on the caster. Bugman's XXXXXX keeps 55 m clea
 
 **Proof:** harness 197 full suite **8,161 checks / 0 failures**, twice identical. RED on the pre-198 snapshot. Pack md5
 `b5f1ce36cfc8a12a50f7f6ff5fab5ba7`. Workbook v77. Not seen in game yet.
+
+### 10.77 Round 199 - the ally arm, the infantry test, the remembered choice (2026-11-22)
+
+**Rulings (user, 2026-11-22):** row 5 "okay, then fix", row 9 "please implement, but also include the caster as I
+tested and it could cast on the caster", row 10 "agreed, please fix", row 12 "agreed, implement". Round document
+`docs\WH3_round199_review_fixes2.md`.
+
+**Change:** ten ally-targeted abilities gain an ally arm (the most valuable unit in melee wins, the caster or an ally
+inside the game's range): Hellish Vigour Upgraded, Cash Cascade, Master of Alchemy x4, Master Rune of Oath & Steel,
+Spite of Da Bad Moon, and ally only for Wild Abandon and The Hand of Dust. The 30 bombardment entries never take a
+large or flying unit for infantry. The remembered M/A choice sets the start of a battle only. Doom & Darkness
+(gunnery school) can get its badge. No roster change.
+
+**Proof:** harness 198 full suite **8,210 checks / 0 failures**, twice identical. RED on the pre-199 snapshot. Pack md5
+`8c61a82ae7f86bb2820b5156ad65fc5d`. Workbook v78. Not seen in game yet.

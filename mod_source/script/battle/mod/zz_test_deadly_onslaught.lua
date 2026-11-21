@@ -1031,6 +1031,8 @@ local ABILITIES = {
 	{ marker = "cash_cascade", name = "Cash Cascade", trigger = "charge_or_melee",
 		badge = "zz_auto_badge_cash_cascade",
 		keys = { "wh3_dlc26_character_abilities_cash_cascade" },
+		ally_range_real = 200,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	{ marker = "commanding_presence", name = "Commanding Presence", trigger = "wavering_self_or_ally",
 		badge = "zz_auto_badge_commanding_presence",
@@ -1172,26 +1174,36 @@ local ABILITIES = {
 	{ marker = "master_of_alchemy", name = "Master of Alchemy", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy" },
+		ally_range_real = 100,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "master_of_alchemy_flaming", name = "Master of Alchemy: Flaming", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_flaming",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_flaming" },
+		ally_range_real = 100,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "master_of_alchemy_piercing", name = "Master of Alchemy: Piercing", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_piercing",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_piercing" },
+		ally_range_real = 100,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "master_of_alchemy_poison", name = "Master of Alchemy: Poison", trigger = "melee_or_shooting_aura",
 		badge = "zz_auto_badge_master_of_alchemy_poison",
 		keys = { "wh3_main_lord_abilities_master_of_alchemy_poison" },
+		ally_range_real = 100,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		aura_real = 35,
 		ox = 0, oy = 0 },
 	{ marker = "master_rune_of_oath_and_steel", name = "Master Rune of Oath & Steel", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_master_rune_of_oath_and_steel",
 		keys = { "wh_dlc06_rune_abilities_master_rune_of_oath_and_steel" },
+		ally_range_real = 100,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	{ marker = "master_rune_of_speed", name = "Master Rune of Speed", trigger = "charge_or_melee",
 		badge = "zz_auto_badge_master_rune_of_speed",
@@ -1249,6 +1261,8 @@ local ABILITIES = {
 	{ marker = "spite_of_da_bad_moon", name = "Spite of Da Bad Moon", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_spite_of_da_bad_moon",
 		keys = { "wh_dlc06_lord_abilities_spite_of_da_bad_moon" },
+		ally_range_real = 150,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	-- ROUND 179 (score-3 review): heal_ground_best
 	{ marker = "star_of_avelorn", name = "Star of Avelorn", trigger = "heal_ground_best",
@@ -3270,6 +3284,8 @@ local ABILITIES = {
 	{ marker = "hellish_vigour_upgraded", name = "Hellish Vigour Upgraded", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_hellish_vigour_upgraded",
 		keys = { "wh3_dlc29_lord_abilities_hellish_vigour_upgraded" },
+		ally_range_real = 75,
+		ally_value_arm = true,   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	{ marker = "hidden_huntress", name = "Hidden Huntress", trigger = "enemy_melee",
 		badge = "zz_auto_badge_hidden_huntress",
@@ -3796,6 +3812,8 @@ local ABILITIES = {
 	{ marker = "undeath_sulekhim_hand_of_dust", name = "The Hand of Dust", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_undeath_sulekhim_hand_of_dust",
 		keys = { "wh3_dlc29_spell_bound_undeath_sulekhim_hand_of_dust" },
+		ally_range_real = 200,
+		ally_value_arm = "only",   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	{ marker = "the_liber_noctus", name = "The Liber Noctus", trigger = "self_recharging",
 		badge = "zz_auto_badge_the_liber_noctus",
@@ -4011,6 +4029,8 @@ local ABILITIES = {
 	{ marker = "wild_abandon", name = "Wild Abandon", trigger = "melee_unwavering",
 		badge = "zz_auto_badge_wild_abandon",
 		keys = { "wh3_dlc26_lord_abilities_wild_abandon" },
+		ally_range_real = 100,
+		ally_value_arm = "only",   -- ROUND 199: the ally arm (the most valuable unit in melee)
 		ox = 0, oy = 0 },
 	{ marker = "willing_prey", name = "Willing Prey", trigger = "enemy_melee",
 		badge = "zz_auto_badge_willing_prey",
@@ -14445,6 +14465,13 @@ FOURTH.infantry_unreadable_logged = false
 -- land_units class second (EXACT string equality - no substring search anywhere),
 -- FAIL CLOSED (not infantry) when neither answers.
 function FOURTH.enemy_is_infantry(enemy)
+	-- ROUND 199 (overnight review row 10; user: "agreed, please fix"): the engine calls some monsters and fliers
+	-- infantry (the map probe: Fell Bats, the Varghulf, the Zombie Dragon). A unit of the generated large set, or one
+	-- flying right now, is not infantry here (the blob family's test).
+	local t199 = FOURTH.type_plain(enemy)
+	if t199 ~= nil and FOURTH.class_keys.large[t199] == true then return false end
+	local ok_f199, fl199 = pcall(function() return enemy:is_currently_flying() end)
+	if ok_f199 and fl199 == true then return false end
 	local ok, v = pcall(function() return enemy:is_infantry() end)
 	if ok then
 		if v == true then return true end
@@ -22727,6 +22754,35 @@ FOURTH.STILL_GATE_TRIGGERS = {
 	enemy_fast_near_ally = true, enemy_melee_or_fast = true, enemy_melee_noncommander = true,
 	enemy_missile_shooting = true,
 }
+-- ============================================================================
+-- ROUND 199 - THE ALLY ARM (overnight review row 9; user 2026-11-22: "please
+-- implement, but also include the caster as I tested and it could cast on the
+-- caster"). Ten ally-targeted abilities were cast on the caster only. An entry
+-- with ally_value_arm keeps its own trigger for the caster and adds the most
+-- valuable ally in melee inside the game's range (the round-179 value_melee
+-- pick): the more valuable of the two wins, the caster on a tie.
+-- ally_value_arm = "only": a single-target ability the game never lets the
+-- caster take (target_self false and no ground form): the ally alone.
+-- FOURTH.KEY_LOWER: a listed key the game spells with a capital letter, in
+-- lower case (the badge compares the button's lowered key).
+-- ============================================================================
+FOURTH.KEY_LOWER = {}
+function FOURTH.ally_arm_wrap(f, ally_only)
+	return function(unit, routing)
+		local own = f(unit, routing)
+		if ally_only then own = nil end
+		if routing then return own end
+		local r = FOURTH.ab_pick_ally(unit, routing, "value_melee")
+		if r then
+			if not own then return r end
+			local theirs, mine = FOURTH.unit_value(FOURTH.ab_ally), FOURTH.unit_value(unit)
+			if type(theirs) == "number" and type(mine) == "number" and theirs > mine then return r end
+		end
+		-- the caster itself (or nothing): the ally pick leaves no slot behind
+		FOURTH.cast_target, FOURTH.ab_ally, FOURTH.ab_caster_su, FOURTH.ab_ally_su, FOURTH.ab_family = nil, nil, nil, nil, nil
+		return own
+	end
+end
 function FOURTH.still_wrap(f)
 	return function(unit, routing)
 		if not FOURTH.blob_still(unit) then return nil end   -- ROUND 191: a moving caster waits
@@ -22739,6 +22795,13 @@ for _, ability in ipairs(ABILITIES) do
 	if FOURTH.STILL_GATE_TRIGGERS[ability.trigger] == true and ability.evaluate ~= nil then
 		ability.evaluate = FOURTH.still_wrap(ability.evaluate)   -- ROUND 191: the animation decides (group 1)
 		ability.still_gate = true
+	end
+	if ability.ally_value_arm ~= nil and ability.evaluate ~= nil then   -- ROUND 199: the ally arm
+		ability.evaluate = FOURTH.ally_arm_wrap(ability.evaluate, ability.ally_value_arm == "only")
+	end
+	for _, key in ipairs(ability.keys) do   -- ROUND 199: a key the game spells with a capital letter
+		local lk = string.lower(key)
+		if lk ~= key then FOURTH.KEY_LOWER[key] = lk end
 	end
 	ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]
 	-- ROUND 151: the family default. ZZ_AUTO_TEST_NO_DEFAULTS is a TEST-ONLY global the harness sets for
@@ -23106,6 +23169,9 @@ function FOURTH.card_fill(tpl, t)
 	return s
 end
 
+-- ROUND 199: the card of an entry with an ally arm
+FOURTH.CARD_ALLY_ARM = ", or on a more valuable ally in melee"
+FOURTH.CARD_ALLY_ONLY = "Fires on the most valuable ally in melee"
 function FOURTH.compose_card(ability)
 	local tpl = FOURTH.CARD_TIP[ability.trigger]
 	if ability.no_self == true and FOURTH.CARD_TIP_NOSELF[ability.trigger] ~= nil then   -- ROUND 198
@@ -23115,6 +23181,11 @@ function FOURTH.compose_card(ability)
 		tpl = FOURTH.CARD_TIP_NOAURA[ability.trigger]
 	end
 	if tpl == nil then return nil end
+	if ability.ally_value_arm == "only" then   -- ROUND 199
+		tpl = FOURTH.CARD_ALLY_ONLY
+	elseif ability.ally_value_arm == true then
+		tpl = tpl .. FOURTH.CARD_ALLY_ARM
+	end
 	local t = FOURTH.card_tokens(ability)
 	local parts = { FOURTH.card_fill(tpl, t) }
 	local skip = FOURTH.CARD_SKIP[ability.trigger] or {}
@@ -25299,7 +25370,7 @@ function FOURTH.remember_on() return ZZ_AUTO_TEST_NO_REMEMBER ~= true end
 function FOURTH.remember_path() return ZZ_AUTO_TEST_REMEMBER_FILE or FOURTH.REMEMBER_FILE end
 
 function FOURTH.load_remembered()
-	for _, a in ipairs(ABILITIES) do a.remembered = nil end
+	for _, a in ipairs(ABILITIES) do a.remembered, a.remember_next = nil, nil end
 	if not FOURTH.remember_on() then return end
 	local ok, fh = pcall(io.open, FOURTH.remember_path(), "r")
 	if not ok or fh == nil then return end
@@ -25311,6 +25382,8 @@ function FOURTH.load_remembered()
 			if a ~= nil then
 				a.remembered = a.remembered or {}
 				a.remembered[t] = (v == "A")
+				a.remember_next = a.remember_next or {}   -- ROUND 199: what the file holds for the next battle
+				a.remember_next[t] = (v == "A")
 				n = n + 1
 			end
 		end
@@ -25323,7 +25396,7 @@ function FOURTH.save_remembered()
 	if not FOURTH.remember_on() then return end
 	local lines = {}
 	for _, a in ipairs(ABILITIES) do
-		for t, v in pairs(a.remembered or {}) do lines[#lines + 1] = t .. " " .. a.marker .. " " .. (v and "A" or "M") end
+		for t, v in pairs(a.remember_next or {}) do lines[#lines + 1] = t .. " " .. a.marker .. " " .. (v and "A" or "M") end
 	end
 	table.sort(lines)
 	local ok, fh = pcall(io.open, FOURTH.remember_path(), "w")
@@ -25358,13 +25431,16 @@ function FOURTH.remember(ui_id, marker, value)
 	local a = ability_for(marker)
 	local t = FOURTH.unit_type_of_slot(ui_id)
 	if a == nil or t == nil then return end
-	a.remembered = a.remembered or {}
+	-- ROUND 199 (overnight review row 12; user: "agreed, implement"): ability.remembered is the START of this battle
+	-- (read by is_armed for a unit with no switch of its own) and is NOT changed by a click: the other units of the
+	-- type keep what they had. The click goes to ability.remember_next, the table the file is written from.
+	a.remember_next = a.remember_next or {}
 	if (value == true) == (a.default_on == true) then
-		a.remembered[t] = nil
+		a.remember_next[t] = nil
 	else
-		a.remembered[t] = (value == true)
+		a.remember_next[t] = (value == true)
 	end
-	if next(a.remembered) == nil then a.remembered = nil end
+	if next(a.remember_next) == nil then a.remember_next = nil end
 	FOURTH.save_remembered()
 end
 
@@ -25372,7 +25448,7 @@ FOURTH.load_remembered()
 
 -- the optional MCT page's reset, in battle: forget the remembered table and keep the file empty
 function smart_ability_autocast_reset_remembered()
-	for _, a in ipairs(ABILITIES) do a.remembered = nil end
+	for _, a in ipairs(ABILITIES) do a.remembered, a.remember_next = nil, nil end
 	FOURTH.save_remembered()
 end
 
@@ -25850,7 +25926,7 @@ local function key_is_ours(ability, key)
 	if on9 then
 		local candidate = lowered or plain
 		for _, listed_key in ipairs(ability.keys) do
-			if candidate == listed_key then
+			if candidate == listed_key or candidate == FOURTH.KEY_LOWER[listed_key] then   -- ROUND 199: a key with a capital
 				verdict = true
 			end
 		end

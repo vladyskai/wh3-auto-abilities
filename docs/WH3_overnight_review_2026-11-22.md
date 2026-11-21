@@ -109,3 +109,4 @@ pickers refuse it (10177, 19353). Enemy pickers never exclude a routing enemy (1
 - Row 5 (Doom & Darkness, gunnery school): not touched. The user does not see the ability on the Amethyst Land Ship.
 - Rows 9, 10, 12: waiting for rulings.
 - Section 4, first point: the round-198 builder now also compiles the script on Lua 5.1.
+- Rows 5, 9, 10, 12: FIXED in round 199 (`docs\WH3_round199_review_fixes2.md`).

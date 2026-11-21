@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `b5f1ce36cfc8a12a50f7f6ff5fab5ba7`, 1,622,076 bytes
-  (round 198, 2026-11-22: the overnight review's fixes). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `8c61a82ae7f86bb2820b5156ad65fc5d`, 1,626,713 bytes
+  (round 199, 2026-11-22: the ally arm, the infantry test, the remembered choice, the capital key). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_reviewfixes_harness197/build_and_install198.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_reviewfixes2_harness198/build_and_install199.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness197: 8,161 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness198: 8,210 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v77_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v77.py`, verified by `tools\verify_xlsx_v77.py <v76 md5> <pack md5>` (v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v78_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v78.py`, verified by `tools\verify_xlsx_v78.py <v77 md5> <pack md5>` (v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -355,6 +355,19 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 199 (2026-11-22, the review's second replies; `docs\WH3_round199_review_fixes2.md`). Row 5 "okay, then fix":
+  FOURTH.KEY_LOWER (a listed key with a capital letter, lowered at load) joins the badge's equality compare. Row 9
+  "please implement, but also include the caster as I tested and it could cast on the caster": THE ALLY ARM, entry
+  field ally_value_arm (true on 8 entries, "only" on Wild Abandon and The Hand of Dust: target_self false AND no
+  ground form, the Favour of the Fay case). FOURTH.ally_arm_wrap wraps the entry's evaluator at load: the caster's own
+  trigger, plus ab_pick_ally 'value_melee' inside ally_range_real, the more valuable wins, the caster on a tie. Cards:
+  FOURTH.CARD_ALLY_ARM / CARD_ALLY_ONLY. ENGINE FACT (user test): Cash Cascade (target_self false, friend + ground)
+  FIRES when ordered at its own caster, so target_self false does not refuse an area ability with a ground form.
+  Row 10 "agreed, please fix": FOURTH.enemy_is_infantry refuses the generated large set and a flying unit first.
+  Row 12 "agreed, implement": ability.remembered = the battle's START (never changed by a click),
+  ability.remember_next = what the file is written from (the last click wins). The user: Swordsmen have no active
+  ability (use a unit that owns one in examples). NOT VERIFIED: an area ability ordered at an ALLY unit. All four
+  rows of the review that waited are now built. Next battle from byte 978,682,624 (re-measure).
 - ROUND 198 (2026-11-22, the overnight review `docs\WH3_overnight_review_2026-11-22.md`; the user replied row by row:
   "fix" on 1, 2, 3, 6, 7, 8, 11). BUILT: the per-unit serial window is re-armed when the SAME ability repeats (a closed
   window forgets its armer) and the armer yields one poll to an ability that waited (cast_gate.unit_waiting, else a
