@@ -13,7 +13,7 @@ import os
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-OUT = r"C:\Users\vlady\Desktop\WH3_mod\mod_source\workshop\smart_ability_autocast.png"
+OUT = r"C:\Users\vlady\Desktop\WH3_mod\mod_source\workshop\designs\old_preview_512.png"   # RETIRED 2026-11-21: the Workshop image comes from tools/make_game_a_3d.py (FINAL)
 SIZE = 512
 S = 4                      # supersampling factor
 W = SIZE * S

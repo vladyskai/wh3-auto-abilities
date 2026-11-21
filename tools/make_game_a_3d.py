@@ -9,7 +9,8 @@ like 3D."). The game's own A (tools/trace_game_a.py) is rendered as a lit metal 
   4. an extruded side (the letter swept down-right, darker toward the back) gives thickness, a blurred shadow falls
      behind it on a warm vignette ground with a faint texture.
 
-Out: mod_source/workshop/icon/3d/r01.png ... r06.png (256 x 256) and 3d.png (the sheet with true 64 / 32 / 16 px).
+Out: mod_source/workshop/icon/3d/r01.png ... r06.png (256 x 256) and 3d.png (the sheet with true 64 / 32 / 16 px), and
+THE WORKSHOP IMAGE mod_source/workshop/smart_ability_autocast.png (the user's pick: version 1, centred).
 Run: uv run --with potracer --with pillow --with numpy --with scipy --with resvg-py python tools/make_game_a_3d.py"""
 import io
 import os
@@ -25,6 +26,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont  # noqa: E402
 import trace_game_a as T  # noqa: E402
 
 OUT = os.path.join(T.OUT, "3d")
+FINAL = os.path.join(os.path.dirname(T.OUT), "smart_ability_autocast.png")
 N = 1024
 S = N / 256.0
 
@@ -43,6 +45,21 @@ def letter_mask(d, box, height=188, top=26, cx=124):
          '<path fill="#FFFFFF" transform="matrix(%.4f 0 0 %.4f %.2f %.2f)" d="%s"/></svg>' % (k, k, tx, ty, d))
     img = Image.open(io.BytesIO(bytes(resvg_py.svg_to_bytes(svg_string=s, width=N, height=N)))).convert("RGBA")
     return np.asarray(img, dtype=np.float32)[:, :, 3] / 255.0
+
+
+def centred_mask(d, box, extrude):
+    """The letter moved so the solid object (the face, plus its side when extruded) is centred in the tile (user
+    2026-11-21: "Number 1, but please center it"). The soft shadow is left out of the measure: it is not part of the
+    object, and including it would pull the letter up and left."""
+    mask = letter_mask(d, box)
+    solid = mask
+    if extrude:
+        dep = 7 * S
+        solid = np.maximum(mask, ndimage.shift(mask, (dep * 0.9, dep * 0.65), order=1))
+    ys, xs = np.where(solid > 0.5)
+    dx = 128 - (xs.min() + xs.max() + 1) / 2 / S
+    dy = 128 - (ys.min() + ys.max() + 1) / 2 / S
+    return letter_mask(d, box, top=26 + dy, cx=124 + dx)
 
 
 def texture(kind, rng):
@@ -166,6 +183,12 @@ def main():
     sp = os.path.join(T.OUT, "3d.png")
     sheet.save(sp, "PNG", optimize=True)
     print("wrote", sp)
+    # THE CHOSEN IMAGE (user 2026-11-21: "Number 1, but please center it"): version 1, centred, as the Workshop
+    # preview. The launcher wants it named like the pack and placed next to it in data\ at upload time.
+    final = compose(centred_mask(d, box, True), "gold", "brushed", True)
+    final.save(FINAL, "PNG", optimize=True)
+    assert final.size == (256, 256) and os.path.getsize(FINAL) < 1024 * 1024
+    print("wrote", FINAL, os.path.getsize(FINAL), "bytes")
 
 
 if __name__ == "__main__":
