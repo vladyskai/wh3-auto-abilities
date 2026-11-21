@@ -359,7 +359,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   save-it rules (armour for armour-piercing attacks, trash) when no living unit of the WHOLE enemy army, hidden ones
   included, passes them (FOURTH.blob_better_exists, FOURTH.blob_relax, wrappers FOURTH.blob_ap_rule / blob_trash_rule).
   Hidden enemies are only COUNTED, never targeted: a user-ruled exception to round 169. The wanderers keep the plain
-  trash rule. TEST-ONLY ZZ_AUTO_TEST_NO_BLOB_FALLBACK / W.blob_fallback_on. Next battle from byte 946,588,829.
+  trash rule. TEST-ONLY ZZ_AUTO_TEST_NO_BLOB_FALLBACK / W.blob_fallback_on. FIELD-CONFIRMED by the user ("good
+  enough. I just tested"). Workshop preview image: tools\make_preview_png.py draws
+  mod_source\workshop\smart_ability_autocast.png (512 x 512, under 1 MB) with code (the game's own icons are too
+  pixelated). The upload button is missing because the installed test pack is type Movie: the release pack must be type
+  Mod and carry its FINAL name (a Workshop pack cannot be renamed after the first upload).
 - ROUND 196 (2026-11-21): the MCT reset FIELD-CONFIRMED ("it worked, well done"). The user prefers the long label
   "Forget the remembered M/A choices": a wrapped label is fine as long as the page sets NO tooltip (no "?" marker).
   Arrow of Kurnous (enemy_blob) held a whole Wood Elves battle: Skeleton Warriors have armour 20 and the blob family's
