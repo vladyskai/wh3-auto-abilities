@@ -352,6 +352,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- 2026-11-21 (after round 191, no build): the progress page counts ONLY real battles now (game log + archive\logs; it
+  had counted the harness logs: 189 of 1,041 keys seen, not 508). The harness writes the mod's log into its working
+  folder (78 GB in the project root): never treat a project-root or tools\ log as a battle. Scheduled task
+  'wh3-game-patch-check' (daily) compares Steam's buildid with tools\game_build_baseline.txt; the patch-fix round
+  updates the baseline. Steam Workshop release is REQUIRED (open point 18). Rulings recorded in docs\WH3_open_points.md.
 - ROUND 191 (2026-11-21; 'For now, please only implement number 1.'): GROUP 1 of the stand-still audit BUILT. NEW
   FOURTH.STILL_GATE_TRIGGERS (the 8 'at an enemy elsewhere' triggers) + FOURTH.still_wrap: at load each entry on one of
   them gets its evaluator wrapped to ask FOURTH.blob_still first (per ENTRY, because the shared pickers serve other

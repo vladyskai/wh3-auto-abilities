@@ -43,9 +43,16 @@ def newest_workbook():
 
 
 def battle_seen():
-    """Keys with an ACCEPTED cast in any battle log on this PC; falls back to the saved JSON."""
-    logs = [GAME_LOG] + glob.glob(os.path.join(ROOT, "**", "*log*.txt"), recursive=True)
+    """Keys with an ACCEPTED cast in a REAL battle log on this PC; falls back to the saved JSON.
+
+    ROUND 192 FIX (bug flagged in round 171): only the game's own log and the archived battle logs count. The old glob
+    read every *log*.txt in the project, and the harness runs write the mod's log into the folder they run from (the
+    78 GB zz_test_deadly_onslaught_log.txt in the project root, 2 GB in tools\\): mock casts were counted as battle
+    casts (508 keys shown, 180 real)."""
+    logs = [GAME_LOG] + glob.glob(os.path.join(ROOT, "archive", "logs", "**", "*.txt"), recursive=True)
     logs = [p for p in logs if os.path.isfile(p) and os.path.getsize(p) > 0]
+    assert not any(os.path.commonpath([p, os.path.join(ROOT, "mod_source")]) == os.path.join(ROOT, "mod_source")
+                   for p in logs), "a harness log reached the battle count"
     if not logs:
         return json.load(open(SEEN, encoding="utf-8"))["accepted"], "saved list (no logs on this machine)"
     out = subprocess.run(["grep", "-h", "-a", "-E", r"\] ATTEMPT |: ACCEPTED|REJECTED"] + logs,
