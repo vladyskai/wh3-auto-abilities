@@ -8336,3 +8336,15 @@ file) empties it. No roster change.
 
 **Proof:** harness 193 full suite **8,079 checks / 0 failures**, twice identical. RED on the pre-194 snapshot. Pack md5
 `3d9c6617f3ae4cd5ae1e924a91547417`. Not seen in game yet.
+
+### 10.73 Round 195 - the MCT page fixed (2026-11-21)
+
+**Report (user, 2026-11-21, screenshot):** "the '?' is in the middle. Also, there is no feedback to the player when I
+press it." Casting before the first shot: PARKED ("let's park this idea for now"). Round document
+`docs\WH3_round195_mctpage.md`.
+
+**Change:** the MCT page has a section "Remembered M/A choices", a one-line label "All unit types", no tooltip (no "?"
+marker), and after Reset the button reads "Done" and greys out, the label reads "Forgotten". No roster change.
+
+**Proof:** harness 194 full suite **8,082 checks / 0 failures**, twice identical. RED on the round-194 page. Pack md5
+`c308f766e509d0ca839f795c296a8b9f`. Not seen in game yet.
