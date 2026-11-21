@@ -8225,3 +8225,21 @@ Markus walk past our own Swordsmen (line of fire), a ruling is pending.
 
 **Proof:** harness 186 full suite **7,863 checks / 0 failures**, twice byte-identical; RED 8/8. Pack md5
 `816abe086cd75efbb8297bd237a8470e`.
+
+### 10.66 Round 188 - the range rule, max(70%, real - 20 m) (2026-11-21)
+
+**Ruling (user, 2026-11-21):** "C. Your rule, the larger of 70% and real minus 20 m, everywhere." Round document
+`docs\WH3_round188_rangerule.md`.
+
+**Change:** every cast-range bound is `max(floor(real x 0.70), real - 20)` (`FOURTH.range_bound`,
+`FOURTH.RANGE_MARGIN_M = 20`): 21 named constants and 3 hand-named bounds (Blood Sacrifice / Eat da Runts! 80,
+Accusation 55); the Executioner 230 m (the larger of its 90% and the rule). 391 of the 489 bounded entries reach further
+(100 m: 70 -> 80; 250 m: 175 -> 230). Auras, blasts and the air drop unchanged. No roster change.
+
+**Workbook v70:** 359 trigger texts restate their bound. **Database:** the bound column regenerated.
+
+**Line of sight (open point 13):** researched; no script read exists; the game tags 35 of our keys "Requires line of
+sight to the target"; a terrain-height read exists (unproven). The ruling is still the user's.
+
+**Proof:** harness 187 full suite **7,876 checks / 0 failures**, twice byte-identical; RED on the pre-188 snapshot. Pack
+md5 `c478299540ea6704a364d16083145f57`.

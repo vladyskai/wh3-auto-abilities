@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `816abe086cd75efbb8297bd237a8470e`, 1,582,433 bytes
-  (round 187, 2026-11-21: the badges follow the wheel at any resolution or UI scale). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c478299540ea6704a364d16083145f57`, 1,583,998 bytes
+  (round 188, 2026-11-21: the range rule, max(70%, real - 20 m)). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -85,15 +85,17 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    Do not add exceptions lists. Do not argue that an army-bar entry "works".
 2. **No em dashes** in anything written for this user: chat replies, docs, tracker text,
    comments, release notes. Use a comma, a colon, parentheses or a new sentence.
-3. **The 70% range rule.** Every trigger range constant is `floor(real_range * 0.70)`, where
-   the real range is `target_intercept_range` from the game's own tables (an aura's
-   `effect_range` gives the radius; 0 means self-only). No exceptions. It overruled a 25 m
-   value the user had field-tuned himself. Shipped as `FOURTH.RANGE_FRACTION = 0.70`; the
-   build asserts `constant == floor(real * 0.70)`. The single documented override is a metre
+3. **The range rule** (round 188, user ruling 2026-11-21: "C. Your rule, the larger of 70% and real minus 20 m,
+   everywhere."). Every cast-range bound is `max(floor(real_range * 0.70), real_range - 20)`, where the real
+   range is `target_intercept_range` from the game's own tables. AURAS keep `floor(effect_range * 0.70)` (0 means
+   self-only); below 67 m the two rules agree. It overruled a 25 m value the user had field-tuned himself (the
+   70% era). Shipped as `FOURTH.RANGE_FRACTION = 0.70` + `FOURTH.RANGE_MARGIN_M = 20` (`FOURTH.range_bound`); the
+   build asserts every ENEMY_CAST / ALLY_CAST constant equals the rule. The single documented override is a metre
    value the user personally sets for an overlap/underfoot test (air drop), which is a named
    constant, exempted explicitly from the range map, and commented as a test value. SECOND exception (user ruling
    2026-11-20, round 182): the Executioner (a single-entity target) uses 90% of its real range
    (`FOURTH.SINGLE_RANGE_FRACTION`, entry field `range_frac = 0.90`); the build refuses it on any other entry.
+   Since round 188 it takes the larger of its 90% and the rule (250 m: 230).
 4. **Prefer live reads; baked stats when no live read exists.** Read live from the engine
    whenever the API offers the value. When it does not (e.g. a unit's reload time), a table
    GENERATED from the game's own data by a tool (never hand-typed) is allowed (user ruling
@@ -145,7 +147,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    rune locks the others, so automating them makes little sense.
 
 Current roster (round 186): 988 ABILITIES entries / 1,041 ability keys / 141 trigger evaluator families.
-Wheel audit (workbook v69): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
+Wheel audit (workbook v70): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
 82 not implemented among the included: 82 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
 the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
@@ -158,7 +160,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_uiscale_harness186/build_and_install187.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_rangerule_harness187/build_and_install188.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -190,7 +192,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness186: 7,863 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness187: 7,876 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -316,7 +318,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v69_2026-11-20.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v69.py`, verified by `tools\verify_xlsx_v69.py`; the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v70_2026-11-21.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v70.py`, verified by `tools\verify_xlsx_v70.py` (v70 = v69 + a deterministic bound rewrite); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -350,6 +352,12 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 188 (2026-11-21): THE RANGE RULE is max(70%, real - 20 m) (rule 3; open point 15 DONE). 391 of 489 bounded
+  entries reach further (Focused Shot 230 m, the Executioner 230 m, Accusation 55 m: its old 52 m came from a field
+  walk, watch it). Workbook v70 restates 359 trigger texts. LINE OF SIGHT researched (open point 13, waiting for
+  a ruling): no script read; the game's UI effect wh3_main_projectile_requires_line_of_sight tags 56 keys, 35 ours;
+  bm:get_terrain_height(x, z) exists (unproven). build_ability_database.py now reads a constant with a trailing
+  comment (round 188 dropped two). Next battle from byte 852,232,729.
 - ROUND 187 (2026-11-21): the badges follow the wheel (see ENGINE FACTS, badge placement). The Wulfhart battle
   (archive\logs\battle_20261121_r186_wulfhart.txt, bytes 822,999,135-845,604,523): Hunter's Snare caught a real
   charge (open point 2 DONE); Focused Shot's first cast made Markus walk 25 m past our own Swordsmen standing across

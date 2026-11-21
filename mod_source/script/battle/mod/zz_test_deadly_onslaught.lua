@@ -7792,6 +7792,11 @@ enemy_ground_keys = {
 -- floor(real * FOURTH.RANGE_FRACTION) derivation in the comment beside it.
 -- ============================================================================
 FOURTH.RANGE_FRACTION = 0.70
+FOURTH.RANGE_MARGIN_M = 20   -- ROUND 188 (user 2026-11-21): a bound is max(floor(real x 0.70), real - 20 m)
+-- ROUND 188: the cast-range bound of a real range (metres): the larger of 70% and real - RANGE_MARGIN_M
+function FOURTH.range_bound(real)
+	return math.max(math.floor(real * FOURTH.RANGE_FRACTION + 1e-9), real - FOURTH.RANGE_MARGIN_M)
+end
 
 -- THE PER-UNIT SERIALISATION STAGGER (round 107): the minimum window a
 -- unit must wait after a cast before a DIFFERENT ability may be issued
@@ -7828,26 +7833,26 @@ FOURTH.ENEMY_CAST_R20  = 14
 FOURTH.ENEMY_CAST_R25  = 17   -- ROUND 143: the fanatic releases, 25 m -> floor(25 x 0.70)
 FOURTH.ENEMY_CAST_R55  = 38   -- ROUND 146: blob attacks, floor(55 x 0.70)
 FOURTH.ENEMY_CAST_R60  = 42   -- ROUND 146: blob attacks, floor(60 x 0.70)
-FOURTH.ENEMY_CAST_R80  = 56   -- ROUND 146: blob attacks, floor(80 x 0.70)
-FOURTH.ENEMY_CAST_R130 = 91   -- ROUND 146: blob attacks, floor(130 x 0.70)
-FOURTH.ENEMY_CAST_R250 = 175   -- ROUND 146: blob attacks, floor(250 x 0.70)
-FOURTH.ENEMY_CAST_R350 = 245   -- ROUND 146: blob attacks, floor(350 x 0.70)
-FOURTH.ENEMY_CAST_R400 = 280   -- ROUND 146: blob attacks, floor(400 x 0.70)
-FOURTH.ENEMY_CAST_R600 = 420   -- ROUND 146: blob attacks, floor(600 x 0.70)
-FOURTH.ENEMY_CAST_R120 = 84   -- ROUND 156: Crippling Throw, floor(120 x 0.70)
+FOURTH.ENEMY_CAST_R80  = 60   -- ROUND 146: blob attacks, floor(80 x 0.70)   -- ROUND 188: max(70%, 80 - 20) (was 56)
+FOURTH.ENEMY_CAST_R130 = 110   -- ROUND 146: blob attacks, floor(130 x 0.70)   -- ROUND 188: max(70%, 130 - 20) (was 91)
+FOURTH.ENEMY_CAST_R250 = 230   -- ROUND 146: blob attacks, floor(250 x 0.70)   -- ROUND 188: max(70%, 250 - 20) (was 175)
+FOURTH.ENEMY_CAST_R350 = 330   -- ROUND 146: blob attacks, floor(350 x 0.70)   -- ROUND 188: max(70%, 350 - 20) (was 245)
+FOURTH.ENEMY_CAST_R400 = 380   -- ROUND 146: blob attacks, floor(400 x 0.70)   -- ROUND 188: max(70%, 400 - 20) (was 280)
+FOURTH.ENEMY_CAST_R600 = 580   -- ROUND 146: blob attacks, floor(600 x 0.70)   -- ROUND 188: max(70%, 600 - 20) (was 420)
+FOURTH.ENEMY_CAST_R120 = 100   -- ROUND 156: Crippling Throw, floor(120 x 0.70)   -- ROUND 188: max(70%, 120 - 20) (was 84)
 FOURTH.ENEMY_CAST_R30  = 21
 FOURTH.ENEMY_CAST_R35  = 24
 FOURTH.ENEMY_CAST_R45  = 31
 FOURTH.ENEMY_CAST_R50  = 35
-FOURTH.ENEMY_CAST_R70  = 49
-FOURTH.ENEMY_CAST_R75  = 52
-FOURTH.ENEMY_CAST_R90  = 63
-FOURTH.ENEMY_CAST_R100 = 70
-FOURTH.ENEMY_CAST_R150 = 105
-FOURTH.ENEMY_CAST_R180 = 126
-FOURTH.ENEMY_CAST_R200 = 140
-FOURTH.ENEMY_CAST_R300 = 210
-FOURTH.ENEMY_CAST_R500 = 350
+FOURTH.ENEMY_CAST_R70  = 50   -- ROUND 188: max(70%, 70 - 20) (was 49)
+FOURTH.ENEMY_CAST_R75  = 55   -- ROUND 188: max(70%, 75 - 20) (was 52)
+FOURTH.ENEMY_CAST_R90  = 70   -- ROUND 188: max(70%, 90 - 20) (was 63)
+FOURTH.ENEMY_CAST_R100 = 80   -- ROUND 188: max(70%, 100 - 20) (was 70)
+FOURTH.ENEMY_CAST_R150 = 130   -- ROUND 188: max(70%, 150 - 20) (was 105)
+FOURTH.ENEMY_CAST_R180 = 160   -- ROUND 188: max(70%, 180 - 20) (was 126)
+FOURTH.ENEMY_CAST_R200 = 180   -- ROUND 188: max(70%, 200 - 20) (was 140)
+FOURTH.ENEMY_CAST_R300 = 280   -- ROUND 188: max(70%, 300 - 20) (was 210)
+FOURTH.ENEMY_CAST_R500 = 480   -- ROUND 188: max(70%, 500 - 20) (was 350)
 
 -- the ability's REAL target_intercept_range -> its named 70% bound, for the
 -- load-time per-ability lookup (each Class-A entry carries range_real).
@@ -7905,11 +7910,11 @@ FOURTH.ENEMY_CAST = {
 -- ============================================================================
 FOURTH.ALLY_CAST_R50  = 35
 FOURTH.ALLY_CAST_R60  = 42
-FOURTH.ALLY_CAST_R75  = 52
-FOURTH.ALLY_CAST_R100 = 70
-FOURTH.ALLY_CAST_R150 = 105
-FOURTH.ALLY_CAST_R200 = 140
-FOURTH.ALLY_CAST_R250 = 175   -- ROUND 142: Master of Mists, 250 m -> floor(250 x 0.70)
+FOURTH.ALLY_CAST_R75  = 55   -- ROUND 188: max(70%, 75 - 20) (was 52)
+FOURTH.ALLY_CAST_R100 = 80   -- ROUND 188: max(70%, 100 - 20) (was 70)
+FOURTH.ALLY_CAST_R150 = 130   -- ROUND 188: max(70%, 150 - 20) (was 105)
+FOURTH.ALLY_CAST_R200 = 180   -- ROUND 188: max(70%, 200 - 20) (was 140)
+FOURTH.ALLY_CAST_R250 = 230   -- ROUND 142: Master of Mists, 250 m -> floor(250 x 0.70)   -- ROUND 188: max(70%, 250 - 20) (was 175)
 
 -- the ability's REAL target_intercept_range -> its named 70% ALLY bound, for
 -- the load-time per-ability lookup (each Class-B entry carries ally_range_real).
@@ -9971,7 +9976,7 @@ end
 -- so its REAL game-data range is its target_intercept_range = 100.0000 m
 -- (unit_spec_abil.tsv, wh3_dlc26_lord_abilities_blood_sacrifice).
 -- 100 * 0.70 = 70.0 -> 70 m (FLOORED, FOURTH.RANGE_FRACTION).
-FOURTH.BLOOD_SACRIFICE_RANGE_M = 70
+FOURTH.BLOOD_SACRIFICE_RANGE_M = 80   -- ROUND 188: max(70%, 100 - 20) (was 70)
 FOURTH.bs_ally = nil
 function FOURTH.bs_ally_gap(unit, ally)
 	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
@@ -10036,7 +10041,7 @@ end
 -- so its REAL game-data range is its target_intercept_range = 100.0000 m
 -- (unit_spec_abil.tsv, wh3_dlc26_unit_abilities_eat_da_runts).
 -- 100 * 0.70 = 70.0 -> 70 m (FLOORED, FOURTH.RANGE_FRACTION).
-FOURTH.EAT_DA_RUNTS_RANGE_M = 70
+FOURTH.EAT_DA_RUNTS_RANGE_M = 80   -- ROUND 188: max(70%, 100 - 20) (was 70)
 FOURTH.edr_ally = nil
 function FOURTH.edr_ally_gap(unit, ally)
 	local ok, gap = pcall(function() return ally:unit_distance(unit) end)
@@ -12433,7 +12438,7 @@ end
 -- FOURTH.RANGE_FRACTION). SET TO 52 AFTER THE CASTER WAS SEEN TO WALK toward
 -- an enemy that sat inside the 75 m reach but outside a comfortable cast range
 -- - the very symptom this rule exists to remove.
-FOURTH.ACCUSATION_RANGE_M = 52
+FOURTH.ACCUSATION_RANGE_M = 55   -- ROUND 188: max(70%, 75 - 20) (was 52; see the walk note above)
 
 -- the chosen ENEMY unit (re-fetched fresh each tick), its arm ("melee" /
 -- "missile") and the fresh CASTER script_unit - all cleared before every
@@ -22351,7 +22356,9 @@ for _, ability in ipairs(ABILITIES) do
 		-- ROUND 182 (user ruling 2026-11-20, "let's do 90%"): a single-entity target and caster have no edge-to-edge
 		-- gap worth a 30% margin, so the Executioner uses 90% of its real range (the documented exception)
 		if ability.range_frac == FOURTH.SINGLE_RANGE_FRACTION then
-			ability.range_m = math.floor(ability.range_real * FOURTH.SINGLE_RANGE_FRACTION + 1e-9)
+			-- ROUND 188: the larger of the 90% exception and the standing bound (250 m: 225 vs 230)
+			ability.range_m = math.max(ability.range_m or 0,
+				math.floor(ability.range_real * FOURTH.SINGLE_RANGE_FRACTION + 1e-9))
 		end
 	end
 	-- ROUND 114: the air-drop family is bounded by its OWN rule, not by the 70%
