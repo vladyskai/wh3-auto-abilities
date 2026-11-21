@@ -17,6 +17,8 @@ import build_ability_database as bd  # noqa: E402
 
 SRC = r"C:\Users\vlady\Desktop\WH3_mod\mod_source\script\battle\mod\zz_test_deadly_onslaught.lua"
 OUT = r"C:\Users\vlady\Desktop\WH3_mod\docs\WH3_stand_still_audit_2026-11-21.tsv"
+if len(sys.argv) > 1:   # ROUND 191: a later snapshot goes to its own file; the round-190 table stays as it was
+    OUT = sys.argv[1]
 
 
 def bodies(src):
@@ -52,6 +54,8 @@ def main():
     anim = set(re.search(r'\nFOURTH\.ANIM_TEXT = "([^"]*)"', src).group(1).split(";"))
     wiring = dict(re.findall(r"\n\t(\w+) = FOURTH\.(evaluate_\w+),", src))
     tips = dict(re.findall(r'\n\t(\w+) = "(Fires[^"]*)"', src))
+    m191 = re.search(r"\nFOURTH\.STILL_GATE_TRIGGERS = \{\n(.*?)\n\}\n", src, re.S)
+    still_set = set(re.findall(r"(\w+) = true", m191.group(1))) if m191 else set()
     entries, _, _ = bd.mod_entries()
     fam = collections.defaultdict(list)
     for e in entries:
@@ -60,7 +64,8 @@ def main():
     for f in sorted(fam):
         ev = wiring.get(f)
         cl = closure(ev, B) if ev else set()
-        gated = "blob_still" in cl
+        # ROUND 191: an entry on a FOURTH.STILL_GATE_TRIGGERS trigger is wrapped at load (FOURTH.still_wrap asks blob_still)
+        gated = "blob_still" in cl or f in still_set
         animated = [e for e in fam[f] if any(k in anim for k in e["keys"])]
         rows.append((f, ev or "?", len(fam[f]), len(animated), "yes" if gated else "NO",
                      "; ".join(e["name"] for e in animated), tips.get(f, "")))

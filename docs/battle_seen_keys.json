@@ -112,6 +112,7 @@
 "wh2_dlc16_item_abilities_twilight_horn_ii",
 "wh2_dlc16_lord_abilities_remouldered",
 "wh2_dlc16_spell_bound_death_frenzy",
+"wh2_dlc16_spell_bound_earth_blood",
 "wh2_dlc16_unit_abilities_fluid_injection",
 "wh2_dlc16_unit_abilities_warp_lightning_rod",
 "wh2_dlc16_weapon_abilities_creature_killer",
@@ -381,6 +382,7 @@
 "wh3_main_lord_abilities_shadow_shroud",
 "wh3_main_lord_abilities_the_dark_master",
 "wh3_main_lord_abilities_virulent_contagion",
+"wh3_main_mount_bound_celestial_comet",
 "wh3_main_pro_character_abilities_heroic_killing_blow_1",
 "wh3_main_pro_character_abilities_heroic_killing_blow_2",
 "wh3_main_pro_character_abilities_ursuns_roar_1",
@@ -507,6 +509,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 204,
+"logs_read": 205,
 "made": "2026-11-21"
 }

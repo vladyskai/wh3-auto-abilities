@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `1b749a4d7c6815722a94db93f420eff0`, 1,599,680 bytes
-  (round 190, 2026-11-21: the animation decides in every shot trigger). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `ffd2f85006fd334d245a2710d3449656`, 1,600,810 bytes
+  (round 191, 2026-11-21: the animation decides in group 1 of the stand-still audit). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -147,7 +147,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    rune locks the others, so automating them makes little sense.
 
 Current roster (round 186): 988 ABILITIES entries / 1,041 ability keys / 141 trigger evaluator families.
-Wheel audit (workbook v72): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
+Wheel audit (workbook v73): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
 82 not implemented among the included: 82 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
 the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
@@ -160,7 +160,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_shotstill_harness189/build_and_install190.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_still1_harness190/build_and_install191.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -192,7 +192,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness189: 7,944 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness190: 7,967 checks; it takes about 10 s) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -318,7 +318,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v72_2026-11-21.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v72.py`, verified by `tools\verify_xlsx_v72.py` (v72 = v71 + the STANDING sentence on 8 rows); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v73_2026-11-21.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v73.py`, verified by `tools\verify_xlsx_v73.py` (v73 = v72 + the STANDING sentence on 50 more rows); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -352,6 +352,12 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 191 (2026-11-21; 'For now, please only implement number 1.'): GROUP 1 of the stand-still audit BUILT. NEW
+  FOURTH.STILL_GATE_TRIGGERS (the 8 'at an enemy elsewhere' triggers) + FOURTH.still_wrap: at load each entry on one of
+  them gets its evaluator wrapped to ask FOURTH.blob_still first (per ENTRY, because the shared pickers serve other
+  triggers too). 40 animated abilities wait (50 workbook rows: an entry with ANY animated key waits whole, e.g. Doom &
+  Darkness). audit_stand_still.py counts the wrap (snapshot *_r191.tsv: 63 left in groups 2-6, RULINGS PENDING). Next
+  battle from byte 881,292,588.
 - ROUND 190 (2026-11-21): FIELD (bytes 860,397,883-881,292,588, archive\logs\battle_20261121_r189_lineoffire.txt): the
   line of fire WORKS (ground read answered; 22 blocks, each ability fired once clear). Amber Bow fired while Markus walked
   and STOPPED him ('canceled his movement, not good'): the shot triggers skipped the round-168 stand-still check

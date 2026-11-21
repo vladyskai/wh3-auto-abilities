@@ -1,0 +1,142 @@
+family	evaluator	entries	animated	stand_still_gate	animated_entries	card_tip
+air_drop_on_infantry	evaluate_air_drop_on_infantry	12	2	NO	Sky-Junk Bomb; Nan-Gau Grenades	Fires when over an enemy unit of more than {ADMEN} men
+allies_firing_aura	evaluate_allies_firing_aura	8	0	NO		Fires while shooting
+ally_ammo_low	evaluate_ally_ammo_low	3	0	NO		Fires on the shooting ally in range lowest on ammo, at {AMMO}% or less
+ally_beast_charge	evaluate_ally_beast_charge	1	0	NO		Fires on a charging beast ally
+ally_blast	evaluate_ally_blast	1	0	NO		Fires on itself or the ally amid the most enemies
+ally_charge_melee	evaluate_ally_charge_melee	1	0	NO		Fires on a charging ally, never a missile unit
+ally_charge_or_melee	evaluate_ally_charge_or_melee	3	0	NO		Fires on an ally charging, else just in contact, else in melee; no missile units
+ally_construct_heal	evaluate_ally_construct_heal	1	0	NO		Fires on the most hurt construct in range below 75% health
+ally_heal	evaluate_ally_heal	3	1	NO	Revivification Crystal	Fires on the most hurt ally in range below 75% health
+ally_heal_melee	evaluate_ally_heal_melee	1	0	NO		Fires in melee, on the most hurt ally in range below 75% health
+ally_hellforged_heal	evaluate_ally_hellforged_heal	1	0	NO		Fires on the most hurt Hell-Forged unit in range below 75% health
+ally_hurt_melee	evaluate_ally_hurt_melee	1	0	NO		Fires on the most hurt unit in melee nearby, below 75% health
+ally_in_melee	evaluate_ally_in_melee	1	1	NO	Hellish Vigour	Fires on the nearest ally in melee
+ally_lord_melee	evaluate_ally_lord_melee	1	0	NO		Fires on the nearest ally in melee
+ally_melee_buff	evaluate_ally_melee_buff	1	0	NO		Fires in melee unless wavering, on the nearest ally in range
+ally_melee_risk	evaluate_ally_melee_risk	2	0	NO		Fires on an ally in melee that wavers or is badly hurt
+ally_melee_wavering_first	evaluate_ally_melee_wavering_first	4	0	NO		Fires on the nearest ally in melee, a wavering one first
+ally_missile_shooting	evaluate_ally_missile_shooting	3	0	NO		Fires on the most valuable shooting missile ally
+ally_monster_heal	evaluate_ally_monster_heal	1	0	NO		Fires on the most hurt monster in range below 75% health
+ally_offering	evaluate_ally_offering	1	1	NO	Offering to the Gods	Fires on the most valuable ally of 30+ men in melee; no missile units
+ally_routing	evaluate_ally_routing	1	0	NO		Fires on the most valuable routing ally
+ally_squig_melee	evaluate_ally_squig_melee	1	0	NO		Fires on a squig ally in melee
+ally_value_melee	evaluate_ally_value_melee	1	0	NO		Fires on the most valuable ally in melee; no missile units
+ally_warmachine_heal	evaluate_ally_warmachine_heal	1	0	NO		Fires on the most hurt war machine in range below 75% health
+ally_wavering	evaluate_ally_wavering	2	0	NO		Fires on the nearest wavering ally in range
+ally_wavering_melee	evaluate_ally_wavering_melee	1	0	NO		Fires on a wavering ally in melee, never a missile unit
+ally_winds	evaluate_ally_winds	1	0	NO		Fires when the winds run low, on an expendable ally, else the cheapest healthy one
+army_charge	evaluate_army_charge	1	0	NO		Fires when {ACN}+ of your units charge at once (all of them in a smaller army)
+army_charge_or_melee	evaluate_army_charge_or_melee	1	0	NO		Fires when {ACN}+ of your units charge or fight at once (all of them in a smaller army)
+aura_charge	evaluate_aura_charge	1	0	NO		Fires when it or a nearby ally charges or wavers
+aura_charge_only	evaluate_aura_charge_only	3	2	NO	Battle Howl; Battle Howl	Fires when it or a nearby ally charges
+aura_charge_or_melee	evaluate_aura_charge_or_melee	1	0	NO		Fires when it or a nearby ally charges or fights
+barrier_broken	evaluate_barrier_broken	1	0	NO		Fires when its barrier breaks
+blood_sacrifice	evaluate_blood_sacrifice	1	0	NO		Fires on the most hurt nearby ally below 75% health
+charge	evaluate_charge	1	0	NO		Fires when charging or in melee
+charge_only	evaluate_charge_only	5	1	NO	Ferocious Battle Howl	Fires when charging
+charge_or_melee	evaluate_charge_or_melee	36	4	NO	Master Rune of Speed; Rune of Speed; Full Power!; More Power!	Fires when charging or in melee
+charge_or_tired	evaluate_charge_or_tired	1	0	NO		Fires when charging or tired
+charge_or_wavering	evaluate_charge_or_wavering	2	1	NO	Bangers & Smash	Fires when charging or wavering
+contact_melee	evaluate_contact_melee	1	0	NO		Fires in melee unless wavering, against an enemy with contact effects
+eat_da_runts	evaluate_eat_da_runts	1	0	NO		Fires below 75% health, on the cheapest healthy ally
+enemy_area_drain	evaluate_enemy_area_drain	13	6	yes	The Fate of Bjuna; The Fate of Bjuna; Flock of Doom; Flock of Doom; Flock of Doom; Zefet-nebtar, the Mortis Blade	Fires[ when standing still{ANIM},] on the most valuable enemy infantry of {AREA}+ men
+enemy_area_drain_hurt	evaluate_enemy_area_drain_hurt	2	0	yes		Fires below 75% health[, when standing still{ANIM},] on the most valuable enemy infantry of {AREA}+ men
+enemy_blob	evaluate_enemy_blob	68	59	yes	The Venom Staff; Frost Breath; Frost Breath; The Moonbow; Cackle Fruit; Pyromaniac; Bomb-Throw; Storm Daemon; Big Boom; Quiver of Aqshy; Arrow of Aqshy; Cracklebomb; Swamp Breath; Shackolot's Noxious Breath; Gordinar's Dragon Breath; Dart of Doom; Cinderblast Shell; Volley of Dark Arrows; Volley of High Arrows; Doomrocket; Dark Fire of Chaos; Death Shriek; Fiery Breath; Moon Dragon's Breath; Noxious Breath; Pestilential Breath; Soporific Breath; Star Dragon's Breath; Sun Dragon's Breath; Bow of the Seafarer; Reaver Bow; Flaming Breath; Wind Bow; Spirit Bear; Dire Spirit Bear; Taal's Judgement; Ice Breath; Mercurial Shot; Cinderblast Cluster Bomb; Coruscating Blast; Spear of Grungni; Unspeakable Foulness; Experimental Explosive; Sting of Snagla; Flaming Breath; Bilespurt; Lamentation of Despairs (Empowered); Shadowblood; Pestilent Torrent; The Gaze of Dust; Fire Breath; Ice Shard; Bellow of Endless Fury; Bellow of Fury; Elemental Breath; Hail of Doom Arrow; Lamentation of Despairs; Skarsnik's Prodder; Copious Vomit	Fires[ when standing still{ANIM},] where the blast hurts the enemy most[, clear of allies{FF}]
+enemy_blob_vortex	evaluate_enemy_blob	2	1	yes	Bonecrusher	Fires[ when standing still{ANIM},] where the blast hurts the enemy most[, clear of allies{FF}]
+enemy_commander_value	evaluate_enemy_commander_value	4	0	yes		Fires on the most valuable enemy Lord or Hero
+enemy_commander_wavering	evaluate_enemy_commander_wavering	1	0	yes		Fires at a wavering enemy, one in melee first
+enemy_cone	evaluate_enemy_cone	5	2	yes	Fishy Breath; Shatter	Fires[ when standing still{ANIM},] through the standing enemies it hurts most[, clear of allies{FF}]
+enemy_engaged_or_shot	evaluate_enemy_engaged_or_shot	22	6	yes	Doom & Darkness; Eternal Gaze; Fecund Rebirth; Oil Flask; Plague of Rust; The Withering	Fires on the nearest enemy in melee, else one under missile fire
+enemy_execute	evaluate_enemy_execute	2	0	yes		Fires on the healthiest enemy below {EXEC}% health
+enemy_fast_fire_melee	evaluate_enemy_fast_fire_melee	2	0	NO		Fires at a charging enemy, else at one we shoot, else at one in melee
+enemy_fast_near_ally	evaluate_enemy_fast_near_ally	20	4	yes	Master Rune of Slowness; Net of Amyntok; Rune of Slowness; Whispering Mist	Fires on a fast enemy closing on allies
+enemy_fast_or_melee	evaluate_enemy_fast_or_melee	2	0	NO		Fires at a charging enemy, else at one in melee
+enemy_finisher	evaluate_enemy_finisher	1	1	yes	Executioner	Fires[ when standing still{ANIM},] on the most hurt enemy monster or character clear of allies
+enemy_ground_area	evaluate_enemy_ground_area	2	0	NO		Fires under the nearest enemy in melee, else one under missile fire
+enemy_ground_melee	evaluate_enemy_ground_melee	74	7	yes	Captain Roth's Moondial; The Awakening; The Heralds' Arrival; Transformation of Kadon; Undeath to All; Undeath to All Upgraded; Savage Dominion	Fires at the nearest enemy in melee
+enemy_ground_melee_cluster	evaluate_enemy_ground_melee_cluster	2	2	yes	Raging Tornado; Fog of the Damned	Fires[ when standing still{ANIM},] under the thickest melee of enemies
+enemy_ground_melee_infantry	evaluate_enemy_ground_melee_infantry	30	12	yes	Celestial Comet; Celestial Lightning; Comet of Casandora; Klad Brakak; Lightning Strike; Lord of the Storm; Master of Lightning; Meteor Strike; Nemesis Crown; Searing Doom; Slicing Shards; Urannon's Thunderbolt	Fires at the nearest enemy infantry in melee, not Lords or Heroes
+enemy_ground_shooters	evaluate_enemy_ground_shooters	1	0	NO		Fires under the thickest group of shooting enemies
+enemy_ground_shooting	evaluate_enemy_ground_shooting	1	0	NO		Fires under the nearest shooting enemy missile unit
+enemy_ground_spellcasters	evaluate_enemy_ground_spellcasters	2	0	NO		Fires under the thickest group of enemy spellcasters
+enemy_infantry_shot	evaluate_enemy_infantry_shot	1	1	yes	Bolt Storm	Fires[ when standing still{ANIM},] on the most valuable enemy infantry clear of allies
+enemy_large_shot	evaluate_enemy_large_shot	7	4	yes	Amber Bow; Gaze of Nagash; Damned Pistol; Schalkain's Teeth	Fires on the most valuable large enemy clear of allies, else armoured infantry
+enemy_large_value_shot	evaluate_enemy_large_value_shot	4	3	yes	Goggly Glare; Vindictive Glare; Shem's Burning Gaze	Fires at the most valuable large enemy, else at the best infantry
+enemy_low_health_noncommander	evaluate_enemy_low_health_noncommander	1	0	NO		Fires on the most valuable enemy below {HL}% health, not Lords or Heroes
+enemy_melee	evaluate_enemy_melee	35	6	yes	Acquiescence; Otto's Scythe; Ravaging Swarm; Ravaging Swarm Upgraded; Tendrils of the Sea; The Enfeebling Foe	Fires on the nearest enemy in melee
+enemy_melee_near	evaluate_enemy_melee_near	6	0	NO		Fires when it or a nearby enemy is in melee
+enemy_melee_noncommander	evaluate_enemy_melee_noncommander	1	1	yes	The Dreaded Thirteenth	Fires on the nearest enemy in melee, not Lords or Heroes
+enemy_melee_or_fast	evaluate_enemy_melee_or_fast	4	3	yes	Crippling Throw; The Golden Blowpipe of P'Toohee; Storm of the Night	Fires on the nearest enemy in melee, else a fast enemy closing on allies
+enemy_melee_or_shooting	evaluate_enemy_melee_or_shooting	3	0	NO		Fires on the nearest enemy in melee, else a shooting missile unit
+enemy_missile_shooting	evaluate_enemy_missile_shooting	1	1	yes	Missile Mirror	Fires on the nearest shooting enemy missile unit
+enemy_missile_value	evaluate_enemy_missile_value	1	0	NO		Fires at the most valuable enemy missile unit while it shoots
+enemy_most_models	evaluate_enemy_most_models	3	3	yes	The Soulstealer; Chain Lightning; Chain Lightning	Fires[ when standing still{ANIM},] on the enemy unit with the most soldiers, 16 at least
+enemy_most_valuable	evaluate_enemy_most_valuable	1	0	yes		Fires[ when standing still{ANIM},] on the most valuable enemy
+enemy_single_drain	evaluate_enemy_single_drain	13	5	yes	Spirit Leech; Spirit Leech; Spirit Leech; Spirit Leech; Spirit Leech	Fires[ when standing still{ANIM},] on the most valuable enemy monster or character
+enemy_single_shot	evaluate_enemy_single_shot	2	2	yes	Dead Eye; Focused Shot	Fires[ when standing still{ANIM},] on the most valuable enemy monster or character clear of allies
+enemy_spellcaster	evaluate_enemy_spellcaster	8	1	yes	The Black Tongue	Fires at the most valuable enemy spellcaster
+enemy_strike	evaluate_enemy_strike	1	0	yes		Fires[ when standing still{ANIM},] under the most valuable standing monster or character[, clear of allies{FF}]
+enemy_summon_blob	evaluate_enemy_summon_blob	1	0	yes		Fires under the standing enemy block worth the most[, clear of allies{FF}]
+enemy_sweep	evaluate_enemy_sweep	2	2	NO	Disembowelling Sweep; Flesh-eating Scarabs	Fires in melee unless wavering, at the nearest enemy in melee[, clear of allies{FF}]
+enemy_wander	evaluate_enemy_wander	42	20	yes	Lesser Chain Lightning; Flame Storm; Flame Storm; Gehenna's Golden Hounds; Soul-slaying Hunger; The Dwellers Below; The Dwellers Below; The Abyssal Swarm; Acorns of the Oak of Ages; Frost Fang; Brass Orb; Brass Orb; Brass Orb Upgraded; Infernal Gateway; Pit of Shades; Pit of Shades; Pit of Shades; Irresistible Plague!; Plaguemaster; Warp Junction	Fires when {WHO} still, where the blast hurts the enemy most[, clear of allies{FF}]
+enemy_wave	evaluate_enemy_wave	30	15	yes	Wind of Death; The Burning Head; The Burning Head; Fiery Convocation; Burning Alignment; Nightmaw; The Penumbral Pendulum; Jade Lion's Breath; Kovsh Breath; Lash of Slaanesh; Pink Fire of Tzeentch; Pink Fire of Tzeentch; Stream of Corruption; Stream of Corruption; The Spear Slaupnir	Fires when {WHO} still, down the path with the most enemies[, clear of allies{FF}]
+enemy_wave_charge	evaluate_enemy_wave_charge	2	2	yes	Tidecall; Wind Blast	Fires[ when standing still{ANIM},] at a fast enemy closing on allies[, its path clear of allies{FF}]
+enemy_wavering	evaluate_enemy_wavering	2	0	NO		Fires on the nearest wavering enemy
+fly_dive	evaluate_fly_dive	2	1	NO	Emberstorm	Fires while flying over an enemy[, clear of allies{FF}]
+glorious_death	evaluate_glorious_death	1	0	NO		Fires when a nearby Slayer is in melee
+ground_ally_before_range	evaluate_ground_ally_before_range	1	0	NO		Fires under missile allies just before their enemy is in range, else while they shoot
+guard_aura	evaluate_guard_aura	2	0	NO		Fires in melee, under fire, or when an enemy charges in
+heal_ground_best	evaluate_heal_ground_best	1	0	NO		Fires under the hurt unit with the most hurt units around it
+health_aura_ally	evaluate_health_aura_ally	8	3	NO	Earth Blood; Fleshy Abundance; Trollguts	Fires on the most hurt unit nearby, below 75% health
+health_aura_ally_deep	evaluate_health_aura_ally_deep	1	0	NO		Fires on the most hurt unit nearby, below 55% health
+health_aura_ally_rule	evaluate_health_aura_ally_rule	4	2	NO	Breath of Darkness; Breath of Darkness Upgraded	Fires on the most hurt unit nearby it may target, below 75% health
+health_aura_ground	evaluate_health_aura_ground	2	2	NO	Gulyas; Slime Smoothie	Fires under the most hurt unit nearby, below 75% health
+health_aura_self	evaluate_health_aura_self	2	0	NO		Fires when it or a nearby ally is below 75% health
+health_aura_self_undead	evaluate_health_aura_self_undead	1	0	NO		Fires when it or a nearby undead ally is below 75% health
+health_below_15	evaluate_tzarkan_low_health	1	1	NO	Tz'arkan	Fires below 15% health
+last_stand_clear	evaluate_last_stand_clear	3	0	NO		Fires below {LS}% health in melee[, clear of allies{FF}]
+melee	evaluate_melee	1	0	NO		Fires in melee
+melee_clear	evaluate_melee_clear	6	1	NO	Glacial Blast	Fires in melee unless wavering[, clear of allies{FF}]
+melee_clear_block	evaluate_melee_clear_block	2	0	NO		Fires in melee unless wavering[, clear of allies{FF}], with 60+ enemies in the blast
+melee_health25	evaluate_melee_health25	1	0	NO		Fires in melee at 25% health or less
+melee_health75	evaluate_potion_health	4	0	NO		Fires in melee below 75% health
+melee_healthy	evaluate_melee_healthy	1	0	NO		Fires in melee while above 50% health
+melee_or_self_or_ally_shooting	evaluate_melee_or_self_or_ally_shooting	1	0	NO		Fires in melee unless wavering, or on itself or the nearest ally in range while shooting
+melee_or_self_shooting	evaluate_melee_or_self_shooting	1	0	NO		Fires in melee unless wavering, or while shooting
+melee_or_shooting_aura	evaluate_melee_or_shooting_aura	10	0	NO		Fires when it or a nearby ally is in melee or shooting
+melee_or_shooting_self_or_ally	evaluate_melee_or_shooting_self_or_ally	2	1	NO	Harmonic Convergence	Fires in melee unless wavering or while shooting, else on the nearest ally in range doing either
+melee_or_under_fire	evaluate_melee_or_under_fire	5	1	NO	Rune of Oath & Steel	Fires in melee unless wavering, or under missile fire[, or when {ALLYA} is in melee or under fire]
+melee_or_wavering_aura	evaluate_melee_or_wavering_aura	2	0	NO		Fires when it or {ALLYA} is in melee or wavering
+melee_self_or_ally	evaluate_melee_self_or_ally	3	0	NO		Fires on itself or the nearest ally in melee
+melee_skip_commanders	evaluate_melee_skip_commanders	4	2	NO	Soulfire; Call of Tor	Fires in melee, unless fighting only Lords or Heroes
+melee_unwavering	evaluate_in_melee_self	281	27	NO	Battle of Wills; Curse of Years; Dragonhorn; Ferocious Winter’s Chill; Flame Incarnate; Master Rune of Oath & Steel; Okkam's Mindrazor; Primeval Roar; Winter’s Chill; Cascading Fire Cloak; Soulblight; Feaster of Souls; Alakanash, the Staff of Power; Ark of Sotek; Destruction; Eruption; Ferocious Destruction; Sonic Boom; Hellish Vigour Upgraded; Howl of the Great Beast; Hysterical Frenzy; Master Rune of Breaking; Master Rune of Negation; Pha's Protection; Rune of Breaking; Rune of Negation; The Hand of Dust	Fires in melee unless wavering
+melee_vs_large	evaluate_melee_vs_large	3	0	NO		Fires when it or a nearby ally fights a large enemy
+no_enemy_in_range_within_boost	evaluate_no_enemy_in_range_within_boost	1	0	NO		Fires when an enemy is just beyond its missile range
+recharging_in_reach	evaluate_recharging_in_reach	1	0	NO		Fires on itself or an ally in range while one of their abilities recharges
+self_heal_clear	evaluate_self_heal_clear	1	0	NO		Fires below 75% health with no enemy near
+self_hurt_attacked	evaluate_self_hurt_attacked	2	0	NO		Fires below 75% health while fighting or shot at
+self_last_stand	evaluate_self_last_stand	3	0	NO		Fires below {LS}% health in melee or under fire
+self_moving	evaluate_self_moving	1	0	NO		Fires when moving
+self_or_ally_charge	evaluate_self_or_ally_charge	2	0	NO		Fires on itself or the nearest charging ally, else in melee
+self_or_ally_fire_melee	evaluate_self_or_ally_fire_melee	2	2	NO	Shielding Swarm; Shielding Swarm Upgraded	Fires on itself or an ally under fire, else on an ally in melee
+self_or_ally_shooting	evaluate_self_or_ally_shooting	1	0	NO		Fires on itself, else the nearest ally in range, while shooting
+self_out_of_ammo	evaluate_self_out_of_ammo	1	0	NO		Fires when out of ammo, above 50% health
+self_recharging	evaluate_self_recharging	6	0	NO		Fires while another of its abilities recharges
+self_recharging_2	evaluate_self_recharging_2	1	0	NO		Fires while two of its other abilities recharge
+self_shooting	evaluate_self_shooting	1	0	NO		Fires while shooting
+self_shooting_clear	evaluate_self_shooting_clear	1	0	NO		Fires while shooting at a target not in melee
+self_shooting_healthy	evaluate_self_shooting_healthy	1	0	NO		Fires while shooting, above 50% health
+self_summon_melee	evaluate_self_summon_melee	1	0	NO		Fires in melee
+slow_army	evaluate_slow_army	1	0	NO		Fires when an enemy charges your army, or in melee
+slow_aura	evaluate_slow_aura	4	0	NO		Fires in melee, or when a fast enemy comes near
+tired	evaluate_tired	1	0	NO		Fires when tired
+under_fire	evaluate_under_fire	4	1	NO	Morikhane, the Black Armour	Fires when it or {ALLYA} is under missile fire
+ushoran_health	evaluate_ushoran_health	11	1	NO	Invocation of Nehek	Fires below 75% health
+verminking_wavering	evaluate_verminking_wavering	1	0	NO		Fires when a nearby ally wavers in melee
+wavering_ally_range	evaluate_wavering_ally_range	6	1	NO	Doom Lord	Fires on the nearest wavering ally
+wavering_aura	evaluate_wavering_aura	9	0	NO		Fires when it or {ALLYA} wavers
+wavering_self	evaluate_wavering_self	4	1	NO	Ferocious Fury of Ulric	Fires when wavering
+wavering_self_or_ally	evaluate_wavering_self_or_ally	2	1	NO	Fury of Ulric	Fires when it wavers, or a nearby ally wavers
+when_ready	evaluate_when_ready	20	0	NO		Fires when ready
+winds_low	evaluate_winds_low	2	0	NO		Fires when the winds pool is low, above {WLH}% health

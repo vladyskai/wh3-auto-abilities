@@ -8274,3 +8274,17 @@ roster change.
 
 **Proof:** harness 189 full suite **7,944 checks / 0 failures**, twice identical; RED on the pre-190 snapshot (Amber Bow
 fires while Markus walks). Pack md5 `1b749a4d7c6815722a94db93f420eff0`. Workbook v72. Not seen in game yet.
+
+### 10.69 Round 191 - the animation decides in group 1 (2026-11-21)
+
+**Ruling (user, 2026-11-21):** "For now, please only implement number 1." Group 1 of the stand-still audit: the triggers
+that fire at an enemy somewhere else. Round document `docs\WH3_round191_still1.md`.
+
+**Change:** `FOURTH.STILL_GATE_TRIGGERS` (enemy_ground_melee_infantry, enemy_ground_melee, enemy_engaged_or_shot,
+enemy_melee, enemy_fast_near_ally, enemy_melee_or_fast, enemy_melee_noncommander, enemy_missile_shooting); at load each
+entry on one of them is wrapped by `FOURTH.still_wrap`, which asks `FOURTH.blob_still` first. 40 animated abilities (50
+workbook rows; Doom & Darkness waits on all three keys) wait for the caster to stand still. No roster change.
+
+**Proof:** harness 190 full suite **7,967 checks / 0 failures**, twice identical; RED on the pre-191 snapshot (Oil Flask
+and Celestial Comet fire while the caster walks). Pack md5 `ffd2f85006fd334d245a2710d3449656`. Workbook v73. Groups 2-6
+(63 animated abilities) still wait for rulings. Not seen in game yet.

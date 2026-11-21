@@ -49,3 +49,10 @@ animated abilities on that trigger. Table: `docs\WH3_stand_still_audit_2026-11-2
 
 ASSUMPTION throughout: that every animated cast stops its caster. Round 168 matched it on 4 field cases, and the Amber Bow
 battle is a fifth; it is not proven for every animation.
+
+## Round 191 update (2026-11-21)
+
+User: "For now, please only implement number 1." Group 1 (40 abilities, 8 triggers) is BUILT
+(`docs\WH3_round191_still1.md`): those triggers now wait for an animated caster to stand still. The tool now counts the
+load-time wrap; its round-191 table is `docs\WH3_stand_still_audit_2026-11-21_r191.tsv` (24 of 49 triggers wait, 63
+animated abilities left). Groups 2 (14), 3 (32), 4 (6), 5 (8) and 6 (3) still wait for rulings.

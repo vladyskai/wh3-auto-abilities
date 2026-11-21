@@ -22599,9 +22599,28 @@ FOURTH.TRIGGER_TIP = {
 	enemy_ground_melee_infantry = "When armed, fires on the closest infantry unit in range that is fighting in melee",
 	air_drop_on_infantry = "When armed, fires when the nearest enemy unit with more than 10 models comes within 6 m of this unit's centre, and casts immediately on that evaluation - no delay at all - airborne where the ability requires it",
 }
+-- ROUND 191 (user 2026-11-21: 'For now, please only implement number 1'): group 1 of the stand-still audit, the
+-- triggers that fire at an enemy somewhere else. An animated cast stops its caster (the 2026-11-17 ruling 'Option A,
+-- animation decides all'), so an entry on one of these triggers is not even evaluated while its caster moves.
+-- FOURTH.blob_still answers 'yes' for a cast without an animation: only the 40 animated entries wait.
+FOURTH.STILL_GATE_TRIGGERS = {
+	enemy_ground_melee_infantry = true, enemy_ground_melee = true, enemy_engaged_or_shot = true, enemy_melee = true,
+	enemy_fast_near_ally = true, enemy_melee_or_fast = true, enemy_melee_noncommander = true,
+	enemy_missile_shooting = true,
+}
+function FOURTH.still_wrap(f)
+	return function(unit, routing)
+		if not FOURTH.blob_still(unit) then return nil end   -- ROUND 191: a moving caster waits
+		return f(unit, routing)
+	end
+end
 for _, ability in ipairs(ABILITIES) do
 	ability.evaluate = FOURTH.evaluators[ability.trigger]
 	ability.los = FOURTH.entry_los(ability)   -- ROUND 189: the line of fire (terrain and units)
+	if FOURTH.STILL_GATE_TRIGGERS[ability.trigger] == true and ability.evaluate ~= nil then
+		ability.evaluate = FOURTH.still_wrap(ability.evaluate)   -- ROUND 191: the animation decides (group 1)
+		ability.still_gate = true
+	end
 	ability.tip = FOURTH.TRIGGER_TIP[ability.trigger]
 	-- ROUND 151: the family default. ZZ_AUTO_TEST_NO_DEFAULTS is a TEST-ONLY global the harness sets for
 	-- its older worlds (which arm by clicking); the game never defines it, so the defaults always apply there.
