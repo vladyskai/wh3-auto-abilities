@@ -139,6 +139,8 @@
 "wh_dlc03_weapon_abilities_scourge",
 "wh_dlc04_spell_bound_net_of_amyntok",
 "wh_dlc04_spell_bound_soulfire_upgraded",
+"wh_dlc05_spell_bound_shield_of_thorns",
+"wh_dlc05_spell_bound_the_curse_of_anraheir",
 "wh_dlc05_weapon_abilities_stave_of_ruinous_corruption",
 "wh_dlc07_character_abilities_heroic_killing_blow",
 "wh_dlc07_hero_abilities_dolorous_blade",
@@ -158,6 +160,7 @@
 "wh_main_item_abilities_opal_amulet",
 "wh_main_item_abilities_pendant_of_slaanesh",
 "wh_main_item_abilities_potion_of_foolhardiness",
+"wh_main_item_abilities_potion_of_speed",
 "wh_main_item_abilities_potion_of_strength",
 "wh_main_item_abilities_power_stone",
 "wh_main_item_abilities_scroll_of_leeching",
@@ -181,6 +184,6 @@
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 152,
+"logs_read": 153,
 "made": "2026-11-21"
 }

@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `9d1c2c8fc15aeb4a4a7181d4d88119ee`, 1,615,586 bytes
-  (round 196, 2026-11-21: the MCT label "Forget the remembered M/A choices" back, no tooltip). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `febf51077902ccef857d0ac42cc872d7`, 1,619,340 bytes
+  (round 197, 2026-11-21: the blob family's whole-army fallback). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_mctlabel_harness195/build_and_install196.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_blobfallback_harness196/build_and_install197.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness195: 8,083 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness196: 8,104 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v75_2026-11-21.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v75.py`, verified by `tools\verify_xlsx_v75.py` (v75 = v74 + Scry-Orb implemented. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v76_2026-11-21.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v76.py`, verified by `tools\verify_xlsx_v76.py` (v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -355,6 +355,11 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 197 (2026-11-21, "A: whole army"): the blob family (enemy_blob, enemy_blob_vortex, 70 keys) drops its two
+  save-it rules (armour for armour-piercing attacks, trash) when no living unit of the WHOLE enemy army, hidden ones
+  included, passes them (FOURTH.blob_better_exists, FOURTH.blob_relax, wrappers FOURTH.blob_ap_rule / blob_trash_rule).
+  Hidden enemies are only COUNTED, never targeted: a user-ruled exception to round 169. The wanderers keep the plain
+  trash rule. TEST-ONLY ZZ_AUTO_TEST_NO_BLOB_FALLBACK / W.blob_fallback_on. Next battle from byte 946,588,829.
 - ROUND 196 (2026-11-21): the MCT reset FIELD-CONFIRMED ("it worked, well done"). The user prefers the long label
   "Forget the remembered M/A choices": a wrapped label is fine as long as the page sets NO tooltip (no "?" marker).
   Arrow of Kurnous (enemy_blob) held a whole Wood Elves battle: Skeleton Warriors have armour 20 and the blob family's

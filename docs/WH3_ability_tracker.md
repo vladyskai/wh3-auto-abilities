@@ -8360,3 +8360,14 @@ marker), and after Reset the button reads "Done" and greys out, the label reads 
 **Finding:** Arrow of Kurnous (enemy_blob, 150 armour-piercing damage) never had a legal target: Skeleton Warriors have
 armour 20 (the armour-piercing rule needs 50) and the Wight King is a single model. A fallback when nothing better exists
 in the enemy army is PROPOSED (open point 21).
+
+### 10.75 Round 197 - the blob family's whole-army fallback (2026-11-21)
+
+**Ruling (user, 2026-11-21):** "A: whole army" (open point 21). Round document `docs\WH3_round197_blobfallback.md`.
+
+**Change:** when no living unit of the enemy army, visible or hidden, passes the armour rule (armour-piercing attacks)
+and the trash rule, the 70 blob-family keys (enemy_blob, enemy_blob_vortex) take the best visible target without them.
+Hidden enemies are only counted, never targeted. No roster change.
+
+**Proof:** harness 196 full suite **8,104 checks / 0 failures**, twice identical. RED on the pre-197 snapshot. Pack md5
+`febf51077902ccef857d0ac42cc872d7`. Workbook v76. Not seen in game yet.

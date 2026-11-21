@@ -19859,6 +19859,63 @@ function FOURTH.blob_trash_ok(e, sc, r)
 	if e.vps == nil or e.vps >= FOURTH.TRASH_VPS then return true end
 	return sc >= FOURTH.TRASH_BLOCKS * math.pi * r * r / FOURTH.PACKED_M2
 end
+-- ============================================================================
+-- ROUND 197 - THE WHOLE-ARMY FALLBACK (user 2026-11-21: "when no better target
+-- exists on the enemy side (visible or invisible), it should fire as it
+-- wouldn't be wasteful", option "A: whole army"). Two rules save a blob
+-- ability for a better target: the armour rule (an armour-piercing attack
+-- never aims at armour below BLOB_AP_ARMOUR_MIN) and the trash rule. When NO
+-- living unit of the enemy army, visible or HIDDEN, could pass them, saving it
+-- is pointless: this evaluation drops both (FOURTH.blob_relax) and takes the
+-- best visible target. Everything else stays: the infantry-or-large class,
+-- none of ours in the blast + 10 m, the caster standing, the target visible and
+-- in range, the coverage line. Hidden enemies are only COUNTED here, never
+-- targeted (a deliberate exception to round 169, the user's ruling).
+-- A unit counts as better when its class could be a target (an infantry block
+-- of BLOB_MIN_MEN or more, or a large unit for the prefer-central attacks;
+-- flying or not, since a flier can land), the armour rule lets this attack aim
+-- at it, and it is not trash. Read once per poll per key. An unreadable enemy
+-- army keeps the rules (fail-closed).
+-- TEST-ONLY: ZZ_AUTO_TEST_NO_BLOB_FALLBACK (the harness sets it for older worlds).
+-- ============================================================================
+FOURTH.blob_relax = false
+FOURTH.blob_better_cache = {}
+FOURTH.blob_fallback_said = {}
+
+function FOURTH.blob_better_exists(key, central)
+	local c = FOURTH.blob_better_cache[key]
+	if c ~= nil and c.tick == tick_count then return c.v end
+	local dmg = FOURTH.BLOB_DMG[key]
+	local better, readable = false, false
+	local ok_c, coll = pcall(function() return bm:get_scriptunits_for_main_enemy_army_to_local_player() end)
+	local ok_n, n = false, nil
+	if ok_c and coll ~= nil then ok_n, n = pcall(function() return coll:count() end) end
+	if ok_n and type(n) == "number" then
+		readable = true
+		for i = 1, n do
+			local e = nil
+			pcall(function() e = coll:item(i).unit end)
+			local s = nil
+			if e ~= nil then s = FOURTH.blob_shape(e) end
+			if s ~= nil and s.men ~= nil and s.men > 0 then
+				local large = (s.t ~= nil and FOURTH.class_keys.large[s.t] == true)
+				local cls = (s.inf and s.men >= FOURTH.BLOB_MIN_MEN) or (central and large)
+				if cls and FOURTH.blob_ap_ok(s, dmg) and (large or s.vps == nil or s.vps >= FOURTH.TRASH_VPS) then
+					better = true
+					break
+				end
+			end
+		end
+	end
+	local v = better or not readable
+	FOURTH.blob_better_cache[key] = { tick = tick_count, v = v }
+	return v
+end
+
+-- the two save-it rules, dropped while this blob evaluation falls back
+function FOURTH.blob_ap_rule(e, dmg) return FOURTH.blob_relax == true or FOURTH.blob_ap_ok(e, dmg) end
+function FOURTH.blob_trash_rule(e, sc, r) return FOURTH.blob_relax == true or FOURTH.blob_trash_ok(e, sc, r) end
+
 function FOURTH.blob_pick(unit, m, r, key)
 	local reach = r + FOURTH.BLOB_MARGIN_M
 	local need = FOURTH.blob_need(r)
@@ -19866,11 +19923,11 @@ function FOURTH.blob_pick(unit, m, r, key)
 	local cands, bv = {}, nil
 	for i = 1, #m.enemies do
 		local e = m.enemies[i]
-		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg) then
+		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_rule(e, dmg) then   -- ROUND 197
 			local g = FOURTH.blob_friend_gap(e, m, reach)
 			if g == nil or g > reach then
 				local sc, un = FOURTH.blob_score(e, m, r)
-				if sc >= need and FOURTH.blob_trash_ok(e, sc, r) then   -- ROUND 153: no trash unless a big blob
+				if sc >= need and FOURTH.blob_trash_rule(e, sc, r) then   -- ROUND 153: no trash unless a big blob (ROUND 197: the fallback)
 					local v = FOURTH.blob_value(e, m, r, dmg)
 					cands[#cands + 1] = { e, sc, un, g, v }
 					if bv == nil or v > bv then bv = v end
@@ -19928,7 +19985,7 @@ function FOURTH.blob_pick_large(unit, m, r, key)
 	local best, bv, bg = nil, nil, nil
 	for i = 1, #m.large do
 		local e = m.large[i]
-		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_ok(e, dmg)
+		if FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.blob_ap_rule(e, dmg)   -- ROUND 197
 			and FOURTH.blob_not_flying(e.unit) then   -- ROUND 152: never a flying large target
 			local g = FOURTH.blob_friend_gap(e, m, reach)
 			if g == nil or g > reach then
@@ -20012,7 +20069,7 @@ function FOURTH.blob_still_ok(enemy, unit)
 				local g = FOURTH.blob_friend_gap(e, m, reach)
 				if g ~= nil and g <= reach then return false end
 				if not FOURTH.blob_not_flying(e.unit) then return false end   -- ROUND 152
-				return FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key])
+				return FOURTH.blob_ap_rule(e, key and FOURTH.BLOB_DMG[key])   -- ROUND 197
 			end
 		end
 		return false
@@ -20028,9 +20085,9 @@ function FOURTH.blob_still_ok(enemy, unit)
 			-- ROUND 150: the caster still standing, the armour rule still met
 			if not FOURTH.blob_still(unit) then return false end
 			local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
-			if not FOURTH.blob_ap_ok(e, key and FOURTH.BLOB_DMG[key]) then return false end
+			if not FOURTH.blob_ap_rule(e, key and FOURTH.BLOB_DMG[key]) then return false end   -- ROUND 197
 			local sc = FOURTH.blob_score(e, m, r)
-			return sc >= FOURTH.blob_need(r) and FOURTH.blob_trash_ok(e, sc, r)   -- ROUND 153
+			return sc >= FOURTH.blob_need(r) and FOURTH.blob_trash_rule(e, sc, r)   -- ROUND 153 (ROUND 197: the fallback)
 		end
 	end
 	return false
@@ -20039,6 +20096,7 @@ end
 function FOURTH.evaluate_enemy_blob(unit, routing)
 	FOURTH.eg_mode = "blob"
 	FOURTH.blob_kind = nil
+	FOURTH.blob_relax = false   -- ROUND 197: set below, after the caster checks
 	if routing then return nil end
 	local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
 	local r = key and FOURTH.BLAST_R[key]
@@ -20051,6 +20109,12 @@ function FOURTH.evaluate_enemy_blob(unit, routing)
 	local m = FOURTH.blob_map(false)
 	local shot = FOURTH.BLOB_SHOT[key]
 	local central = (shot ~= nil and shot[5] == 1)
+	-- ROUND 197: the whole-army fallback (nothing in the enemy army, visible or hidden, passes the save-it rules)
+	FOURTH.blob_relax = (ZZ_AUTO_TEST_NO_BLOB_FALLBACK ~= true) and not FOURTH.blob_better_exists(key, central)
+	if FOURTH.blob_relax and not FOURTH.blob_fallback_said[key] then
+		FOURTH.blob_fallback_said[key] = true
+		log("BLOB FALLBACK " .. tostring(key) .. ": no unit of the enemy army (visible or hidden) passes the armour and trash rules, so it takes the best visible target without them")
+	end
 	local tgt, sc, un, gap, val, kind = nil, nil, nil, nil, nil, nil
 	-- ROUND 151: LARGE FIRST for the prefer-central attacks
 	if central and #m.large > 0 then
@@ -20065,6 +20129,7 @@ function FOURTH.evaluate_enemy_blob(unit, routing)
 	end
 	local etype = "enemy"
 	pcall(function() etype = tostring(tgt.unit:type()) end)
+	if FOURTH.blob_relax then etype = etype .. ", fallback: nothing better in the enemy army" end   -- ROUND 197
 	FOURTH.blob_r = r
 	FOURTH.blob_kind = kind
 	FOURTH.eg_enemy = tgt.unit
