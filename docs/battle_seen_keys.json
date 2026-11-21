@@ -121,6 +121,7 @@
 "wh3_main_lord_abilities_the_dark_master",
 "wh3_main_lord_abilities_virulent_contagion",
 "wh3_main_unit_abilities_sky_junk_bomb",
+"wh3_main_unit_abilities_stun_bomb",
 "wh3_main_weapon_abilities_the_eternal_blade",
 "wh3_main_weapon_abilities_torment_blade",
 "wh3_pro12_hero_abilities_karanaks_howl",
@@ -139,6 +140,7 @@
 "wh_dlc03_weapon_abilities_scourge",
 "wh_dlc04_spell_bound_net_of_amyntok",
 "wh_dlc04_spell_bound_soulfire_upgraded",
+"wh_dlc05_hero_abilities_arrow_of_kurnous",
 "wh_dlc05_spell_bound_shield_of_thorns",
 "wh_dlc05_spell_bound_the_curse_of_anraheir",
 "wh_dlc05_weapon_abilities_stave_of_ruinous_corruption",
@@ -185,5 +187,5 @@
 "wh_pro04_unit_abilities_warp_gaze"
 ],
 "logs_read": 153,
-"made": "2026-11-21"
+"made": "2026-11-22"
 }

@@ -11,12 +11,12 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 
 - Mod source (the ONLY file edited per round):
   `C:\Users\vlady\Desktop\WH3_mod\mod_source\script\battle\mod\zz_test_deadly_onslaught.lua`
-  (about 774 KB, about 15,300 lines)
+  (about 1.6 MB, about 27,700 lines)
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `febf51077902ccef857d0ac42cc872d7`, 1,619,340 bytes
-  (round 197, 2026-11-21: the blob family's whole-army fallback). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `b5f1ce36cfc8a12a50f7f6ff5fab5ba7`, 1,622,076 bytes
+  (round 198, 2026-11-22: the overnight review's fixes). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -118,7 +118,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
 7. **Archive everything.** Logs and mod versions are copied into `archive\` (logs under
    `archive\logs\`, packs under `archive\packs\`, source snapshots under `archive\mod_source\`)
    so that deleting the game does not lose history. The live battle log
-   `zz_test_deadly_onslaught_log.txt` is currently about 5.4 GB: do not read it whole, never
+   `zz_test_deadly_onslaught_log.txt` is currently about 1 GB: do not read it whole, never
    open it in an editor, grep or tail it only.
 8. **The master spreadsheet is the single source of truth for the roster.** A NEW versioned
    filename per change (`docs\WH3_abilities_master_v<N>_<date>.xlsx` plus `.ods`), never
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_blobfallback_harness196/build_and_install197.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_reviewfixes_harness197/build_and_install198.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -176,7 +176,7 @@ cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --wi
   `grep -cF "<new log string>" <installed.pack>` also proves the change shipped.
 - Since round 174 the builder COMPILES the script (lupa; hence `--with lupa`) and refuses one that does not compile:
   every other gate compares text, and a broken table regeneration once passed them all.
-- The build asserts all four shipped files are byte-identical to source (`MATCHES SOURCE:
+- The build asserts all five shipped files are byte-identical to source (`MATCHES SOURCE:
   True` four times) and refuses to ship any `zz_probe_` path.
 
 ## 4. TESTING DISCIPLINE
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness196: 8,104 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness197: 8,161 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v76_2026-11-21.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v76.py`, verified by `tools\verify_xlsx_v76.py` (v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v77_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v77.py`, verified by `tools\verify_xlsx_v77.py <v76 md5> <pack md5>` (v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -355,6 +355,27 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 198 (2026-11-22, the overnight review `docs\WH3_overnight_review_2026-11-22.md`; the user replied row by row:
+  "fix" on 1, 2, 3, 6, 7, 8, 11). BUILT: the per-unit serial window is re-armed when the SAME ability repeats (a closed
+  window forgets its armer) and the armer yields one poll to an ability that waited (cast_gate.unit_waiting, else a
+  repeater starves the unit). FOURTH.entry_reset(ability, unit) = the poll's per-entry slot reset, called by the air-drop
+  fast pass too (it inherited the last poll's chosen targets). A NEW per-entry slot goes into entry_reset, nowhere else.
+  Get Tha Gitz! hold row. The Necromancer (Undeath) on a Nightmare: land key added to commander_keys. slow_aura and
+  guard_aura call FOURTH.fast_enemy_near (round 192). Entry field no_self (Favour of the Fay, Shielding Swarm x2: the
+  game's target_self false; FOURTH.ab_no_self, FOURTH.CARD_TIP_NOSELF; the build compares no_self with the game table).
+  BUGMAN_CLEAR_M 55 (a keep-out distance takes no 70% cut). The builder now also compiles the script on Lua 5.1
+  (`lupa.lua51`; lupa's default is 5.5; the harness itself uses goto, so it runs on 5.5 or LuaJIT, not on plain 5.1).
+  ENGINE FACT (user test 2026-11-22): a ground-only key ordered at an enemy UNIT fires on that unit (Heaven's Flash),
+  so the round-184 'MUST join enemy_ground_keys' is not a must. WAITING FOR RULINGS: review rows 9 (ten ally-targeted
+  keys still cast on the caster, target_self false: the game refuses them), 10 (the bombardments' infantry test trusts
+  is_infantry() alone), 12 (a click flips every untouched unit of the same type in the same battle: proposed option A,
+  the type memory applies at battle start only). Row 5 (Doom & Darkness gunnery school, capital B in the game's key: the
+  badge compare lowercases, so it can never be claimed) is NOT fixed: the user does not see the ability on the Land Ship.
+  The review's release list (no multiplayer guard, logging with no off switch, the UI timer's work, modded Lords unknown,
+  one army per side) is open point 22. MOCK: hero defs with hp_frac shadow health_percent (set both). Lesson again: a
+  heredoc turned \n inside a Python string into real newlines (tools written with the Write tool only). Harness dev
+  loop: DEV=<path> tools\make_harness197.py writes a copy that runs only the new section. Next battle from byte
+  978,682,624.
 - ROUND 197 (2026-11-21, "A: whole army"): the blob family (enemy_blob, enemy_blob_vortex, 70 keys) drops its two
   save-it rules (armour for armour-piercing attacks, trash) when no living unit of the WHOLE enemy army, hidden ones
   included, passes them (FOURTH.blob_better_exists, FOURTH.blob_relax, wrappers FOURTH.blob_ap_rule / blob_trash_rule).

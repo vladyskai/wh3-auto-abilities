@@ -1071,6 +1071,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_favour_of_the_fay",
 		keys = { "wh_dlc07_lord_abilities_favour_of_the_fay" },
 		ally_range_real = 100,
+		no_self = true,   -- ROUND 198: the game's target_self is false (never cast on the caster)
 		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "ferocious_battle_howl", name = "Ferocious Battle Howl", trigger = "charge_only",
@@ -3644,6 +3645,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_dispatch_the_swarm_protect",
 		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect" },
 		ally_range_real = 100,
+		no_self = true,   -- ROUND 198: the game's target_self is false (never cast on the caster)
 		start_armed = true,
 		ox = 0, oy = 0 },
 	-- ROUND 177 (score-3 review): self_or_ally_fire_melee
@@ -3651,6 +3653,7 @@ local ABILITIES = {
 		badge = "zz_auto_badge_dispatch_the_swarm_protect_upgraded",
 		keys = { "wh3_dlc29_hero_active_dispatch_the_swarm_protect_upgraded" },
 		ally_range_real = 100,
+		no_self = true,   -- ROUND 198: the game's target_self is false (never cast on the caster)
 		start_armed = true,
 		ox = 0, oy = 0 },
 	{ marker = "shock_collar", name = "Shock Collar", trigger = "ally_wavering",
@@ -5227,6 +5230,8 @@ local ABILITIES = {
 -- next attempt in the same log).
 local charge_gate = {
 	hold_s = {
+		-- ROUND 198: Get Tha Gitz!, 3 uses (recharge_time): the one multi-use key that had no row
+		["wh3_dlc23_hero_abilities_get_tha_gitz!"] = 120,
 		-- ROUND 193: Scry-Orb, 3 uses (recharge_time)
 		["wh3_dlc29_item_abilities_scry_orb"] = 120,
 		-- ROUND 185: the rule-shut review's rows 20-64 with more than one use (recharge_time)
@@ -6031,6 +6036,7 @@ local cast_gate = {
 	-- ability on the same unit until it closes.
 	unit_until = {},   -- ui id -> the tick before which no OTHER ability may be issued
 	unit_marker = {},  -- ui id -> the marker of the cast that armed that window
+	unit_waiting = {}, -- ROUND 198: ui id -> true while another ability waited through the open window
 	unit_logged = {},  -- ui id -> (marker -> true once the wait has been said this episode)
 }
 local ALL_ABILITY_KEYS = {}
@@ -7096,6 +7102,7 @@ local function drop_unit_by_ui_id(ui_id)
 	cast_gate.logged[id_slot] = nil
 	cast_gate.unit_until[id_slot] = nil
 	cast_gate.unit_marker[id_slot] = nil
+	cast_gate.unit_waiting[id_slot] = nil
 	cast_gate.unit_logged[id_slot] = nil
 
 	-- THE SELECTED SET (item 2). A dead unit must not stay selected: a stale
@@ -9179,12 +9186,11 @@ function FOURTH.evaluate_slow_aura(unit, routing)
 		pcall(function() e = coll:item(i).unit end)
 		if e ~= nil and FOURTH.enemy_not_hidden(e) then
 			local ok_a, men = pcall(function() return e:number_of_men_alive() end)
-			local ok_mv, mv = pcall(function() return e:is_moving() end)
-			local ok_sp, sp = pcall(function() return e:fast_speed() end)
+			-- ROUND 198: the round-192 read (RUNNING and CLOSING on our units), then inside the aura
+			local near, sp = nil, nil
+			if ok_a and type(men) == "number" and men > 0 then near, sp = FOURTH.fast_enemy_near(e, unit) end
 			local ok_g, g = pcall(function() return unit:unit_distance(e) end)
-			if ok_a and type(men) == "number" and men > 0 and ok_mv and mv == true
-				and ok_sp and type(sp) == "number" and sp >= FOURTH.FAST_ENEMY_MPS
-				and ok_g and type(g) == "number" and g <= reach then
+			if near ~= nil and ok_g and type(g) == "number" and g <= reach then
 				return string.format("a fast enemy (run speed %.1f m/s) %.1fm away, inside the %sm aura (slow aura)",
 					sp, g, tostring(reach))
 			end
@@ -13589,6 +13595,7 @@ FOURTH.commander_keys = {
 		["wh3_dlc29_vmp_cha_nagash_vampire_lord_zombie_dragon"] = true,
 		["wh3_dlc29_vmp_cha_necromancer_undeath"] = true,
 		["wh3_dlc29_vmp_cha_necromancer_undeath_barded_nightmare"] = true,
+		["wh3_dlc29_vmp_cha_necromancer_undeath_nightmare"] = true,   -- ROUND 198: the land_units key of the row above (a main_units key)
 		["wh3_dlc29_vmp_cha_necromancer_undeath_corpse_cart"] = true,
 		["wh3_dlc29_vmp_cha_necromancer_undeath_corpse_cart_balefire"] = true,
 		["wh3_dlc29_vmp_cha_necromancer_undeath_corpse_cart_lodestone"] = true,
@@ -19141,7 +19148,7 @@ end
 function FOURTH.evaluate_melee_self_or_ally(unit, routing)
 	if routing then return nil end
 	local ok, m = pcall(function() return unit:is_in_melee() end)
-	if ok and m == true then return "the caster is in melee, cast on self" end
+	if ok and m == true and not FOURTH.ab_no_self then return "the caster is in melee, cast on self" end   -- ROUND 198
 	return FOURTH.ab_pick_ally(unit, routing, "melee")
 end
 
@@ -20779,7 +20786,7 @@ function FOURTH.evaluate_health_aura_ally_rule(unit, routing)
 		tostring(FOURTH.ah_range_m), tostring(FOURTH.ah_range_word))
 end
 
-FOURTH.BUGMAN_CLEAR_M = 38   -- floor(55 * 0.70): Bugman's XXXXXX's own 55 m intercept range (target_intercept_range)
+FOURTH.BUGMAN_CLEAR_M = 55   -- ROUND 198: Bugman's XXXXXX's own 55 m intercept range, WHOLE (a keep-out distance takes no 70% cut: the game refuses the cast with an enemy inside 55 m; was 38)
 function FOURTH.evaluate_self_heal_clear(unit, routing)
 	if routing then return nil end
 	local hp = FOURTH.health_pct(unit)
@@ -21084,11 +21091,10 @@ function FOURTH.evaluate_guard_aura(unit, routing)
 	local reach = FOURTH.ah_range_m
 	if reach == nil then return nil end
 	local e, g, sp = FOURTH.enemy_where(unit, function(x)
-		local ok_mv, mv = pcall(function() return x:is_moving() end)
-		local ok_sp, s = pcall(function() return x:fast_speed() end)
+		-- ROUND 198: the round-192 read (RUNNING and CLOSING on our units), then inside the aura
+		local near, s = FOURTH.fast_enemy_near(x, unit)
 		local ok_g, gap = pcall(function() return unit:unit_distance(x) end)
-		if ok_mv and mv == true and ok_sp and type(s) == "number" and s >= FOURTH.FAST_ENEMY_MPS
-			and ok_g and type(gap) == "number" and gap <= reach then
+		if near ~= nil and ok_g and type(gap) == "number" and gap <= reach then
 			return gap, s
 		end
 		return nil
@@ -21099,7 +21105,7 @@ end
 
 function FOURTH.evaluate_self_or_ally_fire_melee(unit, routing)
 	if routing then return nil end
-	if FOURTH.in_melee_now(unit) or FOURTH.under_fire(unit) then
+	if not FOURTH.ab_no_self and (FOURTH.in_melee_now(unit) or FOURTH.under_fire(unit)) then   -- ROUND 198
 		return "the caster is in melee or under missile fire, cast on self"
 	end
 	local r = FOURTH.ab_pick_ally(unit, routing, "value_under_fire")
@@ -23001,6 +23007,9 @@ FOURTH.CARD_ALLY_FAMILY = { ally_heal = true, ally_heal_melee = true, ally_waver
 	ally_squig_melee = true, self_or_ally_fire_melee = true,   -- ROUND 177
 	wavering_ally_range = true, health_aura_ally_rule = true }   -- ROUND 180: Cold-Blooded; the rule heals
 -- the four aura families without an aura (the caster alone)
+-- ROUND 198: the card of an entry the game never lets target its own caster (entry field no_self)
+FOURTH.CARD_TIP_NOSELF = { melee_self_or_ally = "Fires on the nearest ally in melee",
+	self_or_ally_fire_melee = "Fires on an ally under fire, else on an ally in melee" }
 FOURTH.CARD_TIP_NOAURA = { wavering_aura = "Fires when wavering", melee_or_wavering_aura = "Fires in melee or when wavering",
 	allies_firing_aura = "Fires while shooting", under_fire = "Fires under missile fire" }
 -- a clause the family's sentence already states is left out
@@ -23099,6 +23108,9 @@ end
 
 function FOURTH.compose_card(ability)
 	local tpl = FOURTH.CARD_TIP[ability.trigger]
+	if ability.no_self == true and FOURTH.CARD_TIP_NOSELF[ability.trigger] ~= nil then   -- ROUND 198
+		tpl = FOURTH.CARD_TIP_NOSELF[ability.trigger]
+	end
 	if ability.aura_m == nil and FOURTH.CARD_TIP_NOAURA[ability.trigger] ~= nil then   -- ROUND 166
 		tpl = FOURTH.CARD_TIP_NOAURA[ability.trigger]
 	end
@@ -23285,11 +23297,23 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 			-- declared + IN_FLIGHT_SETTLE_SECONDS, never less than
 			-- SERIAL_MIN_HOLD_SECONDS. The ability that fired is NOT
 			-- throttled here - its own pair gates govern its repeat.
+			-- ROUND 198: NO STARVING. Since a repeat re-arms a closed window, an ability that repeats
+			-- exactly when its own window closes would lock the unit's other abilities out for good.
+			-- So the ability that armed the last window YIELDS ONE POLL when another ability waited
+			-- through that window: the waiter (evaluated later in this poll, or in the next) goes first.
+			if eligible and cast_gate.unit_waiting[ui_id] == true
+				and cast_gate.unit_marker[ui_id] == ability.marker
+				and cast_gate.unit_until[ui_id] ~= nil and tick_count >= cast_gate.unit_until[ui_id] then
+				cast_gate.unit_waiting[ui_id] = nil
+				eligible = false
+				quiet = true
+			end
 			if eligible and cast_gate.unit_until[ui_id] ~= nil
 				and cast_gate.unit_marker[ui_id] ~= ability.marker
 				and tick_count < cast_gate.unit_until[ui_id] then
 				eligible = false
 				quiet = true
+				cast_gate.unit_waiting[ui_id] = true   -- ROUND 198: it waited through this window
 				local lg = cast_gate.unit_logged[ui_id]
 				if lg == nil then
 					lg = {}
@@ -23359,6 +23383,11 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 				-- until it closes. A repeat of the SAME ability does
 				-- NOT extend it: a fast-repeating ability must not
 				-- starve every other ability on the unit forever.
+				-- ROUND 198: a window that has already CLOSED forgets who armed it, so a repeat of the
+				-- same ability arms it again (an open window is still not extended by a repeat).
+				if cast_gate.unit_until[ui_id] ~= nil and tick_count >= cast_gate.unit_until[ui_id] then
+					cast_gate.unit_marker[ui_id] = nil
+				end
 				if cast_gate.unit_marker[ui_id] ~= ability.marker then
 					local unit_hold_s = ((ability.wind_up_s or 0) + IN_FLIGHT_SETTLE_SECONDS)
 					if unit_hold_s < FOURTH.SERIAL_MIN_HOLD_SECONDS then
@@ -23370,6 +23399,7 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 					end
 					cast_gate.unit_until[ui_id] = tick_count + math.floor((unit_hold_s * 1000) / POLL_MS)
 					cast_gate.unit_marker[ui_id] = ability.marker
+					cast_gate.unit_waiting[ui_id] = nil   -- ROUND 198: a new window, nobody has waited through it yet
 					cast_gate.unit_logged[ui_id] = nil
 										if not quiet then
 		log("  per-unit cast gate armed by " .. ability.marker .. ": no OTHER ability on unit "
@@ -24264,6 +24294,99 @@ function FOURTH.ammo_probe(units)
 	end
 end
 
+-- ============================================================================
+-- ROUND 198 - THE ENTRY RESET (overnight review 2026-11-22, row 2). Every slot
+-- an evaluator may fill (the chosen ally, enemy, ground flag, cast mode ...) is
+-- cleared, and the current entry's own bounds and markers are set, before EVERY
+-- evaluate. It was a block inside the poll; the air-drop fast pass (its own
+-- 0.2 s timer) reset only its six air-drop slots and so inherited whatever the
+-- last entry of the last poll had chosen. Both now call this ONE function.
+-- ============================================================================
+function FOURTH.entry_reset(ability, unit)
+	FOURTH.cast_target = nil
+	FOURTH.gd_ally = nil
+	FOURTH.vm_ally = nil
+	FOURTH.mtl_ally = nil
+	FOURTH.ws_ally = nil
+	FOURTH.wa_ally = nil
+	FOURTH.bs_ally = nil
+	FOURTH.edr_ally = nil
+	FOURTH.eg_enemy = nil
+	FOURTH.eg_arm = nil
+	FOURTH.eg_caster_su = nil
+	FOURTH.eg_ground = nil
+	FOURTH.eg_melee_only = nil
+	-- THE SUMMON ROUND (harness 102): the self-summon arm and the two
+	-- non-commander enemy modes are cleared before EVERY evaluate, so no
+	-- ability can inherit another's flag, target or cast mode.
+	FOURTH.ss_self = nil
+	FOURTH.ss_caster_su = nil
+	-- TZ'ARKAN (this round): the self-transform slot is cleared
+	-- before EVERY evaluate, like every other cast slot.
+	FOURTH.tz_self = nil
+	FOURTH.tz_caster_su = nil
+	FOURTH.eg_noncommander = nil
+	FOURTH.eg_infantry = nil
+	FOURTH.eg_mode = nil
+	FOURTH.ad_enemy = nil
+	FOURTH.ad_caster_su = nil
+	FOURTH.ad_air_only = nil
+	FOURTH.ad_no_melee = nil
+	FOURTH.ab_ally = nil
+	FOURTH.ab_caster_su = nil
+	FOURTH.ab_ally_su = nil
+	FOURTH.ab_family = nil
+	FOURTH.ab_filter = nil
+	FOURTH.ab_infinite = nil
+	-- ROUND 130: the Restock! pick and the aura bound, cleared/set per entry
+	FOURTH.ammo_claim_id = nil
+	FOURTH.fa_bound_m = ability.aura_m
+	-- THE ALLY-AWARE HEALTH FAMILY (this round): the chosen
+	-- unit, its fresh handles and the cast mode are cleared
+	-- before EVERY evaluate, so no entry can inherit another's
+	-- ally, ground flag or self-aura flag.
+	FOURTH.ah_ally = nil
+	FOURTH.ah_ally_su = nil
+	FOURTH.ah_chosen = nil
+	FOURTH.ah_caster_su = nil
+	FOURTH.ah_ground = false
+	FOURTH.ah_selfaura = false
+	FOURTH.ah_mode = nil
+	-- CLASS A (harness 97): the CURRENT ability's own 70% enemy-cast bound and
+	-- its marker, so the shared enemy picker tests and logs against THIS entry's
+	FOURTH.eg_range_m = ability.range_m
+	-- ROUND 135: the entry's enemy target class (nil = any enemy)
+	FOURTH.eg_class = ability.target_class
+	-- ROUND 141: the reducer's own keys never count as 'recharging'
+	FOURTH.rc_self_keys = ability.keys
+	-- AN UNBOUNDED ENTRY (harness 102): its game row declares
+	-- target_intercept_range = -1.0 - no real range to take 70% of.
+	FOURTH.eg_no_bound = (ability.unbounded == true)
+	FOURTH.eg_marker = ability.marker
+	FOURTH.eg_caster = unit   -- ROUND 189: the caster the line of fire is drawn from
+	FOURTH.eg_los = (ability.los == true)   -- ROUND 189: the game's 'Requires line of sight'
+	-- ROUND 107: the AIR-DROP family's own slots - its 70% bound
+	-- (7 m from the row's 10 m), its marker, and the two usage
+	-- flags the row declares.
+	FOURTH.ad_range_m = ability.range_m
+	FOURTH.ad_marker = ability.marker
+	FOURTH.ad_air_only = (ability.air_only == true)
+	FOURTH.ad_no_melee = (ability.no_melee == true)
+	-- CLASS B (harness 98): the CURRENT ability's own 70% ALLY bound and
+	-- its marker, so the shared ally picker tests and logs against THIS
+	FOURTH.ab_range_m = ability.range_m
+	FOURTH.ab_marker = ability.marker
+	FOURTH.ab_atarget = ability.atarget   -- ROUND 165: the game's ally target rules
+	FOURTH.ab_no_self = (ability.no_self == true)   -- ROUND 198: the game's target_self is false
+	-- THE ALLY-AWARE HEALTH FAMILY (this round): the reach THIS
+	-- entry's picker tests - its own aura radius (aura_m) when the
+	-- effect is an area, otherwise its own cast range - plus the
+	-- word the log uses for it.
+	FOURTH.ah_range_m = ability.aura_m or ability.range_m
+	FOURTH.ah_range_word = (ability.aura_m ~= nil) and "aura" or "cast range"
+	FOURTH.ah_marker = ability.marker
+end
+
 local function poll_body()
 	tick_count = tick_count + 1
 	pcall(FOURTH.track_melee)   -- ROUND 171: the fresh-contact read (once per poll, every unit of ours)
@@ -24476,87 +24599,7 @@ local function poll_body()
 					-- evaluate; an ally-targeting evaluator (Glorious Death)
 					-- fills it, and the cast below passes it - so a self-cast
 					-- can never inherit a stale ally.
-					FOURTH.cast_target = nil
-					FOURTH.gd_ally = nil
-					FOURTH.vm_ally = nil
-					FOURTH.mtl_ally = nil
-					FOURTH.ws_ally = nil
-					FOURTH.wa_ally = nil
-					FOURTH.bs_ally = nil
-					FOURTH.edr_ally = nil
-					FOURTH.eg_enemy = nil
-					FOURTH.eg_arm = nil
-					FOURTH.eg_caster_su = nil
-					FOURTH.eg_ground = nil
-					FOURTH.eg_melee_only = nil
-					-- THE SUMMON ROUND (harness 102): the self-summon arm and the two
-					-- non-commander enemy modes are cleared before EVERY evaluate, so no
-					-- ability can inherit another's flag, target or cast mode.
-					FOURTH.ss_self = nil
-					FOURTH.ss_caster_su = nil
-					-- TZ'ARKAN (this round): the self-transform slot is cleared
-					-- before EVERY evaluate, like every other cast slot.
-					FOURTH.tz_self = nil
-					FOURTH.tz_caster_su = nil
-					FOURTH.eg_noncommander = nil
-					FOURTH.eg_infantry = nil
-					FOURTH.eg_mode = nil
-					FOURTH.ad_enemy = nil
-					FOURTH.ad_caster_su = nil
-					FOURTH.ad_air_only = nil
-					FOURTH.ad_no_melee = nil
-					FOURTH.ab_ally = nil
-					FOURTH.ab_caster_su = nil
-					FOURTH.ab_ally_su = nil
-					FOURTH.ab_family = nil
-					FOURTH.ab_filter = nil
-					FOURTH.ab_infinite = nil
-					-- ROUND 130: the Restock! pick and the aura bound, cleared/set per entry
-					FOURTH.ammo_claim_id = nil
-					FOURTH.fa_bound_m = ability.aura_m
-					-- THE ALLY-AWARE HEALTH FAMILY (this round): the chosen
-					-- unit, its fresh handles and the cast mode are cleared
-					-- before EVERY evaluate, so no entry can inherit another's
-					-- ally, ground flag or self-aura flag.
-					FOURTH.ah_ally = nil
-					FOURTH.ah_ally_su = nil
-					FOURTH.ah_chosen = nil
-					FOURTH.ah_caster_su = nil
-					FOURTH.ah_ground = false
-					FOURTH.ah_selfaura = false
-					FOURTH.ah_mode = nil
-					-- CLASS A (harness 97): the CURRENT ability's own 70% enemy-cast bound and
-					-- its marker, so the shared enemy picker tests and logs against THIS entry's
-					FOURTH.eg_range_m = ability.range_m
-					-- ROUND 135: the entry's enemy target class (nil = any enemy)
-					FOURTH.eg_class = ability.target_class
-					-- ROUND 141: the reducer's own keys never count as 'recharging'
-					FOURTH.rc_self_keys = ability.keys
-					-- AN UNBOUNDED ENTRY (harness 102): its game row declares
-					-- target_intercept_range = -1.0 - no real range to take 70% of.
-					FOURTH.eg_no_bound = (ability.unbounded == true)
-					FOURTH.eg_marker = ability.marker
-					FOURTH.eg_caster = unit   -- ROUND 189: the caster the line of fire is drawn from
-					FOURTH.eg_los = (ability.los == true)   -- ROUND 189: the game's 'Requires line of sight'
-					-- ROUND 107: the AIR-DROP family's own slots - its 70% bound
-					-- (7 m from the row's 10 m), its marker, and the two usage
-					-- flags the row declares.
-					FOURTH.ad_range_m = ability.range_m
-					FOURTH.ad_marker = ability.marker
-					FOURTH.ad_air_only = (ability.air_only == true)
-					FOURTH.ad_no_melee = (ability.no_melee == true)
-					-- CLASS B (harness 98): the CURRENT ability's own 70% ALLY bound and
-					-- its marker, so the shared ally picker tests and logs against THIS
-					FOURTH.ab_range_m = ability.range_m
-					FOURTH.ab_marker = ability.marker
-					FOURTH.ab_atarget = ability.atarget   -- ROUND 165: the game's ally target rules
-					-- THE ALLY-AWARE HEALTH FAMILY (this round): the reach THIS
-					-- entry's picker tests - its own aura radius (aura_m) when the
-					-- effect is an area, otherwise its own cast range - plus the
-					-- word the log uses for it.
-					FOURTH.ah_range_m = ability.aura_m or ability.range_m
-					FOURTH.ah_range_word = (ability.aura_m ~= nil) and "aura" or "cast range"
-					FOURTH.ah_marker = ability.marker
+					FOURTH.entry_reset(ability, unit)   -- ROUND 198: the slot reset, shared with the fast pass
 					local reason = ability.evaluate(unit, routing)
 
 					if reason ~= nil then
@@ -27384,14 +27427,9 @@ function FOURTH.ad_fast_pass()
 								end
 							end
 							if near then
-								-- THE CURRENT ENTRY'S OWN SLOTS, exactly as the poll
-								-- sets them before its evaluate call.
-								FOURTH.ad_marker = ability.marker
-								FOURTH.ad_air_only = (ability.air_only == true)
-								FOURTH.ad_no_melee = (ability.no_melee == true)
-								FOURTH.ad_range_m = ability.range_m
-								FOURTH.ad_enemy = nil
-								FOURTH.ad_caster_su = nil
+								-- ROUND 198: EVERY slot, exactly as the poll resets them before its
+								-- evaluate call (before, only the six air-drop slots were reset here).
+								FOURTH.entry_reset(ability, unit)
 								local routing = unit_is_routing(unit)
 								local reason = ability.evaluate(unit, routing)
 								if reason ~= nil then

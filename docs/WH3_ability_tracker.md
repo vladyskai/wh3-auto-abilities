@@ -8371,3 +8371,21 @@ Hidden enemies are only counted, never targeted. No roster change.
 
 **Proof:** harness 196 full suite **8,104 checks / 0 failures**, twice identical. RED on the pre-197 snapshot. Pack md5
 `febf51077902ccef857d0ac42cc872d7`. Workbook v76. Not seen in game yet.
+
+### 10.76 Round 198 - the overnight review's fixes (2026-11-22)
+
+**Rulings (user, 2026-11-22):** "fix" on rows 1, 2, 3, 6, 7, 8 and 11 of `docs\WH3_overnight_review_2026-11-22.md`.
+Round document `docs\WH3_round198_review_fixes.md`.
+
+**Change:** the per-unit serial window is re-armed when the same ability repeats. The air-drop fast pass resets every
+chosen-target slot (`FOURTH.entry_reset`). Get Tha Gitz! has its 120 s charge hold. The Necromancer (Undeath) on a
+Nightmare counts as a Hero. The slow auras (The Rock of Inevitability, The Wissenland Runefang, Seismic Snare x2) and
+the guard auras (Shield of Aeons, The Armour of Morkar) wait for a fast enemy RUNNING and CLOSING. Favour of the Fay and
+Shielding Swarm x2 are never cast on the caster. Bugman's XXXXXX keeps 55 m clear (was 38). No roster change.
+
+**Withdrawn:** row 4 (Heaven's Flash). The user's test battle shows it firing in unit form at an enemy in melee.
+
+**Waiting for rulings:** rows 9, 10 and 12. Row 5 not touched.
+
+**Proof:** harness 197 full suite **8,161 checks / 0 failures**, twice identical. RED on the pre-198 snapshot. Pack md5
+`b5f1ce36cfc8a12a50f7f6ff5fab5ba7`. Workbook v77. Not seen in game yet.
