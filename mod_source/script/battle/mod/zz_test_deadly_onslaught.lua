@@ -6444,6 +6444,10 @@ local function is_armed(unit, marker)
 	if per ~= nil and per[marker] ~= nil then return per[marker] == true end
 	-- ROUND 151: an ability whose trigger family starts ARMED (user ruling 2026-11-14) is on until clicked off
 	local a = ability_for(marker)
+	if a ~= nil and a.remembered ~= nil then   -- ROUND 194: the type's remembered switch comes first
+		local ok_t, t = pcall(function() return unit:type() end)
+		if ok_t and t ~= nil and a.remembered[t] ~= nil then return a.remembered[t] end
+	end
 	return a ~= nil and a.default_on == true
 end
 
@@ -20187,6 +20191,8 @@ end
 function FOURTH.armed_slot(slot, marker)
 	local per = armed[slot]
 	if per ~= nil and per[marker] ~= nil then return per[marker] == true end
+	local rv = FOURTH.remembered_value(slot, marker)   -- ROUND 194: the type's remembered switch
+	if rv ~= nil then return rv end
 	local a = ability_for(marker)
 	return a ~= nil and a.default_on == true
 end
@@ -25164,6 +25170,104 @@ end
 -- (unit, ability) pair; every other unit's state for the same ability is
 -- untouched. The letter line comes from apply_ability_feedback right after,
 -- so a toggle always reports both what changed and what the badge now shows.
+-- ============================================================================
+-- ROUND 194 - REMEMBERED M/A STATES (user 2026-11-21: "implement", option A:
+-- per unit type and ability). A click that changes a switch also records it
+-- for the unit's TYPE (unit:type()) in FOURTH.REMEMBER_FILE, a small text file
+-- next to the game: one line per switch, "<unit type> <marker> A|M". The next
+-- battle reads it at load: a unit with no switch of its own takes its type's
+-- remembered state before the family default (is_armed, FOURTH.armed_slot).
+-- The states live on each ability entry (ability.remembered[unit type]).
+-- Only a switch that DIFFERS from the default is stored: clicking back to the
+-- default removes the line. The reset empties the file: the optional MCT
+-- settings script does it (user: "MCT should not be a requirement for the mod
+-- to work, only needed for this button"). Without MCT nothing here changes.
+-- TEST-ONLY: ZZ_AUTO_TEST_NO_REMEMBER switches reading and writing off,
+-- ZZ_AUTO_TEST_REMEMBER_FILE points a test at its own file.
+-- ============================================================================
+FOURTH.REMEMBER_FILE = "smart_ability_autocast_settings.txt"
+
+function FOURTH.remember_on() return ZZ_AUTO_TEST_NO_REMEMBER ~= true end
+function FOURTH.remember_path() return ZZ_AUTO_TEST_REMEMBER_FILE or FOURTH.REMEMBER_FILE end
+
+function FOURTH.load_remembered()
+	for _, a in ipairs(ABILITIES) do a.remembered = nil end
+	if not FOURTH.remember_on() then return end
+	local ok, fh = pcall(io.open, FOURTH.remember_path(), "r")
+	if not ok or fh == nil then return end
+	local n = 0
+	pcall(function()
+		for line in fh:lines() do
+			local t, m, v = string.match(line, "^(%S+)%s+(%S+)%s+([AM])%s*$")
+			local a = (t ~= nil) and ability_for(m) or nil
+			if a ~= nil then
+				a.remembered = a.remembered or {}
+				a.remembered[t] = (v == "A")
+				n = n + 1
+			end
+		end
+	end)
+	pcall(function() fh:close() end)
+	log("REMEMBER: " .. tostring(n) .. " remembered switch(es) read from " .. FOURTH.remember_path())
+end
+
+function FOURTH.save_remembered()
+	if not FOURTH.remember_on() then return end
+	local lines = {}
+	for _, a in ipairs(ABILITIES) do
+		for t, v in pairs(a.remembered or {}) do lines[#lines + 1] = t .. " " .. a.marker .. " " .. (v and "A" or "M") end
+	end
+	table.sort(lines)
+	local ok, fh = pcall(io.open, FOURTH.remember_path(), "w")
+	if not ok or fh == nil then
+		log("REMEMBER: could not write " .. FOURTH.remember_path())
+		return
+	end
+	pcall(function() fh:write(table.concat(lines, "\n") .. ((#lines > 0) and "\n" or "")) end)
+	pcall(function() fh:close() end)
+end
+
+function FOURTH.unit_type_of_slot(slot)
+	local u = units_by_ui_id[tostring(slot)]
+	if u == nil then return nil end
+	local ok, t = pcall(function() return u:type() end)
+	if ok and type(t) == "string" then return t end
+	return nil
+end
+
+-- the remembered switch of this unit's type for this ability, or nil (no type read when the ability has none)
+function FOURTH.remembered_value(slot, marker)
+	local a = ability_for(marker)
+	if a == nil or a.remembered == nil then return nil end
+	local t = FOURTH.unit_type_of_slot(slot)
+	if t == nil then return nil end
+	return a.remembered[t]
+end
+
+-- a click changed (unit, ability) to value: record it for the unit's type
+function FOURTH.remember(ui_id, marker, value)
+	if not FOURTH.remember_on() then return end
+	local a = ability_for(marker)
+	local t = FOURTH.unit_type_of_slot(ui_id)
+	if a == nil or t == nil then return end
+	a.remembered = a.remembered or {}
+	if (value == true) == (a.default_on == true) then
+		a.remembered[t] = nil
+	else
+		a.remembered[t] = (value == true)
+	end
+	if next(a.remembered) == nil then a.remembered = nil end
+	FOURTH.save_remembered()
+end
+
+FOURTH.load_remembered()
+
+-- the optional MCT page's reset, in battle: forget the remembered table and keep the file empty
+function smart_ability_autocast_reset_remembered()
+	for _, a in ipairs(ABILITIES) do a.remembered = nil end
+	FOURTH.save_remembered()
+end
+
 local function set_auto_for_unit(ui_id, marker, value)
 	local id = unit_slot(ui_id)
 	local per = armed[id]
@@ -25172,6 +25276,7 @@ local function set_auto_for_unit(ui_id, marker, value)
 		armed[id] = per
 	end
 	per[marker] = value == true
+	FOURTH.remember(ui_id, marker, value)   -- ROUND 194: remembered for the unit's type
 	log("AUTO " .. tostring(marker) .. " for unit " .. tostring(ui_id) .. ": now "
 		.. (value and "ON" or "OFF"))
 	apply_ability_feedback(marker)   -- the letter on the badge - the only feedback now

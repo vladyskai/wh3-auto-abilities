@@ -1,0 +1,46 @@
+-- ============================================================================
+-- Smart Ability Autocast: the OPTIONAL MCT page (round 194, user 2026-11-21: "Do it the MCT route. MCT should not be
+-- a requirement for the mod to work, only needed for this button").
+-- Only the Mod Configuration Tool loads files from script/mct/settings/, so without MCT this file never runs and the
+-- mod works as before. With MCT it adds one control that forgets the M/A choices the mod remembers between battles:
+-- it empties the battle script's file, smart_ability_autocast_settings.txt, next to the game. In battle it also tells
+-- the running battle script (smart_ability_autocast_reset_remembered) so the next click does not write them back.
+-- The control is MCT's button type when this MCT version has it (add_new_action), else a checkbox: tick it and close
+-- the MCT panel. Everything is guarded: an error here never reaches MCT or the game.
+-- ============================================================================
+if type(get_mct) ~= "function" then return end
+
+pcall(function()
+	local mct = get_mct()
+	if mct == nil then return end
+	local FILE = "smart_ability_autocast_settings.txt"
+	local function reset()
+		local ok, fh = pcall(io.open, FILE, "w")
+		if ok and fh ~= nil then pcall(function() fh:close() end) end
+		if type(smart_ability_autocast_reset_remembered) == "function" then pcall(smart_ability_autocast_reset_remembered) end
+	end
+	local mod = mct:register_mod("smart_ability_autocast")
+	mod:set_title("Smart Ability Autocast")
+	mod:set_description("Your units cast their own abilities. The mod remembers your M and A choices for each unit type between battles. Reset them here.")
+	if type(mod.add_new_action) == "function" then
+		local opt = mod:add_new_action("reset_remembered", "Forget the remembered M/A choices", reset)
+		if type(opt.set_button_text) == "function" then opt:set_button_text("Reset") end
+		opt:set_tooltip_text("Every ability goes back to its default M or A in your next battle.")
+	else
+		local opt = mod:add_new_option("reset_remembered", "checkbox")
+		opt:set_default_value(false)
+		if type(opt.set_is_global) == "function" then opt:set_is_global(true) end
+		opt:set_text("Forget the remembered M/A choices")
+		opt:set_tooltip_text("Tick it and close this panel: every ability goes back to its default M or A in your next battle.")
+		core:add_listener("smart_ability_autocast_reset", "MctOptionSettingFinalized",
+			function(context)
+				return context:mod():get_key() == "smart_ability_autocast"
+					and context:option():get_key() == "reset_remembered" and context:setting() == true
+			end,
+			function(context)
+				reset()
+				pcall(function() context:option():set_finalized_setting(false) end)
+			end,
+			true)
+	end
+end)

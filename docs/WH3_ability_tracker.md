@@ -8322,3 +8322,17 @@ unit of ours that is not firing. It casts nothing. Roster: 985 entries / 1,038 k
 
 **Proof:** harness 192 full suite **8,047 checks / 0 failures**, twice identical. RED on the pre-193 snapshot (no Scry-Orb
 cast, no probe line). Pack md5 `9f3107dd086756560d98caf1516de831`. Workbook v75 (0 open). Not seen in game yet.
+
+### 10.72 Round 194 - remembered M/A states, the reset on an optional MCT page (2026-11-21)
+
+**Rulings (user, 2026-11-21):** remembering arming, option A ("implement"), with an easy reset. "Do it the MCT route. MCT
+should not be a requirement for the mod to work, only needed for this button." Round document
+`docs\WH3_round194_remember.md` (it also reads round 193's pre-shot test battle: 5 of 6 would-cast moments were followed
+by a shot within 7.25 s).
+
+**Change:** a click records the switch for the unit's type in `smart_ability_autocast_settings.txt`. The next battle reads
+it before the family default. The optional MCT page (`script/mct/settings/smart_ability_autocast.lua`, the pack's fifth
+file) empties it. No roster change.
+
+**Proof:** harness 193 full suite **8,079 checks / 0 failures**, twice identical. RED on the pre-194 snapshot. Pack md5
+`3d9c6617f3ae4cd5ae1e924a91547417`. Not seen in game yet.

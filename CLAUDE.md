@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `9f3107dd086756560d98caf1516de831`, 1,607,113 bytes
-  (round 193, 2026-11-21: Scry-Orb on when_ready, the read-only pre-shot probe). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `3d9c6617f3ae4cd5ae1e924a91547417`, 1,614,383 bytes
+  (round 194, 2026-11-21: remembered M/A states per unit type, the reset on an optional MCT page). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -35,13 +35,14 @@ Layout:
 | `archive\` | sealed history: logs, packs, releases, vanilla extracts |
 | `audit\` | independent audit output |
 
-Pack contents are FOUR files since round 166, and every build verifies all four are byte-identical to
+Pack contents are FIVE files since round 194, and every build verifies all five are byte-identical to
 source (paths below relative to `mod_source\`):
 
 - `script\battle\mod\zz_test_deadly_onslaught.lua`
 - `ui\templates\zz_auto_badge.twui.xml`
 - `ui\zz_auto\auto_badge.png`
 - `ui\zz_auto\blank.png`
+- `script\mct\settings\smart_ability_autocast.lua` (round 194: the OPTIONAL MCT page, only MCT loads it)
 
 RETIRED (round 166, user: remove the card's "Automatic: click the M/A badge ..." note):
 `ui\common ui\special_ability_tooltip.twui.xml` existed only for that line (a pre-9.0.5 copy of the game's layout).
@@ -160,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_preshot_harness192/build_and_install193.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_remember_harness193/build_and_install194.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -192,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness192: 8,047 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness193: 8,079 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -354,6 +355,16 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 194 (2026-11-21): REMEMBERED M/A STATES (option A, per unit type and ability). A click records the switch in
+  smart_ability_autocast_settings.txt next to the game ("<unit type> <marker> A|M", only switches that differ from the
+  default). The states live on the ABILITY ENTRY (ability.remembered[type]): is_armed sits ABOVE the FOURTH table in the
+  file and cannot reach FOURTH (the first attempt crashed every old world). A unit's type is read only for an ability
+  with a remembered state. Reset: the OPTIONAL MCT page (5th pack file, script/mct/settings/smart_ability_autocast.lua:
+  MCT's 'action' button when present, else a checkbox + MctOptionSettingFinalized), which empties the file and calls the
+  global hook smart_ability_autocast_reset_remembered(). MCT is subscribed on this PC (Workshop 2927955021). TEST-ONLY:
+  ZZ_AUTO_TEST_NO_REMEMBER (older worlds), ZZ_AUTO_TEST_REMEMBER_FILE / W.remember_on / W.remember_file. Pre-shot test
+  battle (archive\logs\battle_20261121_r193_preshot.txt): 5 of 6 would-cast moments were followed by a shot within
+  7.25 s, the ruling waits. Next battle from byte 933,407,000.
 - ROUND 193 (2026-11-21): Scry-Orb on when_ready. The READ-ONLY pre-shot probe (FOURTH.preshot_now / preshot_probe /
   preshot_first_shot, called from FOURTH.ammo_probe): WOULD CAST / WOULD CAST ENDED / PRESHOT log lines, nothing cast.
   Read a battle with tools\analyze_preshot.py <log> --from <offset>. The test battle is in docs\WH3_round193_preshot.md.
