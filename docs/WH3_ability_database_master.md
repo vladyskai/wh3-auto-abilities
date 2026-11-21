@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-21 14:28 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-21 16:12 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 

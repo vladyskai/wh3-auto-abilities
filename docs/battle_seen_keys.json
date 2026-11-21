@@ -27,6 +27,8 @@
 "wh2_dlc10_spell_bound_word_of_pain",
 "wh2_dlc10_unit_abilities_frost_breath",
 "wh2_dlc11_character_abilities_ballistic_enchantment",
+"wh2_dlc11_character_abilities_cackle_fruit",
+"wh2_dlc11_hero_abilities_bomb_throw",
 "wh2_dlc11_hero_abilities_more_powder",
 "wh2_dlc11_item_abilities_captain_roths_moondial",
 "wh2_dlc11_item_abilities_slann_gold",
@@ -491,6 +493,7 @@
 "wh_main_weapon_abilities_hellfire_sword",
 "wh_main_weapon_abilities_helm_of_discord",
 "wh_main_weapon_abilities_runefang",
+"wh_main_weapon_abilities_skabscrath",
 "wh_main_weapon_abilities_sword_of_anti_heroes",
 "wh_main_weapon_abilities_the_hammer_of_karak_drazh",
 "wh_main_weapon_abilities_the_sword_of_couronne",
@@ -504,6 +507,6 @@
 "wh_pro04_unit_abilities_enrage",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 202,
+"logs_read": 203,
 "made": "2026-11-21"
 }

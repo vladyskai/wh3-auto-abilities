@@ -8243,3 +8243,19 @@ sight to the target"; a terrain-height read exists (unproven). The ruling is sti
 
 **Proof:** harness 187 full suite **7,876 checks / 0 failures**, twice byte-identical; RED on the pre-188 snapshot. Pack
 md5 `c478299540ea6704a364d16083145f57`.
+
+### 10.67 Round 189 - the line of fire (2026-11-21)
+
+**Ruling (user, 2026-11-21):** "I would just do the check for terrain on all 35 and units on all 35. Just let's be safe,
+and if it doesn't fire, that's okay. ... It's better for the mod if it doesn't fire." (After a field test: Cackle Fruit
+arced cleanly over our own unit.) Round document `docs\WH3_round189_lineoffire.md`.
+
+**Change:** the 35 entries carrying a key the game marks "Requires line of sight to the target" (GENERATED
+`FOURTH.LOS_TEXT`, `tools\gen_los_keys.py`) take an enemy only when the line from the caster is clear of every other
+unit (ours and the enemy's; estimated rectangles, 2.5 m / 6 m tops) and of the ground (`bm:get_terrain_height` every
+4 m, checked first against a standing unit's height). Fail-closed. A blocked enemy is skipped. No roster change.
+
+**Workbook v71:** 35 trigger texts gain the LINE OF FIRE sentence. **Open point 13:** built.
+
+**Proof:** harness 188 full suite **7,921 checks / 0 failures**, twice identical; RED on the pre-189 snapshot (the old
+code casts through our Swordsmen). Pack md5 `dab056dfb3b0508d31575de3b78e8a95`. Not seen in game yet.
