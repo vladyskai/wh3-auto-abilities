@@ -222,7 +222,7 @@ n_inv = re.search(r"\| Tracker inventory rows \(all three tables\) \| \*\*(\d+)\
 n_keys = re.search(r"\| distinct ability keys in those rows \| (\d+) \|", src)
 check(n_inv and int(n_inv.group(1)) >= 1801, "G2: the inventory row count is stale: %s"
       % (n_inv.group(1) if n_inv else "no line"))
-check(n_keys and int(n_keys.group(1)) == 1800, "G2: distinct keys = %s, expected 1,800"
+check(n_keys and int(n_keys.group(1)) == 1802, "G2: distinct keys = %s, expected 1,802 (round 192: + Grombrindal Has No Fear, Scry-Orb)"
       % (n_keys.group(1) if n_keys else "no line"))
 
 # ------------------------------------------------------------------ report

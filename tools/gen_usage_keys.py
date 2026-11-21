@@ -95,7 +95,10 @@ TARGET = {"unit_is_not_commander_class": "C",   # the target must be a Lord or H
           "unit_is_not_single_entity": "S",     # the target must be a single entity (the GENERATED single set)
           "is_not_missile_unit": "P",           # the target must be a missile unit (the missile set)
           "unit_is_not_a_lizard_unit": "Z",     # ROUND 180: a Lizardmen unit (the GENERATED lizard set, user 'set A')
-          "unit_is_not_tiger_warrior": "T"}     # ROUND 180: a Tiger Warrior unit (the GENERATED tiger set)
+          "unit_is_not_tiger_warrior": "T",     # ROUND 180: a Tiger Warrior unit (the GENERATED tiger set)
+          # ROUND 192: despite its name, the flag's own text reads 'Unit is not a Clan Moulder Monster': the target must
+          # BE one (the GENERATED moulder set; Shock Collar, Remouldered)
+          "unit_is_moulder_monster": "M"}
 
 
 def derive_target(src_txt=None):

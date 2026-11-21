@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `ffd2f85006fd334d245a2710d3449656`, 1,600,810 bytes
-  (round 191, 2026-11-21: the animation decides in group 1 of the stand-still audit). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `1a12ea1543904e6ae0fc01799d3a905d`, 1,603,485 bytes
+  (round 192, 2026-11-21: the closing check, the Moulder rule, Grombrindal Has No Fear, the five spell-bar runes removed). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -146,9 +146,9 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 186): 988 ABILITIES entries / 1,041 ability keys / 141 trigger evaluator families.
-Wheel audit (workbook v73): 1,123 in-wheel, 677 excluded, of 1,800 inventory rows; 1,041 implemented,
-82 not implemented among the included: 82 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
+Current roster (round 192): 984 ABILITIES entries / 1,037 ability keys / 141 trigger evaluator families.
+Wheel audit (workbook v74): 1,120 in-wheel, 682 excluded, of 1,802 inventory rows; 1,037 implemented,
+83 not implemented among the included: 82 decided by the user, 1 OPEN (Scry-Orb's trigger, round 192) (round 185 closed the rule-shut review;
 the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
 family decisions, 'auto:' exclusions, collection-time 'unsuitable' skips), never ruled on by the user one by one.
 A rule is not a user decision: the progress page counts them open since round 161 (round 159's '0 open' was wrong).
@@ -160,7 +160,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_still1_harness190/build_and_install191.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261121_closing_harness191/build_and_install192.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -192,7 +192,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness190: 7,967 checks; it takes about 10 s) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness191: 8,010 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -318,7 +318,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v73_2026-11-21.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v73.py`, verified by `tools\verify_xlsx_v73.py` (v73 = v72 + the STANDING sentence on 50 more rows); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v74_2026-11-21.xlsx` | the current master spreadsheet (versioned; newest wins); built by `tools\make_xlsx_v74.py`, verified by `tools\verify_xlsx_v74.py` (v74 = v73 + 2 rows (Grombrindal Has No Fear, Scry-Orb), the 5 spell-bar runes EXCLUDED, Numbers recomputed from the rows, Cards from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -352,6 +352,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   abilities are reviewed in `docs\WH3_rule_shut_review_2026-11-20.md`; its LIVE copy is the Claude Docs doc 'Rule-shut
   abilities review' (https://claude.ai/artifact/HvLbtHifSNsbH8aeWcER5h, project 8904b7db-9839-4dad-bfcb-b6a2f5b4bd88):
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
+- ROUND 192 (2026-11-21): a fast enemy counts only while RUNNING (is_moving_fast) and CLOSING (the gap to our nearest
+  unit shrinks FOURTH.FAST_CLOSING_MPS 3 m/s over FOURTH.FAST_CLOSING_S 1 s; FOURTH.fast_closing; TEST-ONLY
+  ZZ_AUTO_TEST_NO_CLOSING keeps older worlds on the old rule, W.closing_on tests it). is_moving_fast() has never been
+  read on an ENEMY in a battle: watch the fast arms. Shock Collar / Remouldered: Clan Moulder monsters only (GENERATED
+  FOURTH.MOULDER_TEXT, 28 units, code M; the flag NAME unit_is_moulder_monster reads backwards: its loc text says 'Unit
+  is not a Clan Moulder Monster'). NEW Grombrindal Has No Fear (melee_or_wavering_aura, 55 m). REMOVED the 5 spell-bar
+  runes (the 5 MASTER runes share source_type rune: question to the user). Workbook v74 has 1,802 rows; Scry-Orb open.
+  When an entry leaves, its old harness worlds move to a sibling on the same trigger (tools\make_harness191.py).
+  Harness runs now take about 2 minutes. Next battle from byte 881,292,588.
 - 2026-11-21 (after round 191, no build): the progress page counts ONLY real battles now (game log + archive\logs; it
   had counted the harness logs: 189 of 1,041 keys seen, not 508). The harness writes the mod's log into its working
   folder (78 GB in the project root): never treat a project-root or tools\ log as a battle. Scheduled task
