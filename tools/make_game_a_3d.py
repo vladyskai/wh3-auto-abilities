@@ -27,6 +27,7 @@ import trace_game_a as T  # noqa: E402
 
 OUT = os.path.join(T.OUT, "3d")
 FINAL = os.path.join(os.path.dirname(T.OUT), "smart_ability_autocast.png")
+FINAL_NUDGE_X = 3.0   # pixels of the 256 tile, to the right of the measured centre (user 2026-11-21)
 N = 1024
 S = N / 256.0
 
@@ -47,7 +48,7 @@ def letter_mask(d, box, height=188, top=26, cx=124):
     return np.asarray(img, dtype=np.float32)[:, :, 3] / 255.0
 
 
-def centred_mask(d, box, extrude):
+def centred_mask(d, box, extrude, nudge_x=0.0):
     """The letter moved so the solid object (the face, plus its side when extruded) is centred in the tile (user
     2026-11-21: "Number 1, but please center it"). The soft shadow is left out of the measure: it is not part of the
     object, and including it would pull the letter up and left."""
@@ -57,7 +58,7 @@ def centred_mask(d, box, extrude):
         dep = 7 * S
         solid = np.maximum(mask, ndimage.shift(mask, (dep * 0.9, dep * 0.65), order=1))
     ys, xs = np.where(solid > 0.5)
-    dx = 128 - (xs.min() + xs.max() + 1) / 2 / S
+    dx = 128 - (xs.min() + xs.max() + 1) / 2 / S + nudge_x
     dy = 128 - (ys.min() + ys.max() + 1) / 2 / S
     return letter_mask(d, box, top=26 + dy, cx=124 + dx)
 
@@ -185,7 +186,9 @@ def main():
     print("wrote", sp)
     # THE CHOSEN IMAGE (user 2026-11-21: "Number 1, but please center it"): version 1, centred, as the Workshop
     # preview. The launcher wants it named like the pack and placed next to it in data\ at upload time.
-    final = compose(centred_mask(d, box, True), "gold", "brushed", True)
+    # FINAL_NUDGE_X: tuned by eye by the user ("A bit more to the right please"): the dark side reads as shadow, so
+    # the bright face alone looked left of centre.
+    final = compose(centred_mask(d, box, True, FINAL_NUDGE_X), "gold", "brushed", True)
     final.save(FINAL, "PNG", optimize=True)
     assert final.size == (256, 256) and os.path.getsize(FINAL) < 1024 * 1024
     print("wrote", FINAL, os.path.getsize(FINAL), "bytes")
