@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-21 20:41 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-21 21:19 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -29,8 +29,8 @@ Generated 2026-11-21 20:41 by `tools/build_ability_database.py` (re-runnable; no
 |---|---:|
 | Tracker inventory rows (all three tables) | **1803** |
 | distinct ability keys in those rows | 1802 |
-| implemented keys (per the mod's `ABILITIES` table) | **1037** |
-| implemented entries in the mod | **984** |
+| implemented keys (per the mod's `ABILITIES` table) | **1038** |
+| implemented entries in the mod | **985** |
 | abilities carrying an **invalid-target** restriction flag | **424** |
 | abilities carrying an **invalid-usage** restriction flag | **414** |
 | abilities carrying an **auto-deactivate** flag | **2** |
@@ -39,16 +39,15 @@ Generated 2026-11-21 20:41 by `tools/build_ability_database.py` (re-runnable; no
 
 | Final status family | Abilities |
 |---|---:|
-| implemented | 1038 |
+| implemented | 1039 |
 | excluded (no automatic logic) | 651 |
 | skipped (deferred / unsuitable) | 71 |
 | rejected (user decision) | 27 |
 | excluded (impossible - engine limit) | 15 |
-| unknown | 1 |
 | **TOTAL** | **1803** |
 
-Reconciliation: the mod's `ABILITIES` table holds **984 entries / 1037 keys**; **1038** of the inventory
-rows carry one of those keys. The tracker's own status column counts **1038 implemented / 666 excluded (no automatic logic 651 + impossible 15) / 71 skipped / 27 rejected = 1803 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
+Reconciliation: the mod's `ABILITIES` table holds **985 entries / 1038 keys**; **1039** of the inventory
+rows carry one of those keys. The tracker's own status column counts **1039 implemented / 666 excluded (no automatic logic 651 + impossible 15) / 71 skipped / 27 rejected = 1803 rows** (counted here from the tracker, not typed in). Any disagreement is listed in §1.6 — never silently smoothed over.
 
 ### 1.3 Implemented abilities by trigger family (what fires, in plain English)
 
@@ -63,7 +62,7 @@ rows carry one of those keys. The tracker's own status column counts **1038 impl
 | `enemy_wave` | When armed and standing still, fires its wave at a standing enemy whose path holds the most enemy value and none of our units | 30 | 30 |
 | `enemy_ground_melee_infantry` | When armed, fires on the closest infantry unit in range that is fighting in melee | 30 | 31 |
 | `enemy_engaged_or_shot` | When armed, fires when an enemy unit in range is in melee or under missile fire | 22 | 26 |
-| `when_ready` | When armed, fires as soon as it is ready | 20 | 20 |
+| `when_ready` | When armed, fires as soon as it is ready | 21 | 21 |
 | `enemy_fast_near_ally` | When armed, fires on a fast enemy unit moving close to your units | 19 | 19 |
 | `enemy_single_drain` | When armed and standing still, fires on the most valuable single-entity enemy in range (lord, hero or monster) | 13 | 13 |
 | `enemy_area_drain` | When armed and standing still, fires on the enemy infantry in range worth the most per soldier, with enough soldiers for every strike | 13 | 13 |
@@ -195,7 +194,7 @@ rows carry one of those keys. The tracker's own status column counts **1038 impl
 | `enemy_melee_noncommander` | When armed, fires on the closest enemy in range that is fighting in melee and is not a Lord or Hero | 1 | 4 |
 | `self_summon_melee` | When armed, fires when this unit itself is fighting in melee and the summon is cast on it | 1 | 1 |
 | `health_below_15` | When armed, fires when this unit is below 15% health | 1 | 5 |
-| **TOTAL** | | **984** | **1037** |
+| **TOTAL** | | **985** | **1038** |
 
 ### 1.4 Restriction flags found in the game's own data (the newest, most valuable layer)
 
@@ -292,15 +291,15 @@ ability off by itself when the condition holds.
 
 * Inventory rows: **1803** = one row per ability key across §3a/3b/3c.
 * Distinct keys: **1802**; keys appearing on more than one row: `wh3_twa07_spell_bound_call_of_tor`.
-* Implemented: the tracker's status column marks **1037** keys implemented; the mod's `ABILITIES` table carries **1037** keys.
+* Implemented: the tracker's status column marks **1038** keys implemented; the mod's `ABILITIES` table carries **1038** keys.
 * Tracker status and the mod's table agree exactly.
-* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **651**, implemented **1038**, rejected (user decision) **27**, skipped (deferred / unsuitable) **71**, unknown **1**.
+* Status families (counted from the tracker's own status column): excluded (impossible - engine limit) **15**, excluded (no automatic logic) **651**, implemented **1039**, rejected (user decision) **27**, skipped (deferred / unsuitable) **71**.
 
 ---
 
 ## 2. IMPLEMENTED ABILITIES — grouped by trigger family
 
-Every row below is shipping in the mod today (984 entries / 1037 keys). The family heading gives the
+Every row below is shipping in the mod today (985 entries / 1038 keys). The family heading gives the
 plain-English description of WHEN it fires; the **Trigger / logic** column gives the rule that specific
 ability rides. **Range** shows the game's own range columns and — where the mod gates a distance — the
 named trigger bound it uses (`floor(real x 0.7)`). **Restrictions** quotes the engine's own flag names.
@@ -1048,7 +1047,7 @@ An ENEMY unit in range is in melee, or is under missile fire. Casts on that enem
 | They Needs Stabbin’ | `wh2_dlc15_character_abilities_they_needs_stabbin` | Armour: -30; Melee Defence: -24 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no · invalid-target: `unit_is_not_commander_class` | cast reach 75 m · trigger bound 55 m (max(70%, real - 20) of the game's 75 m reach) | implemented (enemy-targeted: in-melee / under-fire) | Fires: When armed, fires when an enemy unit in range is in melee or under missile fire. Cast target: the chosen enemy unit. Bound: 55 m (max(70%, real - 20) of the game's 75 m reach) |
 | Vorozheja's Foresight | `wh3_dlc24_hero_abilities_vorozhejas_foresight` | Armour: -12; Missile Block Chance: -12; Missile Resistance: -10 (to enemies in range) | targeting: self=no friends=no enemies=yes ground=no | cast reach 150 m · trigger bound 130 m (max(70%, real - 20) of the game's 150 m reach) | implemented (enemy-targeted: in-melee / under-fire) | Fires: When armed, fires when an enemy unit in range is in melee or under missile fire. Cast target: the chosen enemy unit. Bound: 130 m (max(70%, real - 20) of the game's 150 m reach) |
 
-### `when_ready` — 20 entries / 20 keys
+### `when_ready` — 21 entries / 21 keys
 
 No condition except that the unit is not routing (round 160): the shared gates (armed, ready, charge hold, 2 s guard) decide. Casts on the unit itself.
 
@@ -1068,6 +1067,7 @@ No condition except that the unit is not routing (round 160): the shared gates (
 | Power Stone | `wh_main_item_abilities_power_stone` | Winds of Magic recharge: -20%; Winds of Magic reserves per second: +0.1 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
 | Prismatic Amplifier | `wh3_main_item_abilities_prismatic_amplifier` | Winds of Magic recharge: +60% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
 | Scroll of Destiny | `wh3_main_item_abilities_scroll_of_destiny` | Winds of Magic reserves per second: +0.4 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
+| Scry-Orb | `wh3_dlc29_item_abilities_scry_orb` | Winds of Magic recharge: +60%; Winds of Magic reserves per second: +0.2; Own ability recharge: -30 s (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (when_ready, round 193) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
 | Skull of Rarkos | `wh_dlc03_item_abilities_skull_of_rarkos` | Winds of Magic reserves per second: +0.4 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
 | Staff of Volans | `wh_main_item_abilities_staff_of_volans` | Miscast Chance: -50%; Winds of Magic recharge: +140% (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
 | Staff of Wu Xing | `wh3_main_item_abilities_staff_of_wu_xing` | Winds of Magic recharge: +140%; Winds of Magic reserves per second: +0.3 (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | implemented (Winds of Magic, when ready: when_ready) | Fires: When armed, fires as soon as it is ready. Cast target: the unit itself |
@@ -2897,7 +2897,7 @@ An ally IN RANGE is in melee AND wavering. Casts on the unit itself (the ally is
 
 ## 3. EXCLUDED / SKIPPED / REJECTED / IMPOSSIBLE — with reasons
 
-These 765 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
+These 764 abilities have no automatic logic. The heading is the decision family; the **Why** column is the
 tracker's own final status/reason for that row. The Effect / Restrictions / Range columns are the same
 fresh game-data extraction used in §2, so a later re-decision has the mechanics at hand.
 
@@ -3833,12 +3833,6 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 |---|---|---|---|---|---|---|
 | In the Name of War | `wh3_dlc29_lord_abilities_in_the_name_of_war` | Melee Defence: -20; Rampage (positive) (to enemies in range) | targeting: self=no friends=no enemies=no ground=no | effect range (aura) 35 m | rejected (rampage) | When in melee (and not fleeing): cast on self. |
 
-### unknown — round 192: needs a trigger ruling (1)
-
-| Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
-|---|---|---|---|---|---|---|
-| Scry-Orb | `wh3_dlc29_item_abilities_scry_orb` | Winds of Magic recharge: +60%; Winds of Magic reserves per second: +0.2; Own ability recharge: -30 s (to self) | targeting: self=no friends=no enemies=no ground=no · always affects self | unlimited / no range column | open (round 192: needs a trigger ruling) | Proposal 2026-11-21: fire when ready (when_ready), like the 21 pure winds abilities. |
-
 ### rejected (user decision) — user 2026-11-15: "Close 5, Necrotic last"; a random effect; a 35 m blast for 45 s that hurts our units (1)
 
 | Ability | Key | Effect (game data) | Restrictions | Range | Status | Why |
@@ -3916,8 +3910,8 @@ fresh game-data extraction used in §2, so a later re-decision has the mechanics
 ## Reconciliation (repeat of §1.6)
 
 * §1 inventory rows: **1803**; distinct keys **1802**.
-* §2 implemented: **984** entries / **1037** keys — equals the mod's `ABILITIES` count.
-* §3 non-implemented: **765** rows.
+* §2 implemented: **985** entries / **1038** keys — equals the mod's `ABILITIES` count.
+* §3 non-implemented: **764** rows.
 * Rows whose EFFECT the game's tables cannot source (written `unknown`): **709** of 1803.
 * Abilities carrying a restriction flag (invalid-target / invalid-usage / auto-deactivate): **646**.
 

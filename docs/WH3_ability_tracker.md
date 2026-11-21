@@ -5329,7 +5329,7 @@ the questionnaire will offer. `key` order: base first, upgraded/summoned twins a
 | Wind Bow `wh3_dlc24_item_abilities_wind_bow` | `implemented (infantry blob, most value destroyed: enemy_blob)` | target | When armed and standing still, fires at the visible enemy infantry within 245 m where its 3 m blast destroys the most enemy value (armour, hit points, live value), when it hits at least 6 soldiers and none of ours are within 13 m. Armour-piercing: never at armour below 50. | cd 120s · -1s · enemy unit · ×3 uses · wind-up 5s · item · **round 146 (2026-11-13):** the blob trigger, user rulings "A. Density line", "10 m", "79 open attacks". · **round 150 (2026-11-14):** the target is the one whose blast destroys the most enemy value; never while the caster moves; user rulings "Most value destroyed", "For now, only the Blob attacks". |
 | Zefet-nebtar, the Mortis Blade `wh3_dlc29_item_abilities_zefet_nebtar_the_mortis_blade` | `implemented (enemy_area_drain, round 184)` | target | While the unit has an enemy in its sights: cast on the ground under the target. | cd 120s · 1s · enemy ground · ×3 uses · wind-up 2s · item · triage-family: Own-troop-damage AoE |
 | Grombrindal Has No Fear `wh_pro01_lord_passive_grombrindal_has_no_fear` | `implemented (melee_or_wavering_aura, round 192)` | aura | Fires when the caster or a friendly unit within 38 m (70% of the 55 m aura) is in melee or wavering: cast centred on the caster. | cd 120s · 24s · self + allies · ×1 use · +24 melee defence, Unbreakable · source_type passive (added in round 192) · user ruling 2026-11-21: 'at least one ally (caster included) in range in melee or wavering' |
-| Scry-Orb `wh3_dlc29_item_abilities_scry_orb` | `open (round 192: needs a trigger ruling)` | self | Proposal 2026-11-21: fire when ready (when_ready), like the 21 pure winds abilities. | cd 120s · 32s · self · ×3 uses · Winds of Magic regeneration x1.6, ability recharge -30 s · source_type passive (added in round 192) |
+| Scry-Orb `wh3_dlc29_item_abilities_scry_orb` | `implemented (when_ready, round 193)` | self | Fires whenever it is ready (when_ready), like the 21 pure winds abilities (user 2026-11-21: "implement"). | cd 120s · 32s · self · ×3 uses · Winds of Magic regeneration x1.6, ability recharge -30 s · source_type passive (added in round 192) |
 
 ### 3b. Friendly-fire-flagged (moved to the END of the list by design)
 
@@ -8309,3 +8309,16 @@ Breaking, Negation, Slowness, Speed, Oath & Steel. Roster: 984 entries / 1,037 k
 **Proof:** harness 191 full suite **8,010 checks / 0 failures**, twice identical; RED on the pre-192 snapshot (fires on an
 enemy riding past, walking or running away; Shock Collar on Skeletons; the rune fires). Pack md5
 `1a12ea1543904e6ae0fc01799d3a905d`. Workbook v74 (1,802 rows; Scry-Orb open). Not seen in game yet.
+
+### 10.71 Round 193 - Scry-Orb on when_ready, the read-only pre-shot probe (2026-11-21)
+
+**Rulings (user, 2026-11-21):** Scry-Orb "implement" (fire when ready). Casting before the first shot: "implement
+recommendation and propose a test battle" (the read-only probe first). Learning the recharge from the button: "too
+complicated, drop it for now". Round document `docs\WH3_round193_preshot.md`.
+
+**Change:** NEW entry Scry-Orb on when_ready (3 uses, a 120 s hold row). The pre-shot probe (`FOURTH.preshot_now`,
+`FOURTH.preshot_probe`, `FOURTH.preshot_first_shot`) logs WOULD CAST, WOULD CAST ENDED and PRESHOT lines for every ranged
+unit of ours that is not firing. It casts nothing. Roster: 985 entries / 1,038 keys / 141 families.
+
+**Proof:** harness 192 full suite **8,047 checks / 0 failures**, twice identical. RED on the pre-193 snapshot (no Scry-Orb
+cast, no probe line). Pack md5 `9f3107dd086756560d98caf1516de831`. Workbook v75 (0 open). Not seen in game yet.
