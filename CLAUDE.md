@@ -355,6 +355,26 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 200 (2026-11-22, "please prepare the pack for me to upload to steam workshop"; `docs\WH3_round200_workshop_release.md`).
+  THE RELEASE IS GENERATED: `tools\build_release.py` (`--pack` needs the RPFM server; `--test <path>` writes the variant
+  with the test switches for the harness) turns the development script into
+  mod_source\release\script\battle\mod\smart_ability_autocast.lua: log() is an empty function (the whole logging section
+  is cut), the five log-only periodic calls are gone (dial dump, inventory sweep, map probe, heartbeat, tick line), the
+  ZZ_AUTO_TEST_* reads become nil, the zz_badge_* / zz_all_* console functions are nil'ed at the end, a multiplayer battle
+  returns at once, and the release STANDS DOWN when the development build is loaded too (zz_badge_set ~= nil at load and
+  at the top of poll / ui_tick / the fast pass). NEVER edit the release script by hand: change the development script,
+  run the round, then `build_release.py --pack`. It builds smart_ability_autocast.pack (type Mod) and copies it and
+  mod_source\workshop\smart_ability_autocast.png into the game's data folder (a SECOND file of ours there, asked for by
+  the user; the test pack is not touched). Workshop text: mod_source\workshop\description.txt. PROOF METHOD: the cast
+  trace (tools/release_cast_trace.py <out dir> <release-test script>: every perform_special_ability order of the full suite recorded on both builds, 2,067 worlds /
+  1,652 casts identical). The harness loads many copies into ONE Lua state: reset zz_badge_set = nil per world or the
+  release guard trips. ENGINE FACTS from the game's own scripts (data_script.pack, extracted with
+  tools\extract_ui_layouts.py get data_script.pack script/_lib/<file>): bm:is_multiplayer() is real in battle (12 uses,
+  battle_tours.lua); bm:is_benchmarking_mode() exists; get_scriptunits_for_main_enemy_army_to_local_player = army 1 of
+  the non-player alliance and get_scriptunits_for_local_players_army = the local army only (reinforcing and allied
+  armies are NOT read: confirmed, no longer an assumption); no replay read found; common.vfs_exists not found there.
+  FOUND, NOT TOUCHED: an old probe pack zz_probe_dist.pack (20 KB, 2026-10-10) is still in the game's data folder.
+  NOT DONE: the upload itself (the user's account, TW Launcher (Legacy), tag Battle).
 - ROUND 199 (2026-11-22, the review's second replies; `docs\WH3_round199_review_fixes2.md`). Row 5 "okay, then fix":
   FOURTH.KEY_LOWER (a listed key with a capital letter, lowered at load) joins the badge's equality compare. Row 9
   "please implement, but also include the caster as I tested and it could cast on the caster": THE ALLY ARM, entry

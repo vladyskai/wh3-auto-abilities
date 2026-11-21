@@ -1,0 +1,52 @@
+[h1]Smart Ability Autocast[/h1]
+
+Your Lords, Heroes and units use their own abilities at the right moment, while you command the battle.
+
+[h2]How it works[/h2]
+[list]
+[*]Every ability on the ability wheel (lower left of the battle screen) gets a small letter: [b]M[/b] for manual, [b]A[/b] for automatic.
+[*]Click the letter to switch that ability for the selected unit. Each unit has its own switch.
+[*]Hover the letter to read when the ability fires.
+[*]A button in battle next to the wheel switches every ability of the selected units to automatic, or back to manual.
+[*]Your choices are remembered per unit type and ability. The next battle starts with them.
+[/list]
+
+[h2]Each ability has its own trigger[/h2]
+The trigger follows what the ability does. A few examples:
+[list]
+[*]Charge bonuses fire when the unit charges.
+[*]Melee buffs fire in melee, and not while the unit wavers.
+[*]Heals fire on the most hurt ally in range.
+[*]Hexes and debuffs fire on an enemy that is fighting, in range.
+[*]Roots and slows fire on a fast enemy that is running at your army.
+[*]Breaths, bombs and blasts pick the target where they destroy the most value, and they hold when your own units stand in the area.
+[*]Finishers wait for an enemy below their execute line.
+[/list]
+1,038 abilities of characters, units, mounts and items are covered.
+
+[h2]Safe by default[/h2]
+[list]
+[*]The mod only casts inside the ability's real range, so a cast never makes the unit walk.
+[*]One cast at a time per unit, so an ability is never cancelled by the next one.
+[*]Abilities with a risk for your own army (rampage, self damage) start on manual.
+[*]It never casts at an enemy you cannot see.
+[/list]
+
+[h2]Not automated, on purpose[/h2]
+[list]
+[*]Spells and everything else on the right-hand bar.
+[*]Army abilities.
+[*]Stances.
+[/list]
+
+[h2]Compatibility[/h2]
+[list]
+[*]Single-player campaign battles and custom battles. In a multiplayer battle the mod does nothing.
+[*]No save game data is changed. You can add or remove the mod at any time.
+[*]Optional: with the Mod Configuration Tool installed, its settings page has a button that forgets the remembered M/A choices. The tool is not required.
+[*]Units from other mods work when their abilities are the game's own. Lords and Heroes added by other mods may not be recognised as Lords and Heroes by the target rules.
+[*]In a battle with reinforcements the mod reads your own army and the main enemy army.
+[/list]
+
+[h2]Feedback[/h2]
+Tell me which ability fired at the wrong moment, with the unit and the situation. Every trigger can be tuned.
