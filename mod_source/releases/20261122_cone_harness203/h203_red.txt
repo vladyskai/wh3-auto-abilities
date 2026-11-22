@@ -1,0 +1,19 @@
+== HARNESS 203 - section 0zz51: the round-205 tokens ==
+   OK   0zz51 live (RED): the pre-205 file has no cone table and counts enemy single entities
+   OK   0zz51 ann (RED): the pre-205 file has no cone table and counts enemy single entities
+== [annotated] CN1. Sunfang: our block at (0,40) fights an enemy block at (0,48) ==
+   OK   [annotated] CN1. Sunfang: our block at (0,40) fights an enemy block at (0,48): the file loads
+   OK   [annotated] CN1a-RED: ONE order whose real cone misses (fewer than 30 enemy soldiers) (0 unit-form, 1 ground; start (-39.7,60.0), bearing 90: the real cone covers 0.0 of our soldiers and 27 enemy soldiers)
+== [annotated] SE1. Sunfang: the only enemy is a single entity standing at (0,50) ==
+   OK   [annotated] SE1. Sunfang: the only enemy is a single entity standing at (0,50): the file loads
+   OK   [annotated] SE1a-RED: ONE order at the single entity (0, 1)
+== [live] CN1. Sunfang: our block at (0,40) fights an enemy block at (0,48) ==
+   OK   [live] CN1. Sunfang: our block at (0,40) fights an enemy block at (0,48): the file loads
+   OK   [live] CN1a-RED: ONE order whose real cone misses (fewer than 30 enemy soldiers) (0 unit-form, 1 ground; start (-39.7,60.0), bearing 90: the real cone covers 0.0 of our soldiers and 27 enemy soldiers)
+== [live] SE1. Sunfang: the only enemy is a single entity standing at (0,50) ==
+   OK   [live] SE1. Sunfang: the only enemy is a single entity standing at (0,50): the file loads
+   OK   [live] SE1a-RED: ONE order at the single entity (0, 1)
+   OK   HARNESS 203: every world behaved - 4/4
+== HARNESS 203 done: 11 checks in this section ==
+checks: 4382, failures: 0
+HARNESS OK - all checks passed
