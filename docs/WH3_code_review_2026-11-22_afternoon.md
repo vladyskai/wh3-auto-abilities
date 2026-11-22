@@ -36,6 +36,22 @@ Proof: harness 206, 8,365 checks, 0 failures (once). The old builds reproduce F1
 F3 has a limit: for an ability with several uses the game answers "can be cast" even with none left, so those
 still search.
 
+## 1b. The user's replies and round 209 (2026-11-22)
+
+| Finding | Reply | State |
+|---|---|---|
+| A1 the Loons | "We need a friendly fire check, yes." | BUILT in round 209 (none of our other units within 98 m of the caster) |
+| A2 Chain Lightning | "leave it for now" | left |
+| B1 the five caster-front breaths | "fix please" | NOT built: where the breath starts needs a hand test |
+| B2 Lamprey's Bite | "fix please" | BUILT in round 209 (an aimed wave) |
+| B3, B4 the area blasts count walkers | "leave for now, we might improve on that later" | left |
+| C1 the player's own cast | "Fixable?" | BUILT in round 209 |
+| C2, C3 | "fixable?" | explained, each has a cost, waiting |
+| C4 one bad unit | "fixable?" | BUILT in round 209 |
+| C6 the button that arms everything | "that's okay" | closed |
+| D the limit of 5 soldiers | "I don't understand" | explained in the chat |
+| E1 slow units | "need more details" | explained in the chat, a ruling is needed |
+
 ## 2. Findings that need a ruling, ranked
 
 ### A. Can hurt our own units

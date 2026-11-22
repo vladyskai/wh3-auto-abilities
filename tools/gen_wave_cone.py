@@ -39,11 +39,16 @@ def derive(script_txt):
             r0, r1 = float(v["start_radius"]), float(v["goal_radius"])
             exp, spd, dur = float(v["expansion_speed"]), float(v["movement_speed"]), float(v["duration"])
             # only a wave whose table radius IS the vortex's goal radius (Hell Hammer's 14.1 m is its bombardment's)
-            if r0 < r1 and exp > 0 and spd > 0 and abs(float(ww[k].split(",")[1]) - r1) < 0.01:
+            wwr = float(ww[k].split(",")[1])
+            if r0 < r1 and exp > 0 and spd > 0 and abs(wwr - r1) < 0.01:
                 g = exp / spd
                 # the cone must reach (about) its goal radius by the end of its path, or the table is misread
                 assert abs(min(r1, r0 + g * spd * dur) - r1) <= 0.5, (k, r0, r1, exp, spd, dur)
                 out[k] = (r0, g)
+            elif r0 < r1 and exp > 0 and spd > 0 and abs(wwr - (r0 + exp * dur)) < 0.01:
+                # ROUND 209: a wave that stops growing before its goal radius (Lamprey's Bite): the WW table carries
+                # the radius it reaches, the cone grows to exactly that
+                out[k] = (r0, exp / spd)
     return out
 
 

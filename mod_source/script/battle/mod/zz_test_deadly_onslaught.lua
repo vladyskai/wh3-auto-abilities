@@ -1651,12 +1651,14 @@ local ABILITIES = {
 		keys = { "wh_main_unit_abilities_spinning_loons" },
 		range_real = 25,
 		target_class = "not_flying",
+		ring_clear = true,   -- ROUND 209: none of our other units inside the fanatics' reach
 		ox = 0, oy = 0 },
 	{ marker = "loons_of_eight_peaks", name = "The Loons of Eight Peaks", trigger = "enemy_ground_melee",
 		badge = "zz_auto_badge_loons_of_eight_peaks",
 		keys = { "wh_dlc06_unit_abilities_the_loons_of_eight_peaks" },
 		range_real = 25,
 		target_class = "not_flying",
+		ring_clear = true,   -- ROUND 209: none of our other units inside the fanatics' reach
 		ox = 0, oy = 0 },
 	{ marker = "hags_denial", name = "Hag's Denial", trigger = "self_last_stand",
 		badge = "zz_auto_badge_hags_denial",
@@ -2590,7 +2592,7 @@ local ABILITIES = {
 		keys = { "wh3_main_item_abilities_crackleblaze" },
 		range_real = 60,
 		ox = 0, oy = 0 },
-	{ marker = "lampreys_bite", name = "Lamprey's Bite", trigger = "enemy_wander",
+	{ marker = "lampreys_bite", name = "Lamprey's Bite", trigger = "enemy_wave",
 		badge = "zz_auto_badge_lampreys_bite",
 		keys = { "wh3_dlc24_unit_abilities_lampreys_bite" },
 		range_real = 100,
@@ -20364,7 +20366,7 @@ FOURTH.load_summon_blast()
 -- key=kind,radius,path,offset,buffer,hits_allies,ground_only; kind 1 wave, 2 wanderer from the target centre,
 -- 3 wanderer from the target's near edge, 4 strike, 5 cone from the caster's front, 6 wanderer from the
 -- caster's front, 7 melee sweep (radius = its reach from the caster)
-FOURTH.WW_TEXT = "wh2_dlc09_lord_abilities_sand_storm=2,12,56,0,41,1,0;wh2_dlc10_item_bound_arnizipals_black_horror=1,10,140,24,44,1,0;wh2_dlc10_spell_bound_magic_fiery_convocation=1,7,132,24,0,1,0;wh2_dlc10_weapon_abilities_sword_of_khaine=2,12,44,0,38,1,0;wh2_dlc11_spell_bound_the_purple_sun_of_xereus=2,12,22,0,12,1,0;wh2_dlc11_spell_bound_tidecall=1,12,48,24,0,1,0;wh2_dlc11_spell_bound_wind_blast=1,12,48,24,0,1,0;wh2_dlc12_character_abilities_brass_orb=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_tech_lab_doom_flayer=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_upgrade=2,12,0,0,0,1,0;wh2_dlc12_unit_abilities_burning_alignment=1,8,120,24,0,1,0;wh2_dlc13_character_ability_shatter=5,12,48,24,0,1,0;wh2_dlc15_character_abilities_fishy_breathe=5,16,60,24,0,1,0;wh2_dlc15_lord_abilities_da_boss_loons=6,4,84,0,84,1,0;wh2_dlc15_spell_bound_wind_of_death=1,6,100,24,25,1,0;wh2_dlc16_item_abilities_acorns_of_the_oak_of_ages=2,15,0,0,0,1,0;wh2_dlc17_spell_bound_lesser_banishment=2,12,18,0,11,1,0;wh2_dlc17_spell_bound_lesser_chain_lightning=2,10,22,0,12,1,0;wh2_main_character_abilities_arcane_vassal=2,15,0,0,0,0,0;wh2_main_item_abilities_black_dragon_egg=1,6,72,36,0,1,0;wh2_main_item_bound_gilded_horn_of_galon_konook=2,7,39,0,33,1,0;wh2_main_lord_abilities_gaze_of_malice=1,14,24,12,0,1,0;wh2_main_lord_abilities_the_ruination_of_cities=3,7,60,0,60,1,0;wh2_main_mount_bound_pestilent_breath=5,12,48,24,0,1,0;wh2_main_mount_bound_scorch=1,6,72,36,0,1,0;wh2_main_spell_bound_khaines_ring_of_fury=1,7,132,24,0,1,0;wh2_main_spell_bound_rubric_of_dark_dimensions=2,15,0,0,0,1,0;wh2_main_spell_bound_the_gem_of_sunfire=2,10,54,0,19,1,0;wh2_main_weapon_abilities_sunfang=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_dlc20_spell_bound_gehennas_golden_hounds=2,7,26,0,13,1,0;wh3_dlc20_spell_bound_infernal_gateway=2,15,0,0,0,1,0;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_stream_of_corruption=1,6,72,36,0,1,0;wh3_dlc20_spell_bound_the_penumbral_pendulum=1,4,80,24,0,1,0;wh3_dlc20_weapon_abilities_the_spear_slaupnir=1,4,80,24,0,1,0;wh3_dlc23_item_abilities_hammer_of_smednir=2,15,0,0,0,1,0;wh3_dlc23_spell_bound_hell_hammer=1,14.1,60,24,0,1,0;wh3_dlc24_unit_abilities_jade_dragons_breath=1,9,37.5,24,0,1,0;wh3_dlc24_unit_abilities_lampreys_bite=2,25,24,0,24,1,1;wh3_dlc25_spell_bound_fire_the_burning_head=1,7,180,24,78,1,0;wh3_dlc26_lord_abilities_boiling_cauldron=2,15,0,0,0,1,0;wh3_dlc26_lord_abilities_simmering_pot=2,15,0,0,0,1,0;wh3_dlc27_character_abilities_nightmaw=1,4.5,33,24,0,1,0;wh3_dlc27_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_dlc27_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_dlc29_lord_abilities_warp_junction=2,15,0,0,0,1,0;wh3_dlc29_spell_bound_fire_skull_of_flaming_death=1,7,180,24,77,1,0;wh3_dlc29_spell_bound_plague=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_plaguemaster=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_undeath_the_abyssal_swarm=2,12,75,0,47,0,0;wh3_dlc29_unit_abilities_flesh_eating_scarabs=7,36.5,22.5,1,0,1,1;wh3_dlc29_unit_abilities_soul_slaying_hunger=2,7,48,0,30,1,0;wh3_dlc29_unit_active_ripping_blades=7,12,0,0,0,1,0;wh3_main_daemon_arms_abilities_blue_fire=1,12,48,24,0,1,1;wh3_main_daemon_arms_abilities_blue_fire_upgraded=1,12,48,24,0,1,1;wh3_main_item_abilities_bangstick=1,12,48,24,0,1,0;wh3_main_item_abilities_crackleblaze=2,15,0,0,0,0,0;wh3_main_item_abilities_deaths_head=2,20,0,0,0,1,0;wh3_main_item_abilities_kovsh_breath=1,12,48,24,0,1,0;wh3_main_spell_bound_banishment=2,12,36,0,16,1,0;wh3_main_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_main_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=1,12,40,24,0,1,0;wh3_main_spell_bound_pestilent_breath=5,12,48,24,0,1,0;wh3_main_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_main_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh3_main_spell_nurgle_stream_of_corruption_bound=1,6,72,36,0,1,0;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=1,12,48,24,0,1,0;wh3_main_weapon_abilities_frost_fang=2,15,0,0,0,1,0;wh3_main_weapon_abilities_siegebreaker=4,1.1,0,0,0,1,1;wh3_pro10_cataclysm_fire_magma_storm_bound=2,20,0,0,45,1,1;wh_dlc03_spell_bound_viletide=2,15,0,0,0,1,0;wh_dlc04_spell_bound_banishment=2,12,36,0,16,1,0;wh_dlc04_spell_bound_banishment_innate=2,12,36,0,16,1,0;wh_dlc05_lord_ablities_grey_wolves=2,7,39,0,20,1,0;wh_dlc05_spell_shadow_pit_of_shades_bound=2,15,0,0,0,1,0;wh_dlc07_item_abilities_wrath_of_manann=1,6,70,24,17,1,0;wh_dlc08_lord_abilities_seafang=1,4,95,24,0,1,0;wh_dlc08_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh_main_item_abilities_fiery_ring_of_thori=1,6,72,36,0,1,0;wh_main_spell_bound_chain_lightning_ror=2,10,42,0,17,1,0;wh_main_weapon_abilities_skabscrath=5,6,72,36,0,1,0"
+FOURTH.WW_TEXT = "wh2_dlc09_lord_abilities_sand_storm=2,12,56,0,41,1,0;wh2_dlc10_item_bound_arnizipals_black_horror=1,10,140,24,44,1,0;wh2_dlc10_spell_bound_magic_fiery_convocation=1,7,132,24,0,1,0;wh2_dlc10_weapon_abilities_sword_of_khaine=2,12,44,0,38,1,0;wh2_dlc11_spell_bound_the_purple_sun_of_xereus=2,12,22,0,12,1,0;wh2_dlc11_spell_bound_tidecall=1,12,48,24,0,1,0;wh2_dlc11_spell_bound_wind_blast=1,12,48,24,0,1,0;wh2_dlc12_character_abilities_brass_orb=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_tech_lab_doom_flayer=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_upgrade=2,12,0,0,0,1,0;wh2_dlc12_unit_abilities_burning_alignment=1,8,120,24,0,1,0;wh2_dlc13_character_ability_shatter=5,12,48,24,0,1,0;wh2_dlc15_character_abilities_fishy_breathe=5,16,60,24,0,1,0;wh2_dlc15_lord_abilities_da_boss_loons=6,4,84,0,84,1,0;wh2_dlc15_spell_bound_wind_of_death=1,6,100,24,25,1,0;wh2_dlc16_item_abilities_acorns_of_the_oak_of_ages=2,15,0,0,0,1,0;wh2_dlc17_spell_bound_lesser_banishment=2,12,18,0,11,1,0;wh2_dlc17_spell_bound_lesser_chain_lightning=2,10,22,0,12,1,0;wh2_main_character_abilities_arcane_vassal=2,15,0,0,0,0,0;wh2_main_item_abilities_black_dragon_egg=1,6,72,36,0,1,0;wh2_main_item_bound_gilded_horn_of_galon_konook=2,7,39,0,33,1,0;wh2_main_lord_abilities_gaze_of_malice=1,14,24,12,0,1,0;wh2_main_lord_abilities_the_ruination_of_cities=3,7,60,0,60,1,0;wh2_main_mount_bound_pestilent_breath=5,12,48,24,0,1,0;wh2_main_mount_bound_scorch=1,6,72,36,0,1,0;wh2_main_spell_bound_khaines_ring_of_fury=1,7,132,24,0,1,0;wh2_main_spell_bound_rubric_of_dark_dimensions=2,15,0,0,0,1,0;wh2_main_spell_bound_the_gem_of_sunfire=2,10,54,0,19,1,0;wh2_main_weapon_abilities_sunfang=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_dlc20_spell_bound_gehennas_golden_hounds=2,7,26,0,13,1,0;wh3_dlc20_spell_bound_infernal_gateway=2,15,0,0,0,1,0;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_stream_of_corruption=1,6,72,36,0,1,0;wh3_dlc20_spell_bound_the_penumbral_pendulum=1,4,80,24,0,1,0;wh3_dlc20_weapon_abilities_the_spear_slaupnir=1,4,80,24,0,1,0;wh3_dlc23_item_abilities_hammer_of_smednir=2,15,0,0,0,1,0;wh3_dlc23_spell_bound_hell_hammer=1,14.1,60,24,0,1,0;wh3_dlc24_unit_abilities_jade_dragons_breath=1,9,37.5,24,0,1,0;wh3_dlc24_unit_abilities_lampreys_bite=1,14.1,24,0,0,1,1;wh3_dlc25_spell_bound_fire_the_burning_head=1,7,180,24,78,1,0;wh3_dlc26_lord_abilities_boiling_cauldron=2,15,0,0,0,1,0;wh3_dlc26_lord_abilities_simmering_pot=2,15,0,0,0,1,0;wh3_dlc27_character_abilities_nightmaw=1,4.5,33,24,0,1,0;wh3_dlc27_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_dlc27_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_dlc29_lord_abilities_warp_junction=2,15,0,0,0,1,0;wh3_dlc29_spell_bound_fire_skull_of_flaming_death=1,7,180,24,77,1,0;wh3_dlc29_spell_bound_plague=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_plaguemaster=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_undeath_the_abyssal_swarm=2,12,75,0,47,0,0;wh3_dlc29_unit_abilities_flesh_eating_scarabs=7,36.5,22.5,1,0,1,1;wh3_dlc29_unit_abilities_soul_slaying_hunger=2,7,48,0,30,1,0;wh3_dlc29_unit_active_ripping_blades=7,12,0,0,0,1,0;wh3_main_daemon_arms_abilities_blue_fire=1,12,48,24,0,1,1;wh3_main_daemon_arms_abilities_blue_fire_upgraded=1,12,48,24,0,1,1;wh3_main_item_abilities_bangstick=1,12,48,24,0,1,0;wh3_main_item_abilities_crackleblaze=2,15,0,0,0,0,0;wh3_main_item_abilities_deaths_head=2,20,0,0,0,1,0;wh3_main_item_abilities_kovsh_breath=1,12,48,24,0,1,0;wh3_main_spell_bound_banishment=2,12,36,0,16,1,0;wh3_main_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_main_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=1,12,40,24,0,1,0;wh3_main_spell_bound_pestilent_breath=5,12,48,24,0,1,0;wh3_main_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_main_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh3_main_spell_nurgle_stream_of_corruption_bound=1,6,72,36,0,1,0;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=1,12,48,24,0,1,0;wh3_main_weapon_abilities_frost_fang=2,15,0,0,0,1,0;wh3_main_weapon_abilities_siegebreaker=4,1.1,0,0,0,1,1;wh3_pro10_cataclysm_fire_magma_storm_bound=2,20,0,0,45,1,1;wh_dlc03_spell_bound_viletide=2,15,0,0,0,1,0;wh_dlc04_spell_bound_banishment=2,12,36,0,16,1,0;wh_dlc04_spell_bound_banishment_innate=2,12,36,0,16,1,0;wh_dlc05_lord_ablities_grey_wolves=2,7,39,0,20,1,0;wh_dlc05_spell_shadow_pit_of_shades_bound=2,15,0,0,0,1,0;wh_dlc07_item_abilities_wrath_of_manann=1,6,70,24,17,1,0;wh_dlc08_lord_abilities_seafang=1,4,95,24,0,1,0;wh_dlc08_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh_main_item_abilities_fiery_ring_of_thori=1,6,72,36,0,1,0;wh_main_spell_bound_chain_lightning_ror=2,10,42,0,17,1,0;wh_main_weapon_abilities_skabscrath=5,6,72,36,0,1,0"
 FOURTH.WW = {}
 function FOURTH.load_ww_table()   -- a function, so the loop adds no main-chunk locals
 	for k, a, r, p, o, b, h, g in string.gmatch(FOURTH.WW_TEXT,
@@ -20377,7 +20379,7 @@ FOURTH.load_ww_table()
 -- GENERATED by tools/gen_wave_cone.py from battle_vortexs (ROUND 205): the straight waves that GROW as they roll.
 -- key=start_radius,growth_per_metre: the wave's radius d metres from its start is min(its table radius,
 -- start_radius + growth x d). The build refuses a pack whose table differs from the game data. Do not hand-edit.
-FOURTH.WW_CONE_TEXT = "wh2_dlc11_spell_bound_tidecall=0.1,0.25;wh2_dlc11_spell_bound_wind_blast=0.1,0.25;wh2_main_item_abilities_black_dragon_egg=0.1,0.0833;wh2_main_lord_abilities_gaze_of_malice=0.1,0.5833;wh2_main_mount_bound_scorch=0.1,0.0833;wh2_main_weapon_abilities_sunfang=0.1,0.25;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=0.1,0.25;wh3_dlc20_spell_bound_stream_of_corruption=0.1,0.0833;wh3_dlc24_unit_abilities_jade_dragons_breath=0.1,0.24;wh3_dlc27_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_daemon_arms_abilities_blue_fire=0.1,0.25;wh3_main_daemon_arms_abilities_blue_fire_upgraded=0.1,0.25;wh3_main_item_abilities_bangstick=0.1,0.25;wh3_main_item_abilities_kovsh_breath=0.1,0.25;wh3_main_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=3,0.225;wh3_main_spell_nurgle_stream_of_corruption_bound=0.1,0.0833;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=0.1,0.25;wh_main_item_abilities_fiery_ring_of_thori=0.1,0.0833"
+FOURTH.WW_CONE_TEXT = "wh2_dlc11_spell_bound_tidecall=0.1,0.25;wh2_dlc11_spell_bound_wind_blast=0.1,0.25;wh2_main_item_abilities_black_dragon_egg=0.1,0.0833;wh2_main_lord_abilities_gaze_of_malice=0.1,0.5833;wh2_main_mount_bound_scorch=0.1,0.0833;wh2_main_weapon_abilities_sunfang=0.1,0.25;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=0.1,0.25;wh3_dlc20_spell_bound_stream_of_corruption=0.1,0.0833;wh3_dlc24_unit_abilities_jade_dragons_breath=0.1,0.24;wh3_dlc24_unit_abilities_lampreys_bite=0.1,0.5833;wh3_dlc27_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_daemon_arms_abilities_blue_fire=0.1,0.25;wh3_main_daemon_arms_abilities_blue_fire_upgraded=0.1,0.25;wh3_main_item_abilities_bangstick=0.1,0.25;wh3_main_item_abilities_kovsh_breath=0.1,0.25;wh3_main_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=3,0.225;wh3_main_spell_nurgle_stream_of_corruption_bound=0.1,0.0833;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=0.1,0.25;wh_main_item_abilities_fiery_ring_of_thori=0.1,0.0833"
 function FOURTH.load_ww_cone()   -- a function, so the loop adds no main-chunk locals
 	for k, r0, g in string.gmatch(FOURTH.WW_CONE_TEXT, "([^;=]+)=([%d%.]+),([%d%.]+)") do
 		if FOURTH.WW[k] ~= nil then
@@ -20395,6 +20397,14 @@ function FOURTH.load_ww_nomelee()
 	for k in string.gmatch(FOURTH.WW_NOMELEE_TEXT, "[^;]+") do FOURTH.WW_NOMELEE[k] = true end
 end
 FOURTH.load_ww_nomelee()
+-- GENERATED by tools/gen_ww_tables.py (ROUND 209) from battle_vortexs: the reach of a wanderer released at its
+-- caster (vortex radius + simulated 95% reach) for the entries with ring_clear = true. Do not hand-edit.
+FOURTH.RING_TEXT = "wh_dlc06_unit_abilities_the_loons_of_eight_peaks=88;wh_main_unit_abilities_spinning_loons=88"
+FOURTH.RING = {}
+function FOURTH.load_ring()
+	for k, r in string.gmatch(FOURTH.RING_TEXT, "([^;=]+)=([%d%.]+)") do FOURTH.RING[k] = tonumber(r) end
+end
+FOURTH.load_ring()
 -- GENERATED by tools/gen_expendable_keys.py from unit_attributes_to_groups_junctions and land_units (round
 -- 163, the game's 'expendable' attribute); the build refuses a pack whose table differs. Do not hand-edit.
 FOURTH.EXPENDABLE_TEXT = "wh2_dlc11_cst_mon_bloated_corpse_0;wh2_dlc15_grn_veh_snotling_pump_wagon_0;wh2_dlc15_grn_veh_snotling_pump_wagon_flappas_0;wh2_dlc15_grn_veh_snotling_pump_wagon_roller_0;wh2_dlc15_grn_veh_snotling_pump_wagon_ror_0;wh2_dlc16_wef_mon_cave_bats;wh2_dlc16_wef_mon_spider_hatchlings_0;wh2_dlc17_emp_inf_prisoners_0;wh2_main_skv_inf_skavenslave_slingers_0;wh2_main_skv_inf_skavenslave_spearmen_0;wh2_main_skv_inf_skavenslave_spearmen_0_summoned;wh2_main_skv_inf_skavenslaves_0;wh3_dlc23_chd_inf_goblin_labourers;wh3_dlc23_chd_inf_orc_labourers;wh3_dlc26_grn_art_bolt_throwa;wh3_dlc26_grn_art_bolt_throwa_ror;wh3_dlc26_ogr_inf_pigback_riders;wh3_dlc29_skv_inf_pusbags;wh3_dlc29_skv_inf_skavenslave_slingers_vermintide;wh3_dlc29_skv_inf_skavenslave_spearmen_vermintide;wh3_dlc29_skv_inf_skavenslaves_vermintide;wh3_main_cth_cav_peasant_horsemen_0;wh3_main_cth_inf_peasant_archers_0;wh3_main_cth_inf_peasant_spearmen_1;wh3_main_grn_inf_goblins_sword_shield;wh3_main_ogr_inf_gnoblars_0;wh3_main_ogr_inf_gnoblars_1;wh3_main_ogr_inf_gnoblars_flingers;wh3_twa10_cth_inf_peasant_archers_ror;wh3_twa10_ogr_inf_gnoblars_ror;wh_dlc03_bst_inf_ungor_herd_1;wh_dlc03_bst_inf_ungor_raiders_0;wh_dlc03_bst_inf_ungor_spearmen_0;wh_dlc03_bst_inf_ungor_spearmen_1;wh_dlc06_grn_cav_mogrubbs_marauders_0;wh_dlc06_grn_cav_moon_howlers_0;wh_dlc06_grn_mon_spider_hatchlings_0;wh_dlc06_grn_mon_spider_hatchlings_0_summoned;wh_main_grn_art_goblin_rock_lobber;wh_main_grn_cav_goblin_wolf_riders_0;wh_main_grn_cav_goblin_wolf_riders_1;wh_main_grn_inf_goblin_archers;wh_main_grn_inf_goblin_spearmen;wh_main_grn_inf_night_goblin_archers;wh_main_grn_inf_night_goblin_fanatics;wh_main_grn_inf_night_goblin_fanatics_1;wh_main_grn_inf_night_goblins;wh_pro04_bst_inf_ungor_spearmen_ror_0"
@@ -23020,6 +23030,85 @@ function FOURTH.ally_arm_wrap(f, ally_only)
 		return own
 	end
 end
+-- ============================================================================
+-- ROUND 209 (2026-11-22, the user's replies to the afternoon code review).
+--   ring_clear (the Loons): the fanatics are released at the caster, wander and
+--   hit our units too. The entry's own trigger must hold AND none of our OTHER
+--   units may stand within their reach + SHOT_SAFE_M of the caster (the rule Da
+--   Boss' Loons has). The reach comes from the GENERATED FOURTH.RING.
+--   THE PLAYER'S OWN CAST: the game reports every ability order with its key.
+--   The mod notes its own orders; a report it did not order is the player's, and
+--   every selected unit then gets the per-unit cast window, so the mod does not
+--   replace the player's cast with one of its own.
+--   ONE BAD UNIT: the per-unit body of the poll runs in its own guard.
+-- ============================================================================
+FOURTH.CARD_TIP_RING = "Fires at the nearest enemy in melee when none of our other units is near"
+function FOURTH.ring_wrap(f, reach)
+	return function(unit, routing)
+		local why = f(unit, routing)
+		if not why then return why end
+		if reach == nil then return nil end   -- no table row: fail closed
+		local ok, txt = FOURTH.self_clear(unit, reach)
+		if not ok then return nil end
+		if type(why) == "string" then
+			return why .. "; released at the caster, they hit our units too: " .. tostring(txt)
+		end
+		return why
+	end
+end
+FOURTH.PLAYER_CAST_HOLD_S = 5   -- the window after the player's cast of a key the mod does not know (a spell)
+FOURTH.OWN_ECHO_TICKS = 8       -- the game's report of one of the mod's own orders is expected within 2 s
+FOURTH.own_orders = {}          -- key -> { n = the mod's orders not yet reported back, at = the poll of the last one }
+FOURTH.unit_errors = 0
+function FOURTH.note_own_order(key)
+	if key == nil then return end
+	local r = FOURTH.own_orders[key]
+	if r == nil or tick_count - r.at > FOURTH.OWN_ECHO_TICKS then
+		r = { n = 0, at = tick_count }
+		FOURTH.own_orders[key] = r
+	end
+	r.n = r.n + 1
+	r.at = tick_count
+end
+-- the game reported an order for <key>: 0 when it is one of the mod's own (or nothing needs protecting), else the
+-- number of selected units that got the window, and its length in seconds
+function FOURTH.player_cast(key)
+	if key == nil then return 0 end
+	local r = FOURTH.own_orders[key]
+	if r ~= nil and r.n > 0 and tick_count - r.at <= FOURTH.OWN_ECHO_TICKS then
+		r.n = r.n - 1
+		return 0
+	end
+	local hold_s = FOURTH.PLAYER_CAST_HOLD_S
+	local wu = cast_gate.wind_up_s[key]
+	if wu ~= nil then
+		hold_s = wu + IN_FLIGHT_SETTLE_SECONDS
+	elseif ALL_ABILITY_KEYS_SET[key] then
+		return 0   -- one of ours with no wind-up: it is out at once, nothing to protect
+	end
+	local until_tick = tick_count + math.floor((hold_s * 1000) / POLL_MS)
+	local n = 0
+	for i = 1, #selected_ui_ids do
+		local u = units_by_ui_id[selected_ui_ids[i]]
+		local ok, raw = pcall(function() return u:unique_ui_id() end)
+		if ok and raw ~= nil then
+			if cast_gate.unit_until[raw] == nil or cast_gate.unit_until[raw] < until_tick then
+				cast_gate.unit_until[raw] = until_tick
+			end
+			cast_gate.unit_marker[raw] = "(the player's own cast)"
+			cast_gate.unit_waiting[raw] = nil
+			cast_gate.unit_logged[raw] = nil
+			n = n + 1
+		end
+	end
+	return n, hold_s
+end
+function FOURTH.unit_error(err)
+	FOURTH.unit_errors = FOURTH.unit_errors + 1
+	if FOURTH.unit_errors <= 3 or (FOURTH.unit_errors % 40) == 0 then
+		log("UNIT ERROR #" .. tostring(FOURTH.unit_errors) .. " (the walk goes on): " .. tostring(err))
+	end
+end
 function FOURTH.still_wrap(f)
 	return function(unit, routing)
 		if not FOURTH.blob_still(unit) then return nil end   -- ROUND 191: a moving caster waits
@@ -23032,6 +23121,9 @@ for _, ability in ipairs(ABILITIES) do
 	if FOURTH.STILL_GATE_TRIGGERS[ability.trigger] == true and ability.evaluate ~= nil then
 		ability.evaluate = FOURTH.still_wrap(ability.evaluate)   -- ROUND 191: the animation decides (group 1)
 		ability.still_gate = true
+	end
+	if ability.ring_clear == true and ability.evaluate ~= nil then   -- ROUND 209: the Loons' friendly-fire ring
+		ability.evaluate = FOURTH.ring_wrap(ability.evaluate, FOURTH.RING[ability.keys[1]])
 	end
 	if ability.ally_value_arm ~= nil and ability.evaluate ~= nil then   -- ROUND 199: the ally arm
 		ability.evaluate = FOURTH.ally_arm_wrap(ability.evaluate, ability.ally_value_arm == "only")
@@ -23417,6 +23509,7 @@ function FOURTH.compose_card(ability)
 	if ability.aura_m == nil and FOURTH.CARD_TIP_NOAURA[ability.trigger] ~= nil then   -- ROUND 166
 		tpl = FOURTH.CARD_TIP_NOAURA[ability.trigger]
 	end
+	if ability.ring_clear == true then tpl = FOURTH.CARD_TIP_RING end   -- ROUND 209
 	if tpl == nil then return nil end
 	if ability.ally_value_arm == "only" then   -- ROUND 199
 		tpl = FOURTH.CARD_ALLY_ONLY
@@ -23676,6 +23769,7 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 					rec.logged = true
 				elseif outcome == "fired" then
 					-- a real fire ends the cooldown episode
+					FOURTH.note_own_order(ready_key)   -- ROUND 209: the game will report this order back
 					-- ROUND 130: Restock! - the refilled ally is skipped by every caster
 					-- for RESTOCK_CLAIM_S, so two casters never refill it twice.
 					if FOURTH.ammo_claim_id ~= nil then
@@ -24795,6 +24889,9 @@ local function poll_body()
 		local unit = script_unit and script_unit.unit
 
 		-- Only look at units still alive on the field.
+		-- ROUND 209: the unit's own reads run in a guard, and so does each ability's step below, so an error on one
+		-- unit never costs the rest of the army their poll (the ability loop itself stays in this function)
+		local ok_unit, routing, ui_id, ability_key, unit_abilities = pcall(function()
 		if unit ~= nil and unit:number_of_men_alive() > 0 then
 			-- The routing guard's ONE read for this unit this poll (section
 			-- 7d): every ability below reuses this same value.
@@ -24893,7 +24990,13 @@ local function poll_body()
 			if unit_abilities == nil then
 				unit_abilities = ABILITIES
 			end
+			return routing, ui_id, ability_key, unit_abilities
+		end
+		end)
+		if not ok_unit then FOURTH.unit_error(routing) end
+		if ok_unit and unit_abilities ~= nil then
 			for _, ability in ipairs(unit_abilities) do
+				local ok_ab, res_ab = pcall(function()
 
 				-- THE PER-UNIT SWITCH: this (unit, ability) pair must be
 				-- armed. Nothing fires for a unit the player has not armed -
@@ -24920,10 +25023,12 @@ local function poll_body()
 						-- must be dropped after this tick's walk.
 						if FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key,
 							reason, gone_ids) == "gone" then
-							break
+							return "gone"
 						end
 					end
 				end
+				end)
+				if not ok_ab then FOURTH.unit_error(res_ab) elseif res_ab == "gone" then break end
 			end
 		end
 	end
@@ -26631,8 +26736,19 @@ end
 --     question: if a click on the icon reaches the game at all, this fires.
 bm:register_command_handler_callback("Special Ability", function(context)
 	local ability = "?"
-	pcall(function() ability = context:get_string1() end)
+	local key = nil
+	pcall(function()
+		local s = context:get_string1()
+		if s ~= nil then key = tostring(s) end
+	end)
+	if key ~= nil then ability = key end
 	log("command: 'Special Ability' issued for '" .. tostring(ability) .. "'")
+	-- ROUND 209: an order the mod did not give is the player's own cast: the selected units wait it out
+	local ok_p, n, hold = pcall(FOURTH.player_cast, key)
+	if ok_p and type(n) == "number" and n > 0 then
+		log("  the player's own cast of '" .. tostring(ability) .. "': " .. tostring(n) .. " selected unit(s) hold their "
+			.. "automatic abilities for " .. tostring(hold) .. "s")
+	end
 end, "zz_deadly_onslaught_ability_used")
 
 

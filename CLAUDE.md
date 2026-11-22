@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `1d2c5abb71b2267b0ce6ce8ceb95d5ba`, 1,643,517 bytes
-  (round 208, 2026-11-22, tuning: the free-aim search is skipped while not castable and spread by unit id). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c7835b1a8ef6c3e61dc750f588673aed`, 1,649,264 bytes
+  (round 209, 2026-11-22: the Loons' friendly ring, Lamprey's Bite as a wave, the player's own cast protected). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_searchcost_harness206/build_and_install208.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_replies_harness207/build_and_install209.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness206: 8,365 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness207: 8,412 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v82_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v82.py`, verified by `tools\verify_xlsx_v82.py <v81 md5> <pack md5>` (v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v83_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v83.py`, verified by `tools\verify_xlsx_v83.py <v82 md5> <pack md5>` (v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -374,6 +374,31 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 209 (2026-11-22, the user's row-by-row replies to the afternoon review; `docs\WH3_round209_review_replies.md`).
+  INSTALLED: test pack md5 c7835b1a..., release pack md5 3457ac1b..., harness 207: 8,412 / 0, the cast trace matches
+  apart from the 3 probe casts, workbook v83, tracker 10.86. NOT SEEN IN GAME. BUILT: (1) the Loons ("They are really
+  prone for friendly fire. We need a friendly fire check, yes."): entry field ring_clear = true on Spinning Loons and
+  The Loons of Eight Peaks, FOURTH.ring_wrap at load (the entry's own trigger AND FOURTH.self_clear(unit, reach)),
+  GENERATED FOURTH.RING_TEXT (gen_ww_tables.ring_keys / ring_rows / ring_block: 88 = radius 4 + 95% reach 84, need
+  98 m), card FOURTH.CARD_TIP_RING. In a normal line they will mostly wait (told to the user). (2) Lamprey's Bite on
+  enemy_wave (33 entries, 41 wanderers; 28 exact, 20 growing): gen_ww_tables takes a GROUND-ONLY wave from
+  target_centre and caps a wave's radius at what it reaches (14.1 m), gen_wave_cone accepts that radius. (3) THE
+  PLAYER'S OWN CAST (review C1): FOURTH.note_own_order(ready_key) at every 'fired', FOURTH.player_cast(key) from the
+  'Special Ability' command callback (the annotated copy now registers it too): a report with no pending own order
+  arms cast_gate.unit_until on every SELECTED unit (wind-up + 2 s, FOURTH.PLAYER_CAST_HOLD_S = 5 for an unknown
+  key, nothing for an instant key of ours). ENGINE FACT (3 archived battles): the command callback fires for the
+  mod's OWN orders too, once per accepted order, a moment AFTER the order, with the key. Grep the next battle for
+  "the player's own cast of". (4) Review C4: the poll runs each unit's reads and each ability step in a pcall
+  (FOURTH.unit_error, 'UNIT ERROR #'). The ability loop's ipairs MUST stay in poll_body: harness 66's POLL_ITERS
+  probe counts ipairs calls whose caller is the poll body (a closure around the whole unit read 0). NOT BUILT, WAITING:
+  the 5 caster-front breaths (B1): launch_source activator_front with launch_source_offset 24 / 36 has three
+  readings (starts at the caster, 24 m ahead, or 24 m behind the front) and no model is safe under all three: the
+  user must cast one by hand and say where the fire starts and how far it reaches. E1 (slow units never 'charging'):
+  explained, a ruling is needed. C3 (phantom casts): a use counter would stop early when the game adds uses or
+  swallows a cast. C2 (transformed unit): the re-scan on an identity change for units that own abilities, not
+  testable without knowing whether a transformed unit keeps its id. Closed by the user: A2 Chain Lightning and
+  B3/B4 walkers ("leave for now"), C6 the arm-everything button ("that's okay"). Heredocs broke three Python
+  edits AGAIN this round. Next battle from byte 1,067,747,316 (re-measure).
 - ROUND 206 (2026-11-22, TUNING, INSTALLED: test pack md5 b4db5260..., release pack md5 d74e4685...). FIELD
   (archive\logs\battle_20261122_r205_cone.txt, bytes 1,036,362,003-1,045,400,480; user: "why it casts so far away
   from the main blob?", then "a second cast, and that one was perfect. So still a bit inconsistent"): at the first
