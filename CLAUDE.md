@@ -367,7 +367,12 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   worlds / 1,656 casts; release_cast_trace.py takes the harness as a 3rd argument and must run from the project
   root). The Workshop item (HIDDEN, title + text set by Claude in the Steam app through computer use: Chrome is not
   signed in to Steam) still carries the ROUND 199 pack: the user must press UPDATE in TW Launcher (Legacy). Both
-  packs are in the data folder (the release stands down). Next battle from byte 983,121,663. DONATIONS (researched
+  packs are in the data folder (the release stands down). FIELD-CONFIRMED by the user 2026-11-22 ("It seems those
+  are fixed"; archive\logsattle_20261122_r201_dwarfs.txt, bytes 983,121,663-1,005,059,703). Same battle: the Fiery
+  Ring of Thori (enemy_wave, armed on both Master Engineers) never fired: toolseplay_wave_log.py on the MAP rows
+  shows one of our units within 16 m (radius 6 + 10) of every 72 m path in 177 of 177 in-range snapshots, 0 clear
+  moments (an army of ~29 units, mostly Lords and Heroes in one mob). By design (round 162), explained to the user,
+  no ruling asked. Next battle from byte 1,005,059,703. DONATIONS (researched
   2026-11-22): SEGA's EULA and CA's page forbid selling mods and say 'not permitted to charge or ask for money', no
   source allows or names tips, big mods carry Patreon / Ko-fi links: a tolerated grey area. PayPal is excluded by the
   user. Recommended Ko-fi with Stripe. GIFS: the user records the clips (Game Bar), Claude converts (ffmpeg is
