@@ -131,7 +131,10 @@ def derive(key_fams):
         assert rows or bomb, "%s has no vortex and no bombardment" % k
         # ROUND 164: enemy_wave_charge (Tidecall, Wind Blast) is a wave aimed at a charging enemy; enemy_cone (the breaths
         # from the caster's front) drifts like a wave
-        wave = fam in ("enemy_wave", "enemy_wave_charge")
+        # ROUND 210 (user ruling 2026-11-22): the Loons ride enemy_wave_charge. They are released at the caster's front
+        # (activator_front) and drift sideways like a wave: kind 8, the path runs from the caster towards the enemy
+        loons = (fam == "enemy_wave_charge" and bool(rows) and rows[0]["launch_source"] == "activator_front")
+        wave = fam in ("enemy_wave", "enemy_wave_charge") and not loons
         cone = (fam == "enemy_cone")
         if rows:
             v = rows[0]
@@ -153,11 +156,13 @@ def derive(key_fams):
                     r = _reach
             path = float(v["movement_speed"] or 0) * float(v["duration"] or 0)
             off = float(v["launch_source_offset"] or 0)
-            buf = int(math.ceil(drift95(v, k, wave or cone) - 1e-9))
+            buf = int(math.ceil(drift95(v, k, wave or cone or loons) - 1e-9))
             allies = 1 if any(x["affects_allies"] == "true" for x in rows) else 0
             kind = 1 if wave else (3 if v["launch_source"] == "target_near_edge" else 2)
             if cone:
                 kind = 5   # ROUND 164: a breath from the caster's front: the zone runs from the caster through the target
+            elif loons:
+                kind = 8   # ROUND 210: wanderers released at the caster towards an approaching enemy (the Loons)
             elif fam == "enemy_wander" and v["launch_source"] == "activator_front":
                 kind = 6   # ROUND 164: a wanderer released at the caster (Da Boss' Loons): the safety ring is the caster's
             elif fam == "enemy_sweep":

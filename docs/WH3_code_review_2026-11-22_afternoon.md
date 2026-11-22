@@ -52,6 +52,17 @@ still search.
 | D the limit of 5 soldiers | "I don't understand" | explained in the chat |
 | E1 slow units | "need more details" | explained in the chat, a ruling is needed |
 
+## 1c. The user's second replies and round 210 (2026-11-22)
+
+| Finding | Reply | State |
+|---|---|---|
+| A1 the Loons | "I would like to change them completely" and his own rule | BUILT in round 210 (approaching infantry 15 to 25 m away, a clear path) |
+| B1 the five caster-front breaths | "I tested Skarbscrath and it always starts at the caster" | BUILT in round 210 (cones from the caster) |
+| C2 the transformed unit | "it's true that they never fire" | BUILT in round 210 (the ability list is read again after a cast) |
+| C3 empty orders after the last use | "no" | closed |
+| D the grid of the soldier count | "then leave it" | closed |
+| E1 slow units | "okay, do it" (option B) | BUILT in round 210 |
+
 ## 2. Findings that need a ruling, ranked
 
 ### A. Can hurt our own units

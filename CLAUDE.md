@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `c7835b1a8ef6c3e61dc750f588673aed`, 1,649,264 bytes
-  (round 209, 2026-11-22: the Loons' friendly ring, Lamprey's Bite as a wave, the player's own cast protected). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `8760b82d91ec7feaff51eaf39a0f5ea1`, 1,659,510 bytes
+  (round 210, 2026-11-22: the Loons' own rule, the breaths as cones from the caster, slow charges, transformations). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -147,7 +147,7 @@ batches of about 10; every proposal walks the sensor checklist. The trigger audi
    ours as usual. The round-124 spell-bar badge placement worked but is removed: activating one
    rune locks the others, so automating them makes little sense.
 
-Current roster (round 201): 982 ABILITIES entries / 1,035 ability keys / 141 trigger evaluator families.
+Current roster (round 210): 982 ABILITIES entries / 1,035 ability keys / 141 trigger evaluator families.
 Wheel audit (workbook v79): 1,115 in-wheel, 687 excluded, of 1,802 inventory rows; 1,035 implemented,
 80 not implemented among the included: 80 decided by the user, 0 OPEN (round 185 closed the rule-shut review;
 the text below about rule-shut rows is history) = shut by an old RULE (the 2026-10-09
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_replies_harness207/build_and_install209.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_replies2_harness208/build_and_install210.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness207: 8,412 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness208: 8,479 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v83_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v83.py`, verified by `tools\verify_xlsx_v83.py <v82 md5> <pack md5>` (v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v84_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v84.py`, verified by `tools\verify_xlsx_v84.py <v83 md5> <pack md5>` (v84 = v83 + the Loons on enemy_wave_charge with the user's rule, the FROM THE CASTER sentence on the five breaths, 2 cards. v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -374,6 +374,35 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 210 (2026-11-22, the user's second replies; `docs\WH3_round210_review_replies2.md`). INSTALLED: test pack md5
+  8760b82d..., release pack md5 9a1e8f9a..., harness 208: 8,479 / 0, the cast trace matches apart from the 3 probe
+  casts, workbook v84, tracker 10.87. NOT SEEN IN GAME. (1) THE LOONS, the user's own rule ("I would like to change
+  them completely"): both entries on enemy_wave_charge (2 entries, all 141 families in use), WW kind 8
+  (gen_ww_tables: activator_front on that family, sideways drift 56 m), FOURTH.evaluate_loons / ww_loons_ok /
+  loons_closing: the caster's is_moving() exactly false, an enemy INFANTRY unit of more than one man moving and
+  closing (FOURTH.LOONS_CLOSING_MPS 1 m/s over 1 s: Claude's number), its edge FOURTH.LOONS_MIN_M 15 to
+  FOURTH.LOONS_MAX_M 25 m away (the USER'S metre values, outside the range rule: the evaluator sets eg_range_m to
+  25 for the pre-cast re-check), none of our units of more than one man within row.r + row.buf x t of the 84 m line
+  from the caster (NO extra 10 m: "in the path"). An aimed ground order (FOURTH.ww_aim, point at most
+  FOURTH.LOONS_AIM_M 20 m from the caster, the bearing). Round 209's ring_clear is on NO entry now (code and the
+  empty FOURTH.RING_TEXT stay). UNKNOWN: whether the game releases the fanatics along the ordered direction or along
+  the unit's facing. (2) THE FIVE CASTER-FRONT BREATHS (user test: "I tested Skarbscrath and it always starts at
+  the caster"): FOURTH.ww_cone_value uses FOURTH.ww_line_value (the exact rule) from the caster along row.path
+  (not off + path), cone rows GENERATED for enemy_cone too (gen_wave_cone, 25 rows), FOURTH.ww_fine = a 1.5 m grid
+  in wave_cover for these thin cones. Old worlds keep the band (ZZ_AUTO_TEST_NO_FREE_AIM). (3) E1 ("okay, do
+  it"): measure_charge's run-up = min(CHARGE_MIN_DISTANCE_M, 2 x fast_speed) (the literal 2: measure_charge sits
+  ABOVE the FOURTH table). (4) TRANSFORMATION (field: Malus Darkblade keeps unit id AND type(); the HUD claim put
+  letters on the new buttons, nothing fired): FOURTH.rescan_soon(id) after every 'fired' and for the selected units
+  after the player's cast, FOURTH.reread_unit(unit, ui_id, do_redetect) in the poll (2 s and 10 s later, then every
+  re-detect period once the list changed). Grep the next battle for 'owned abilities changed: unit'. The poll block
+  may hold exactly ONE 'active_refresh_pending = true' (harness 77) and ONE 'log("re-scan: unit "' site. The
+  annotated copy's poll has NO local ability_key (it passes target_key_by_unit[ui_id]). (5) LAG (user: "the game was
+  very laggy"): TEST BUILD ONLY, log_dial_dump wrote one 'OUR BADGE' line per ability (982 a second) while a Deadly
+  Onslaught owner was selected. Now only existing badges (and the three original markers). FIELD: "the player's own
+  cast of" appeared for Tz'arkan, so round 209's protection sees a hand cast. CLOSED by the user: the use counter
+  ("no"), the soldier grid ("then leave it"). MOCK: unit_distance answers the CALLER's def.dist (the caster's),
+  not the target's. Heredocs broke Python edits three more times: Write / Edit only. Next battle from byte
+  1,092,330,525 (re-measure).
 - ROUND 209 (2026-11-22, the user's row-by-row replies to the afternoon review; `docs\WH3_round209_review_replies.md`).
   INSTALLED: test pack md5 c7835b1a..., release pack md5 3457ac1b..., harness 207: 8,412 / 0, the cast trace matches
   apart from the 3 probe casts, workbook v83, tracker 10.86. NOT SEEN IN GAME. BUILT: (1) the Loons ("They are really

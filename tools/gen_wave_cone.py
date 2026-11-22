@@ -33,7 +33,9 @@ def derive(script_txt):
     usa, vx = _table("unit_spec_abil.tsv"), _table("battle_vortexs.tsv")
     ww = dict(x.split("=", 1) for x in re.search(r'FOURTH\.WW_TEXT = "([^"]*)"', script_txt).group(1).split(";") if "=" in x)
     out = {}
-    for m in re.finditer(r'\{ marker = "([^"]+)", name = "[^"]*", trigger = "enemy_wave",(.*?)ox = 0', script_txt, re.S):
+    # ROUND 210 (user test 2026-11-22: Skabscrath "always starts at the caster"): the breaths from the caster's front
+    # (enemy_cone) grow the same way, from the caster on
+    for m in re.finditer(r'\{ marker = "([^"]+)", name = "[^"]*", trigger = "enemy_(?:wave|cone)",(.*?)ox = 0', script_txt, re.S):
         for k in re.findall(r'"(wh[^"]*)"', m.group(2).split("keys = {")[1].split("}")[0]):
             v = vx[usa[k]["vortex"]]
             r0, r1 = float(v["start_radius"]), float(v["goal_radius"])

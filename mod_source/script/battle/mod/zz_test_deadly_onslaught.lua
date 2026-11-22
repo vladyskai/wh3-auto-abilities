@@ -1646,19 +1646,17 @@ local ABILITIES = {
 		keys = { "wh3_dlc26_character_abilities_squig_thinkin" },
 		range_real = 75,
 		ox = 0, oy = 0 },
-	{ marker = "spinning_loons", name = "Spinning Loons", trigger = "enemy_ground_melee",
+	{ marker = "spinning_loons", name = "Spinning Loons", trigger = "enemy_wave_charge",
 		badge = "zz_auto_badge_spinning_loons",
 		keys = { "wh_main_unit_abilities_spinning_loons" },
 		range_real = 25,
 		target_class = "not_flying",
-		ring_clear = true,   -- ROUND 209: none of our other units inside the fanatics' reach
 		ox = 0, oy = 0 },
-	{ marker = "loons_of_eight_peaks", name = "The Loons of Eight Peaks", trigger = "enemy_ground_melee",
+	{ marker = "loons_of_eight_peaks", name = "The Loons of Eight Peaks", trigger = "enemy_wave_charge",
 		badge = "zz_auto_badge_loons_of_eight_peaks",
 		keys = { "wh_dlc06_unit_abilities_the_loons_of_eight_peaks" },
 		range_real = 25,
 		target_class = "not_flying",
-		ring_clear = true,   -- ROUND 209: none of our other units inside the fanatics' reach
 		ox = 0, oy = 0 },
 	{ marker = "hags_denial", name = "Hag's Denial", trigger = "self_last_stand",
 		badge = "zz_auto_badge_hags_denial",
@@ -6990,6 +6988,7 @@ local function measure_charge(unit)
 			if ok_speed and speed ~= nil and speed > 0 then
 
 				m.ttc = m.target_dist / speed
+				m.speed = speed   -- ROUND 210: the run speed, for the run-up below
 			end
 		end
 	end
@@ -7003,7 +7002,11 @@ local function measure_charge(unit)
 		-- builds speed, close enough that the impact is imminent.
 		local enough_run_up = true
 		if m.target_dist >= 0 then
-			enough_run_up = (m.target_dist >= CHARGE_MIN_DISTANCE_M)
+			-- ROUND 210 (user ruling 2026-11-22, "okay, do it"): the run-up is the smaller of CHARGE_MIN_DISTANCE_M
+			-- and 2 seconds of the unit's own run speed, so a unit slower than 3 m/s can be seen charging too
+			local run_up = CHARGE_MIN_DISTANCE_M
+			if m.speed ~= nil and m.speed * 2 < run_up then run_up = m.speed * 2 end
+			enough_run_up = (m.target_dist >= run_up)
 		end
 
 		local close_enough = true
@@ -20366,7 +20369,7 @@ FOURTH.load_summon_blast()
 -- key=kind,radius,path,offset,buffer,hits_allies,ground_only; kind 1 wave, 2 wanderer from the target centre,
 -- 3 wanderer from the target's near edge, 4 strike, 5 cone from the caster's front, 6 wanderer from the
 -- caster's front, 7 melee sweep (radius = its reach from the caster)
-FOURTH.WW_TEXT = "wh2_dlc09_lord_abilities_sand_storm=2,12,56,0,41,1,0;wh2_dlc10_item_bound_arnizipals_black_horror=1,10,140,24,44,1,0;wh2_dlc10_spell_bound_magic_fiery_convocation=1,7,132,24,0,1,0;wh2_dlc10_weapon_abilities_sword_of_khaine=2,12,44,0,38,1,0;wh2_dlc11_spell_bound_the_purple_sun_of_xereus=2,12,22,0,12,1,0;wh2_dlc11_spell_bound_tidecall=1,12,48,24,0,1,0;wh2_dlc11_spell_bound_wind_blast=1,12,48,24,0,1,0;wh2_dlc12_character_abilities_brass_orb=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_tech_lab_doom_flayer=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_upgrade=2,12,0,0,0,1,0;wh2_dlc12_unit_abilities_burning_alignment=1,8,120,24,0,1,0;wh2_dlc13_character_ability_shatter=5,12,48,24,0,1,0;wh2_dlc15_character_abilities_fishy_breathe=5,16,60,24,0,1,0;wh2_dlc15_lord_abilities_da_boss_loons=6,4,84,0,84,1,0;wh2_dlc15_spell_bound_wind_of_death=1,6,100,24,25,1,0;wh2_dlc16_item_abilities_acorns_of_the_oak_of_ages=2,15,0,0,0,1,0;wh2_dlc17_spell_bound_lesser_banishment=2,12,18,0,11,1,0;wh2_dlc17_spell_bound_lesser_chain_lightning=2,10,22,0,12,1,0;wh2_main_character_abilities_arcane_vassal=2,15,0,0,0,0,0;wh2_main_item_abilities_black_dragon_egg=1,6,72,36,0,1,0;wh2_main_item_bound_gilded_horn_of_galon_konook=2,7,39,0,33,1,0;wh2_main_lord_abilities_gaze_of_malice=1,14,24,12,0,1,0;wh2_main_lord_abilities_the_ruination_of_cities=3,7,60,0,60,1,0;wh2_main_mount_bound_pestilent_breath=5,12,48,24,0,1,0;wh2_main_mount_bound_scorch=1,6,72,36,0,1,0;wh2_main_spell_bound_khaines_ring_of_fury=1,7,132,24,0,1,0;wh2_main_spell_bound_rubric_of_dark_dimensions=2,15,0,0,0,1,0;wh2_main_spell_bound_the_gem_of_sunfire=2,10,54,0,19,1,0;wh2_main_weapon_abilities_sunfang=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_dlc20_spell_bound_gehennas_golden_hounds=2,7,26,0,13,1,0;wh3_dlc20_spell_bound_infernal_gateway=2,15,0,0,0,1,0;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_stream_of_corruption=1,6,72,36,0,1,0;wh3_dlc20_spell_bound_the_penumbral_pendulum=1,4,80,24,0,1,0;wh3_dlc20_weapon_abilities_the_spear_slaupnir=1,4,80,24,0,1,0;wh3_dlc23_item_abilities_hammer_of_smednir=2,15,0,0,0,1,0;wh3_dlc23_spell_bound_hell_hammer=1,14.1,60,24,0,1,0;wh3_dlc24_unit_abilities_jade_dragons_breath=1,9,37.5,24,0,1,0;wh3_dlc24_unit_abilities_lampreys_bite=1,14.1,24,0,0,1,1;wh3_dlc25_spell_bound_fire_the_burning_head=1,7,180,24,78,1,0;wh3_dlc26_lord_abilities_boiling_cauldron=2,15,0,0,0,1,0;wh3_dlc26_lord_abilities_simmering_pot=2,15,0,0,0,1,0;wh3_dlc27_character_abilities_nightmaw=1,4.5,33,24,0,1,0;wh3_dlc27_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_dlc27_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_dlc29_lord_abilities_warp_junction=2,15,0,0,0,1,0;wh3_dlc29_spell_bound_fire_skull_of_flaming_death=1,7,180,24,77,1,0;wh3_dlc29_spell_bound_plague=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_plaguemaster=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_undeath_the_abyssal_swarm=2,12,75,0,47,0,0;wh3_dlc29_unit_abilities_flesh_eating_scarabs=7,36.5,22.5,1,0,1,1;wh3_dlc29_unit_abilities_soul_slaying_hunger=2,7,48,0,30,1,0;wh3_dlc29_unit_active_ripping_blades=7,12,0,0,0,1,0;wh3_main_daemon_arms_abilities_blue_fire=1,12,48,24,0,1,1;wh3_main_daemon_arms_abilities_blue_fire_upgraded=1,12,48,24,0,1,1;wh3_main_item_abilities_bangstick=1,12,48,24,0,1,0;wh3_main_item_abilities_crackleblaze=2,15,0,0,0,0,0;wh3_main_item_abilities_deaths_head=2,20,0,0,0,1,0;wh3_main_item_abilities_kovsh_breath=1,12,48,24,0,1,0;wh3_main_spell_bound_banishment=2,12,36,0,16,1,0;wh3_main_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_main_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=1,12,40,24,0,1,0;wh3_main_spell_bound_pestilent_breath=5,12,48,24,0,1,0;wh3_main_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_main_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh3_main_spell_nurgle_stream_of_corruption_bound=1,6,72,36,0,1,0;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=1,12,48,24,0,1,0;wh3_main_weapon_abilities_frost_fang=2,15,0,0,0,1,0;wh3_main_weapon_abilities_siegebreaker=4,1.1,0,0,0,1,1;wh3_pro10_cataclysm_fire_magma_storm_bound=2,20,0,0,45,1,1;wh_dlc03_spell_bound_viletide=2,15,0,0,0,1,0;wh_dlc04_spell_bound_banishment=2,12,36,0,16,1,0;wh_dlc04_spell_bound_banishment_innate=2,12,36,0,16,1,0;wh_dlc05_lord_ablities_grey_wolves=2,7,39,0,20,1,0;wh_dlc05_spell_shadow_pit_of_shades_bound=2,15,0,0,0,1,0;wh_dlc07_item_abilities_wrath_of_manann=1,6,70,24,17,1,0;wh_dlc08_lord_abilities_seafang=1,4,95,24,0,1,0;wh_dlc08_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh_main_item_abilities_fiery_ring_of_thori=1,6,72,36,0,1,0;wh_main_spell_bound_chain_lightning_ror=2,10,42,0,17,1,0;wh_main_weapon_abilities_skabscrath=5,6,72,36,0,1,0"
+FOURTH.WW_TEXT = "wh2_dlc09_lord_abilities_sand_storm=2,12,56,0,41,1,0;wh2_dlc10_item_bound_arnizipals_black_horror=1,10,140,24,44,1,0;wh2_dlc10_spell_bound_magic_fiery_convocation=1,7,132,24,0,1,0;wh2_dlc10_weapon_abilities_sword_of_khaine=2,12,44,0,38,1,0;wh2_dlc11_spell_bound_the_purple_sun_of_xereus=2,12,22,0,12,1,0;wh2_dlc11_spell_bound_tidecall=1,12,48,24,0,1,0;wh2_dlc11_spell_bound_wind_blast=1,12,48,24,0,1,0;wh2_dlc12_character_abilities_brass_orb=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_tech_lab_doom_flayer=2,12,0,0,0,1,0;wh2_dlc12_character_abilities_brass_orb_upgrade=2,12,0,0,0,1,0;wh2_dlc12_unit_abilities_burning_alignment=1,8,120,24,0,1,0;wh2_dlc13_character_ability_shatter=5,12,48,24,0,1,0;wh2_dlc15_character_abilities_fishy_breathe=5,16,60,24,0,1,0;wh2_dlc15_lord_abilities_da_boss_loons=6,4,84,0,84,1,0;wh2_dlc15_spell_bound_wind_of_death=1,6,100,24,25,1,0;wh2_dlc16_item_abilities_acorns_of_the_oak_of_ages=2,15,0,0,0,1,0;wh2_dlc17_spell_bound_lesser_banishment=2,12,18,0,11,1,0;wh2_dlc17_spell_bound_lesser_chain_lightning=2,10,22,0,12,1,0;wh2_main_character_abilities_arcane_vassal=2,15,0,0,0,0,0;wh2_main_item_abilities_black_dragon_egg=1,6,72,36,0,1,0;wh2_main_item_bound_gilded_horn_of_galon_konook=2,7,39,0,33,1,0;wh2_main_lord_abilities_gaze_of_malice=1,14,24,12,0,1,0;wh2_main_lord_abilities_the_ruination_of_cities=3,7,60,0,60,1,0;wh2_main_mount_bound_pestilent_breath=5,12,48,24,0,1,0;wh2_main_mount_bound_scorch=1,6,72,36,0,1,0;wh2_main_spell_bound_khaines_ring_of_fury=1,7,132,24,0,1,0;wh2_main_spell_bound_rubric_of_dark_dimensions=2,15,0,0,0,1,0;wh2_main_spell_bound_the_gem_of_sunfire=2,10,54,0,19,1,0;wh2_main_weapon_abilities_sunfang=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_dlc20_spell_bound_gehennas_golden_hounds=2,7,26,0,13,1,0;wh3_dlc20_spell_bound_infernal_gateway=2,15,0,0,0,1,0;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=1,12,48,24,0,1,0;wh3_dlc20_spell_bound_stream_of_corruption=1,6,72,36,0,1,0;wh3_dlc20_spell_bound_the_penumbral_pendulum=1,4,80,24,0,1,0;wh3_dlc20_weapon_abilities_the_spear_slaupnir=1,4,80,24,0,1,0;wh3_dlc23_item_abilities_hammer_of_smednir=2,15,0,0,0,1,0;wh3_dlc23_spell_bound_hell_hammer=1,14.1,60,24,0,1,0;wh3_dlc24_unit_abilities_jade_dragons_breath=1,9,37.5,24,0,1,0;wh3_dlc24_unit_abilities_lampreys_bite=1,14.1,24,0,0,1,1;wh3_dlc25_spell_bound_fire_the_burning_head=1,7,180,24,78,1,0;wh3_dlc26_lord_abilities_boiling_cauldron=2,15,0,0,0,1,0;wh3_dlc26_lord_abilities_simmering_pot=2,15,0,0,0,1,0;wh3_dlc27_character_abilities_nightmaw=1,4.5,33,24,0,1,0;wh3_dlc27_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_dlc27_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_dlc29_lord_abilities_warp_junction=2,15,0,0,0,1,0;wh3_dlc29_spell_bound_fire_skull_of_flaming_death=1,7,180,24,77,1,0;wh3_dlc29_spell_bound_plague=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_plaguemaster=2,14,0,0,0,1,0;wh3_dlc29_spell_bound_undeath_the_abyssal_swarm=2,12,75,0,47,0,0;wh3_dlc29_unit_abilities_flesh_eating_scarabs=7,36.5,22.5,1,0,1,1;wh3_dlc29_unit_abilities_soul_slaying_hunger=2,7,48,0,30,1,0;wh3_dlc29_unit_active_ripping_blades=7,12,0,0,0,1,0;wh3_main_daemon_arms_abilities_blue_fire=1,12,48,24,0,1,1;wh3_main_daemon_arms_abilities_blue_fire_upgraded=1,12,48,24,0,1,1;wh3_main_item_abilities_bangstick=1,12,48,24,0,1,0;wh3_main_item_abilities_crackleblaze=2,15,0,0,0,0,0;wh3_main_item_abilities_deaths_head=2,20,0,0,0,1,0;wh3_main_item_abilities_kovsh_breath=1,12,48,24,0,1,0;wh3_main_spell_bound_banishment=2,12,36,0,16,1,0;wh3_main_spell_bound_flame_storm=2,10,54,0,20,1,0;wh3_main_spell_bound_lash_of_slaanesh=1,12,40,24,0,1,0;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=1,12,40,24,0,1,0;wh3_main_spell_bound_pestilent_breath=5,12,48,24,0,1,0;wh3_main_spell_bound_pit_of_shades=2,15,0,0,0,1,0;wh3_main_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh3_main_spell_nurgle_stream_of_corruption_bound=1,6,72,36,0,1,0;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=1,12,48,24,0,1,0;wh3_main_weapon_abilities_frost_fang=2,15,0,0,0,1,0;wh3_main_weapon_abilities_siegebreaker=4,1.1,0,0,0,1,1;wh3_pro10_cataclysm_fire_magma_storm_bound=2,20,0,0,45,1,1;wh_dlc03_spell_bound_viletide=2,15,0,0,0,1,0;wh_dlc04_spell_bound_banishment=2,12,36,0,16,1,0;wh_dlc04_spell_bound_banishment_innate=2,12,36,0,16,1,0;wh_dlc05_lord_ablities_grey_wolves=2,7,39,0,20,1,0;wh_dlc05_spell_shadow_pit_of_shades_bound=2,15,0,0,0,1,0;wh_dlc06_unit_abilities_the_loons_of_eight_peaks=8,4,84,0,56,1,0;wh_dlc07_item_abilities_wrath_of_manann=1,6,70,24,17,1,0;wh_dlc08_lord_abilities_seafang=1,4,95,24,0,1,0;wh_dlc08_spell_bound_the_dwellers_below=2,20,0,0,0,1,0;wh_main_item_abilities_fiery_ring_of_thori=1,6,72,36,0,1,0;wh_main_spell_bound_chain_lightning_ror=2,10,42,0,17,1,0;wh_main_unit_abilities_spinning_loons=8,4,84,0,56,1,0;wh_main_weapon_abilities_skabscrath=5,6,72,36,0,1,0"
 FOURTH.WW = {}
 function FOURTH.load_ww_table()   -- a function, so the loop adds no main-chunk locals
 	for k, a, r, p, o, b, h, g in string.gmatch(FOURTH.WW_TEXT,
@@ -20379,7 +20382,7 @@ FOURTH.load_ww_table()
 -- GENERATED by tools/gen_wave_cone.py from battle_vortexs (ROUND 205): the straight waves that GROW as they roll.
 -- key=start_radius,growth_per_metre: the wave's radius d metres from its start is min(its table radius,
 -- start_radius + growth x d). The build refuses a pack whose table differs from the game data. Do not hand-edit.
-FOURTH.WW_CONE_TEXT = "wh2_dlc11_spell_bound_tidecall=0.1,0.25;wh2_dlc11_spell_bound_wind_blast=0.1,0.25;wh2_main_item_abilities_black_dragon_egg=0.1,0.0833;wh2_main_lord_abilities_gaze_of_malice=0.1,0.5833;wh2_main_mount_bound_scorch=0.1,0.0833;wh2_main_weapon_abilities_sunfang=0.1,0.25;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=0.1,0.25;wh3_dlc20_spell_bound_stream_of_corruption=0.1,0.0833;wh3_dlc24_unit_abilities_jade_dragons_breath=0.1,0.24;wh3_dlc24_unit_abilities_lampreys_bite=0.1,0.5833;wh3_dlc27_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_daemon_arms_abilities_blue_fire=0.1,0.25;wh3_main_daemon_arms_abilities_blue_fire_upgraded=0.1,0.25;wh3_main_item_abilities_bangstick=0.1,0.25;wh3_main_item_abilities_kovsh_breath=0.1,0.25;wh3_main_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=3,0.225;wh3_main_spell_nurgle_stream_of_corruption_bound=0.1,0.0833;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=0.1,0.25;wh_main_item_abilities_fiery_ring_of_thori=0.1,0.0833"
+FOURTH.WW_CONE_TEXT = "wh2_dlc11_spell_bound_tidecall=0.1,0.25;wh2_dlc11_spell_bound_wind_blast=0.1,0.25;wh2_dlc13_character_ability_shatter=0.1,0.25;wh2_dlc15_character_abilities_fishy_breathe=0.1,0.625;wh2_main_item_abilities_black_dragon_egg=0.1,0.0833;wh2_main_lord_abilities_gaze_of_malice=0.1,0.5833;wh2_main_mount_bound_pestilent_breath=0.1,0.25;wh2_main_mount_bound_scorch=0.1,0.0833;wh2_main_weapon_abilities_sunfang=0.1,0.25;wh3_dlc20_spell_bound_pink_fire_of_tzeentch=0.1,0.25;wh3_dlc20_spell_bound_stream_of_corruption=0.1,0.0833;wh3_dlc24_unit_abilities_jade_dragons_breath=0.1,0.24;wh3_dlc24_unit_abilities_lampreys_bite=0.1,0.5833;wh3_dlc27_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_daemon_arms_abilities_blue_fire=0.1,0.25;wh3_main_daemon_arms_abilities_blue_fire_upgraded=0.1,0.25;wh3_main_item_abilities_bangstick=0.1,0.25;wh3_main_item_abilities_kovsh_breath=0.1,0.25;wh3_main_spell_bound_lash_of_slaanesh=3,0.225;wh3_main_spell_bound_lash_of_slaanesh_keeper_of_secrets=3,0.225;wh3_main_spell_bound_pestilent_breath=0.1,0.25;wh3_main_spell_nurgle_stream_of_corruption_bound=0.1,0.0833;wh3_main_spell_tzeentch_pink_fire_of_tzeentch_bound=0.1,0.25;wh_main_item_abilities_fiery_ring_of_thori=0.1,0.0833;wh_main_weapon_abilities_skabscrath=0.1,0.0833"
 function FOURTH.load_ww_cone()   -- a function, so the loop adds no main-chunk locals
 	for k, r0, g in string.gmatch(FOURTH.WW_CONE_TEXT, "([^;=]+)=([%d%.]+),([%d%.]+)") do
 		if FOURTH.WW[k] ~= nil then
@@ -20399,7 +20402,7 @@ end
 FOURTH.load_ww_nomelee()
 -- GENERATED by tools/gen_ww_tables.py (ROUND 209) from battle_vortexs: the reach of a wanderer released at its
 -- caster (vortex radius + simulated 95% reach) for the entries with ring_clear = true. Do not hand-edit.
-FOURTH.RING_TEXT = "wh_dlc06_unit_abilities_the_loons_of_eight_peaks=88;wh_main_unit_abilities_spinning_loons=88"
+FOURTH.RING_TEXT = ""
 FOURTH.RING = {}
 function FOURTH.load_ring()
 	for k, r in string.gmatch(FOURTH.RING_TEXT, "([^;=]+)=([%d%.]+)") do FOURTH.RING[k] = tonumber(r) end
@@ -21831,8 +21834,9 @@ function FOURTH.wave_cover(s, sx, sz, ex, ez, r)
 		if FOURTH.ww_in_wave(s.x, s.z, sx, sz, ex, ez, r) then return 1 end   -- ROUND 205
 		return 0
 	end
-	local na = math.max(1, math.min(10, math.floor(s.w / 3 + 0.5)))
-	local nc = math.max(1, math.min(6, math.floor(s.d / 3 + 0.5)))
+	local fine = (FOURTH.ww_fine == true)   -- ROUND 210: a thin cone from the caster is counted on a 1.5 m grid
+	local na = math.max(1, math.min(fine and 20 or 10, math.floor(s.w / (fine and 1.5 or 3) + 0.5)))
+	local nc = math.max(1, math.min(fine and 12 or 6, math.floor(s.d / (fine and 1.5 or 3) + 0.5)))
 	local hit = 0
 	for i = 1, na do
 		local a = (i - 0.5) / na - 0.5
@@ -22060,6 +22064,10 @@ function FOURTH.ww_still_ok(enemy, unit)
 					return true
 				end
 				return FOURTH.ww_wave_value(unit, e, m, row, FOURTH.ww_charge == true) ~= nil
+			end
+			if row.kind == 8 then   -- ROUND 210: the Loons, the same rule on the fresh map
+				local gap8 = FOURTH.eg_enemy_gap(unit, e.unit)
+				return FOURTH.ww_loons_ok(unit, e, m, row, FOURTH.loons_closing(unit, e.unit, gap8)) ~= nil
 			end
 			if row.kind == 4 then return FOURTH.ww_strike_value(unit, e, m, row) ~= nil end   -- ROUND 163
 			if row.kind == 5 then return FOURTH.ww_cone_value(unit, e, m, row) ~= nil end   -- ROUND 164
@@ -22311,6 +22319,15 @@ function FOURTH.ww_cone_value(unit, e, m, row)
 	local dx, dz = e.x - cx, e.z - cz
 	local len = math.sqrt(dx * dx + dz * dz)
 	if len < 0.5 then return nil end
+	-- ROUND 210 (user test 2026-11-22: "I tested Skarbscrath and it always starts at the caster"): the breath starts at
+	-- the caster, 0.1 m wide, and grows per metre along its path (not offset + path). The exact-wave rule on a finer
+	-- grid: the value of the standing enemy soldiers under it, at most WAVE_OWN_MAX of ours
+	if FOURTH.ww_exact(row) and row.r0 ~= nil then
+		FOURTH.ww_fine = true
+		local val = FOURTH.ww_line_value(unit, m, row, cx, cz, cx + dx / len * row.path, cz + dz / len * row.path)
+		FOURTH.ww_fine = nil
+		return val
+	end
 	local L = row.off + row.path
 	local ex, ez = cx + dx / len * L, cz + dz / len * L
 	if row.allies then
@@ -22337,10 +22354,177 @@ function FOURTH.ww_sweep_ok(unit, e)
 	return ok and mel == true
 end
 
+-- ============================================================================
+-- ROUND 210 - THE LOONS' OWN TRIGGER (user ruling 2026-11-22: "they could only
+-- fire while the caster is standing. And there is ... infantry enemy unit that
+-- is approaching. And it's, let's say, between 25 and 15 meters from the caster
+-- unit. And then you just cast in that direction ... single entities is okay,
+-- but any friendly units that are not single entity should [not] be in the
+-- path."). Table kind 8 on enemy_wave_charge: the fanatics are released at the
+-- caster's front and wander. Their path: from the caster towards the enemy,
+-- row.path long, row.r wide at the start, widening by the simulated 95%
+-- sideways drift (row.buf) at the end. The two distances are metre values the
+-- user set himself (named constants, outside the range rule).
+-- ============================================================================
+FOURTH.LOONS_MIN_M = 15         -- the user's value: the enemy's edge at least this far from the caster
+FOURTH.LOONS_MAX_M = 25         -- the user's value: ...and at most this far (the ability's real range)
+FOURTH.LOONS_WATCH_M = 60       -- enemies inside this distance are watched for coming closer
+FOURTH.LOONS_CLOSING_MPS = 1    -- "approaching": the gap to the caster shrinks at least this fast, over 1 s
+FOURTH.LOONS_AIM_M = 20         -- the ordered ground point lies at most this far from the caster's centre
+FOURTH.loons_hist = {}          -- caster id -> enemy id -> the last gap samples
+
+-- is this enemy coming closer to this caster? One gap sample per poll, the answer needs a sample at least 1 s old
+function FOURTH.loons_closing(unit, enemy, gap)
+	local cid, eid = nil, nil
+	pcall(function()
+		cid = tostring(unit:unique_ui_id())
+		eid = tostring(enemy:unique_ui_id())
+	end)
+	if cid == nil or eid == nil or gap == nil then return false end
+	local per = FOURTH.loons_hist[cid]
+	if per == nil then
+		per = {}
+		FOURTH.loons_hist[cid] = per
+	end
+	local h = per[eid]
+	if h == nil then
+		h = {}
+		per[eid] = h
+	end
+	local now = tick_count * POLL_MS / 1000
+	if #h == 0 or h[#h].t ~= now then h[#h + 1] = { t = now, g = gap } end
+	while #h > 0 and now - h[1].t > 2.5 do table.remove(h, 1) end
+	local old = nil
+	for i = #h, 1, -1 do
+		if now - h[i].t >= 1 then
+			old = h[i]
+			break
+		end
+	end
+	if old == nil then return false end
+	return (old.g - gap) / (now - old.t) >= FOURTH.LOONS_CLOSING_MPS
+end
+
+-- one candidate: its gap, the heading towards it and the centre distance, or nil
+function FOURTH.ww_loons_ok(unit, e, m, row, closing)
+	if not closing then return nil end
+	local ok_c, c_mv = pcall(function() return unit:is_moving() end)
+	if not (ok_c and c_mv == false) then return nil end   -- the caster stands
+	if e.men <= 1 or not FOURTH.eg_class_ok(e.unit) or not FOURTH.enemy_is_infantry(e.unit) then return nil end
+	local ok_mv, mv = pcall(function() return e.unit:is_moving() end)
+	if not (ok_mv and mv == true) then return nil end
+	local gap = FOURTH.eg_enemy_gap(unit, e.unit)
+	if gap == nil or gap < FOURTH.LOONS_MIN_M or gap > FOURTH.LOONS_MAX_M then return nil end
+	local cx, cz = FOURTH.self_xz(unit)
+	if cx == nil then return nil end
+	local dx, dz = e.x - cx, e.z - cz
+	local len = math.sqrt(dx * dx + dz * dz)
+	if len < 0.5 then return nil end
+	local hx, hz = dx / len, dz / len
+	local ex, ez = cx + hx * row.path, cz + hz * row.path
+	-- none of our units of more than one man in the path (the caster never counts, our single entities do not)
+	local self_id = nil
+	pcall(function() self_id = tostring(unit:unique_ui_id()) end)
+	local l2 = row.path * row.path
+	for i = 1, #m.ours do
+		local o = m.ours[i]
+		if o.men > 1 then
+			local oid = nil
+			pcall(function() oid = tostring(o.unit:unique_ui_id()) end)
+			if oid == nil or oid ~= self_id then
+				local tmax = 0
+				if l2 > 0 then
+					for k = 1, #o.pts do
+						local t = ((o.pts[k][1] - cx) * (ex - cx) + (o.pts[k][2] - cz) * (ez - cz)) / l2
+						if t > tmax then tmax = t end
+					end
+				end
+				local need = row.r + row.buf * math.min(1, tmax)
+				if FOURTH.ww_pt_seg(o.x, o.z, cx, cz, ex, ez) - o.half <= need
+					and FOURTH.ww_seg_rect_gap(cx, cz, ex, ez, o) <= need then
+					return nil
+				end
+			end
+		end
+	end
+	return gap, hx, hz, len
+end
+
+function FOURTH.evaluate_loons(unit, routing, row)
+	if routing then return nil end
+	local m = FOURTH.blob_map(false)
+	local best, bg, bhx, bhz, blen = nil, nil, nil, nil, nil
+	for i = 1, #m.all do
+		local e = m.all[i]
+		local gap = FOURTH.eg_enemy_gap(unit, e.unit)
+		if gap ~= nil and gap <= FOURTH.LOONS_WATCH_M then
+			local closing = FOURTH.loons_closing(unit, e.unit, gap)   -- sampled every poll, also outside the band
+			local g, hx, hz, len = FOURTH.ww_loons_ok(unit, e, m, row, closing)
+			if g ~= nil and (bg == nil or g < bg) then best, bg, bhx, bhz, blen = e, g, hx, hz, len end
+		end
+	end
+	if best == nil then return nil end
+	local cx, cz = FOURTH.self_xz(unit)
+	local d = math.min(blen, FOURTH.LOONS_AIM_M)
+	FOURTH.eg_range_m = FOURTH.LOONS_MAX_M   -- the pre-cast re-check's bound: the user's own distance
+	FOURTH.ww_take(unit, best, row, { x = cx + bhx * d, z = cz + bhz * d, hx = bhx, hz = bhz,
+		deg = FOURTH.ww_bearing(bhx, bhz), loons = true })
+	local etype = "enemy"
+	pcall(function() etype = tostring(best.unit:type()) end)
+	return string.format("enemy infantry approaching (%s, %.1fm away, the band is %s to %sm), the caster standing; none "
+		.. "of our units of more than one man in the %sm path towards it (%sm wide at the start, + %sm drift at the "
+		.. "end)", etype, bg, tostring(FOURTH.LOONS_MIN_M), tostring(FOURTH.LOONS_MAX_M), tostring(row.path),
+		tostring(row.r), tostring(row.buf)) .. FOURTH.ww_aim_text()
+end
+
+-- ROUND 210: has a unit's list of our keys changed? (a transformation keeps the unit id and the unit type)
+function FOURTH.keys_changed(old, new)
+	if old == nil then return true end
+	if #old ~= #new then return true end
+	local seen = {}
+	for i = 1, #old do seen[old[i]] = true end
+	for i = 1, #new do
+		if seen[new[i]] ~= true then return true end
+	end
+	return false
+end
+
+-- ROUND 210: the owned list of a unit is read again 2 s and 10 s after an ability was cast on it, and every re-detect
+-- period once it has changed (a transformation that runs out changes it back). Answers changed, the unit's key.
+FOURTH.rescan_due = {}
+FOURTH.rescan_watch = {}
+function FOURTH.rescan_soon(id_text)
+	if id_text == nil then return end
+	FOURTH.rescan_due[id_text] = { at = tick_count + 8, again = true }
+end
+function FOURTH.reread_unit(unit, ui_id, periodic)
+	local idt = tostring(ui_id)
+	local due = FOURTH.rescan_due[idt]
+	local now = (due ~= nil and tick_count >= due.at)
+	if now then
+		if due.again then
+			FOURTH.rescan_due[idt] = { at = tick_count + 32 }
+		else
+			FOURTH.rescan_due[idt] = nil
+		end
+	end
+	if not now and not (periodic and FOURTH.rescan_watch[idt] == true) then return false, nil end
+	local found, all_keys = scan_unit_abilities(unit)
+	local now_keys = our_keys_of(all_keys)
+	if #now_keys == 0 or not FOURTH.keys_changed(owned_keys_by_unit[idt], now_keys) then return false, nil end
+	owned_keys_by_unit[idt] = now_keys
+	owned_abilities_by_unit[idt] = owned_abilities_of(now_keys)
+	FOURTH.rescan_watch[idt] = true
+	if found ~= nil then target_key_by_unit[ui_id] = found end
+	log("owned abilities changed: unit " .. idt .. " - keys: " .. table.concat(now_keys, ", "))
+	return true, found
+end
+
 function FOURTH.evaluate_enemy_wave_charge(unit, routing)
 	FOURTH.eg_mode = "ww"
 	FOURTH.ww_charge = true
 	local row = FOURTH.ww_row()
+	if row ~= nil and row.kind == 8 then return FOURTH.evaluate_loons(unit, routing, row) end   -- ROUND 210
 	if routing or row == nil or row.kind ~= 1 or not FOURTH.ww_caster_ok(unit) then return nil end
 	local m = FOURTH.blob_map(false)
 	local best, bv, bsp = nil, nil, nil
@@ -23079,6 +23263,8 @@ function FOURTH.player_cast(key)
 		r.n = r.n - 1
 		return 0
 	end
+	-- ROUND 210: the player's cast may be a transformation: the selected units' owned lists are read again soon
+	for i = 1, #selected_ui_ids do FOURTH.rescan_soon(selected_ui_ids[i]) end
 	local hold_s = FOURTH.PLAYER_CAST_HOLD_S
 	local wu = cast_gate.wind_up_s[key]
 	if wu ~= nil then
@@ -23364,7 +23550,7 @@ FOURTH.CARD_TIP = {
 	enemy_blob = "Fires[ when standing still{ANIM},] where the blast hurts the enemy most[, clear of allies{FF}]",
 	enemy_blob_vortex = "Fires[ when standing still{ANIM},] where the blast hurts the enemy most[, clear of allies{FF}]",
 	enemy_wave = "Fires when {WHO} still, down the path with the most enemies[, clear of allies{FF}]",
-	enemy_wave_charge = "Fires[ when standing still{ANIM},] at a fast enemy closing on allies[, its path clear of allies{FF}]",
+	enemy_wave_charge = "Fires when standing still at enemy infantry approaching the unit, the path clear of allies",
 	enemy_wander = "Fires when {WHO} still, where the blast hurts the enemy most[, clear of allies{FF}]",
 	enemy_strike = "Fires[ when standing still{ANIM},] under the most valuable standing monster or character[, clear of allies{FF}]",
 	enemy_cone = "Fires[ when standing still{ANIM},] through the standing enemies it hurts most[, clear of allies{FF}]",
@@ -23770,6 +23956,7 @@ function FOURTH.try_pair(script_unit, unit, ability, ui_id, ability_key, reason,
 				elseif outcome == "fired" then
 					-- a real fire ends the cooldown episode
 					FOURTH.note_own_order(ready_key)   -- ROUND 209: the game will report this order back
+					FOURTH.rescan_soon(tostring(ui_id))   -- ROUND 210: the cast may be a transformation
 					-- ROUND 130: Restock! - the refilled ally is skipped by every caster
 					-- for RESTOCK_CLAIM_S, so two casters never refill it twice.
 					if FOURTH.ammo_claim_id ~= nil then
@@ -24986,6 +25173,15 @@ local function poll_body()
 			-- A unit whose owned-key cache is UNKNOWN (nil - never scanned)
 			-- falls back to the FULL table, exactly like today, so no unit
 			-- is ever silently skipped.
+			-- ROUND 210: a unit that already owns abilities of ours can gain others mid-battle. A transformation keeps
+			-- the unit id AND the unit type (Malus Darkblade, field 2026-11-22), so the identity watch above never
+			-- sees it. FOURTH.reread_unit reads the owned list again a moment after an ability was cast on the unit
+			-- (and, once a unit has changed, every re-detect period) and rebuilds its tables when the set changed.
+			if target_key_by_unit[ui_id] ~= nil then
+				local changed210, found210 = FOURTH.reread_unit(unit, ui_id, do_redetect)
+				active_refresh_pending = active_refresh_pending or changed210
+				if found210 ~= nil then ability_key = found210 end
+			end
 			local unit_abilities = owned_abilities_by_unit[tostring(ui_id)]
 			if unit_abilities == nil then
 				unit_abilities = ABILITIES
@@ -27101,9 +27297,14 @@ local function log_dial_dump()
 		if ability.marker ~= "onslaught" then
 			prefix = prefix .. " [" .. ability.marker .. "]"
 		end
+		-- ROUND 210: only the badges that exist are written (one line per ability, 982 a second, lagged the game
+		-- while a Deadly Onslaught owner was selected). The three original abilities keep their line.
+		if state.badge ~= nil or ability.marker == "onslaught" or ability.marker == "foe_seeker"
+			or ability.marker == "hammer_of_sigmar" then
 		log(prefix .. ": visible=" .. (bvis and "true" or "false") .. " pos=" .. bpos
 			.. " offset=(" .. tostring(BADGE_X + ability.ox) .. "," .. tostring(BADGE_Y + ability.oy)
 			.. ") letter='" .. bletter .. "'")
+		end
 	end
 end
 
