@@ -375,6 +375,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   ability)' while the ability is not ready (2 refusals 20-30 s after cast 1) although can_perform answered true.
   FREE AIM options put to the user (open point 25), WAITING. All 30 enemy_wave entries, the 2 wave_charge and the 5
   cones have target_ground true. Next battle from byte 1,021,602,177.
+  RULING 2026-11-22: "A: but be careful. Dragon breaths always come from a caster. Other abilities might also, check
+  individually to be sure." (A = free aim, standing targets only). CHECKED per key (tools\list_wave_sources.py):
+  battle_vortexs.launch_source is target_near_edge (PLACED at the target) for all 30 enemy_wave keys and the 2
+  wave_charge keys, activator_front (FROM THE CASTER) for the 5 enemy_cone keys only. The real dragon breaths are
+  PROJECTILES on the blob family (untouched). 19 of the 32 placed keys are wh_type_breath by the game's label (Fiery
+  Ring, Black Dragon Egg, Scorch, Stream of Corruption, Pink / Blue Fire, Lash of Slaanesh, Sunfang, Kovsh, Jade
+  Lion's Breath, Bangstick, Gaze of Malice, Tidecall, Wind Blast), 13 are wh_type_wind. Only the Fiery Ring's free
+  rotation is seen in game. SCOPE QUESTION put to the user (winds + the ring first, or all placed keys): WAITING,
+  nothing built.
 - ROUND 201 (2026-11-22, `docs\WH3_round201_master_runes.md`). FIELD (the user's Dwarf battle on the RELEASE build, no
   log): Master Rune of Slowness, a RIGHT-hand-bar button, FIRED BY ITSELF (its entry rode a default-armed family, and
   a cast needs no badge). Rulings: "do it" on removing the five Master Runes the game marks as runes (Breaking,
