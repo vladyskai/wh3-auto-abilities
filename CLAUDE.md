@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `c613f8a1338a6fce6fd87158bd2de72a`, 1,642,218 bytes
-  (round 205, 2026-11-22: the growing waves are cones, enemy single entities are not counted). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `b4db526095800c24addb534931f398df`, 1,642,503 bytes
+  (round 206, 2026-11-22, tuning: an exact wave's value counts standing enemies only). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_cone_harness203/build_and_install205.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_standing_harness204/build_and_install206.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness203: 8,320 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness204: 8,335 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -355,6 +355,19 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 206 (2026-11-22, TUNING, INSTALLED: test pack md5 b4db5260..., release pack md5 d74e4685...). FIELD
+  (archive\logs\battle_20261122_r205_cone.txt, bytes 1,036,362,003-1,045,400,480; user: "why it casts so far away
+  from the main blob?", then "a second cast, and that one was perfect. So still a bit inconsistent"): at the first
+  Sunfang order ONE Grave Guard unit stood and two were still WALKING in. The value counted all visible enemies where
+  they were (108 + 108 soldiers under the cone by tools\replay_cone_cast.py). The damage showed in the enemy's hp
+  only 4 to 6 s AFTER the order (ENGINE FACT, one cast: order at t~59, hp drop between t=64 and t=66): the walking
+  unit had moved 8 m, 48 soldiers left under it. The hp loss (15% and 8%) matches the model's 88 and 48, so the CONE
+  MODEL IS RIGHT (tools\replay_cone.py reproduces the mod's own choice exactly). BUILT: an exact wave's value counts
+  only enemies whose is_moving() is exactly false (o.still, read once per unit per map), option A applied to the
+  value too. Harness 204: 8,335 checks / 0 failures (once). RED: a walking unit pulls the cone across both blocks.
+  No workbook (tuning: v82's wave rows lack this sentence), no cast trace. A wider search (more start distances, 48
+  headings) was replayed: +7 to +25% soldiers only, NOT built. NOT SEEN IN GAME. Next battle from byte
+  1,045,400,480.
 - ROUND 205 (2026-11-22, `docs\WH3_round205_cone.md`) INSTALLED (the first install hit WinError 32, the user closed
   the game): test pack md5 c613f8a1..., release pack md5 05556264..., the cast trace identical apart from the 3
   probe casts, workbook v82, tracker 10.82. NOT SEEN IN GAME. FIELD (archive\logs\battle_20261122_r204_exact.txt, bytes 1,027,314,867-1,036,362,003): round 204 FIELD-

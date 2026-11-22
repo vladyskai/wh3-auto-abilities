@@ -59,6 +59,7 @@
 "wh2_main_item_abilities_talisman_of_loec",
 "wh2_main_item_abilities_the_guiding_eye",
 "wh2_main_item_abilities_worlds_edge_armour",
+"wh2_main_lord_abilities_feint_and_reposte",
 "wh2_main_lord_abilities_gaze_of_malice",
 "wh2_main_spell_bound_wand_of_the_kharaidon",
 "wh2_main_unit_abilities_drop_rocks",
@@ -210,6 +211,6 @@
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 158,
+"logs_read": 159,
 "made": "2026-11-22"
 }

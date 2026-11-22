@@ -21891,10 +21891,13 @@ function FOURTH.ww_line_value(unit, m, row, sx, sz, ex, ez)
 		local val = 0
 		for i = 1, #m.all do
 			local o = m.all[i]
+			-- ROUND 206: an enemy that is still WALKING is not counted either: the fire arrives seconds after the
+			-- order and it will have moved on (is_moving() exactly false counts, read once per unit per map)
+			if o.still == nil then o.still = FOURTH.ww_target_still(o) end
 			-- ROUND 205 (user 2026-11-22): an enemy single entity is not counted, the damage to it is negligible
 			if o.men > 1 then
 				local c = FOURTH.wave_cover(o, sx, sz, ex, ez, row.r)
-				if c > 0 then val = val + (o.value or 1) * c end
+				if c > 0 and o.still then val = val + (o.value or 1) * c end
 			end
 		end
 		if val <= 0 then return nil end   -- nothing under the wave

@@ -8495,3 +8495,19 @@ An exact wave's value counts enemy soldiers only (units of one man are skipped).
 **Proof:** harness 203 full suite **8,320 checks / 0 failures**. RED on the round-204 snapshot: Sunfang's order puts 27 of
 120 enemy soldiers under the real cone (the new one 104), and a lone enemy Lord draws a cast. Workbook v82 (27 trigger
 texts). Not seen in game yet.
+
+### 10.83 Round 206 (tuning) - an exact wave's value counts standing enemies only (2026-11-22)
+
+**Field (user, 2026-11-22):** Sunfang, "It is better than before, but why it casts so far away from the main blob?", then
+"Fought until a second cast, and that one was perfect. So still a bit inconsistent".
+
+**The log:** at the first order one Grave Guard unit stood in melee and two were still walking in. The value counted all
+visible enemies where they were (108 + 108 soldiers under the cone). The enemy's health dropped only 4 to 6 s after the
+order. By then the walking unit had moved 8 m and 48 of its soldiers were under the fire. The losses (15% and 8% of
+health) match the model's 88 and 48 soldiers. At the second cast every enemy stood.
+
+**Change:** an exact wave's value counts only enemies whose `is_moving()` reads exactly false. No ruling was needed: it is
+option A (standing targets only, user 2026-11-22) applied to the value as well as to the anchor.
+
+**Proof:** harness 204 full suite **8,335 checks / 0 failures** (once). RED on the round-205 snapshot: a walking unit
+pulls the cone across both blocks. Tuning round: no workbook version, the 27 wave rows of v82 do not carry this sentence.

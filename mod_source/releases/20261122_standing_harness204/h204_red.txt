@@ -1,0 +1,25 @@
+== HARNESS 204 - section 0zz52: the round-206 token ==
+   OK   0zz52 live (RED): the pre-206 file counts walking enemies
+   OK   0zz52 ann (RED): the pre-206 file counts walking enemies
+== [annotated] MV1. Sunfang: one block standing at (-20,60) ==
+   OK   [annotated] MV1. Sunfang: one block standing at (-20,60): the file loads
+   OK   [annotated] MV1a-RED: ONE aimed order (start (-58.4,49.7) bearing 75)
+== [annotated] MV2. Sunfang: the standing block and a second block walking at (20,60) ==
+   OK   [annotated] MV2. Sunfang: the standing block and a second block walking at (20,60): the file loads
+   OK   [annotated] MV2a-RED: a different order, pulled by the walking unit (start (19.7,60.0) bearing 270 vs start (-58.4,49.7) bearing 75)
+== [annotated] MV3. Sunfang: only a walking block ==
+   OK   [annotated] MV3. Sunfang: only a walking block: the file loads
+   OK   [annotated] MV3a-RED: no order (0, 0)
+== [live] MV1. Sunfang: one block standing at (-20,60) ==
+   OK   [live] MV1. Sunfang: one block standing at (-20,60): the file loads
+   OK   [live] MV1a-RED: ONE aimed order (start (-58.4,49.7) bearing 75)
+== [live] MV2. Sunfang: the standing block and a second block walking at (20,60) ==
+   OK   [live] MV2. Sunfang: the standing block and a second block walking at (20,60): the file loads
+   OK   [live] MV2a-RED: a different order, pulled by the walking unit (start (19.7,60.0) bearing 270 vs start (-58.4,49.7) bearing 75)
+== [live] MV3. Sunfang: only a walking block ==
+   OK   [live] MV3. Sunfang: only a walking block: the file loads
+   OK   [live] MV3a-RED: no order (0, 0)
+   OK   HARNESS 204: every world behaved - 6/6
+== HARNESS 204 done: 15 checks in this section ==
+checks: 4386, failures: 0
+HARNESS OK - all checks passed
