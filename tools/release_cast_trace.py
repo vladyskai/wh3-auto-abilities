@@ -3,6 +3,8 @@ A runs the development script, B runs the release-test script (the release trans
 Equal traces = the release build orders exactly the same casts in every world of the suite."""
 import sys
 SRC = r"C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261122_reviewfixes2_harness198\harness198.lua"
+if len(sys.argv) > 3:   # round 201: the harness to trace (default: harness198)
+    SRC = sys.argv[3]
 OUT = sys.argv[1].replace("\\", "/")
 REL = sys.argv[2].replace("\\", "/")
 DEVP = "C:/Users/vlady/Desktop/WH3_mod/mod_source/script/battle/mod/zz_test_deadly_onslaught.lua"

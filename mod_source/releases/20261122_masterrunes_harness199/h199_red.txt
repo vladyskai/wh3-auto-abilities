@@ -1,0 +1,55 @@
+== HARNESS 199 - section 0zz47: the round-201 tokens ==
+   OK   0zz47 live (RED): the pre-201 file has the five Master Runes (5 entries, 5 hold rows) and no Endless Whirlwind (0)
+   OK   0zz47 ann (RED): the pre-201 file has the five Master Runes (5 entries, 5 hold rows) and no Endless Whirlwind (0)
+== [annotated] MR1. Master Rune of Breaking: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [annotated] MR1. Master Rune of Breaking: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [annotated] MR1a-RED: 1 cast(s) expected, got 1
+== [annotated] MR2. Master Rune of Negation: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [annotated] MR2. Master Rune of Negation: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [annotated] MR2a-RED: 1 cast(s) expected, got 1
+== [annotated] MR3. Master Rune of Oath & Steel: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [annotated] MR3. Master Rune of Oath & Steel: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [annotated] MR3a-RED: 1 cast(s) expected, got 1
+== [annotated] MR4. Master Rune of Speed: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [annotated] MR4. Master Rune of Speed: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [annotated] MR4a-RED: 1 cast(s) expected, got 1
+== [annotated] EW1. Endless Whirlwind of Death: the default states, the owner in melee -> ONE cast ==
+   OK   [annotated] EW1. Endless Whirlwind of Death: the default states, the owner in melee -> ONE cast: the file loads
+   OK   [annotated] EW1a-RED: 0 cast(s) expected, got 0
+== [annotated] EW2. Endless Whirlwind of Death: the owner not in melee -> no cast ==
+   OK   [annotated] EW2. Endless Whirlwind of Death: the owner not in melee -> no cast: the file loads
+   OK   [annotated] EW2a-RED: 0 cast(s) expected, got 0
+== [annotated] EW3. Endless Whirlwind of Death Upgraded: the owner in melee -> ONE cast ==
+   OK   [annotated] EW3. Endless Whirlwind of Death Upgraded: the owner in melee -> ONE cast: the file loads
+   OK   [annotated] EW3a-RED: 0 cast(s) expected, got 0
+== [annotated] EW4. Endless Whirlwind of Death: the owner in melee and wavering -> no cast ==
+   OK   [annotated] EW4. Endless Whirlwind of Death: the owner in melee and wavering -> no cast: the file loads
+   OK   [annotated] EW4a-RED: 0 cast(s) expected, got 0
+== [live] MR1. Master Rune of Breaking: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [live] MR1. Master Rune of Breaking: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [live] MR1a-RED: 1 cast(s) expected, got 1
+== [live] MR2. Master Rune of Negation: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [live] MR2. Master Rune of Negation: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [live] MR2a-RED: 1 cast(s) expected, got 1
+== [live] MR3. Master Rune of Oath & Steel: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [live] MR3. Master Rune of Oath & Steel: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [live] MR3a-RED: 1 cast(s) expected, got 1
+== [live] MR4. Master Rune of Speed: the default states, the owner in melee -> no cast (the key left the mod) ==
+   OK   [live] MR4. Master Rune of Speed: the default states, the owner in melee -> no cast (the key left the mod): the file loads
+   OK   [live] MR4a-RED: 1 cast(s) expected, got 1
+== [live] EW1. Endless Whirlwind of Death: the default states, the owner in melee -> ONE cast ==
+   OK   [live] EW1. Endless Whirlwind of Death: the default states, the owner in melee -> ONE cast: the file loads
+   OK   [live] EW1a-RED: 0 cast(s) expected, got 0
+== [live] EW2. Endless Whirlwind of Death: the owner not in melee -> no cast ==
+   OK   [live] EW2. Endless Whirlwind of Death: the owner not in melee -> no cast: the file loads
+   OK   [live] EW2a-RED: 0 cast(s) expected, got 0
+== [live] EW3. Endless Whirlwind of Death Upgraded: the owner in melee -> ONE cast ==
+   OK   [live] EW3. Endless Whirlwind of Death Upgraded: the owner in melee -> ONE cast: the file loads
+   OK   [live] EW3a-RED: 0 cast(s) expected, got 0
+== [live] EW4. Endless Whirlwind of Death: the owner in melee and wavering -> no cast ==
+   OK   [live] EW4. Endless Whirlwind of Death: the owner in melee and wavering -> no cast: the file loads
+   OK   [live] EW4a-RED: 0 cast(s) expected, got 0
+   OK   HARNESS 199: every world behaved - 16/16
+== HARNESS 199 done: 35 checks in this section ==
+checks: 4406, failures: 0
+HARNESS OK - all checks passed
