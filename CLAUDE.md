@@ -364,6 +364,17 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   TEST (3 console lines, in the round doc): does the orientation steer the wave, where does it start. If yes, FREE AIM
   (open point 25) gets trigger options. Tuning round: full suite once (8,272), no workbook (roster unchanged).
   (math.atan2 or math.atan) is used: lupa's Lua 5.5 has no atan2, the game's 5.1 has no two-argument atan.
+  FIELD (user test 2026-11-22, archive\logsattle_20261122_r202_waveprobe.txt, bytes 1,012,254,884-1,021,602,177):
+  3 accepted probe casts. (1) point = the enemy, orientation = the bearing 190: straight, the wave landed BEHIND the
+  advancing Zombies. (2) orientation 127 while the bearing was 128 (the user typed the doc's example number: NO real
+  turn tested). (3) bearing 39, orientation 127, point 30 m to the right: the wave TURNED and ran AWAY from the enemy,
+  which is exactly bearing 127 from the built point. READING (one real turn, the user's eyes, no position read of the
+  wave): in the GROUND form the wave STARTS AT THE POINT and travels along ORIENTATION = a compass bearing (sin, cos
+  on X/Z, like unit bearings). So the ground form gives full aim. Also proven: v(x, height, z) + bm:get_terrain_height
+  build an accepted point. ENGINE FACT: the ground call RAISES 'bad self (error: unit does not support this special
+  ability)' while the ability is not ready (2 refusals 20-30 s after cast 1) although can_perform answered true.
+  FREE AIM options put to the user (open point 25), WAITING. All 30 enemy_wave entries, the 2 wave_charge and the 5
+  cones have target_ground true. Next battle from byte 1,021,602,177.
 - ROUND 201 (2026-11-22, `docs\WH3_round201_master_runes.md`). FIELD (the user's Dwarf battle on the RELEASE build, no
   log): Master Rune of Slowness, a RIGHT-hand-bar button, FIRED BY ITSELF (its entry rode a default-armed family, and
   a cast needs no badge). Rulings: "do it" on removing the five Master Runes the game marks as runes (Breaking,
