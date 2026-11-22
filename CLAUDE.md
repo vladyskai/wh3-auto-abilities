@@ -372,7 +372,14 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   Ring of Thori (enemy_wave, armed on both Master Engineers) never fired: toolseplay_wave_log.py on the MAP rows
   shows one of our units within 16 m (radius 6 + 10) of every 72 m path in 177 of 177 in-range snapshots, 0 clear
   moments (an army of ~29 units, mostly Lords and Heroes in one mob). By design (round 162), explained to the user,
-  no ruling asked. Next battle from byte 1,005,059,703. DONATIONS (researched
+  no ruling asked. SECOND battle (archive\logsattle_20261122_r201_zombies.txt, bytes 1,005,059,703-1,012,254,884:
+  one Master Engineer + Miners vs 4 Zombie units): the ring held again, the Miners stood within 16 m of every
+  caster-to-target path (25 of 25 snapshots with a standing enemy in range). The user's screenshot shows the GAME lets
+  the player place the wave and ROTATE it ('Hold left mouse button and drag to rotate'): he asked whether the mod
+  uses that. It does NOT: every wave / cone is tested on the caster-to-target heading only and cast in the unit form
+  (ground form passes orientation 0, width 0). PROPOSED (open point 25, waiting): FREE AIM = test several headings
+  and start points, cast with perform_special_ability_ground(key, pos, ORIENTATION, 0). The orientation argument has
+  NEVER been tried in a battle: a probe comes first. Next battle from byte 1,012,254,884. DONATIONS (researched
   2026-11-22): SEGA's EULA and CA's page forbid selling mods and say 'not permitted to charge or ask for money', no
   source allows or names tips, big mods carry Patreon / Ko-fi links: a tolerated grey area. PayPal is excluded by the
   user. Recommended Ko-fi with Stripe. GIFS: the user records the clips (Game Bar), Claude converts (ffmpeg is
