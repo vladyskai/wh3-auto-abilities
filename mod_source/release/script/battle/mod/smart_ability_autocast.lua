@@ -6049,6 +6049,74 @@ local cast_gate = {
 	unit_waiting = {}, -- ROUND 198: ui id -> true while another ability waited through the open window
 	unit_logged = {},  -- ui id -> (marker -> true once the wait has been said this episode)
 }
+-- ============================================================================
+-- ROUND 212 - THE WATCH LIST COMES FROM THE ARMY'S OWN UNIT LIST. A transformed
+-- unit is a NEW unit with a new id (field 2026-11-22: Malus Darkblade 1001 ->
+-- Tz'arkan 1002). The army's own list has it, the script-unit list keeps the
+-- old one, frozen. cast_gate.raw_items answers the script units to watch:
+--   the same id in both lists -> the game's script unit, as before
+--   only in the army's list   -> a script unit made here (the unit + a new
+--                                controller); without a controller it is left out
+--   only in the script units  -> a ghost: left out, the re-list drops it
+-- An unreadable or empty army list -> the script units alone, as before.
+-- (These live on cast_gate because the watch-list builder sits above the
+-- FOURTH table and the main chunk has no room for another local.)
+-- ============================================================================
+cast_gate.raw_sunits = {}   -- unit id (text) -> the script unit made here
+cast_gate.ghosts = {}       -- unit id (text) -> true once the army's own list no longer had it
+function cast_gate.raw_items(sunits, total)
+	local items, revive, by_id = {}, {}, {}
+	for i = 1, total do
+		local su = sunits:item(i)
+		items[i] = su
+		pcall(function() by_id[tostring(su.unit:unique_ui_id())] = su end)
+	end
+	local raw = nil
+	pcall(function()
+		local army = bm:get_player_army()
+		local units = army:units()
+		local n = units:count()
+		local list = {}
+		for u = 1, n do
+			local x = units:item(u)
+			list[u] = { unit = x, id = tostring(x:unique_ui_id()), army = army }
+		end
+		if n >= 1 then raw = list end
+	end)
+	if raw == nil then return items, revive end
+	local out, seen = {}, {}
+	for u = 1, #raw do
+		local r = raw[u]
+		seen[r.id] = true
+		local su = by_id[r.id]
+		if su ~= nil and cast_gate.ghosts[r.id] ~= true then
+			out[#out + 1] = su
+		else
+			local made = cast_gate.raw_sunits[r.id]
+			if made == nil then
+				pcall(function()
+					local uc = r.army:create_unit_controller()
+					uc:add_units(r.unit)
+					made = { unit = r.unit, uc = uc, zz_raw = true }
+				end)
+				if made ~= nil then cast_gate.raw_sunits[r.id] = made end
+			end
+			if made ~= nil then
+				out[#out + 1] = made
+				-- an id that was dropped as a ghost and is back alive in the army's list may be watched again
+				if cast_gate.ghosts[r.id] == true then
+					local ok_m, men = pcall(function() return r.unit:number_of_men_alive() end)
+					if ok_m and type(men) == "number" and men > 0 then revive[#revive + 1] = r.id end
+				end
+			end
+		end
+	end
+	for id, _ in pairs(by_id) do
+		if seen[id] ~= true then cast_gate.ghosts[id] = true end
+	end
+	return out, revive
+end
+
 local ALL_ABILITY_KEYS = {}
 for _, ability in ipairs(ABILITIES) do
 	for _, key in ipairs(ability.keys) do
@@ -7136,8 +7204,11 @@ local function rebuild_unit_list()
 	local new_count = 0
 	local new_ids = {}
 
-	for i = 1, total do
-		local script_unit = sunits:item(i)
+	-- ROUND 212: the units to watch come from the army's own list (a transformed unit is a new unit there)
+	local items, revive = cast_gate.raw_items(sunits, total)
+	for r = 1, #revive do gone_units[revive[r]] = nil end
+	for i = 1, #items do
+		local script_unit = items[i]
 		local unit = script_unit.unit
 		local ui_id = unit:unique_ui_id()
 		local id_text = tostring(ui_id)
@@ -10152,7 +10223,7 @@ function FOURTH.ab_fresh_friend_su(unit)
 			end
 		end
 	end
-	return nil
+	return cast_gate.raw_sunits[want]   -- ROUND 212: a unit only the army's own list has (nil when unknown)
 end
 
 -- the gap in metres from the OWNER to a candidate ally - the SAME
@@ -12555,7 +12626,7 @@ function FOURTH.eg_fresh_caster_su(unit)
 			end
 		end
 	end
-	return nil
+	return cast_gate.raw_sunits[want]   -- ROUND 212: a unit only the army's own list has (nil when unknown)
 end
 
 -- THE SHARED ENEMY PICKER (Class A, harness 97): fire when an ENEMY unit in
@@ -22529,6 +22600,7 @@ end
 FOURTH.rescan_due = {}
 FOURTH.rescan_watch = {}
 function FOURTH.rescan_soon(id_text)
+	FOURTH.relist_at = tick_count + 8   -- ROUND 212: the watch list too
 	if id_text == nil then return end
 	FOURTH.rescan_due[id_text] = { at = tick_count + 8, again = true }
 end
@@ -25073,6 +25145,11 @@ local function poll_body()
 	-- changed. No return here: the refreshed list is processed on this very
 	-- tick.
 	if (tick_count % RELIST_EVERY_N_POLLS) == 0 then
+		rebuild_unit_list()
+	end
+	-- ROUND 212: and 2 s after any cast (it may have been a transformation: the unit is then a new one)
+	if FOURTH.relist_at ~= nil and tick_count >= FOURTH.relist_at then
+		FOURTH.relist_at = nil
 		rebuild_unit_list()
 	end
 

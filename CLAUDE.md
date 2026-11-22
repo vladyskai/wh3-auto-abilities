@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `69ee6533fde49d1f5b811ca6a6a29299`, 1,662,332 bytes
-  (round 211, 2026-11-22, tuning: the read-only raw unit probe for the transformation). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `c0cff66cf0cf511028f31f492334c590`, 1,665,749 bytes
+  (round 212, 2026-11-22: the watch list comes from the army's own unit list, a transformed unit is a new unit). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_rawprobe_harness209/build_and_install211.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_transform_harness210/build_and_install212.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness209: 8,487 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness210: 8,510 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -374,6 +374,25 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 212 (2026-11-22; `docs\WH3_round212_transformation.md`). INSTALLED: test pack md5 c0cff66c..., release pack
+  md5 17d703e5..., harness 210: 8,510 / 0, the cast trace matches apart from the 3 probe casts, NO workbook (roster
+  and trigger texts unchanged), tracker 10.89. NOT SEEN IN GAME. ENGINE FACT (the round-211 probe,
+  archive\logs\battle_20261122_r211_rawprobe.txt, bytes 1,101,281,606-1,103,952,090): A TRANSFORMATION REPLACES THE
+  UNIT. bm:get_player_army():units() then holds a NEW unit (id 1002, type ..._malus_darkblade_tzarkan_0, keys
+  Bloodstorm + Reaper of Souls) in the old one's slot. bm:get_scriptunits_for_local_players_army() keeps answering
+  the OLD script unit (1001), frozen. bm:alliances() / armies() / units() / army:is_player_controlled() all answer
+  in battle, item() is 1-based, and two battle.unit objects for the same unit compare EQUAL although tostring()
+  prints different addresses. BUILT: cast_gate.raw_items(sunits, total) (on cast_gate because rebuild_unit_list sits
+  ABOVE the FOURTH table and the main chunk has no room for a local: it must not name FOURTH, log, tick_count or
+  gone_units) feeds rebuild_unit_list: same id in both lists = the game's script unit, only in the army's list = a
+  made script unit { unit, uc = army:create_unit_controller() + uc:add_units(unit), zz_raw = true } kept in
+  cast_gate.raw_sunits, only in the script units = a ghost (cast_gate.ghosts) left out so the existing drop removes
+  it. Unreadable or empty army list = the script units alone. FOURTH.eg_fresh_caster_su / ab_fresh_friend_su fall
+  back to cast_gate.raw_sunits[id]. The poll re-lists 2 s after any cast (FOURTH.relist_at, set in
+  FOURTH.rescan_soon). UNPROVEN IN BATTLE: create_unit_controller / add_units from the mod, clicks on the new unit's
+  letters, the end of the transformation. Summons in the player's own army are now watched too. The raw probe of
+  round 211 stays in the test build. Next battle from byte 1,103,952,090 (re-measure): grep 'RAW t=' and the
+  ATTEMPT lines of bloodstorm / reaper_of_souls on ui id 1002.
 - ROUND 211 (2026-11-22, TUNING, INSTALLED: test pack md5 69ee6533..., release pack md5 c692a26b...). FIELD on round
   210 (archive\logs\battle_20261122_r210_malus.txt, bytes 1,092,330,525-1,101,281,606): the Loons' rule
   FIELD-CONFIRMED ("tested and it worked perfectly"), the lag is gone. Malus again: "Reaper of Souls and the other

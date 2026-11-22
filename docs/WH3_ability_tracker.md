@@ -8614,3 +8614,21 @@ state. The release build removes the map probe, so it never runs there.
 
 **Proof:** harness 209 full suite **8,487 checks / 0 failures** (once). RED on the pre-round snapshot: no RAW line.
 Tuning round: no workbook, and the cast trace was not run again (no cast decision changed).
+
+### 10.89 Round 212 - a transformed unit is a new unit (2026-11-22)
+
+**Field (the round-211 probe, archive\logs\battle_20261122_r211_rawprobe.txt, bytes 1,101,281,606-1,103,952,090):**
+before Tz'arkan the army's own list holds unit 1001 (wh2_dlc14_def_cha_malus_darkblade_0_mp). After it the same slot
+holds unit 1002 (wh2_dlc14_def_cha_malus_darkblade_tzarkan_0) with the keys Bloodstorm and Reaper of Souls, moving and
+in melee. The script-unit list the mod read keeps answering 1001, frozen. The probe's reads all answered
+(bm:alliances(), armies(), units(), is_player_controlled()).
+
+**Change:** the watch list is built from `bm:get_player_army():units()` (`cast_gate.raw_items`). A unit both lists
+have keeps the game's script unit. A unit only the army lists gets a script unit made by the mod (the unit and a new
+controller). A script unit the army no longer lists is left out and dropped. An unreadable or empty army list falls
+back to the script units. The two fresh-handle fetchers fall back to the made script unit. The poll also re-lists 2 s
+after any cast. Roster unchanged: 982 entries / 1,035 keys, no workbook version.
+
+**Proof:** harness 210 full suite **8,510 checks / 0 failures**. RED on the pre-round snapshot: the new unit never
+casts and the frozen copy keeps casting. The cast trace of the whole suite (2,200 worlds, 1,771 casts) matches between
+the test build and the release build apart from the 3 probe casts. Not seen in game.
