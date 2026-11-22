@@ -41,7 +41,8 @@ FILES = [
     (ROOT + r"\mod_source\script\mct\settings\smart_ability_autocast.lua", "script/mct/settings/smart_ability_autocast.lua"),
 ]
 DEBUG_GLOBALS = ["zz_badge_set", "zz_badge_track", "zz_badge_calibrate", "zz_badge_nudge", "zz_badge_show",
-                 "zz_badge_hide", "zz_badge_parent", "zz_all_set", "zz_all_nudge", "zz_all_where"]
+                 "zz_badge_hide", "zz_badge_parent", "zz_all_set", "zz_all_nudge", "zz_all_where",
+                 "zz_wave"]   # round 202: the wave probe
 STAND_DOWN = "if zz_badge_set ~= nil then return end   -- RELEASE: the development build is loaded too, it wins\n"
 
 HEAD = """-- SMART ABILITY AUTOCAST - the Steam Workshop release.

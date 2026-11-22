@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `d5535679368f82138f341b6138667818`, 1,625,301 bytes
-  (round 201, 2026-11-22: the five Master Runes removed, Endless Whirlwind of Death added). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `529eb5cc2e6e72c6a01de1df54f11de2`, 1,629,275 bytes
+  (round 202, 2026-11-22: the wave probe zz_wave, a console command). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_masterrunes_harness199/build_and_install201.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_waveprobe_harness200/build_and_install202.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness199: 8,245 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness200: 8,272 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -355,6 +355,15 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 202 (2026-11-22, "Yes, build the probe"; `docs\WH3_round202_wave_probe.md`): THE WAVE PROBE, the console command
+  zz_wave(deg, fwd, side, key) of the TEST build (after zz_all_where; called by nothing; build_release removes it):
+  the ONE selected unit casts its wave (the first ready FOURTH.WW key among its OWN entries, owned_abilities_by_unit)
+  in the ground form at the nearest visible enemy (+ fwd / side metres) with ORIENTATION deg (default = the compass
+  bearing caster->target, atan2(dx, dz)). One 'WAVE PROBE:' answer line, also logged. A moved point is built with the
+  game's v(x, height, z) and bm:get_terrain_height (v is NOT in the mock: a world defines it). WAITING FOR THE USER'S
+  TEST (3 console lines, in the round doc): does the orientation steer the wave, where does it start. If yes, FREE AIM
+  (open point 25) gets trigger options. Tuning round: full suite once (8,272), no workbook (roster unchanged).
+  (math.atan2 or math.atan) is used: lupa's Lua 5.5 has no atan2, the game's 5.1 has no two-argument atan.
 - ROUND 201 (2026-11-22, `docs\WH3_round201_master_runes.md`). FIELD (the user's Dwarf battle on the RELEASE build, no
   log): Master Rune of Slowness, a RIGHT-hand-bar button, FIRED BY ITSELF (its entry rode a default-armed family, and
   a cast needs no badge). Rulings: "do it" on removing the five Master Runes the game marks as runes (Breaking,

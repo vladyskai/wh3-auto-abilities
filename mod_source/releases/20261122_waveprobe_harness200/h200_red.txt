@@ -1,0 +1,43 @@
+== HARNESS 200 - section 0zz48: the round-202 tokens ==
+   OK   0zz48 live (RED): the pre-202 file has no wave probe
+   OK   0zz48 ann (RED): the pre-202 file has no wave probe
+== [annotated] WP1. the Engineer selected, zz_wave(90) ==
+   OK   [annotated] WP1. the Engineer selected, zz_wave(90): the file loads
+   OK   [annotated] WP1a-RED: the command does not exist, no order (zz_wave does not exist)
+== [annotated] WP2. the Engineer selected, zz_wave() with no direction ==
+   OK   [annotated] WP2. the Engineer selected, zz_wave() with no direction: the file loads
+   OK   [annotated] WP2a-RED: the orientation sent is the bearing to the target (zz_wave does not exist)
+== [annotated] WP3. nothing selected, zz_wave(90) ==
+   OK   [annotated] WP3. nothing selected, zz_wave(90): the file loads
+   OK   [annotated] WP3a-RED: no order (zz_wave does not exist)
+== [annotated] WP4. the Engineer selected, zz_wave(0, 10, 0), no vector constructor ==
+   OK   [annotated] WP4. the Engineer selected, zz_wave(0, 10, 0), no vector constructor: the file loads
+   OK   [annotated] WP4a-RED: fails closed, no order (zz_wave does not exist)
+== [annotated] WP5. the Engineer selected, zz_wave(0, 10, 5), a vector constructor ==
+   OK   [annotated] WP5. the Engineer selected, zz_wave(0, 10, 5), a vector constructor: the file loads
+   OK   [annotated] WP5a-RED: ONE order at the built point (zz_wave does not exist)
+== [annotated] WP6. no call, 8 polls ==
+   OK   [annotated] WP6. no call, 8 polls: the file loads
+   OK   [annotated] WP6a-RED: the probe orders nothing by itself (ground orders 0)
+== [live] WP1. the Engineer selected, zz_wave(90) ==
+   OK   [live] WP1. the Engineer selected, zz_wave(90): the file loads
+   OK   [live] WP1a-RED: the command does not exist, no order (zz_wave does not exist)
+== [live] WP2. the Engineer selected, zz_wave() with no direction ==
+   OK   [live] WP2. the Engineer selected, zz_wave() with no direction: the file loads
+   OK   [live] WP2a-RED: the orientation sent is the bearing to the target (zz_wave does not exist)
+== [live] WP3. nothing selected, zz_wave(90) ==
+   OK   [live] WP3. nothing selected, zz_wave(90): the file loads
+   OK   [live] WP3a-RED: no order (zz_wave does not exist)
+== [live] WP4. the Engineer selected, zz_wave(0, 10, 0), no vector constructor ==
+   OK   [live] WP4. the Engineer selected, zz_wave(0, 10, 0), no vector constructor: the file loads
+   OK   [live] WP4a-RED: fails closed, no order (zz_wave does not exist)
+== [live] WP5. the Engineer selected, zz_wave(0, 10, 5), a vector constructor ==
+   OK   [live] WP5. the Engineer selected, zz_wave(0, 10, 5), a vector constructor: the file loads
+   OK   [live] WP5a-RED: ONE order at the built point (zz_wave does not exist)
+== [live] WP6. no call, 8 polls ==
+   OK   [live] WP6. no call, 8 polls: the file loads
+   OK   [live] WP6a-RED: the probe orders nothing by itself (ground orders 0)
+   OK   HARNESS 200: every world behaved - 12/12
+== HARNESS 200 done: 27 checks in this section ==
+checks: 4398, failures: 0
+HARNESS OK - all checks passed
