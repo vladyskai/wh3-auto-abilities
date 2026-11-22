@@ -19596,7 +19596,68 @@ function FOURTH.map_rows(tick)
 end
 
 -- the LIVE build writes the rows to the battle log
+-- ============================================================================
+-- ROUND 211 - THE RAW UNIT PROBE (read-only, test build: it runs from the map
+-- probe, which the release build removes). After a transformation the handle
+-- the mod holds on the unit is frozen (field 2026-11-22, Malus Darkblade: the
+-- same position, full health and melee=0 for the rest of the battle). This
+-- walks the game's own alliance / army / unit lists every 2 s and writes what
+-- it finds, so the next log shows where the transformed unit lives.
+-- ============================================================================
+FOURTH.raw_probe_failed = false
+function FOURTH.raw_read(f)
+	local ok, v = pcall(f)
+	if ok and v ~= nil then return tostring(v) end
+	return "?"
+end
+function FOURTH.raw_probe(tick)
+	if tick % 8 ~= 0 or bm.alliances == nil then return end
+	local t = tick * POLL_MS / 1000
+	local ok, err = pcall(function()
+		local als = bm:alliances()
+		for a = 1, als:count() do
+			local armies = als:item(a):armies()
+			for r = 1, armies:count() do
+				local army = armies:item(r)
+				local flag = FOURTH.raw_read(function() return army:is_player_controlled() end)
+				local units = army:units()
+				local n = units:count()
+				log(string.format("RAW_ARMY t=%.1f alliance=%d army=%d player=%s units=%d", t, a, r, flag, n))
+				for u = 1, n do
+					local x = units:item(u)
+					local id = FOURTH.raw_read(function() return x:unique_ui_id() end)
+					local held = units_by_ui_id[id]
+					if flag ~= "false" or held ~= nil then
+						local keys = {}
+						pcall(function()
+							for _, k in pairs(x:owned_special_abilities()) do
+								if ALL_ABILITY_KEYS_SET[k] then keys[#keys + 1] = k end
+							end
+						end)
+						log("RAW t=" .. string.format("%.1f", t) .. " alliance=" .. a .. " army=" .. r .. " unit=" .. u
+							.. " id=" .. id
+							.. " type=" .. FOURTH.raw_read(function() return x:type() end)
+							.. " x=" .. FOURTH.raw_read(function() return string.format("%.1f", x:position():get_x()) end)
+							.. " z=" .. FOURTH.raw_read(function() return string.format("%.1f", x:position():get_z()) end)
+							.. " men=" .. FOURTH.raw_read(function() return x:number_of_men_alive() end)
+							.. " hp=" .. FOURTH.raw_read(function() return string.format("%.2f", x:unary_hitpoints()) end)
+							.. " melee=" .. FOURTH.raw_read(function() return x:is_in_melee() end)
+							.. " held=" .. ((held == nil) and "none" or ((held == x) and "same" or "OTHER"))
+							.. " obj=" .. tostring(x) .. " held_obj=" .. tostring(held)
+							.. " keys=" .. table.concat(keys, ","))
+					end
+				end
+			end
+		end
+	end)
+	if not ok and not FOURTH.raw_probe_failed then
+		FOURTH.raw_probe_failed = true
+		log("RAW probe failed (said once): " .. tostring(err))
+	end
+end
+
 function FOURTH.map_tick(tick)
+	pcall(FOURTH.raw_probe, tick)   -- ROUND 211: read-only
 	local rows = FOURTH.map_rows(tick)
 	if rows == nil then return end
 	for i = 1, #rows do log(rows[i]) end

@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `8760b82d91ec7feaff51eaf39a0f5ea1`, 1,659,510 bytes
-  (round 210, 2026-11-22: the Loons' own rule, the breaths as cones from the caster, slow charges, transformations). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `69ee6533fde49d1f5b811ca6a6a29299`, 1,662,332 bytes
+  (round 211, 2026-11-22, tuning: the read-only raw unit probe for the transformation). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_replies2_harness208/build_and_install210.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_rawprobe_harness209/build_and_install211.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness208: 8,479 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness209: 8,487 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -374,6 +374,20 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 211 (2026-11-22, TUNING, INSTALLED: test pack md5 69ee6533..., release pack md5 c692a26b...). FIELD on round
+  210 (archive\logs\battle_20261122_r210_malus.txt, bytes 1,092,330,525-1,101,281,606): the Loons' rule
+  FIELD-CONFIRMED ("tested and it worked perfectly"), the lag is gone. Malus again: "Reaper of Souls and the other
+  Tzarkan ability did not fire while transformed". ENGINE FACT: after a transformation the battle_unit handle the mod
+  holds is FROZEN (same position, hp 1.00, melee=0 to the end of the battle, the same owned list), the card and the
+  HUD keep the SAME unit id (1001), and bm:get_scriptunits_for_local_players_army() keeps answering that stale
+  script unit. Round 210's re-read (FOURTH.reread_unit) reads the stale handle and finds nothing. BUILT (live copy
+  only, read-only, runs from FOURTH.map_tick, which the release removes): FOURTH.raw_probe walks bm:alliances() ->
+  armies() -> units() (1-based item()) every 2 s and logs 'RAW_ARMY t=' and 'RAW t=' lines (id, type, x, z, men, hp,
+  melee, held=same/OTHER/none, obj addresses, our keys). Harness 209: 8,487 / 0 (once), no workbook, no cast trace.
+  NEXT: the user transforms Malus once more, then read the RAW lines: if a unit with held=OTHER (or a new id) shows
+  the moving position and the Tz'arkan keys, the fix is to re-fetch the unit (and a controller for it) from the raw
+  list. army:is_player_controlled() and the raw walk are UNPROVEN in a battle ('RAW probe failed' = said once).
+  Next battle from byte 1,101,281,606 (re-measure).
 - ROUND 210 (2026-11-22, the user's second replies; `docs\WH3_round210_review_replies2.md`). INSTALLED: test pack md5
   8760b82d..., release pack md5 9a1e8f9a..., harness 208: 8,479 / 0, the cast trace matches apart from the 3 probe
   casts, workbook v84, tracker 10.87. NOT SEEN IN GAME. (1) THE LOONS, the user's own rule ("I would like to change

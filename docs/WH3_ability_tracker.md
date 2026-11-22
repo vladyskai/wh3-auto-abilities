@@ -8595,3 +8595,22 @@ build wrote 31,392 dump lines in 34 s of battle.
 approaching infantry, Skabscrath held for a unit 12 m beside the breath and for one 90 m ahead, no charge at 2.8 m/s
 with 8 m to go, the transformed hero's new ability never cast. The cast trace of the whole suite (2,187 worlds, 1,718
 casts) matches between the test build and the release build apart from the 3 probe casts. Workbook v84. Not seen in game.
+
+### 10.88 Round 211 (tuning) - the raw unit probe after a transformation (2026-11-22)
+
+**Field (user, 2026-11-22; archive\logs\battle_20261122_r210_malus.txt, bytes 1,092,330,525-1,101,281,606):** the
+Loons' new rule: "tested and it worked perfectly" (one order at Crypt Ghouls 23.8 m away). "the lag is gone". Malus
+Darkblade again: "Reaper of Souls and the other Tzarkan ability did not fire while transformed".
+
+**Reading of the log:** after Tz'arkan the handle the mod holds on Malus is frozen. Its MAP rows show the same position
+(x -86.0, z -157.5), hp 1.00 and melee=0 from the transformation to the end of the battle, while the user fought. The
+ability list read through that handle never changed, so round 210's re-read had nothing to find (no "owned abilities
+changed" line). The card and the letters use the same unit number, 1001.
+
+**Change (test build only, read-only):** `FOURTH.raw_probe` walks the game's own lists (alliances, armies, units)
+every 2 s from the map probe and writes RAW_ARMY and RAW lines: id, type, position, men, health, melee, whether the
+object is the one the mod holds (held=same / OTHER / none) and its keys of ours. It orders nothing and writes no mod
+state. The release build removes the map probe, so it never runs there.
+
+**Proof:** harness 209 full suite **8,487 checks / 0 failures** (once). RED on the pre-round snapshot: no RAW line.
+Tuning round: no workbook, and the cast trace was not run again (no cast decision changed).
