@@ -373,7 +373,8 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   battle_tours.lua); bm:is_benchmarking_mode() exists; get_scriptunits_for_main_enemy_army_to_local_player = army 1 of
   the non-player alliance and get_scriptunits_for_local_players_army = the local army only (reinforcing and allied
   armies are NOT read: confirmed, no longer an assumption); no replay read found; common.vfs_exists not found there.
-  FOUND, NOT TOUCHED: an old probe pack zz_probe_dist.pack (20 KB, 2026-10-10) is still in the game's data folder.
+  The old probe pack zz_probe_dist.pack (20 KB, 2026-10-10) was REMOVED from the game's data folder on 2026-11-22
+  (user: "Yes, remove it"); copy in archive\packs\zz_probe_dist_20261010_removed_20261122.pack (md5 d4e67cfb...).
   NOT DONE: the upload itself (the user's account, TW Launcher (Legacy), tag Battle).
 - ROUND 199 (2026-11-22, the review's second replies; `docs\WH3_round199_review_fixes2.md`). Row 5 "okay, then fix":
   FOURTH.KEY_LOWER (a listed key with a capital letter, lowered at load) joins the badge's equality compare. Row 9

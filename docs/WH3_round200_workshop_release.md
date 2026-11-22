@@ -71,3 +71,9 @@ Not seen in a battle. The multiplayer guard has not been tried in a multiplayer 
 - The log calls still build their text (the function is empty). The five periodic dumps are gone. The UI timer's
   per-tick component walk is unchanged.
 - Three hover cards contain a semicolon and clauses are joined with "; ".
+
+## 7. The old probe pack (2026-11-22)
+
+User: "Yes, remove it". `zz_probe_dist.pack` (20,063 bytes, 2026-10-10, md5 `d4e67cfb8bc562c7d6f0ff742909c13d`) was copied to
+`archive\packs\zz_probe_dist_20261010_removed_20261122.pack` (same md5) and then removed from the game's `data` folder.
+Our files there are now `zz_test_deadly_onslaught.pack`, `smart_ability_autocast.pack` and `smart_ability_autocast.png`.
