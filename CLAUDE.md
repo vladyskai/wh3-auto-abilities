@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `14e1d8cf6e1882279556c0a1bf80e2ee`, 1,635,145 bytes
-  (round 203, 2026-11-22: free aim for the 30 placed straight waves). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `11a01a69e4c513e1c4d444dab5f7606a`, 1,639,185 bytes
+  (round 204, 2026-11-22: exact waves count our soldiers under the wave, Tidecall and Wind Blast moved). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_freeaim_harness201/build_and_install203.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_exactwave_harness202/build_and_install204.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness201: 8,301 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness202: 8,305 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -319,7 +319,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v80_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v80.py`, verified by `tools\verify_xlsx_v80.py <v79 md5> <pack md5>` (v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v81_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v81.py`, verified by `tools\verify_xlsx_v81.py <v80 md5> <pack md5>` (v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -355,6 +355,23 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   a Ruling dropdown per row and comment threads. READ THE RULINGS FROM THAT DOC (dropdowns AND threads) before building.
 - WRITING (user 2026-11-21): no semicolons in any prose for the user ("stop using ';', nobody uses them"), same as em
   dashes. Workshop text: never "the ALL button" (say "a button in battle that ..."), no "battle only".
+- ROUND 204 (2026-11-22; `docs\WH3_round204_exact_wave.md`). USER RULING: "the safety was meant for abilities that
+  have a deviation from their path. But this ability's path is deterministic ... We only need to know that in the
+  path of the ability, there is very little of our ... soldiers. And in this case, we should ignore single entities
+  ... Also, please implement for tight call and wind blast. The slow effect is irrelevant in this case." BUILT: a
+  wave whose WW row has buf = 0 is EXACT (FOURTH.ww_exact, 27 keys): FOURTH.ww_line_value counts OUR SOLDIERS under
+  the wave (FOURTH.wave_cover: a grid over the unit's rectangle, a single entity = its centre) against
+  FOURTH.WAVE_OWN_MAX = 5 (Claude's reading of 'very little': ASK if it should move), skips our single entities and
+  the caster, and values a path by the enemy value UNDER the wave. FOURTH.FREE_AIM_SHIFTS = 0, +-6, +-12, +-18 m
+  sideways per heading (24 x 7 paths per enemy). An exact wave is ALWAYS an aimed ground order (the caster's line
+  too, aim.legacy). The search runs once per FOURTH.FREE_AIM_EVERY = 4 polls per caster and ability
+  (FOURTH.aim_next[unit id][key]: the mod's pins ban joined '|' keys). The 5 DRIFTING waves (Wrath of Manann, Wind of
+  Death, Burning Head x2, Black Horror) keep the round-162 distance and round 203's through-the-centre aim.
+  Tidecall and Wind Blast moved to enemy_wave (32 entries; enemy_wave_charge is EMPTY, code kept; 140 families in
+  use). Harness 202: run_h201 stays in the file UNCALLED (superseded). LESSON: round 203's harness world put the
+  friend 30 m in front of the enemy, not in melee, so it passed for a situation the user never had. Build test
+  worlds from the MAP rows of the battle that showed the problem. No minimum of enemy soldiers was built (the user
+  did not rule on Claude's proposed 60). NOT SEEN IN GAME. Next battle from byte 1,027,314,867.
 - ROUND 203 (2026-11-22, "A: but be careful ... check individually" + "All 30 placed"; `docs\WH3_round203_free_aim.md`):
   FREE AIM for the 30 enemy_wave entries. Per standing enemy in range: the caster's line first (keeps a tie, old
   unit-form order), then FOURTH.FREE_AIM_STEPS = 24 headings (FOURTH.ww_aim_value: start = centre - heading x (off +

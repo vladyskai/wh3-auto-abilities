@@ -2787,12 +2787,12 @@ local ABILITIES = {
 		range_real = 100,
 		target_class = "not_flying",
 		ox = 0, oy = 0 },
-	{ marker = "tidecall", name = "Tidecall", trigger = "enemy_wave_charge",
+	{ marker = "tidecall", name = "Tidecall", trigger = "enemy_wave",
 		badge = "zz_auto_badge_tidecall",
 		keys = { "wh2_dlc11_spell_bound_tidecall" },
 		range_real = 100,
 		ox = 0, oy = 0 },
-	{ marker = "wind_blast", name = "Wind Blast", trigger = "enemy_wave_charge",
+	{ marker = "wind_blast", name = "Wind Blast", trigger = "enemy_wave",
 		badge = "zz_auto_badge_wind_blast",
 		keys = { "wh2_dlc11_spell_bound_wind_blast" },
 		range_real = 100,
@@ -21763,11 +21763,56 @@ function FOURTH.ww_bearing(hx, hz)
 	return b
 end
 
--- a free-aim path across e along the heading (hx, hz): its value and its start, or nil when the start is out of the
--- caster's bound or one of ours is too close. NO gate on the enemy itself (the caller has asked it).
-function FOURTH.ww_aim_value(unit, e, m, row, hx, hz)
+-- ============================================================================
+-- ROUND 204 - AN EXACT WAVE NEEDS NO SAFETY DISTANCE (user ruling 2026-11-22:
+-- "the safety was meant for abilities that have a deviation from their path.
+-- But this ability's path is deterministic ... We only need to know that in the
+-- path of the ability, there is very little of our ... soldiers. And in this
+-- case, we should ignore single entities"). A wave whose table row has no
+-- sideways drift (buf = 0) is EXACT: its friendly test counts OUR SOLDIERS under
+-- the wave (single entities are not counted) against WAVE_OWN_MAX, its value is
+-- the enemy value under the wave, and every heading is also tested moved
+-- sideways (FREE_AIM_SHIFTS). A wave with drift keeps the round-162 distance.
+-- ============================================================================
+FOURTH.FREE_AIM_SHIFTS = { 0, 6, -6, 12, -12, 18, -18 }   -- ROUND 204: metres to the right (+) or left (-) of the heading
+FOURTH.WAVE_OWN_MAX = 5         -- ROUND 204: at most this many of OUR soldiers under an exact wave
+FOURTH.FREE_AIM_EVERY = 4       -- ROUND 204: the search runs once per this many polls per caster and ability
+FOURTH.aim_next = {}
+
+-- an exact wave: no sideways drift in its table row (and free aim not switched off by the harness)
+function FOURTH.ww_exact(row)
+	return row.buf == 0 and ZZ_AUTO_TEST_NO_FREE_AIM ~= true
+end
+
+-- the share (0..1) of a unit's soldiers under a wave of radius r along S-E: a grid of points over its rectangle
+-- (one every 3 m or so, at most 10 x 6); a single entity is its centre
+function FOURTH.wave_cover(s, sx, sz, ex, ez, r)
+	if FOURTH.ww_pt_seg(s.x, s.z, sx, sz, ex, ez) - s.half > r then return 0 end
+	if s.men <= 1 then
+		if FOURTH.ww_pt_seg(s.x, s.z, sx, sz, ex, ez) <= r then return 1 end
+		return 0
+	end
+	local na = math.max(1, math.min(10, math.floor(s.w / 3 + 0.5)))
+	local nc = math.max(1, math.min(6, math.floor(s.d / 3 + 0.5)))
+	local hit = 0
+	for i = 1, na do
+		local a = (i - 0.5) / na - 0.5
+		for j = 1, nc do
+			local c = (j - 0.5) / nc - 0.5
+			local px = s.x + s.rx * a * s.w + s.fx * c * s.d
+			local pz = s.z + s.rz * a * s.w + s.fz * c * s.d
+			if FOURTH.ww_pt_seg(px, pz, sx, sz, ex, ez) <= r then hit = hit + 1 end
+		end
+	end
+	return hit / (na * nc)
+end
+
+-- a free-aim path across e along the heading (hx, hz), moved <shift> metres to the heading's right: its value and its
+-- start, or nil when the start is out of the caster's bound or the friendly test fails. NO gate on the enemy itself.
+function FOURTH.ww_aim_value(unit, e, m, row, hx, hz, shift)
+	shift = shift or 0
 	local back = row.off + (e.half or 0)
-	local sx, sz = e.x - hx * back, e.z - hz * back
+	local sx, sz = e.x - hx * back + hz * shift, e.z - hz * back - hx * shift
 	local cx, cz = FOURTH.self_xz(unit)
 	if cx == nil then return nil end
 	if FOURTH.eg_no_bound ~= true then
@@ -21783,7 +21828,8 @@ end
 function FOURTH.ww_aim_text()
 	local a = FOURTH.ww_aim
 	if a == nil then return "" end
-	return string.format("; FREE AIM: the wave starts at (%.1f,%.1f) and rolls on bearing %.0f", a.x, a.z, a.deg)
+	return string.format("; FREE AIM: the wave starts at (%.1f,%.1f) and rolls on bearing %.0f (moved %s m sideways)",
+		a.x, a.z, a.deg, tostring(a.shift or 0))
 end
 
 -- THE FREE-AIM CAST HELPER: the ground form at the path's start with the heading as orientation. The point is built
@@ -21803,13 +21849,13 @@ end
 
 -- a wave candidate: the enemy value its path touches, or nil when it is not allowed or not safe
 -- ROUND 203: with a heading (hx, hz) the path is the free-aim one (and its start comes back too)
-function FOURTH.ww_wave_value(unit, e, m, row, moving_ok, hx, hz)
+function FOURTH.ww_wave_value(unit, e, m, row, moving_ok, hx, hz, shift)
 	-- ROUND 164: moving_ok = the charge arm (Tidecall, Wind Blast: the target is a charging enemy)
 	if not (FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit)
 		and (moving_ok or FOURTH.ww_target_still(e))) then
 		return nil
 	end
-	if hx ~= nil then return FOURTH.ww_aim_value(unit, e, m, row, hx, hz) end
+	if hx ~= nil then return FOURTH.ww_aim_value(unit, e, m, row, hx, hz, shift) end
 	local sx, sz, ex, ez = FOURTH.ww_wave_line(unit, e, row)
 	if sx == nil then return nil end
 	local val = FOURTH.ww_line_value(unit, m, row, sx, sz, ex, ez)
@@ -21817,8 +21863,36 @@ function FOURTH.ww_wave_value(unit, e, m, row, moving_ok, hx, hz)
 	return val, sx, sz
 end
 
--- ROUND 203: the friendly test and the value of ONE path S-E (nil when one of ours is too close)
+-- ROUND 203: the friendly test and the value of ONE path S-E (nil when the friendly test fails)
 function FOURTH.ww_line_value(unit, m, row, sx, sz, ex, ez)
+	if FOURTH.ww_exact(row) then
+		-- ROUND 204: an exact wave. OUR SOLDIERS under it (single entities not counted, the caster never), then
+		-- the enemy value under it
+		if row.allies then
+			local self_id = nil
+			pcall(function() self_id = tostring(unit:unique_ui_id()) end)
+			local own = 0
+			for i = 1, #m.ours do
+				local o = m.ours[i]
+				if o.men > 1 then
+					local oid = nil
+					pcall(function() oid = tostring(o.unit:unique_ui_id()) end)
+					if oid == nil or oid ~= self_id then
+						own = own + o.men * FOURTH.wave_cover(o, sx, sz, ex, ez, row.r)
+						if own > FOURTH.WAVE_OWN_MAX then return nil end
+					end
+				end
+			end
+		end
+		local val = 0
+		for i = 1, #m.all do
+			local o = m.all[i]
+			local c = FOURTH.wave_cover(o, sx, sz, ex, ez, row.r)
+			if c > 0 then val = val + (o.value or 1) * c end
+		end
+		if val <= 0 then return nil end   -- nothing under the wave
+		return val
+	end
 	if row.allies then
 		-- the drift grows from 0 at the start to the 95% value at the end (it grows slower than a straight line, so
 		-- this cone is on the safe side): the margin for a unit is taken at its farthest point along the path.
@@ -21929,7 +22003,7 @@ function FOURTH.ww_still_ok(enemy, unit)
 					if a.legacy then
 						val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row)
 					else
-						val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row, false, a.hx, a.hz)
+						val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row, false, a.hx, a.hz, a.shift)
 					end
 					if val == nil then return false end
 					a.x, a.z = sx, sz
@@ -21955,13 +22029,28 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 	local best, bv, aim = nil, nil, nil
 	local free = (ZZ_AUTO_TEST_NO_FREE_AIM ~= true)   -- ROUND 203
 	local cx, cz = FOURTH.self_xz(unit)
+	local exact = FOURTH.ww_exact(row)   -- ROUND 204
+	local shifts = exact and FOURTH.FREE_AIM_SHIFTS or { 0 }
+	if free then
+		-- ROUND 204: the search is heavy (24 headings x the shifts per enemy): once per FREE_AIM_EVERY polls
+		local id = "?"
+		pcall(function() id = tostring(unit:unique_ui_id()) end)
+		local key = tostring(FOURTH.rc_self_keys and FOURTH.rc_self_keys[1])
+		local per = FOURTH.aim_next[id]
+		if per == nil then
+			per = {}
+			FOURTH.aim_next[id] = per
+		end
+		if (per[key] or 0) > tick_count then return nil end
+		per[key] = tick_count + FOURTH.FREE_AIM_EVERY
+	end
 	for i = 1, #m.all do
 		local e = m.all[i]
 		-- the caster's own line first: it keeps a tie
 		local val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row)
 		if val ~= nil and (bv == nil or val > bv) then
 			best, bv, aim = e, val, nil
-			if free and row.ground and cx ~= nil then
+			if free and (row.ground or exact) and cx ~= nil then   -- ROUND 204: an exact wave is always aimed
 				-- a ground-only wave has no unit form: its own line goes out as an aimed ground order too
 				local dx, dz = e.x - cx, e.z - cz
 				local len = math.sqrt(dx * dx + dz * dz)
@@ -21974,10 +22063,12 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 			for k = 0, FOURTH.FREE_AIM_STEPS - 1 do
 				local ang = math.rad(k * 360 / FOURTH.FREE_AIM_STEPS)
 				local hx, hz = math.sin(ang), math.cos(ang)
-				local v2, ax, az = FOURTH.ww_aim_value(unit, e, m, row, hx, hz)
-				if v2 ~= nil and (bv == nil or v2 > bv) then
-					best, bv = e, v2
-					aim = { x = ax, z = az, hx = hx, hz = hz, deg = k * 360 / FOURTH.FREE_AIM_STEPS }
+				for q = 1, #shifts do
+					local v2, ax, az = FOURTH.ww_aim_value(unit, e, m, row, hx, hz, shifts[q])
+					if v2 ~= nil and (bv == nil or v2 > bv) then
+						best, bv = e, v2
+						aim = { x = ax, z = az, hx = hx, hz = hz, deg = k * 360 / FOURTH.FREE_AIM_STEPS, shift = shifts[q] }
+					end
 				end
 			end
 		end

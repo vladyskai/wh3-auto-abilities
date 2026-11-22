@@ -1,0 +1,49 @@
+== HARNESS 202 - section 0zz50: the round-204 tokens ==
+   OK   0zz50 live (RED): the pre-204 file has no soldiers rule, 30 waves and 2 charge waves
+   OK   0zz50 ann (RED): the pre-204 file has no soldiers rule, 30 waves and 2 charge waves
+== [annotated] EX1. our Miners at (0,40) fight Skeletons at (0,48) ==
+   OK   [annotated] EX1. our Miners at (0,40) fight Skeletons at (0,48): the file loads
+   OK   [annotated] EX1a-RED: no order at all (0 unit-form, 0 ground)
+== [annotated] EX2. one of our Heroes stands inside the Zombies at (0,60) ==
+   OK   [annotated] EX2. one of our Heroes stands inside the Zombies at (0,60): the file loads
+   OK   [annotated] EX2a-RED: no order (0, 0)
+== [annotated] EX3. Tidecall, a standing enemy at (0,50), nothing charging ==
+   OK   [annotated] EX3. Tidecall, a standing enemy at (0,50), nothing charging: the file loads
+   OK   [annotated] EX3a-RED: no order (the charge trigger) (0, 0)
+== [annotated] EX4. Wind of Death (a wave with drift) in the EX1 melee ==
+   OK   [annotated] EX4. Wind of Death (a wave with drift) in the EX1 melee: the file loads
+   OK   [annotated] EX4a-RED: no order, the safety distance stays for a drifting wave (0, 0)
+== [annotated] EX5. Zombies at (0,60), nothing in the way ==
+   OK   [annotated] EX5. Zombies at (0,60), nothing in the way: the file loads
+   OK   [annotated] EX5a-RED: ONE unit-form order (1 unit-form, 0 ground)
+== [annotated] EX6. EX1 without the game's vector constructor ==
+   OK   [annotated] EX6. EX1 without the game's vector constructor: the file loads
+   OK   [annotated] EX6a-RED: no order, fail closed (0, 0)
+== [annotated] EX7. EX1 with the Skeletons walking ==
+   OK   [annotated] EX7. EX1 with the Skeletons walking: the file loads
+   OK   [annotated] EX7a-RED: no order on a moving target (0, 0)
+== [live] EX1. our Miners at (0,40) fight Skeletons at (0,48) ==
+   OK   [live] EX1. our Miners at (0,40) fight Skeletons at (0,48): the file loads
+   OK   [live] EX1a-RED: no order at all (0 unit-form, 0 ground)
+== [live] EX2. one of our Heroes stands inside the Zombies at (0,60) ==
+   OK   [live] EX2. one of our Heroes stands inside the Zombies at (0,60): the file loads
+   OK   [live] EX2a-RED: no order (0, 0)
+== [live] EX3. Tidecall, a standing enemy at (0,50), nothing charging ==
+   OK   [live] EX3. Tidecall, a standing enemy at (0,50), nothing charging: the file loads
+   OK   [live] EX3a-RED: no order (the charge trigger) (0, 0)
+== [live] EX4. Wind of Death (a wave with drift) in the EX1 melee ==
+   OK   [live] EX4. Wind of Death (a wave with drift) in the EX1 melee: the file loads
+   OK   [live] EX4a-RED: no order, the safety distance stays for a drifting wave (0, 0)
+== [live] EX5. Zombies at (0,60), nothing in the way ==
+   OK   [live] EX5. Zombies at (0,60), nothing in the way: the file loads
+   OK   [live] EX5a-RED: ONE unit-form order (1 unit-form, 0 ground)
+== [live] EX6. EX1 without the game's vector constructor ==
+   OK   [live] EX6. EX1 without the game's vector constructor: the file loads
+   OK   [live] EX6a-RED: no order, fail closed (0, 0)
+== [live] EX7. EX1 with the Skeletons walking ==
+   OK   [live] EX7. EX1 with the Skeletons walking: the file loads
+   OK   [live] EX7a-RED: no order on a moving target (0, 0)
+   OK   HARNESS 202: every world behaved - 14/14
+== HARNESS 202 done: 31 checks in this section ==
+checks: 4402, failures: 4
+HARNESS FAILURES: 4
