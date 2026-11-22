@@ -69,6 +69,7 @@
 "wh2_main_unit_abilities_star_dragons_breath",
 "wh2_main_unit_abilities_sun_dragons_breath",
 "wh2_main_weapon_abilities_hydra_blade",
+"wh2_main_weapon_abilities_sunfang",
 "wh2_pro08_character_abilities_gotrek_doom",
 "wh2_pro08_character_abilities_helping_hand",
 "wh2_pro08_weapon_abilities_karaghul",
@@ -176,6 +177,7 @@
 "wh_main_hero_abilities_ballistics_calibration",
 "wh_main_hero_abilities_slippery",
 "wh_main_item_abilities_crown_of_command",
+"wh_main_item_abilities_fiery_ring_of_thori",
 "wh_main_item_abilities_forbidden_rod",
 "wh_main_item_abilities_opal_amulet",
 "wh_main_item_abilities_pendant_of_slaanesh",
@@ -208,6 +210,6 @@
 "wh_pro01_weapon_abilities_rune_axe_of_grombrindal",
 "wh_pro04_unit_abilities_warp_gaze"
 ],
-"logs_read": 157,
+"logs_read": 158,
 "made": "2026-11-22"
 }

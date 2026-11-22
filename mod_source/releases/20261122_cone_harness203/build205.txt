@@ -129,9 +129,7 @@ ROUND 205 GATE OK: 19 growing waves carry their real cone (start radius, growth 
   <= "Success"
 
 ================ INSTALL ================
-Traceback (most recent call last):
-  File "C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261122_cone_harness203\build_and_install205.py", line 4123, in <module>
-    shutil.copy2(OUT_PACK, GAME_PACK)
-  File "C:\Users\vlady\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\shutil.py", line 460, in copy2
-    _winapi.CopyFile2(src_, dst_, flags)
-PermissionError: [WinError 32] The process cannot access the file because it is being used by another process
+built pack   md5 c613f8a1338a6fce6fd87158bd2de72a
+installed    md5 c613f8a1338a6fce6fd87158bd2de72a
+IDENTICAL    True
+installed to C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack

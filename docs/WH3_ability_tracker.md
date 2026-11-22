@@ -8476,3 +8476,22 @@ round-162 distance. Tidecall and Wind Blast moved from enemy_wave_charge (now em
 **Proof:** harness 202 full suite **8,305 checks / 0 failures**. RED on the round-203 snapshot: no order in the melee
 world, no order with one of our Heroes inside the enemy, no Tidecall on a standing enemy. Workbook v81. Not seen in game
 yet.
+
+### 10.82 Round 205 - the growing waves are cones, enemy single entities are not counted (2026-11-22)
+
+**Field (user, 2026-11-22):** the Fiery Ring of Thori "worked perfectly this time with the dwarves" (round 204
+field-confirmed). "I tested with Sunfang and it casted on the terrain, not on the enemy unit". Ruling in the same message:
+"we should also ignore enemy single entities as the damage to them would be negligible".
+
+**Cause:** Sunfang's vortex starts 0.1 m wide and grows to 12 m over its 48 m path (`battle_vortexs` start_radius,
+goal_radius, expansion_speed 6 m/s at movement_speed 24 m/s). The mod treated it as 12 m wide from start to end, so it
+moved the path 12 m away from our soldiers and the thin part of the cone burned empty ground.
+
+**Change:** GENERATED `FOURTH.WW_CONE_TEXT` (`tools\gen_wave_cone.py`): the 19 exact waves that grow, each with its
+start radius and growth per metre. A soldier is under the wave when it is inside the width the wave has at that spot.
+An exact wave's value counts enemy soldiers only (units of one man are skipped). Round document
+`docs\WH3_round205_cone.md`.
+
+**Proof:** harness 203 full suite **8,320 checks / 0 failures**. RED on the round-204 snapshot: Sunfang's order puts 27 of
+120 enemy soldiers under the real cone (the new one 104), and a lone enemy Lord draws a cast. Workbook v82 (27 trigger
+texts). Not seen in game yet.
