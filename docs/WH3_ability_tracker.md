@@ -8425,3 +8425,29 @@ Immolation (source_type active) stay. Roster: 982 entries / 1,035 keys / 141 fam
 **Proof:** harness 199 full suite **8,245 checks / 0 failures**, twice. RED on the pre-201 snapshot: each of four Master
 Runes fires once by itself with the default states, Endless Whirlwind never fires. Workbook v79 (1,802 rows: 687 excluded,
 1,115 included, 1,035 implemented, 80 decided by the user, 0 open). Not seen in game yet.
+
+### 10.79 Round 202 - the wave probe (2026-11-22)
+
+A console command of the test build, `zz_wave(deg, fwd, side, key)`: a ground-form cast with the orientation argument,
+called by nothing. Field result (the user, three casts): the wave starts at the point and follows the orientation. No
+roster change, no workbook. Harness 200: 8,272 checks / 0 failures. Round document `docs\WH3_round202_wave_probe.md`.
+
+### 10.80 Round 203 - free aim for the straight waves (2026-11-22)
+
+**Field (user, 2026-11-22, two battles):** the Fiery Ring of Thori never fired with a good target in range. One of our
+units stood within 16 m of every line from the caster through an enemy.
+
+**Rulings (user, 2026-11-22):** "A: but be careful. Dragon breaths always come from a caster. Other abilities might also,
+check individually to be sure." (A = free aim, standing targets only) and "All 30 placed". Round document
+`docs\WH3_round203_free_aim.md`.
+
+**Change:** the 30 enemy_wave entries (placed by the game: `battle_vortexs.launch_source` target_near_edge, checked key
+by key by the build) test the caster's line and 24 compass headings across each standing enemy in range. The path with
+the most enemy value that is clear of ours wins, its start inside the cast bound, the caster's line keeps a tie. Another
+heading goes out in the ground form at the path's start with the heading as orientation. Blue Fire of Chaos (2 keys,
+ground-only) is now ordered at its path's start with the bearing: before, on the enemy's centre with orientation 0. The 2
+charge waves and the 5 cones (activator_front) are untouched. Roster unchanged: 982 entries / 1,035 keys / 141 families.
+
+**Proof:** harness 201 full suite **8,301 checks / 0 failures**. RED on the pre-203 snapshot: no order when a friend
+stands on the caster's line. The release build orders the same casts (1,667 identical, the 3 probe casts aside).
+Workbook v80 (30 trigger texts). Not seen in game yet.

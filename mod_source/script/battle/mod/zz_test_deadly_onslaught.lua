@@ -8632,6 +8632,13 @@ local function attempt_activation(script_unit, unit, ability_key, reason, ui_id,
 			log("  ground cast            : perform_special_ability_ground('"
 				.. tostring(ability_key) .. "', <the unit's own position vector>) - the targeted form")
 		end
+	-- ROUND 203: a FREE-AIM wave goes out in the ground form at its path's start, the heading as orientation
+	elseif FOURTH.eg_arm == "ww" and FOURTH.ww_aim ~= nil then
+		ok_call, err_call, no_target = FOURTH.aim_cast(uc, ability_key, FOURTH.ww_aim)
+		if not quiet then
+			log(string.format("  free-aim cast          : perform_special_ability_ground('%s', point (%.1f,%.1f), orientation %.0f, 0)",
+				tostring(ability_key), FOURTH.ww_aim.x, FOURTH.ww_aim.z, FOURTH.ww_aim.deg))
+		end
 	-- ROUND 165: a WW pick whose row is ground-only (Blue Fire of Chaos x2, Siegebreaker, Heaven's Gate, Lamprey's
 	-- Bite, Flesh-eating Scarabs, Magma Storm) is placed on the chosen enemy's ground too: ww_take sets
 	-- FOURTH.eg_ground, which nothing read before (rounds 162-164 cast them in the unit form).
@@ -21731,15 +21738,87 @@ function FOURTH.ww_wave_line(unit, e, row)
 	return sx, sz, sx + hx * row.path, sz + hz * row.path
 end
 
+-- ============================================================================
+-- ROUND 203 - FREE AIM FOR THE STRAIGHT WAVES (user rulings 2026-11-22: "A: but
+-- be careful. Dragon breaths always come from a caster. Other abilities might
+-- also, check individually to be sure." and "All 30 placed"). The game PLACES
+-- these waves (launch_source target_near_edge; the build checks every key), and
+-- the round-202 probe showed that a ground-form order starts the wave at the
+-- point and sends it along the ORIENTATION. So the evaluator no longer tests
+-- only the line from the caster through the enemy: for each standing enemy in
+-- range it also tests FREE_AIM_STEPS compass headings. A path counts when its
+-- START is inside the ability's own bound from the caster (the caster never
+-- walks) and none of ours stands within the round-162 distances. The most enemy
+-- value wins; the caster's own line is tested first and keeps a tie.
+-- TEST-ONLY: ZZ_AUTO_TEST_NO_FREE_AIM (the harness sets it for worlds written
+-- before round 203) keeps the caster's line only.
+-- ============================================================================
+FOURTH.FREE_AIM_STEPS = 24      -- ROUND 203: one heading every 15 degrees
+FOURTH.ww_aim = nil             -- ROUND 203: the chosen free aim { x, z, deg, hx, hz } (cleared by FOURTH.entry_reset)
+
+-- the compass bearing (degrees, 0..360) of a heading on X/Z: a bearing b faces (sin b, cos b)
+function FOURTH.ww_bearing(hx, hz)
+	local b = math.deg((math.atan2 or math.atan)(hx, hz))
+	if b < 0 then b = b + 360 end
+	return b
+end
+
+-- a free-aim path across e along the heading (hx, hz): its value and its start, or nil when the start is out of the
+-- caster's bound or one of ours is too close. NO gate on the enemy itself (the caller has asked it).
+function FOURTH.ww_aim_value(unit, e, m, row, hx, hz)
+	local back = row.off + (e.half or 0)
+	local sx, sz = e.x - hx * back, e.z - hz * back
+	local cx, cz = FOURTH.self_xz(unit)
+	if cx == nil then return nil end
+	if FOURTH.eg_no_bound ~= true then
+		local bound = FOURTH.eg_range_m
+		if bound == nil or math.sqrt((sx - cx) ^ 2 + (sz - cz) ^ 2) > bound then return nil end
+	end
+	local val = FOURTH.ww_line_value(unit, m, row, sx, sz, sx + hx * row.path, sz + hz * row.path)
+	if val == nil then return nil end
+	return val, sx, sz
+end
+
+-- the pre-cast text of a free aim (the live copy's reason line)
+function FOURTH.ww_aim_text()
+	local a = FOURTH.ww_aim
+	if a == nil then return "" end
+	return string.format("; FREE AIM: the wave starts at (%.1f,%.1f) and rolls on bearing %.0f", a.x, a.z, a.deg)
+end
+
+-- THE FREE-AIM CAST HELPER: the ground form at the path's start with the heading as orientation. The point is built
+-- with the game's own v(x, height, z) on the terrain height; anything unreadable -> no_target (the caller holds).
+function FOURTH.aim_cast(uc, ability_key, aim)
+	local pos = nil
+	pcall(function()
+		local h = bm:get_terrain_height(aim.x, aim.z)
+		if type(h) == "number" then pos = v(aim.x, h, aim.z) end
+	end)
+	if pos == nil then return nil, nil, true end
+	local ok_call, err_call = pcall(function()
+		uc:perform_special_ability_ground(ability_key, pos, aim.deg, 0)
+	end)
+	return ok_call, err_call, false
+end
+
 -- a wave candidate: the enemy value its path touches, or nil when it is not allowed or not safe
-function FOURTH.ww_wave_value(unit, e, m, row, moving_ok)
+-- ROUND 203: with a heading (hx, hz) the path is the free-aim one (and its start comes back too)
+function FOURTH.ww_wave_value(unit, e, m, row, moving_ok, hx, hz)
 	-- ROUND 164: moving_ok = the charge arm (Tidecall, Wind Blast: the target is a charging enemy)
 	if not (FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit)
 		and (moving_ok or FOURTH.ww_target_still(e))) then
 		return nil
 	end
+	if hx ~= nil then return FOURTH.ww_aim_value(unit, e, m, row, hx, hz) end
 	local sx, sz, ex, ez = FOURTH.ww_wave_line(unit, e, row)
 	if sx == nil then return nil end
+	local val = FOURTH.ww_line_value(unit, m, row, sx, sz, ex, ez)
+	if val == nil then return nil end
+	return val, sx, sz
+end
+
+-- ROUND 203: the friendly test and the value of ONE path S-E (nil when one of ours is too close)
+function FOURTH.ww_line_value(unit, m, row, sx, sz, ex, ez)
 	if row.allies then
 		-- the drift grows from 0 at the start to the 95% value at the end (it grows slower than a straight line, so
 		-- this cone is on the safe side): the margin for a unit is taken at its farthest point along the path.
@@ -21810,7 +21889,8 @@ function FOURTH.ww_wander_value(unit, e, m, row)
 end
 
 -- the chosen target becomes the cast target (a ground-only ability casts on the ground under it)
-function FOURTH.ww_take(unit, e, row)
+function FOURTH.ww_take(unit, e, row, aim)
+	FOURTH.ww_aim = aim   -- ROUND 203: nil = the caster's own line, cast as before
 	FOURTH.eg_enemy = e.unit
 	FOURTH.eg_arm = "ww"
 	FOURTH.eg_caster_su = FOURTH.eg_fresh_caster_su(unit)
@@ -21842,6 +21922,19 @@ function FOURTH.ww_still_ok(enemy, unit)
 		if eid == id then
 			if row.kind == 1 then
 				if FOURTH.ww_charge == true and FOURTH.fast_enemy_near(e.unit, unit) == nil then return false end
+				if FOURTH.ww_aim ~= nil then
+					-- ROUND 203: the same heading on the fresh map; the start follows the enemy
+					local a = FOURTH.ww_aim
+					local val, sx, sz
+					if a.legacy then
+						val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row)
+					else
+						val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row, false, a.hx, a.hz)
+					end
+					if val == nil then return false end
+					a.x, a.z = sx, sz
+					return true
+				end
 				return FOURTH.ww_wave_value(unit, e, m, row, FOURTH.ww_charge == true) ~= nil
 			end
 			if row.kind == 4 then return FOURTH.ww_strike_value(unit, e, m, row) ~= nil end   -- ROUND 163
@@ -21859,14 +21952,38 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 	local row = FOURTH.ww_row()
 	if routing or row == nil or row.kind ~= 1 or not FOURTH.ww_caster_ok(unit) then return nil end
 	local m = FOURTH.blob_map(false)
-	local best, bv = nil, nil
+	local best, bv, aim = nil, nil, nil
+	local free = (ZZ_AUTO_TEST_NO_FREE_AIM ~= true)   -- ROUND 203
+	local cx, cz = FOURTH.self_xz(unit)
 	for i = 1, #m.all do
 		local e = m.all[i]
-		local v = FOURTH.ww_wave_value(unit, e, m, row)
-		if v ~= nil and (bv == nil or v > bv) then best, bv = e, v end
+		-- the caster's own line first: it keeps a tie
+		local val, sx, sz = FOURTH.ww_wave_value(unit, e, m, row)
+		if val ~= nil and (bv == nil or val > bv) then
+			best, bv, aim = e, val, nil
+			if free and row.ground and cx ~= nil then
+				-- a ground-only wave has no unit form: its own line goes out as an aimed ground order too
+				local dx, dz = e.x - cx, e.z - cz
+				local len = math.sqrt(dx * dx + dz * dz)
+				if len >= 0.5 then
+					aim = { x = sx, z = sz, hx = dx / len, hz = dz / len, deg = FOURTH.ww_bearing(dx / len, dz / len), legacy = true }
+				end
+			end
+		end
+		if free and FOURTH.eg_class_ok(e.unit) and FOURTH.eg_enemy_within_bound(unit, e.unit) and FOURTH.ww_target_still(e) then
+			for k = 0, FOURTH.FREE_AIM_STEPS - 1 do
+				local ang = math.rad(k * 360 / FOURTH.FREE_AIM_STEPS)
+				local hx, hz = math.sin(ang), math.cos(ang)
+				local v2, ax, az = FOURTH.ww_aim_value(unit, e, m, row, hx, hz)
+				if v2 ~= nil and (bv == nil or v2 > bv) then
+					best, bv = e, v2
+					aim = { x = ax, z = az, hx = hx, hz = hz, deg = k * 360 / FOURTH.FREE_AIM_STEPS }
+				end
+			end
+		end
 	end
 	if best == nil then return nil end
-	FOURTH.ww_take(unit, best, row)
+	FOURTH.ww_take(unit, best, row, aim)
 	local etype = "enemy"
 	pcall(function() etype = tostring(best.unit:type()) end)
 	local d = FOURTH.eg_enemy_gap(unit, best.unit)
@@ -21874,7 +21991,7 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 		.. "within %sm of its start growing to %sm at its end (radius %s + 95%% drift %s + %s); distance %sm bound %sm",
 		etype, tostring(row.path), bv, tostring(row.r + FOURTH.SHOT_SAFE_M), tostring(row.r + row.buf + FOURTH.SHOT_SAFE_M),
 		tostring(row.r), tostring(row.buf), tostring(FOURTH.SHOT_SAFE_M),
-		(d ~= nil) and string.format("%.1f", d) or "?", tostring(FOURTH.eg_range_m))
+		(d ~= nil) and string.format("%.1f", d) or "?", tostring(FOURTH.eg_range_m)) .. FOURTH.ww_aim_text()
 end
 
 function FOURTH.evaluate_enemy_wander(unit, routing)
@@ -24367,6 +24484,7 @@ function FOURTH.entry_reset(ability, unit)
 	FOURTH.eg_arm = nil
 	FOURTH.eg_caster_su = nil
 	FOURTH.eg_ground = nil
+	FOURTH.ww_aim = nil   -- ROUND 203: the free aim of a wave
 	FOURTH.eg_melee_only = nil
 	-- THE SUMMON ROUND (harness 102): the self-summon arm and the two
 	-- non-commander enemy modes are cleared before EVERY evaluate, so no

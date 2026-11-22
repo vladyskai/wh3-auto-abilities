@@ -1,0 +1,43 @@
+== HARNESS 201 - section 0zz49: the round-203 tokens ==
+   OK   0zz49 live (RED): the pre-203 file has no free aim
+   OK   0zz49 ann (RED): the pre-203 file has no free aim
+== [annotated] FA1. Zombies at (0,60), our Miners at (0,30) on the caster's line ==
+   OK   [annotated] FA1. Zombies at (0,60), our Miners at (0,30) on the caster's line: the file loads
+   OK   [annotated] FA1a-RED: no order at all (0 unit-form, 0 ground)
+== [annotated] FA2. Zombies at (0,60), no friend in the way ==
+   OK   [annotated] FA2. Zombies at (0,60), no friend in the way: the file loads
+   OK   [annotated] FA2a-RED: ONE unit-form order, no ground order (1, 0)
+== [annotated] FA3. two Zombie units side by side at (-20,60) and (20,60) ==
+   OK   [annotated] FA3. two Zombie units side by side at (-20,60) and (20,60): the file loads
+   OK   [annotated] FA3a-RED: ONE unit-form order (1 unit-form, 0 ground)
+== [annotated] FA4. FA1 without the game's vector constructor ==
+   OK   [annotated] FA4. FA1 without the game's vector constructor: the file loads
+   OK   [annotated] FA4a-RED: no order, fail closed (0, 0)
+== [annotated] FA5. Blue Fire of Chaos (ground-only), an enemy at (30,40), the line clear ==
+   OK   [annotated] FA5. Blue Fire of Chaos (ground-only), an enemy at (30,40), the line clear: the file loads
+   OK   [annotated] FA5a-RED: the old order: orientation 0 (0 unit-form, 1 ground; orientation 0)
+== [annotated] FA6. FA1 with the Zombies walking ==
+   OK   [annotated] FA6. FA1 with the Zombies walking: the file loads
+   OK   [annotated] FA6a-RED: no order on a moving target (0, 0)
+== [live] FA1. Zombies at (0,60), our Miners at (0,30) on the caster's line ==
+   OK   [live] FA1. Zombies at (0,60), our Miners at (0,30) on the caster's line: the file loads
+   OK   [live] FA1a-RED: no order at all (0 unit-form, 0 ground)
+== [live] FA2. Zombies at (0,60), no friend in the way ==
+   OK   [live] FA2. Zombies at (0,60), no friend in the way: the file loads
+   OK   [live] FA2a-RED: ONE unit-form order, no ground order (1, 0)
+== [live] FA3. two Zombie units side by side at (-20,60) and (20,60) ==
+   OK   [live] FA3. two Zombie units side by side at (-20,60) and (20,60): the file loads
+   OK   [live] FA3a-RED: ONE unit-form order (1 unit-form, 0 ground)
+== [live] FA4. FA1 without the game's vector constructor ==
+   OK   [live] FA4. FA1 without the game's vector constructor: the file loads
+   OK   [live] FA4a-RED: no order, fail closed (0, 0)
+== [live] FA5. Blue Fire of Chaos (ground-only), an enemy at (30,40), the line clear ==
+   OK   [live] FA5. Blue Fire of Chaos (ground-only), an enemy at (30,40), the line clear: the file loads
+   OK   [live] FA5a-RED: the old order: orientation 0 (0 unit-form, 1 ground; orientation 0)
+== [live] FA6. FA1 with the Zombies walking ==
+   OK   [live] FA6. FA1 with the Zombies walking: the file loads
+   OK   [live] FA6a-RED: no order on a moving target (0, 0)
+   OK   HARNESS 201: every world behaved - 12/12
+== HARNESS 201 done: 27 checks in this section ==
+checks: 4398, failures: 0
+HARNESS OK - all checks passed
