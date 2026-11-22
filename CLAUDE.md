@@ -15,8 +15,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Packed as a Movie pack and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `346e1448d5de45e57c805a81dde8436f`, 1,643,299 bytes
-  (round 207, 2026-11-22, tuning: the drifting waves count standing enemies only, no orientation-0 wave). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `1d2c5abb71b2267b0ce6ce8ceb95d5ba`, 1,643,517 bytes
+  (round 208, 2026-11-22, tuning: the free-aim search is skipped while not castable and spread by unit id). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +161,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_review_harness205/build_and_install207.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_searchcost_harness206/build_and_install208.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness205: 8,350 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness206: 8,365 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -367,7 +367,13 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   enemy_wander / enemy_blob counting walkers, Chain Lightning dlc27 near our units, the player's own cast replaced
   by the mod, the dead transformation re-scan, phantom casts after the last use, the search cost). MEASURED: the
   free-aim search costs 11 to 13 ms per search under lupa (20 v 20 mock, few enemies in range), once per second
-  per armed wave caster, also while the ability recharges. Next battle from byte 1,052,150,771 (re-measure).
+  per armed wave caster, also while the ability recharges. ROUND 208 (TUNING, INSTALLED: test pack md5 1d2c5abb...,
+  release pack md5 04a868e8...): the wave evaluator returns before the search when can_perform_special_ability is
+  exactly false, and searches on the polls where (tick_count + unit id) % FREE_AIM_EVERY == 0 (FOURTH.aim_next is
+  gone). Harness 206: 8,365 / 0 (once), the cast trace matches the release apart from the 3 probe casts. The
+  LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
+  (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
+  abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
 - ROUND 206 (2026-11-22, TUNING, INSTALLED: test pack md5 b4db5260..., release pack md5 d74e4685...). FIELD
   (archive\logs\battle_20261122_r205_cone.txt, bytes 1,036,362,003-1,045,400,480; user: "why it casts so far away
   from the main blob?", then "a second cast, and that one was perfect. So still a bit inconsistent"): at the first

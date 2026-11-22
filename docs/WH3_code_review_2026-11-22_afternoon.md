@@ -21,15 +21,20 @@ Measured separately: the free-aim search costs 11 to 13 ms per search in the tes
 few enemies inside the cast range), once per second per armed wave caster. The game's Lua is slower than the harness's,
 by a factor that is not known.
 
-## 1. Fixed today (round 207, inside rulings that already exist)
+## 1. Fixed today (rounds 207 and 208, inside rulings that already exist)
 
 | # | Defect | Fix |
 |---|---|---|
 | F1 | The 5 drifting waves (Wrath of Manann, Wind of Death, The Burning Head x2, Arnzipal's Black Horror) still counted WALKING enemies when choosing a path. Round 206 had fixed only the exact waves. They take 3 to 5 s to cast and then roll slowly. | A wave's path value counts standing enemies only. |
 | F2 | Blue Fire of Chaos (ground-only) could fall back to the old order, the enemy's centre with direction 0 (north), when the caster's position was unreadable or the enemy stood on the caster. | It holds. |
+| F3 | The path search of a wave ran once per second for the whole battle, also while the ability recharged (item C5). | It is skipped while the game says the ability cannot be cast. |
+| F4 | All armed wave casters searched on the same poll (item D). | The poll depends on the unit's id, so they are spread out. |
 
-Proof: harness 205, 8,350 checks, 0 failures (once). The old build reproduces F1. Test pack md5
-`346e1448d5de45e57c805a81dde8436f`, release pack rebuilt.
+Proof: harness 206, 8,365 checks, 0 failures (once). The old builds reproduce F1, F3 and F4. Test pack md5
+`1d2c5abb71b2267b0ce6ce8ceb95d5ba`, release pack rebuilt, the casts of both builds compared.
+
+F3 has a limit: for an ability with several uses the game answers "can be cast" even with none left, so those
+still search.
 
 ## 2. Findings that need a ruling, ranked
 
@@ -67,6 +72,22 @@ Proof: harness 205, 8,350 checks, 0 failures (once). The old build reproduces F1
 | C7 | **Ghost selection while paused.** The veto that removes units the game forgot to deselect counts battle time, which stops during a pause. | Pause, box-select seven units, click one, click a letter: it can flip all seven. | Reviewer's reading. |
 | C8 | Small: the retry after a cooldown refusal can run every quarter second. The air-drop fast pass walks every unit five times a second even when nobody owns an air drop. | Wasted work, no wrong cast. | Reviewer's reading. |
 
+### E. The shared triggers of the other families
+
+| # | What | Situation | Evidence |
+|---|---|---|---|
+| E1 | **Slow units can never be seen charging.** A charge needs a gap of at least 12 m AND contact within 4 s (gap divided by run speed). Both hold only for units that run faster than 3 m/s. At 3.4 m/s the window is 1.6 m wide, under half a second. | A slow foot Lord, Hero or unit with a charge ability on A: it never fires on the charge. Triggers with a melee arm fire at contact instead. The ones with no other arm never fire: Potion of Speed, Swiftness of Itzl, Twilight Horn I, Apocalyptic Charge, Ferocious Battle Howl and 7 more. | VERIFIED in the code (12 m, 4 s). The reviewer counted 190 of 1,557 foot unit types at 3.0 m/s or less (Skeleton Warriors, Tomb Guard at 2.8) and 313 more below 3.5. The archived battles hold 24 charge detections, none from a unit slower than 3 m/s. |
+| E2 | **Three area triggers measure neighbours from the wrong point.** They count a neighbour as inside the area when its edge is within the radius of the chosen unit's EDGE, while the effect lands on the chosen unit's CENTRE. | A 45 m wide missile line: a neighbour 24 m from its flank is about 46 m from where a 35 m effect lands. The mod counts it. Affects the caster and shooter hexes (5 entries), Star of Avelorn and Master of Mists. | Reviewer's reading of the code. The blob and blast code does this correctly. |
+| E3 | **The "running at us" test starts late.** It only starts watching an enemy once that enemy is already inside the ability's cast range, then needs 1 s. | Cavalry covers about 9 m in that second, so a root with a short range fires late or not at all. 18 roots and slows. | Reviewer's reading. |
+| E4 | Small: two families test the game's minimum range on the closest fighting enemy only and give up if it is too close, although a second one further out would do. | 7 entries. | Reviewer's reading. |
+| E5 | Still open from the overnight review: an unreadable ally distance counts as in range, enemy pickers keep routing enemies, an unreadable value counts as the cheapest unit. | Low. | Reviewer's reading. |
+
+The two systematic checks came back clean: all 42 health comparisons use the right scale (percent against percent), and
+no ability inherits another's target through a slot that is not reset.
+
+Open question from this review: whether the game returns the barrier and health values as numbers or as text. If text,
+the one barrier trigger and Grut's Sickle's "expendable" arm never fire. No archived battle shows either firing.
+
 ### D. Precision of today's wave rule
 
 - **"At most 5 of our soldiers" is coarser than it reads.** The count uses a grid of points over each unit. In a 120-man
@@ -100,7 +121,9 @@ Proof: harness 205, 8,350 checks, 0 failures (once). The old build reproduces F1
    rule Da Boss' Loons already has.
 2. C1, the player's own cast. It is the finding most likely to be felt as "the mod ruined my spell". It needs one probe
    first: whether the game's command callback also fires for the mod's own orders.
-3. B1 and B2, the breaths and Lamprey's Bite: the Sunfang fix applied to the remaining cones. It needs a probe of where a
+3. E1, the charge detector. It silently disables charge abilities on every slow army (Dwarfs, Undead infantry). The
+   12 m and 4 s figures are trigger design, so it needs a ruling.
+4. B1 and B2, the breaths and Lamprey's Bite: the Sunfang fix applied to the remaining cones. It needs a probe of where a
    caster-front breath starts.
 4. B3 and B4, standing enemies only for the area blasts. One small change, but it will make them fire later and less
    often, so it is a trigger decision.

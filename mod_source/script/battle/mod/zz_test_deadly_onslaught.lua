@@ -22073,17 +22073,15 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 	local exact = FOURTH.ww_exact(row)   -- ROUND 204
 	local shifts = exact and FOURTH.FREE_AIM_SHIFTS or { 0 }
 	if free then
-		-- ROUND 204: the search is heavy (24 headings x the shifts per enemy): once per FREE_AIM_EVERY polls
-		local id = "?"
-		pcall(function() id = tostring(unit:unique_ui_id()) end)
-		local key = tostring(FOURTH.rc_self_keys and FOURTH.rc_self_keys[1])
-		local per = FOURTH.aim_next[id]
-		if per == nil then
-			per = {}
-			FOURTH.aim_next[id] = per
-		end
-		if (per[key] or 0) > tick_count then return nil end
-		per[key] = tick_count + FOURTH.FREE_AIM_EVERY
+		-- ROUND 204: the search is heavy (24 headings x the shifts per enemy): once per FREE_AIM_EVERY polls.
+		-- ROUND 208: WHICH poll depends on the unit's id, so several wave casters do not all search on the same one
+		local idn = 0
+		pcall(function() idn = tonumber(unit:unique_ui_id()) or 0 end)
+		if (tick_count + idn) % FOURTH.FREE_AIM_EVERY ~= 0 then return nil end
+		-- ROUND 208: no search while the ability cannot be cast (its recharge): only an exact false skips it
+		local key = FOURTH.rc_self_keys and FOURTH.rc_self_keys[1]
+		local ok_can, can = pcall(function() return unit:can_perform_special_ability(key) end)
+		if ok_can and can == false then return nil end
 	end
 	for i = 1, #m.all do
 		local e = m.all[i]

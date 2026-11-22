@@ -8526,3 +8526,13 @@ orientation 0 and now holds.
 **Proof:** harness 205 full suite **8,350 checks / 0 failures** (once). RED on the round-206 snapshot: a walking unit
 pulls Wind of Death across both blocks. Tuning round: no workbook version. Everything else the review found waits for
 rulings.
+
+### 10.85 Round 208 (tuning) - the cost of the free-aim search (2026-11-22)
+
+From the afternoon code review (items C5 and D). No cast decision changes. The wave evaluator skips its path search while
+`can_perform_special_ability` reads exactly false (the recharge), and the poll on which a caster searches depends on its
+unit id, so several wave casters do not all search on the same poll. `FOURTH.aim_next` is gone.
+
+**Proof:** harness 206 full suite **8,365 checks / 0 failures** (once). RED on the round-207 snapshot: the search runs
+while the ability cannot be cast (7 reads against 1), and four casters search on one poll. The cast trace of the whole
+suite matches between the test build and the release build apart from the 3 probe casts. Tuning round: no workbook.

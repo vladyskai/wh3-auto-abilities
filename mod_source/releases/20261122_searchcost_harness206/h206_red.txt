@@ -1,0 +1,25 @@
+== HARNESS 206 - section 0zz54: the round-208 tokens ==
+   OK   0zz54 live (RED): the pre-208 file has the per-caster table and no readiness test
+   OK   0zz54 ann (RED): the pre-208 file has the per-caster table and no readiness test
+== [annotated] PF1. the ring cannot be cast (recharging), Zombies stand in range ==
+   OK   [annotated] PF1. the ring cannot be cast (recharging), Zombies stand in range: the file loads
+   OK   [annotated] PF1a-RED: no order, the enemy's is_moving() read 7 time(s) (RED: the search ran)
+== [annotated] PF2. four casters with consecutive ids, every search ends in a held order ==
+   OK   [annotated] PF2. four casters with consecutive ids, every search ends in a held order: the file loads
+   OK   [annotated] PF2a-RED: 4 searches reached the aim over 1 poll(s), at most 4 on one poll (RED: 4 together)
+== [annotated] PF3. one caster, the ring ready ==
+   OK   [annotated] PF3. one caster, the ring ready: the file loads
+   OK   [annotated] PF3a-RED: ONE aimed order within 6 polls (0, 1)
+== [live] PF1. the ring cannot be cast (recharging), Zombies stand in range ==
+   OK   [live] PF1. the ring cannot be cast (recharging), Zombies stand in range: the file loads
+   OK   [live] PF1a-RED: no order, the enemy's is_moving() read 7 time(s) (RED: the search ran)
+== [live] PF2. four casters with consecutive ids, every search ends in a held order ==
+   OK   [live] PF2. four casters with consecutive ids, every search ends in a held order: the file loads
+   OK   [live] PF2a-RED: 4 searches reached the aim over 1 poll(s), at most 4 on one poll (RED: 4 together)
+== [live] PF3. one caster, the ring ready ==
+   OK   [live] PF3. one caster, the ring ready: the file loads
+   OK   [live] PF3a-RED: ONE aimed order within 6 polls (0, 1)
+   OK   HARNESS 206: every world behaved - 6/6
+== HARNESS 206 done: 15 checks in this section ==
+checks: 4386, failures: 0
+HARNESS OK - all checks passed

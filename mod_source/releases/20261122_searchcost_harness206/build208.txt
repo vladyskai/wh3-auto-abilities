@@ -1,0 +1,138 @@
+C:\Users\vlady\Desktop\WH3_mod\mod_source\releases\20261122_searchcost_harness206\build_and_install208.py:386: DeprecationWarning: connect() must be used as a context manager: with connect(...) as websocket: ...; alternatively, use websocket = connect(..., legacy=True) to connect directly
+  print("  hello:", json.dumps(json.loads(self.ws.recv(timeout=15))))
+ARMY-BAR GATE OK: 1035 ABILITIES keys, none of them in the 286-key army_spec junction
+removed stale build output: C:/Users/vlady/Desktop/WH3_mod/mod_source/dist/zz_test_deadly_onslaught.pack
+installed pack left in place until the INSTALL step: True
+source zz_test_deadly_onslaught.lua        1635707 bytes  sha256 b141cdc5d76545cadd01a620f2a02468
+source zz_auto_badge.twui.xml                 2864 bytes  sha256 d95f04610529c2dd90f6ad3ac0b96434
+source blank.png                                69 bytes  sha256 f164334dc3985e3b8d95b71e59462c9c
+source auto_badge.png                          252 bytes  sha256 31e69b91d59795f90c7920091729f23c
+source smart_ability_autocast.lua             3968 bytes  sha256 279a12544d39cd450c136f9138ff8fa4
+  hello: {"id": 0, "data": {"SessionConnected": 1}}
+
+== 1 select game
+  <= {"CompressionFormatDependenciesInfo": ["None", null]}
+
+== 2 new pack
+  <= {"String": "new_pack.pack"}
+
+== 3 add the main script and the three ui files
+  <= {"VecContainerPathOptionString": [[{"File": "script/battle/mod/zz_test_deadly_onslaught.lua"}, {"File": "ui/templates/zz_auto_badge.twui.xml"}, {"File": "ui/zz_auto/blank.png"}, {"File": "ui/zz_auto/a
+
+== 4 type = Movie
+  <= "Success"
+
+== 5 list contents
+  <= {"ContainerInfoVecRFileInfo": [{"file_name": "new_pack.pack", "file_path": "new_pack.pack", "pfh_version": "PFH5", "pfh_file_type": "Movie", "bitmask": "", "compress": "None", "timestamp": 0}, [{"path
+   container: Movie | files: ['script/battle/mod/zz_test_deadly_onslaught.lua', 'script/mct/settings/smart_ability_autocast.lua', 'ui/templates/zz_auto_badge.twui.xml', 'ui/zz_auto/auto_badge.png', 'ui/zz_auto/blank.png']
+   script/battle/mod/zz_test_deadly_onslaught.lua    1635707 bytes  MATCHES SOURCE: True
+   ui/templates/zz_auto_badge.twui.xml                  2864 bytes  MATCHES SOURCE: True
+   ui/zz_auto/blank.png                                   69 bytes  MATCHES SOURCE: True
+   ui/zz_auto/auto_badge.png                             252 bytes  MATCHES SOURCE: True
+   script/mct/settings/smart_ability_autocast.lua       3968 bytes  MATCHES SOURCE: True
+
+== 6 what the pack must contain
+   static card line retired (not in the pack): True
+   the double-click toggles are gone         : True and True
+   dead property-route code left behind      : 0 (want 0)
+ROUND 123 GATE OK: enemy_melee evaluator wired, 3 entries, no Daemonic Possession
+ROUND 125 GATE OK: spell-bar buttons are never claimed; the ammo probe is in
+ROUND 126 GATE OK: RELOAD TABLE MATCHES the game data in C:/Users/vlady/Desktop/WH3_mod/mod_source/script/battle/mod/zz_test_deadly_onslaught.lua
+ROUND 127 GATE OK: OFF = max(2 x reload, 20 s); a lost target is logged, not formatted
+ROUND 128 GATE OK: fix A (engine-selected unit, READY button) and the NOT FIRING snapshot are in
+ROUND 129 GATE OK: a unit whose card reads unselected for 2 polls leaves the selected set
+ROUND 130 GATE OK: Restock!, Ballistics Calibration and Skjalandir's Fall's shooting arm are wired
+ROUND 131 GATE OK: 8 firing auras, 3 new triggers, Farsight's 1.21 band, no stance left
+ROUND 132 GATE OK: 13 entries on the new shooting-aware triggers; patch 9.0.5 data in
+ROUND 133 GATE OK: 3 on under_fire, 4 on melee_or_under_fire
+ROUND 134 GATE OK: 5 on charge_only, 36 on charge_or_melee, Thunderburner gone
+ROUND 135 GATE OK: enemy_melee 14, enemy_fast_near_ally 4, 15 target classes; size tables match the game (980 large, 1479 single)
+ROUND 136 GATE OK: enemy_melee 34, enemy_fast_near_ally 7, enemy_engaged_or_shot 47, 16 target classes
+ROUND 137 GATE OK: 9 on wavering_aura, 6 on wavering_ally_range, melee_unwavering 314
+ROUND 138 GATE OK: 21 target classes, enemy_missile_shooting 1, the undead table matches the game
+ROUND 139 GATE OK: Stand Your Ground on melee_or_wavering_aura
+ROUND 140 GATE OK: the moving rule guards every firing-flag read; Blooood! on self_running; fire_move matches the game
+ROUND 141 GATE OK: casts remembered; 5 + 1 + 1 + 1 reducers on their families; the lock table matches the game
+ROUND 142 GATE OK: 5 new entries / 6 keys; 250 m -> 175 m; Blooood! on self_moving
+ROUND 143 GATE OK: 9 new entries / 11 keys; 25 m -> 17 m; enemy_ground_shooting wired
+ROUND 144 GATE OK: 10 new entries / 10 keys; 5 new families; 3 skipped abilities absent
+ROUND 145 GATE OK: the map probe is read-only and pcall'd once per poll
+ROUND 146 GATE OK: 77 blob entries; the tables match the game; 10 m margin; half a packed block
+ROUND 149 GATE OK: no address field and no memreader code
+ROUND 150 GATE OK: value rule, armour 50, standstill, 21 when_ready, WINDS row; the tables match the game
+ROUND 151 GATE OK: large first, usage rules, breath band 0.8, 28 default-armed families (round 152), ALL badge; tables match
+ROUND 152 GATE OK: no hold, fliers skipped, 90 degrees for 53 central attacks, tired armed, ALL badge on screen
+ROUND 153 GATE OK: trash below 2 per soldier unless 3 packed blocks; ALL shown for any owner; spot; tooltip
+ROUND 154 GATE OK: the ALL control is the game's round toggle button (template and icon found in the game's packs); pressed sync; zz_all_nudge / zz_all_set / zz_all_where
+ROUND 155 GATE OK: the ALL button at the hand-tuned (-923, 0)
+ROUND 156 GATE OK: 11 magic missiles on 5 families; the SHOT table matches the game; 10 m; 120 m -> 84 m; single class
+ROUND 157 GATE OK: 10 drains, 2 executes; the SHOT and EXEC tables match the game; commander class on the base Executioner
+ROUND 158 GATE OK: 7 area drains, the Leach Orb proxy, Storm flying-only, the morale hexes; the AREA table matches the game
+ROUND 159 GATE OK: group E on its families (5 melee_clear, 2 fly_dive, 1 last_stand_clear, 1 enemy_blob_vortex), the Sigil's commander_ground class; the VORTEX table matches the game (10 keys)
+ROUND 160 GATE OK: when_ready skips a routing unit; instant abilities hold their unit one poll; the wind-up table matches the game (343 of 1003 keys have a wind-up)
+ROUND 161 GATE OK: the 14 ally melee buffs start armed; the friendly-fire families still start unarmed
+ROUND 162 GATE OK: 12 waves, 20 wanderers, the ww re-check, both unarmed by default; the WW table matches the game
+ROUND 163 GATE OK: the strike and the vassal wired and unarmed, the expendable / cheap skip; the EXPENDABLE table matches the game (48 units)
+ROUND 164 GATE OK: the charge waves, the cones and the sweeps wired and unarmed; the caster no longer blocks its own wave; WW_NOMELEE matches the game
+ROUND 165 GATE OK: USAGE (62 keys) and ATARGET (73 keys) match the game; 140 families carry a card; the gates, the ground line and the badge card are in place; every range_real has its 70% bound
+ROUND 166 GATE OK: 150 short card sentences, no distances, no name; the ALL text; the caster never blocks its wanderer; friendly-fire checks only on blasts that hit our units (92 keys); the card xml retired
+ROUND 167 GATE OK: RISKY (22 keys) matches the game and keeps them on M by default; no final period on the cards or the ALL text
+ROUND 168 GATE OK: ANIM (234 of 1003 keys) matches the game; the stand-still gate asks it; both pickers skip hidden enemies
+ROUND 169 GATE OK: the air drop, the 'just beyond range' read and the contact set skip hidden enemies
+ROUND 170 GATE OK: Potion of Foolhardiness fires on its charge or when wavering, and still starts armed
+ROUND 171 GATE OK: CONTACT (503 land units) matches the game; six families wired; Ursun's Roar and Waaagh! split; nine abilities closed; the fresh-contact tracker polled
+ROUND 172 GATE OK: Horn (every living unit in a smaller army), Waaagh! (army charge or army melee), Ursun's Roar (one unit charging or wavering)
+ROUND 173 GATE OK: Null Stone and Rock Eye are closed
+ROUND 174 GATE OK: SPELLCASTER (865 land units) matches the game; 13 families wired; 27 entries moved
+ROUND 174 COMPILE GATE OK: the script compiles
+ROUND 175 GATE OK: Master of Mists fires before range, else under the shooting missile units
+ROUND 176 GATE OK: Master of Mists starts armed
+ROUND 177 GATE OK: SQUIG (10 land units) matches the game; 9 families wired; 15 entries moved; Daemonshield kept
+ROUND 178 GATE OK: 3 families wired; 20 entries moved; Trophy Heads split; Eye of Khorne value-first; fire-first; floor 16
+ROUND 179 GATE OK: 6 families wired; 12 entries moved, defaults kept; 5 ranked modes; spot/deep re-checks; the wavering pair; Grut's winds gate
+ROUND 180 GATE OK: 4 families wired; 13 entries moved, defaults right; 3 closed; roots at 100 m; 80% WW keys; lizard (133) / tiger (9) sets match the game; Land Mine kept
+ROUND 181 GATE OK: 2 families wired; 60 soldiers; summon blast 21 m matches the game; 0 range mismatches; Lord of Undeath split
+ROUND 182 GATE OK: 2 families wired; the Executioner's 90% bound (225 m); execute ranks the highest health; Skjalandir moved
+ROUND 183 GATE OK: 9 entries on the ruled families (4 enemy_melee_near at 35 m, 2 melee_health75, 3 melee_unwavering); 6 holds
+ROUND 184 GATE OK: 10 entries on the ruled families with the game's ranges; 2 families wired; the 75% gate; Warpstorm flying; Raging Tornado on the ground; 7 holds
+multi-use keys: 7
+wind-up keys: 17
+ROUND 185 GATE OK: 33 entries on the ruled families; 2 families wired; the 30-men floor; 2 ground keys; the rune's 10 m bombardment
+ROUND 186 GATE OK: Warpstorm Scroll on enemy_most_valuable (flying only, 100 m -> 70 m)
+ROUND 187 GATE OK: the badges and the ALL button follow the wheel (live shift, 2 s)
+ROUND 188 GATE OK: 35 cast bounds on max(70%, real - 20); named 80/80/55; the Executioner 230
+ROUND 189 GATE OK: the LOS table matches the game (56 keys, 35 ours); terrain and units checked, fail-closed
+ROUND 190 GATE OK: every shot trigger asks the animation before casting on the move (7 lines)
+ROUND 191 GATE OK: the 8 group-1 triggers wait for an animated caster to stand still
+ROUND 192 GATE OK: running + closing; 5 runes gone; Grombrindal Has No Fear (55 m); Moulder rule (28 units)
+ROUND 193 GATE OK: Scry-Orb on when_ready (hold 120 s, 3 uses); the pre-shot probe is read-only
+ROUND 194 GATE OK: remembered states (one write, two reads, the hook); the MCT page compiles and is optional
+ROUND 195 GATE OK: the MCT page has no tooltip marker, a named section and the Done / Forgotten feedback
+ROUND 196 GATE OK: the MCT label is 'Forget the remembered M/A choices', no tooltip
+ROUND 197 GATE OK: the whole-army fallback (flag set by the blob evaluation, 6 wrapped rule uses, fail-closed)
+ROUND 198 GATE OK: the entry reset shared with the fast pass, the re-armed serial window, every multi-use key held, no_self = the game's target_self, the two auras on the round-192 read, Bugman's 55 m, compiles on Lua 5.1
+ROUND 199 GATE OK: a capital key is claimed; the ally arm on 10 entries (2 ally-only, by the game's flags); the infantry test refuses large and flying; a click writes the next battle's choice only
+ROUND 201 GATE OK: none of the game's 12 rune-type keys is in the script (the right-hand bar); Endless Whirlwind of Death x2 on melee_unwavering, vortexes that do not hit allies
+ROUND 202 GATE OK: the wave probe zz_wave (console only, called by nothing), the mod's own ground casts unchanged
+ROUND 203 GATE OK: free aim on 32 placed wave keys (32 entries, each target_near_edge with a ground form); 0 charge-wave keys and 5 caster-front cone keys untouched
+ROUND 204 GATE OK: 27 exact waves count our soldiers under the wave (limit 5, single entities and the caster not counted), 5 drifting waves keep the safety distance; Tidecall and Wind Blast ride enemy_wave
+ROUND 205 GATE OK: 19 growing waves carry their real cone (start radius, growth per metre from the game data); an exact wave's value counts enemy soldiers only
+ROUND 206 GATE OK: an exact wave's value counts enemy soldiers that stand still
+ROUND 207 GATE OK: the drifting waves count standing enemies only; a ground-only wave without an aim holds
+ROUND 208 GATE OK: the free-aim search is spread over the polls by unit id and skipped while the ability cannot be cast
+
+== 6d main mod untouched (byte-identical)     : True
+\n== round 114 content gates                : OK ==
+\n== round 118 content gates                : OK ==
+
+== 7 save to disk
+  <= {"ContainerInfo": {"file_name": "zz_test_deadly_onslaught.pack", "file_path": "C:/Users/vlady/Desktop/WH3_mod/mod_source/dist/zz_test_deadly_onslaught.pack", "pfh_version": "PFH5", "pfh_file_type": "M
+
+== 8 close
+  <= "Success"
+
+================ INSTALL ================
+built pack   md5 1d2c5abb71b2267b0ce6ce8ceb95d5ba
+installed    md5 1d2c5abb71b2267b0ce6ce8ceb95d5ba
+IDENTICAL    True
+installed to C:/Program Files (x86)/Steam/steamapps/common/Total War WARHAMMER III/data/zz_test_deadly_onslaught.pack
