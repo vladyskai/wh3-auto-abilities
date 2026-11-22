@@ -8511,3 +8511,18 @@ option A (standing targets only, user 2026-11-22) applied to the value as well a
 
 **Proof:** harness 204 full suite **8,335 checks / 0 failures** (once). RED on the round-205 snapshot: a walking unit
 pulls the cone across both blocks. Tuning round: no workbook version, the 27 wave rows of v82 do not carry this sentence.
+
+### 10.84 Round 207 (tuning) - two more of the same kind, from the afternoon code review (2026-11-22)
+
+**Request (user, 2026-11-22):** "Tested again, seems to be working. Good job!" (round 206 field-confirmed), then "do
+another check of the code, maybe there are more bugs like the one we found" and "check in general, not only the wave
+abilities". The review is `docs\WH3_code_review_2026-11-22_afternoon.md`.
+
+**Fixed in this round (inside the wave family and option A, no new ruling needed):** the 5 drifting waves counted walking
+enemies in a path's value (`FOURTH.ww_path_value` now honours the slot `FOURTH.ww_still_only`, set by the wave evaluator
+and cleared per entry). A ground-only wave without an aim (Blue Fire of Chaos, rare) fell back to the enemy's centre with
+orientation 0 and now holds.
+
+**Proof:** harness 205 full suite **8,350 checks / 0 failures** (once). RED on the round-206 snapshot: a walking unit
+pulls Wind of Death across both blocks. Tuning round: no workbook version. Everything else the review found waits for
+rulings.

@@ -20732,11 +20732,15 @@ end
 -- ROUND 164: the enemy value a path touches (every visible enemy within the radius of the segment)
 function FOURTH.ww_path_value(m, row, sx, sz, ex, ez)
 	local v = 0
+	-- ROUND 207: for a wave (FOURTH.ww_still_only, set by the wave evaluator) a WALKING enemy is not counted: a
+	-- drifting wave takes 3 to 5 s to cast and then rolls slowly, the unit will have moved on
+	local still_only = (FOURTH.ww_still_only == true)
 	for i = 1, #m.all do
 		local o = m.all[i]
 		if FOURTH.ww_pt_seg(o.x, o.z, sx, sz, ex, ez) - o.half <= row.r
 			and FOURTH.ww_seg_rect_gap(sx, sz, ex, ez, o) <= row.r then
-			v = v + (o.value or 0)
+			if still_only and o.still == nil then o.still = FOURTH.ww_target_still(o) end
+			if not still_only or o.still then v = v + (o.value or 0) end
 		end
 	end
 	return v
@@ -20834,6 +20838,7 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 	local m = FOURTH.blob_map(false)
 	local best, bv, aim = nil, nil, nil
 	local free = (ZZ_AUTO_TEST_NO_FREE_AIM ~= true)   -- ROUND 203
+	FOURTH.ww_still_only = free   -- ROUND 207: ww_path_value counts standing enemies only (cleared in entry_reset)
 	local cx, cz = FOURTH.self_xz(unit)
 	local exact = FOURTH.ww_exact(row)   -- ROUND 204
 	local shifts = exact and FOURTH.FREE_AIM_SHIFTS or { 0 }
@@ -20880,6 +20885,9 @@ function FOURTH.evaluate_enemy_wave(unit, routing)
 		end
 	end
 	if best == nil then return false end
+	-- ROUND 207: a ground-only wave has no unit form. Without an aim it would go out on the enemy's centre with
+	-- orientation 0 (always north, the round-165 bug): hold instead
+	if free and row.ground and aim == nil then return false end
 	FOURTH.ww_take(unit, best, row, aim)
 	return true
 end
@@ -23190,6 +23198,7 @@ function FOURTH.entry_reset(ability, unit)
 	FOURTH.eg_caster_su = nil
 	FOURTH.eg_ground = nil
 	FOURTH.ww_aim = nil   -- ROUND 203: the free aim of a wave
+	FOURTH.ww_still_only = nil   -- ROUND 207: only the wave evaluator sets it
 	FOURTH.eg_melee_only = nil
 	-- THE SUMMON ROUND (harness 102): the self-summon arm and the two
 	-- non-commander enemy modes are cleared before EVERY evaluate, so no

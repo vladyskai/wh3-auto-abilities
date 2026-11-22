@@ -22,7 +22,7 @@ The trigger follows what the ability does. A few examples:
 [*]Breaths, bombs and blasts pick the target where they destroy the most value, and they hold when your own units stand in the area.
 [*]Finishers wait for an enemy below their execute line.
 [/list]
-1,038 abilities of characters, units, mounts and items are covered.
+1,035 abilities of characters, units, mounts and items are covered.
 
 [h2]Safe by default[/h2]
 [list]

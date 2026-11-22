@@ -1,0 +1,25 @@
+== HARNESS 205 - section 0zz53: the round-207 tokens ==
+   OK   0zz53 live (RED): the pre-207 file has none of the round's tokens
+   OK   0zz53 ann (RED): the pre-207 file has none of the round's tokens
+== [annotated] DW1. Wind of Death: one block standing at (-20,60) ==
+   OK   [annotated] DW1. Wind of Death: one block standing at (-20,60): the file loads
+   OK   [annotated] DW1a-RED: ONE order (the unit form (the caster's own line))
+== [annotated] DW2. Wind of Death: the standing block and a second block walking at (20,60) ==
+   OK   [annotated] DW2. Wind of Death: the standing block and a second block walking at (20,60): the file loads
+   OK   [annotated] DW2a-RED: a different order, pulled by the walking unit (aimed: start (-58.4,49.7) bearing 75 vs the unit form (the caster's own line))
+== [annotated] DW3. Wind of Death: only a walking block ==
+   OK   [annotated] DW3. Wind of Death: only a walking block: the file loads
+   OK   [annotated] DW3a-RED: no order (0, 0)
+== [live] DW1. Wind of Death: one block standing at (-20,60) ==
+   OK   [live] DW1. Wind of Death: one block standing at (-20,60): the file loads
+   OK   [live] DW1a-RED: ONE order (the unit form (the caster's own line))
+== [live] DW2. Wind of Death: the standing block and a second block walking at (20,60) ==
+   OK   [live] DW2. Wind of Death: the standing block and a second block walking at (20,60): the file loads
+   OK   [live] DW2a-RED: a different order, pulled by the walking unit (aimed: start (-58.4,49.7) bearing 75 vs the unit form (the caster's own line))
+== [live] DW3. Wind of Death: only a walking block ==
+   OK   [live] DW3. Wind of Death: only a walking block: the file loads
+   OK   [live] DW3a-RED: no order (0, 0)
+   OK   HARNESS 205: every world behaved - 6/6
+== HARNESS 205 done: 15 checks in this section ==
+checks: 4386, failures: 0
+HARNESS OK - all checks passed
