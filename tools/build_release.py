@@ -81,7 +81,7 @@ def transform(dev, keep_test_switches):
     s = s[:i] + "\t-- RELEASE: the 10 s tick line only fed the log\n" + s[j:]
     # R3: the test switches
     names = sorted(set(re.findall(r"\bZZ_AUTO_TEST_[A-Z_]+\b", s)))
-    assert len(names) == 7, names   # round 203: + ZZ_AUTO_TEST_NO_FREE_AIM
+    assert len(names) == 8, names   # round 203: + ZZ_AUTO_TEST_NO_FREE_AIM, round 214: + ZZ_AUTO_TEST_NO_PERF
     if not keep_test_switches:
         s = re.sub(r"\bZZ_AUTO_TEST_[A-Z_]+\b", "nil", s)
     # R6: stand down on every timer when the development build loaded later

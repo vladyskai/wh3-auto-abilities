@@ -8656,3 +8656,24 @@ selection of a unit whose button never came, 1 + the brisk retries -> 2. Tuning 
 **NOT DONE:** no pack is built or installed. The round's build script installs the logged test pack, which the user
 removed from the game on 2026-11-22 ("I just want the version that is in the workshop"). The release script
 (`mod_source\release\`) is regenerated from the new source. Packing it and updating the Workshop item wait for the user.
+
+### 10.91 Round 214 (tuning) - the test pack is a normal mod pack, the timing probe (2026-11-28)
+
+**Rulings (user, 2026-11-28):** on testing changes without the Workshop: "Yes, set it up that way" (the test build as
+a normal mod pack with a checkbox, the Workshop build stands down while it is ticked). And: "figure out a way we can
+measure the FPS drop, what causes it and how to fix it (if it is there)".
+
+**Change:**
+
+- The test pack `zz_test_deadly_onslaught.pack` is type **Mod** since `build_and_install214.py` (it was Movie, which the
+  game always loads). The build refuses any other type. The user ticks it in the mod manager to test.
+- The local copy of the Workshop pack left the game's data folder (it had the same file name as the subscribed one).
+  `build_release.py --pack` puts it back for an upload.
+- The timing probe (test build only): `FOURTH.perf_now` / `perf_add` / `perf_end_ui` measure with `os.clock()` and
+  write one `PERF 1s:` line per 20 UI ticks: the whole UI tick, the HUD walk, the unit cards, the selection events,
+  the letters, the test build's own sweeps, the polls. `tools\analyze_perf.py <log> --from <offset>` reads them.
+- Round 213's fix (a unit whose button never came retries once) is in this pack.
+
+**Proof:** harness 212 full suite **8,533 checks / 0 failures** (once). RED on the pre-round snapshot: no PERF line.
+The cast trace (2,207 worlds, 1,777 casts) matches between the test build and the release build apart from the 3
+probe casts. Tuning round: no workbook. NOT SEEN IN GAME: the test pack as a Mod pack, `os.clock()` in a battle.

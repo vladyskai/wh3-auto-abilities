@@ -25398,8 +25398,52 @@ end
 -- wrapped, and the first few errors are logged rather than swallowing the battle.
 local poll_errors = 0
 
+-- ============================================================================
+-- ROUND 214 - THE TIMING PROBE (test build only, read-only). The mod's Lua runs
+-- on the game's main thread, so the time one UI tick or one poll takes is time
+-- added to that frame. FOURTH.perf_now / perf_add collect it per job with
+-- os.clock(), FOURTH.perf_end_ui writes one PERF line per 20 UI ticks (1 s of
+-- real time). Active only in the development build (zz_badge_set exists; the
+-- release build has no console functions) and not in the harness's older
+-- worlds (TEST-ONLY ZZ_AUTO_TEST_NO_PERF).
+-- ============================================================================
+FOURTH.perf = { ui = 0, ui_max = 0, ticks = 0, walk = 0, walks = 0, cards = 0, select = 0, badges = 0, diag = 0,
+	poll = 0, poll_max = 0, polls = 0 }
+function FOURTH.perf_now()
+	if ZZ_AUTO_TEST_NO_PERF == true or zz_badge_set == nil then return nil end
+	if type(os) ~= "table" or type(os.clock) ~= "function" then return nil end
+	return os.clock()
+end
+function FOURTH.perf_add(name, t0)
+	if t0 == nil then return end
+	local p = FOURTH.perf
+	local ms = (os.clock() - t0) * 1000
+	p[name] = p[name] + ms
+	if name == "walk" then p.walks = p.walks + 1 end
+	if name == "poll" then
+		p.polls = p.polls + 1
+		if ms > p.poll_max then p.poll_max = ms end
+	end
+end
+function FOURTH.perf_end_ui(t0)
+	if t0 == nil then return end
+	local p = FOURTH.perf
+	local ms = (os.clock() - t0) * 1000
+	p.ui = p.ui + ms
+	p.ticks = p.ticks + 1
+	if ms > p.ui_max then p.ui_max = ms end
+	if p.ticks < 20 then return end
+	log(string.format("PERF 1s: ui %d ticks %.1f ms (worst tick %.1f) | walk %dx %.1f ms | cards %.1f ms | select %.1f ms "
+		.. "| badges %.1f ms | diag %.1f ms | poll %dx %.1f ms (worst %.1f)", p.ticks, p.ui, p.ui_max, p.walks, p.walk,
+		p.cards, p.select, p.badges, p.diag, p.polls, p.poll, p.poll_max))
+	p.ui, p.ui_max, p.ticks, p.walk, p.walks, p.cards, p.select, p.badges, p.diag = 0, 0, 0, 0, 0, 0, 0, 0, 0
+	p.poll, p.poll_max, p.polls = 0, 0, 0
+end
+
 local function poll()
+	local perf_p0 = FOURTH.perf_now()   -- ROUND 214
 	local ok, err = pcall(poll_body)
+	FOURTH.perf_add("poll", perf_p0)   -- ROUND 214
 	if not ok then
 		poll_errors = poll_errors + 1
 		if poll_errors <= 3 or (poll_errors % 40) == 0 then
@@ -28351,6 +28395,7 @@ function FOURTH.brisk_due(t, window_end, walk)
 end
 
 local function ui_tick()
+	local perf_u0, perf_t = FOURTH.perf_now(), nil   -- ROUND 214: the timing probe
 	ui_ticks = ui_ticks + 1
 	if ui_ticks == 1 then
 		log("ui timer is running (real callback, 500 ms) - watching the poll")
@@ -28404,8 +28449,10 @@ local function ui_tick()
 	local onslaught_confirmed = false
 	local active_dropped = false    -- item 1.4: a stale claim died this tick - the set shrank
 	-- ROUND 151: the ALL badge (created and shown with the ability badges)
+	perf_t = FOURTH.perf_now()
 	pcall(FOURTH.ui_shift_tick)   -- ROUND 187: the badges follow the wheel at any resolution / UI scale
 	pcall(FOURTH.all_badge_tick)
+	FOURTH.perf_add("badges", perf_t)
 
 	for _, ability in ipairs(active_abilities_list()) do
 		local state = ability_state[ability.marker]
@@ -28461,7 +28508,9 @@ local function ui_tick()
 	-- never take the UI tick down with it.
 	if onslaught_confirmed and (tick_count - last_dial_dump_tick) >= DIAL_DUMP_EVERY_N_POLL_TICKS then
 		last_dial_dump_tick = tick_count
+		perf_t = FOURTH.perf_now()
 		pcall(log_dial_dump)
+		FOURTH.perf_add("diag", perf_t)
 	end
 
 	-- THE INVENTORY SWEEP (section 8d): one read-only block per ~1 s of battle
@@ -28470,7 +28519,9 @@ local function ui_tick()
 	-- surprise can never take the UI tick down with it.
 	if (tick_count - last_inventory_tick) >= INVENTORY_EVERY_N_POLL_TICKS then
 		last_inventory_tick = tick_count
+		perf_t = FOURTH.perf_now()
 		pcall(log_inventory_sweep)
+		FOURTH.perf_add("diag", perf_t)
 	end
 
 	-- THE ENGINE SELECTION CONVERGENCE (section 8e): the callback (section 3b)
@@ -28479,7 +28530,9 @@ local function ui_tick()
 	-- set), adopt the tracker and refresh the badge letters before the card
 	-- fast path reads anything. pcall'd like everything else so a surprise
 	-- can never take the UI tick down.
+	perf_t = FOURTH.perf_now()
 	pcall(converge_engine_selection, tick_count)
+	FOURTH.perf_add("select", perf_t)
 
 	-- THE CARD SELECTION, FAST (section 8e): derived from the engine's own
 	-- 'selected' card states on EVERY ui tick, so a selection change reaches
@@ -28487,7 +28540,9 @@ local function ui_tick()
 	-- unless the tracker changes; on a change it logs the tick-stamped header
 	-- and the card lines once. pcall'd like everything else so a surprise can
 	-- never take the UI tick down.
+	perf_t = FOURTH.perf_now()
 	pcall(fast_card_selection)
+	FOURTH.perf_add("cards", perf_t)
 
 	-- THE VERBOSE CARD SWEEP (section 8e): still one block per ~1 s of battle
 	-- time - the same gate, the same lines. The fast path above ran first on
@@ -28496,7 +28551,9 @@ local function ui_tick()
 	-- never take the UI tick down.
 	if (tick_count - last_card_sweep_tick) >= CARD_SWEEP_EVERY_N_POLL_TICKS then
 		last_card_sweep_tick = tick_count
+		perf_t = FOURTH.perf_now()
 		pcall(log_card_sweep)
+		FOURTH.perf_add("diag", perf_t)
 	end
 
 	if tick_count == last_seen_tick then
@@ -28557,10 +28614,13 @@ local function ui_tick()
 			walk_now = (ui_ticks % 100) == 0
 		end
 		if walk_now then
+			perf_t = FOURTH.perf_now()
 			find_ability_buttons()
+			FOURTH.perf_add("walk", perf_t)
 		end
 	end
 
+	FOURTH.perf_end_ui(perf_u0)   -- ROUND 214
 end
 
 bm:repeat_real_callback(ui_tick, 50, "zz_deadly_onslaught_ui")

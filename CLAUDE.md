@@ -12,11 +12,12 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
 - Mod source (the ONLY file edited per round):
   `C:\Users\vlady\Desktop\WH3_mod\mod_source\script\battle\mod\zz_test_deadly_onslaught.lua`
   (about 1.6 MB, about 27,700 lines)
-- Packed as a Movie pack and installed as
+- Packed as a **Mod** pack since round 214 (a checkbox in the mod manager: the user ticks it to test, and the
+  Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `c0cff66cf0cf511028f31f492334c590`, 1,665,749 bytes
-  (round 212, 2026-11-22: the watch list comes from the army's own unit list, a transformed unit is a new unit). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `2a8972cfce788db53d7cd05bc8d80118`
+  (round 214, 2026-11-28, tuning: type Mod, the timing probe, round 213's selection fix). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -161,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261122_transform_harness210/build_and_install212.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_perfprobe_harness212/build_and_install214.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -193,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness211: 8,525 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness212: 8,533 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -374,6 +375,21 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 214 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 2a8972cf..., type MOD). USER: "Yes, set it up that way"
+  = the workflow for testing without the Workshop: the test pack is a normal mod pack (build_and_install214.py:
+  SetPackFileType Mod, the build refuses another type), the user TICKS it in the mod manager to test and unticks
+  it to play the Workshop build. The release stands down while the test build is loaded, so both may be ticked.
+  The local copy of smart_ability_autocast.pack was REMOVED from the game's data folder (same file name as the
+  subscribed one; copy in archive\packs\removed_from_game\): build_release.py --pack puts it back only for an
+  upload. The WORKSHOP ITEM STILL CARRIES ROUND 212: rounds 213-214 are not published. THE TIMING PROBE (live copy
+  only): FOURTH.perf_now / perf_add / perf_end_ui, os.clock(), one 'PERF 1s:' log line per 20 UI ticks (ui, walk,
+  cards, select, badges, diag, poll), active only when zz_badge_set exists (the development build) and
+  ZZ_AUTO_TEST_NO_PERF is not true (the 8th test switch: load_world sets it unless W.perf_on, build_release counts
+  8). Timed INSIDE ui_tick and poll, never by wrapping them: the harness identifies ui_tick, the poll body and
+  other functions by identity (CUR_UI_FN, POLL_BODY_FN), a wrapper would break those probes. Read a battle with
+  tools\analyze_perf.py <log> --from <offset>. Harness 212: 8,533 / 0 (once), the cast trace matches apart from
+  the 3 probe casts. UNPROVEN IN GAME: a Mod-type test pack loading and logging, os.clock() in battle Lua. Next
+  battle from byte 1,111,622,234 (re-measure).
 - ROUND 213 (2026-11-28, TUNING, SOURCE ONLY: NO PACK BUILT OR INSTALLED). FIELD (Workshop comment 2026-11-26, a user
   with SFO, an ability-wheel UI mod and mount expansions): framerate lag when selecting own units or groups in
   battle. LIKELY CAUSE (code reading + harness count, NOT measured in game): the HUD walk (600+ components) repeats
