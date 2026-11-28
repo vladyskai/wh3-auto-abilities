@@ -11,6 +11,7 @@ import sys
 
 PAT = re.compile(r"PERF 1s: ui (\d+) ticks ([\d.]+) ms \(worst tick ([\d.]+)\) \| walk (\d+)x ([\d.]+) ms \| cards ([\d.]+) ms "
                  r"\| select ([\d.]+) ms \| badges ([\d.]+) ms \| diag ([\d.]+) ms \| poll (\d+)x ([\d.]+) ms \(worst ([\d.]+)\)")
+PAT2 = re.compile(r"\| log ([\d.]+) ms (\d+) lines \(in polls ([\d.]+)\) \| probe ([\d.]+) ms \(its log ([\d.]+)\)")
 SEL = ("engine selection", "selected-tracker", "selection set", "click:")
 
 
@@ -28,6 +29,11 @@ def main():
                 rows.append(dict(n=n, ticks=int(g[0]), ui=float(g[1]), worst=float(g[2]), walks=int(g[3]), walk=float(g[4]),
                                  cards=float(g[5]), select=float(g[6]), badges=float(g[7]), diag=float(g[8]),
                                  polls=int(g[9]), poll=float(g[10]), poll_worst=float(g[11])))
+                m2 = PAT2.search(line)
+                if m2:
+                    h = m2.groups()
+                    rows[-1].update(log=float(h[0]), lines=int(h[1]), poll_log=float(h[2]), probe=float(h[3]),
+                                    probe_log=float(h[4]))
             elif any(s in line for s in SEL):
                 sel_lines.append(n)
     if not rows:
@@ -50,6 +56,22 @@ def main():
           max(r["poll_worst"] for r in rows)))
     for limit in (8, 16, 33):
         print("   seconds with a UI tick over %2d ms: %d" % (limit, sum(1 for r in rows if r["worst"] > limit)))
+    # round 218: the log's own cost (only lines written by a round-218 or later test build carry it)
+    lg = [r for r in rows if "log" in r]
+    if lg:
+        n = len(lg)
+        t = {k: sum(r[k] for r in lg) / n for k in ("log", "lines", "poll_log", "probe", "probe_log", "poll", "ui", "diag")}
+        poll_real = t["poll"] - t["probe"] - (t["poll_log"] - t["probe_log"])
+        ui_log_outside_diag = max(0.0, (t["log"] - t["poll_log"]))
+        print("THE LOG'S OWN COST (%d seconds with the round-218 fields):" % n)
+        print("   log writes: %.1f ms per second for %.0f lines per second (%.1f ms of it inside the polls)"
+              % (t["log"], t["lines"], t["poll_log"]))
+        print("   the read-only probes inside the polls: %.1f ms per second (%.1f ms of it log writes)" % (t["probe"], t["probe_log"]))
+        print("   POLLS WITHOUT THE PROBES AND THE LOG WRITES: %.1f ms per second (measured total %.1f)" % (poll_real, t["poll"]))
+        print("   UI timer: %.1f ms per second, of which log writes outside the polls %.1f" % (t["ui"], ui_log_outside_diag))
+        worst_poll = sorted(lg, key=lambda r: -(r["poll"] - r["probe"] - (r["poll_log"] - r["probe_log"])))[:5]
+        print("   the 5 seconds with the most real poll work: "
+              + ", ".join("%.0f ms" % (r["poll"] - r["probe"] - (r["poll_log"] - r["probe_log"])) for r in worst_poll))
     worst = sorted(rows, key=lambda r: -r["worst"])[:10]
     print("the 10 worst seconds (worst tick, walks, walk ms, cards ms, a selection change within 60 log lines?):")
     for r in worst:

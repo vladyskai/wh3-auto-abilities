@@ -6584,6 +6584,8 @@ local function write_to_file(line)
 end
 
 local function log(message)
+	local log_t0 = nil   -- ROUND 218: the timing probe measures the log itself
+	if cast_gate.log_on == true then log_t0 = os.clock() end
 	local line = LOG_TAG .. tostring(message)
 
 	write_to_file(line)
@@ -6593,6 +6595,10 @@ local function log(message)
 	end
 
 	out(line)
+	if log_t0 ~= nil then
+		cast_gate.log_ms = (cast_gate.log_ms or 0) + (os.clock() - log_t0) * 1000
+		cast_gate.log_n = (cast_gate.log_n or 0) + 1
+	end
 end
 
 
@@ -25377,7 +25383,13 @@ local function poll_body()
 
 	-- ROUND 145: the read-only battlefield map probe (casts nothing; pcall'd so it can never
 	-- cost a tick)
+	FOURTH.perf_probe0 = FOURTH.perf_now()   -- ROUND 218: the read-only probes, timed apart
+	FOURTH.perf_probe_log0 = cast_gate.log_ms or 0
 	pcall(FOURTH.map_tick, tick_count)
+	if FOURTH.perf_probe0 ~= nil then
+		FOURTH.perf.probe = FOURTH.perf.probe + (os.clock() - FOURTH.perf_probe0) * 1000
+		FOURTH.perf.probe_log = FOURTH.perf.probe_log + ((cast_gate.log_ms or 0) - FOURTH.perf_probe_log0)
+	end
 
 	-- ITEM 12 - THE ONE (DEFERRED) ACTIVE-SET REFRESH of this tick. It runs
 	-- here, AFTER the per-unit loop AND after the drop walk, so it observes the
@@ -25409,10 +25421,11 @@ local poll_errors = 0
 -- worlds (TEST-ONLY ZZ_AUTO_TEST_NO_PERF).
 -- ============================================================================
 FOURTH.perf = { ui = 0, ui_max = 0, ticks = 0, walk = 0, walks = 0, cards = 0, select = 0, badges = 0, diag = 0,
-	poll = 0, poll_max = 0, polls = 0 }
+	poll = 0, poll_max = 0, polls = 0, poll_log = 0, probe = 0, probe_log = 0 }
 function FOURTH.perf_now()
 	if ZZ_AUTO_TEST_NO_PERF == true or zz_badge_set == nil then return nil end
 	if type(os) ~= "table" or type(os.clock) ~= "function" then return nil end
+	cast_gate.log_on = true   -- ROUND 218
 	return os.clock()
 end
 function FOURTH.perf_add(name, t0)
@@ -25435,16 +25448,22 @@ function FOURTH.perf_end_ui(t0)
 	if ms > p.ui_max then p.ui_max = ms end
 	if p.ticks < 20 then return end
 	log(string.format("PERF 1s: ui %d ticks %.1f ms (worst tick %.1f) | walk %dx %.1f ms | cards %.1f ms | select %.1f ms "
-		.. "| badges %.1f ms | diag %.1f ms | poll %dx %.1f ms (worst %.1f)", p.ticks, p.ui, p.ui_max, p.walks, p.walk,
-		p.cards, p.select, p.badges, p.diag, p.polls, p.poll, p.poll_max))
+		.. "| badges %.1f ms | diag %.1f ms | poll %dx %.1f ms (worst %.1f)"
+		.. " | log %.1f ms %d lines (in polls %.1f) | probe %.1f ms (its log %.1f)", p.ticks, p.ui, p.ui_max, p.walks, p.walk,
+		p.cards, p.select, p.badges, p.diag, p.polls, p.poll, p.poll_max,
+		cast_gate.log_ms or 0, cast_gate.log_n or 0, p.poll_log, p.probe, p.probe_log))
+	cast_gate.log_ms, cast_gate.log_n = 0, 0
+	p.poll_log, p.probe, p.probe_log = 0, 0, 0
 	p.ui, p.ui_max, p.ticks, p.walk, p.walks, p.cards, p.select, p.badges, p.diag = 0, 0, 0, 0, 0, 0, 0, 0, 0
 	p.poll, p.poll_max, p.polls = 0, 0, 0
 end
 
 local function poll()
 	local perf_p0 = FOURTH.perf_now()   -- ROUND 214
+	local perf_l0 = cast_gate.log_ms or 0   -- ROUND 218
 	local ok, err = pcall(poll_body)
 	FOURTH.perf_add("poll", perf_p0)   -- ROUND 214
+	if perf_p0 ~= nil then FOURTH.perf.poll_log = FOURTH.perf.poll_log + ((cast_gate.log_ms or 0) - perf_l0) end
 	if not ok then
 		poll_errors = poll_errors + 1
 		if poll_errors <= 3 or (poll_errors % 40) == 0 then

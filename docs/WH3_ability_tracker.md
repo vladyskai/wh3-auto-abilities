@@ -8774,3 +8774,33 @@ round-215 gate was rebased to the new card line. No workbook.
 
 **Effect to expect:** a selection only the unit card reports (the game sent no event) reaches the letters within 4
 UI ticks (0.2 s) from the start of the battle, where it was 1 tick before the first event.
+
+### 10.95 Round 218 (tuning, live copy only) - the timing probe measures the log itself (2026-11-28)
+
+**Field, two battles on the round-217 build.**
+
+Battle A (archive\logs\battle_20261128_r217_perf.txt, bytes 1,142,970,468-1,151,744,918; 158 s, 21 units, 4 active
+abilities): 38.1 ms of every second (124, 71, 62 before). No whole-HUD walk on a group. The cards 10 to 14 ms per
+second from the start. The 31 whole-HUD walks left are the 5 s safety net (18 to 43 ms each, the worst UI tick 45 ms).
+
+Battle B (archive\logs\battle_20261128_r217_perf2.txt, bytes 1,151,744,918-1,172,897,502; 437 s, 40 units, 37
+active abilities, 153 accepted casts): 76.4 ms of every second. The UI timer 33.9 ms (cards 15.1, the test log sweeps
+9.8, the walks 5.5). **The polls 42.5 ms** (6 to 7 in the small battles), 30 to 90 ms per second during the fight,
+the worst poll 70 ms, 254 seconds with a poll over 16 ms. In those 437 s the test build wrote 63,096 log lines,
+about 35,000 from inside the polls (MAP 14,356, RAW 7,193, the readiness and target lines), each flushed to disk.
+The PERF line could not say how much of the poll time is the log, so no conclusion about the Workshop build's poll
+cost is possible from battle B.
+
+**Change (live copy only, the Workshop build is unchanged apart from inert bookkeeping lines):** log() adds its own
+time and line count to cast_gate.log_ms / log_n while the probe is on. The poll notes the log time spent inside it and
+times the read-only map probe apart. The PERF line ends with
+` | log X ms N lines (in polls Y) | probe Z ms (its log W)`. tools\analyze_perf.py prints the polls without the
+probes and the log writes.
+
+**Proof:** harness 216 full suite **8,594 checks / 0 failures** (once). RED on the pre-round snapshot: the PERF lines
+carry no log part. The cast trace (2,229 worlds, 1,781 casts) matches between the test build and the release build
+apart from the 3 probe casts. No rebased harness pin. Two tool rebases: build_release.py cuts log() to its new last
+line, the builder's round-214 gate allows the three cast_gate.log_ fields inside the probe's block. No workbook.
+
+**Limit of the method:** the release still BUILDS the text of the readiness and target lines before the empty log()
+drops it. That cost stays in 'polls without the log writes', which is what the Workshop build pays.

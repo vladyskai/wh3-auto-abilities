@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `72c2931c3cffc8860b2167f88af77d12`
-  (round 217, 2026-11-28, tuning: no whole-HUD walk for a group's unshared abilities, the unit cards 5 times a second from the start). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `95ebdc969775690fe5234cc33b91aa44`
+  (round 218, 2026-11-28, tuning, live copy only: the timing probe measures the test build's own log). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_groupcards_harness215/build_and_install217.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_logcost_harness216/build_and_install218.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness215: 8,588 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness216: 8,594 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -375,6 +375,22 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 218 (2026-11-28, TUNING, LIVE COPY ONLY, TEST PACK INSTALLED: md5 95ebdc96...). FIELD on round 217, two
+  battles. A (archive\logs\battle_20261128_r217_perf.txt, 158 s, 21 units): 38 ms OF EVERY SECOND, no group
+  walk, cards 10-14 ms/s. LEFT: the 5 s safety net = 31 whole-HUD walks of 18-43 ms (worst tick 45 ms):
+  proposed to the user (the net walks the dial, the whole HUD only while a selected unit waits), NOT BUILT, no
+  answer yet. B (archive\logs\battle_20261128_r217_perf2.txt, bytes 1,151,744,918-1,172,897,502, 437 s, 40
+  units, 37 active abilities, 153 accepted casts): 76 ms/s, THE POLLS 42.5 ms/s (30-90 in the fight, worst poll
+  70 ms) against 6-7 in the small battles. UNKNOWN how much is the test log: 63,096 lines in 437 s, about
+  35,000 inside the polls (MAP, RAW, readiness / target lines), each flushed. BUILT: log() times itself into
+  cast_gate.log_ms / log_n while cast_gate.log_on (set by FOURTH.perf_now), the poll keeps perf.poll_log, the
+  map probe perf.probe / probe_log, the PERF line ends ' | log X ms N lines (in polls Y) | probe Z ms (its log
+  W)'. tools\analyze_perf.py prints 'POLLS WITHOUT THE PROBES AND THE LOG WRITES'. Harness 216: 8,594 / 0
+  (once), cast trace matches apart from the 3 probe casts. TOOL REBASES: build_release.py's log() tail, the
+  builder's round-214 gate (the three cast_gate.log_ fields allowed in the probe's block). NEXT: the user
+  repeats the big battle, then decide: if the real poll cost is high, find the expensive evaluators (a per-
+  family timer), else publish. The WORKSHOP ITEM STILL CARRIES ROUND 212. Next battle from byte 1,172,897,502
+  (re-measure).
 - ROUND 217 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 72c2931c...). FIELD on round 216
   (archive\logs\battle_20261128_r216_perf.txt, bytes 1,136,053,587-1,142,970,468, 139 s): 62 ms OF EVERY SECOND
   (124, 71). ENGINE FACT: core:get_ui_root():Find('SA_dial', false) ANSWERS (recursive): a dial walk visits 12

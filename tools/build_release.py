@@ -66,7 +66,9 @@ def transform(dev, keep_test_switches):
     s = dev
     # R1: the logging section
     a = s.index("local LOG_TAG  = ")
-    tail = "\tout(line)\nend\n"
+    # round 218: log() ends with the timing probe's own bookkeeping
+    tail = "\tout(line)\n\tif log_t0 ~= nil then\n\t\tcast_gate.log_ms = (cast_gate.log_ms or 0) + (os.clock() - log_t0) * 1000\n" \
+           "\t\tcast_gate.log_n = (cast_gate.log_n or 0) + 1\n\tend\nend\n"
     b = s.index(tail, a) + len(tail)
     assert s[a:b].count("local function log(message)") == 1 and s[a:b].count("io.open") == 1
     s = s[:a] + "local function log(message) end   -- RELEASE: no log at all\n" + s[b:]
