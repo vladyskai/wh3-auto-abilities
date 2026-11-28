@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `ae5536f9d59216189350a468f4b92f09`
-  (round 216, 2026-11-28, tuning: the HUD walk starts at the ability dial, no walk while nothing of ours is selected). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `72c2931c3cffc8860b2167f88af77d12`
+  (round 217, 2026-11-28, tuning: no whole-HUD walk for a group's unshared abilities, the unit cards 5 times a second from the start). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_walkscope_harness214/build_and_install216.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_groupcards_harness215/build_and_install217.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness214: 8,569 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness215: 8,588 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -375,6 +375,20 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 217 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 72c2931c...). FIELD on round 216
+  (archive\logs\battle_20261128_r216_perf.txt, bytes 1,136,053,587-1,142,970,468, 139 s): 62 ms OF EVERY SECOND
+  (124, 71). ENGINE FACT: core:get_ui_root():Find('SA_dial', false) ANSWERS (recursive): a dial walk visits 12
+  components (no wheel) or 52 (a wheel), the whole HUD 770. The whole HUD followed the dial 40 times, 39 for
+  nothing, ALL ON GROUPS (a group's wheel shows only the abilities every selected unit owns). Cards: 33-85 ms/s
+  for the 57 s before the first selection EVENT, then 10-30. BUILT: FOURTH.walk_group_waiting (several units
+  selected: wait only for an ability EVERY selected unit owns), cast_gate.sel_registered = true where the game
+  accepts a selection callback (that code sits ABOVE the FOURTH table) and FOURTH.cards_due reads it (5 Hz from
+  the start, every tick only where no callback was accepted). Harness 215: 8,588 / 0 (once), cast trace matches
+  apart from the 3 probe casts, rebased pins harness 76 DET / BL1 / BL2-3 (one sweep = 4 ticks) and harness 213
+  CD1a. A later round that changes a line an OLD builder gate pins must rebase that gate in make_builderNNN
+  (the round-215 gate refused the first build here, the installed pack stayed). The WORKSHOP ITEM STILL CARRIES
+  ROUND 212. WAITING: the user's battle on this pack, then the release pack. Next battle from byte
+  1,142,970,468 (re-measure).
 - ROUND 216 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 ae5536f9...). FIELD on round 215
   (archive\logs\battle_20261128_r215_perf.txt, bytes 1,129,297,788-1,136,053,587, 123 s): 71 ms OF EVERY SECOND
   (124 before). The deployment storm is gone after 2 s. 157 walks at 18.3 ms (770 components), worst ticks 60-63

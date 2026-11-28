@@ -7128,6 +7128,7 @@ local function rebuild_unit_list()
 					end)
 					if ok_r and accepted ~= false then
 						selection_callbacks_by_ui_id[tostring(ui_id)] = true
+						cast_gate.sel_registered = true   -- ROUND 217: the game took a selection callback
 					end
 				end
 			end
@@ -25571,7 +25572,7 @@ function FOURTH.boot_due(t, window_end, walk)
 	return (t % 100) == 0
 end
 function FOURTH.cards_due(t)
-	if selection_callback_alive ~= true then return true end
+	if selection_callback_alive ~= true and cast_gate.sel_registered ~= true then return true end   -- ROUND 217
 	return (t % 4) == 0
 end
 
@@ -25614,6 +25615,26 @@ function FOURTH.walk_waiting(id)
 	end
 	return false
 end
+-- ROUND 217: several units selected. The wheel of a group shows only the abilities EVERY selected unit owns, so
+-- only such an ability with no letter yet is worth the whole-HUD walk. A unit whose abilities are not read yet
+-- counts as waiting (the old behaviour).
+function FOURTH.walk_group_waiting()
+	local n = #selected_ui_ids
+	local seen = {}
+	for i = 1, n do
+		local list = owned_abilities_by_unit[tostring(selected_ui_ids[i])]
+		if list == nil then
+			if owned_keys_by_unit[tostring(selected_ui_ids[i])] == nil then return true end
+			return false
+		end
+		for j = 1, #list do
+			local m = list[j].marker
+			seen[m] = (seen[m] or 0) + 1
+			if i == n and seen[m] == n and ability_state[m].button == nil then return true end
+		end
+	end
+	return false
+end
 function FOURTH.walk_start(hud)
 	local net = FOURTH.walk_net
 	FOURTH.walk_net = nil
@@ -25637,7 +25658,9 @@ function FOURTH.walk_again()
 	FOURTH.walk_scoped = false
 	if FOURTH.walk_claims() > FOURTH.walk_before then return false end
 	local waiting = false
-	if selection_callback_alive == true then
+	if selection_callback_alive == true and #selected_ui_ids > 1 then
+		waiting = FOURTH.walk_group_waiting()   -- ROUND 217: a group's wheel shows only what every unit owns
+	elseif selection_callback_alive == true then
 		for i = 1, #selected_ui_ids do
 			if FOURTH.walk_waiting(selected_ui_ids[i]) then waiting = true end
 		end

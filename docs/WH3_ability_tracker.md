@@ -8743,3 +8743,34 @@ world keeps the whole-HUD walk). The test build logs `scan scope: dial` once whe
 (the `scan done: N component(s) visited` lines).
 
 **Not done:** the unit cards before the first selection event (read on every tick until an event arrives).
+
+### 10.94 Round 217 (tuning) - the group walk and the card cadence (2026-11-28)
+
+**Field (the round-216 build; archive\logs\battle_20261128_r216_perf.txt, bytes 1,136,053,587-1,142,970,468; 139 s,
+21 units, the user's own PC):** the mod took 62 ms of every second (124, then 71).
+
+| Where | Measured |
+|---|---|
+| The game's Find answers SA_dial | yes (`scan scope: dial`): a dial walk visits 12 components (empty) or 52 (a wheel), not 770 |
+| HUD walks | 154 in 139 s, 11.6 ms on average, 12.9 ms per second, the worst UI tick 51 ms (63 before) |
+| The whole HUD after the dial | 40 times, 39 found nothing: 14 on a group of 8, 13 on the whole army, 11 on the two owners together |
+| The unit cards | 33 to 85 ms per second for the 57 s before the first selection event, then 10 to 30 |
+| The test build's own log sweeps | 8.8 ms per second (not in the Workshop build) |
+| The polls (the ability checks) | 6.4 ms per second |
+
+**Change:**
+
+- `FOURTH.walk_group_waiting`: with several units selected the whole-HUD walk follows the dial walk only for an ability
+  EVERY selected unit owns and that has no letter yet (a group's wheel shows only shared abilities).
+- `FOURTH.cards_due`: the unit cards are read every 4th UI tick as soon as the game accepted a selection callback
+  (`cast_gate.sel_registered`), not only after the first event. No selection API = every tick as before.
+
+**Proof:** harness 215 full suite **8,588 checks / 0 failures** (once). RED on the pre-round snapshot: the rest of the
+HUD is entered twice for a group whose units own different abilities (GREEN 0), the cards are read on 100% of the ticks
+before the first event (GREEN 25%). The cast trace (2,227 worlds, 1,777 casts) matches between the test build and the
+release build apart from the 3 probe casts. Rebased pins: harness 76 DET, BL1 and BL2 / BL3 (one card sweep took one
+UI tick, now four), harness 213 CD1a (the reads before the first event are at the slow rate too). The builder's
+round-215 gate was rebased to the new card line. No workbook.
+
+**Effect to expect:** a selection only the unit card reports (the game sent no event) reaches the letters within 4
+UI ticks (0.2 s) from the start of the battle, where it was 1 tick before the first event.
