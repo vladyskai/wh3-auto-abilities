@@ -8677,3 +8677,34 @@ measure the FPS drop, what causes it and how to fix it (if it is there)".
 **Proof:** harness 212 full suite **8,533 checks / 0 failures** (once). RED on the pre-round snapshot: no PERF line.
 The cast trace (2,207 worlds, 1,777 casts) matches between the test build and the release build apart from the 3
 probe casts. Tuning round: no workbook. NOT SEEN IN GAME: the test pack as a Mod pack, `os.clock()` in a battle.
+
+### 10.92 Round 215 (tuning) - the mod's own cost, measured and cut (2026-11-28)
+
+**Field (the round-214 timing probe; archive\logs\battle_20261128_r214_perf.txt, bytes 1,111,622,234-1,129,297,788;
+147 s, 21 units, the user's own PC):** the mod took 124 ms of every second (12.4%).
+
+| Where | Measured |
+|---|---|
+| The deployment phase, 46 s, nothing selected | 10 HUD walks a second, 150 ms per second, the worst tick 73 ms |
+| One HUD walk | 15 to 18 ms (about 600 components) |
+| The unit cards, read on every UI tick | 64 ms per second for the whole battle |
+| The test build's own log sweeps | 9 ms per second (not in the Workshop build) |
+| The polls (the ability checks) | 5 ms per second |
+| Seconds with a UI tick over 16 ms | 94 of 147 |
+
+The Workshop comment (lag when selecting units) is confirmed on a clean setup. Round 213's reading was right about the
+walk and missed the two larger costs.
+
+**Change:**
+
+- `FOURTH.boot_due`: before the first selection of a battle the every-2nd-tick walk runs for the first 40 UI ticks
+  only, then the 5 s safety net. Cause of the storm: during deployment the units are not listed yet, so the active set
+  is the whole table, no walk can complete it, and no selection has opened a bounded window.
+- `FOURTH.cards_due`: once the game's own selection events have arrived the unit cards are read every 4th UI tick.
+
+**Proof:** harness 213 full suite **8,548 checks / 0 failures** (once). RED on the pre-round snapshot: 50 walks in 100
+ticks of deployment (GREEN 1), the card reads unchanged after the events arrive (GREEN 25%). The cast trace (2,211
+worlds, 1,777 casts) matches between the test build and the release build apart from the 3 probe casts. One rebased
+pin: harness 58 C5, a selection only the card reports while the events are alive, 2 ticks -> 5 ticks. No workbook.
+
+**Not done:** the cost of one walk (15 ms) is unchanged. A unit's first selection still pays it once or twice.

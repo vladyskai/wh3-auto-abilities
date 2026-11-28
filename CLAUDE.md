@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `2a8972cfce788db53d7cd05bc8d80118`
-  (round 214, 2026-11-28, tuning: type Mod, the timing probe, round 213's selection fix). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `978269788df09dbc23d79d94922d5074`
+  (round 215, 2026-11-28, tuning: no walk storm before the first selection, the unit cards 5 times a second). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_perfprobe_harness212/build_and_install214.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_owncost_harness213/build_and_install215.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness212: 8,533 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness213: 8,548 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -375,6 +375,22 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 215 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 97826978...). FIELD, MEASURED (the round-214 probe,
+  archive\logs\battle_20261128_r214_perf.txt, bytes 1,111,622,234-1,129,297,788, 147 s, 21 units, the user's PC):
+  THE MOD TOOK 124 ms OF EVERY SECOND. (a) The DEPLOYMENT phase (46 s): 10 HUD walks a second = 150 ms/s, worst
+  tick 73 ms. CAUSE: before 'combat phase started' the units are not listed, the active set is the WHOLE table, no
+  walk can complete it, and no selection has opened the bounded window (brisk_walk_until < 0 = the old every-2nd-
+  tick cadence without end). (b) ONE HUD WALK = 15 to 18 ms (about 600 components). (c) fast_card_selection on
+  every UI tick = 64 ms/s for the whole battle. (d) the test build's log sweeps 9 ms/s, the polls 5 ms/s. os.clock()
+  WORKS in battle Lua, and the Mod-type test pack loads and logs when ticked. BUILT: FOURTH.boot_due (window < 0:
+  the old cadence for the first 40 UI ticks, then the 5 s net) and FOURTH.cards_due (selection_callback_alive ->
+  every 4th tick). Both keep the old line and add a line after it (harness pins). Harness 213: 8,548 / 0 (once),
+  RED 50 walks in 100 deployment ticks vs 1, the cast trace matches apart from the 3 probe casts, one rebased pin
+  (harness 58 C5: 2 -> 5 ticks). A harness world for the DEPLOYMENT phase: run_phase(W, 'Deployment') and
+  W.icons_on_screen = true WITHOUT run_phase(W, 'Deployed'). NOT DONE: the cost of one walk (scope it to the
+  ability dial instead of the whole hud_battle), the per-tick loops over the whole table during deployment. The
+  WORKSHOP ITEM STILL CARRIES ROUND 212. WAITING: the user's battle on this pack (tools\analyze_perf.py), then
+  the release pack. Next battle from byte 1,129,297,788 (re-measure).
 - ROUND 214 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 2a8972cf..., type MOD). USER: "Yes, set it up that way"
   = the workflow for testing without the Workshop: the test pack is a normal mod pack (build_and_install214.py:
   SetPackFileType Mod, the build refuses another type), the user TICKS it in the mod manager to test and unticks

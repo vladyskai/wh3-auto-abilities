@@ -28394,6 +28394,23 @@ function FOURTH.brisk_due(t, window_end, walk)
 	return walk
 end
 
+-- ============================================================================
+-- ROUND 215 - THE MOD'S OWN COST (measured by the round-214 probe: 124 ms of
+-- every second on a 21-unit army). FOURTH.boot_due: before the first selection
+-- of a battle the every-2nd-tick HUD walk runs for the first 40 UI ticks only,
+-- then the 5 s safety net (it was 10 walks a second for as long as nothing was
+-- selected). FOURTH.cards_due: once the game's own selection events arrive, the
+-- unit cards are read every 4th UI tick, not every tick.
+-- ============================================================================
+function FOURTH.boot_due(t, window_end, walk)
+	if window_end >= 0 or t <= 40 then return walk end
+	return (t % 100) == 0
+end
+function FOURTH.cards_due(t)
+	if selection_callback_alive ~= true then return true end
+	return (t % 4) == 0
+end
+
 local function ui_tick()
 	local perf_u0, perf_t = FOURTH.perf_now(), nil   -- ROUND 214: the timing probe
 	ui_ticks = ui_ticks + 1
@@ -28541,7 +28558,9 @@ local function ui_tick()
 	-- and the card lines once. pcall'd like everything else so a surprise can
 	-- never take the UI tick down.
 	perf_t = FOURTH.perf_now()
+	if FOURTH.cards_due(ui_ticks) then   -- ROUND 215: 5 times a second once the selection events arrive
 	pcall(fast_card_selection)
+	end
 	FOURTH.perf_add("cards", perf_t)
 
 	-- THE VERBOSE CARD SWEEP (section 8e): still one block per ~1 s of battle
@@ -28598,6 +28617,7 @@ local function ui_tick()
 			-- every-2nd-tick cadence runs only inside it; outside -> the 5 s net.
 			if brisk_walk_until < 0 or ui_ticks <= brisk_walk_until then
 				walk_now = (ui_ticks % 2) == 0
+				walk_now = FOURTH.boot_due(ui_ticks, brisk_walk_until, walk_now)   -- ROUND 215: no walk storm before the first selection
 			else
 				walk_now = (ui_ticks % 100) == 0
 			end
