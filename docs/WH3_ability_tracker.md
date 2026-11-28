@@ -8804,3 +8804,45 @@ line, the builder's round-214 gate allows the three cast_gate.log_ fields inside
 
 **Limit of the method:** the release still BUILDS the text of the readiness and target lines before the empty log()
 drops it. That cost stays in 'polls without the log writes', which is what the Workshop build pays.
+
+### 10.96 Round 219 - the placed blasts: most of the unit, standing cavalry (2026-11-28)
+
+**Field (the round-218 build; archive\logs\battle_20261128_r218_perf.txt, bytes 1,172,897,502-1,188,201,797; 280 s,
+40 units, 37 active abilities).**
+
+Timing: the polls 62.9 ms per second, of which 13.4 ms log writes and about 1 ms the read-only probes:
+**48.6 ms per second of real evaluator work**, the five worst seconds 102 to 113 ms. The UI timer 36.4 ms (cards 16.9,
+the test log sweeps 9.8, the walks 6.6). The Workshop build would pay about 70 ms per second in a battle of this size.
+Which evaluators are expensive is not known yet.
+
+Brass Orb (user: "did not fire many times when I think it should have"): one cast per caster at t = 80 to 90 s, none
+after. Locked until t = 185 s (13 s effect + 90 s recharge). From then on one target was free of our units: Free
+Company Militia, 110 of 120 men, standing. The density line asks for 96 soldiers under the 12 m blast. The blast's
+19-point sample gives 44 to 84 soldiers for that unit depending on its bearing (the first cast's 103 came from two
+overlapping units). Two Outrider units (60 and 46 riders) stood still and clear and were never candidates: infantry
+only. CORRECTION: the chat said 'about 94 soldiers, two short'. That figure was wrong (it scaled the first cast's 103,
+which counted a second unit).
+
+**Rulings (2026-11-28):** "A, most of the unit". Standing cavalry as a target: "yes". For the family: "yes".
+
+**Change:**
+
+- The 41 `enemy_wander` entries: a target qualifies on the old density line OR when the blast on its centre covers
+  at least `FOURTH.COVER_FRACTION` 0.50 of the target unit's own living soldiers, never fewer than
+  `FOURTH.COVER_MIN_MEN` 20 (`FOURTH.cover_need`, `FOURTH.cover_own`: a 16 x 8 grid in the unit's own frame). Both
+  numbers are Claude's. The chat proposed 60% and a floor of 30. A 12 m circle covers 55% of the battle's 60 Outriders
+  and 25 of the 46, so those numbers would never fire on them.
+- Enemy cavalry (live unit_class cav..., at least 10 riders, not flying) is a target of the wanderers
+  (`FOURTH.ww_map`, `m.cav`). Its depth: ranks x the game's mounted spacing, GENERATED `FOURTH.CAV_SPACING_TEXT`
+  (`tools\gen_blob_tables.py`, 183 units). Every other blob family keeps the infantry list.
+- Live copy only: `FOURTH.perf_trig` times every evaluator call by trigger family, one `PERF TRIG 10s:` line per
+  10 PERF lines.
+
+**Proof:** harness 217 full suite **8,627 checks / 0 failures**. RED on the pre-round snapshot: no cast on the
+110-man Militia, on the 60 Outriders, on the 46 Outriders (GREEN: one cast each). GREEN holds: moving cavalry, one
+of our units 14 m from the target's centre, an 18-man remnant, 12 riders. The cast trace (2,244 worlds, 1,788 casts)
+matches between the test build and the release build apart from the 3 probe casts. No older world changed its casts,
+no rebased harness pin. Builder: the round-197 gate (the wanderers keep the plain trash rule) rebased to the rule's
+new line. Workbook v85 (41 trigger texts).
+
+**Not seen in game. Not done:** the cost of the evaluators (waiting for the PERF TRIG lines), the 5 s safety walk.

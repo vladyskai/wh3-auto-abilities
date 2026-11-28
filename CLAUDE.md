@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `95ebdc969775690fe5234cc33b91aa44`
-  (round 218, 2026-11-28, tuning, live copy only: the timing probe measures the test build's own log). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `d3e437f21661e7c6b2d8064a0c779e22`
+  (round 219, 2026-11-28: the placed blasts take most of a unit and standing cavalry, the evaluators timed by family). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_logcost_harness216/build_and_install218.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_cover_harness217/build_and_install219.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness216: 8,594 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness217: 8,627 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -320,7 +320,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v84_2026-11-22.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v84.py`, verified by `tools\verify_xlsx_v84.py <v83 md5> <pack md5>` (v84 = v83 + the Loons on enemy_wave_charge with the user's rule, the FROM THE CASTER sentence on the five breaths, 2 cards. v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v85_2026-11-28.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v85.py`, verified by `tools\verify_xlsx_v85.py <v84 md5> <pack md5>` (v85 = v84 + the COVER sentence on the 41 enemy_wander rows. v84 = v83 + the Loons on enemy_wave_charge with the user's rule, the FROM THE CASTER sentence on the five breaths, 2 cards. v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -375,6 +375,26 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 219 (2026-11-28, SIGN-OFF, TEST PACK INSTALLED: md5 d3e437f2...; workbook v85; tracker 10.96). FIELD on
+  round 218 (archive\logs\battle_20261128_r218_perf.txt, bytes 1,172,897,502-1,188,201,797, 280 s, 40 units, 37
+  active abilities): THE POLLS' REAL WORK IS 48.6 ms/s (62.9 measured, 13.4 log writes), worst seconds 102-113
+  ms: the Workshop build would pay about 70 ms/s in a battle this size. WHICH evaluators: unknown, hence
+  FOURTH.perf_trig (live only): 'PERF TRIG 10s: all evaluators X ms | family ms/calls | ...' (the 12 dearest).
+  NOTE FOR THE FIX: the poll calls ability.evaluate for EVERY armed pair on EVERY poll, also while the mod
+  itself knows the ability is locked (FOURTH.note_cast): a likely saving, NOT measured. BRASS ORB (user: 'did
+  not fire many times'): held on the only free target, 110 Free Company Militia, by the 96-soldier density line.
+  The 19-point blast sample (blob_score) gives 44 to 84 soldiers for the SAME thin line depending on its
+  bearing. Claude's chat figure 'about 94, two short' was WRONG. RULINGS: 'A, most of the unit', cavalry
+  'yes', the family 'yes'. BUILT for the 41 enemy_wander entries: the density line OR FOURTH.cover_own(e, r)
+  (a 16 x 8 grid in the unit's own frame) >= max(FOURTH.COVER_MIN_MEN 20, ceil(FOURTH.COVER_FRACTION 0.50 x
+  men)). Claude's numbers (60% / 30 were said in chat: a 12 m circle covers 55% of 60 Outriders and 25 of 46).
+  CAVALRY: blob_shape sets s.cav (unit_class cav...) with depth = ranks x GENERATED FOURTH.CAV_SPACING
+  (gen_blob_tables.cav_spacing_table, 183 units), blob_map fills m.cav, FOURTH.ww_map(m) = infantry + cavalry
+  for the wanderers ONLY (the build counts the uses of m.cav). Harness 217: 8,627 / 0, RED on the three field
+  targets, cast trace matches apart from the 3 probe casts, no rebased harness pin, the round-197 builder gate
+  rebased. NOT SEEN IN GAME. STILL OPEN: the 5 s safety walk (18-43 ms each). The WORKSHOP ITEM STILL CARRIES
+  ROUND 212. Next battle from byte 1,188,201,797 (re-measure): grep 'PERF TRIG' and the ATTEMPT lines of
+  brass_orb.
 - ROUND 218 (2026-11-28, TUNING, LIVE COPY ONLY, TEST PACK INSTALLED: md5 95ebdc96...). FIELD on round 217, two
   battles. A (archive\logs\battle_20261128_r217_perf.txt, 158 s, 21 units): 38 ms OF EVERY SECOND, no group
   walk, cards 10-14 ms/s. LEFT: the 5 s safety net = 31 whole-HUD walks of 18-43 ms (worst tick 45 ms):

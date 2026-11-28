@@ -5,7 +5,7 @@ name, key(s), real mechanical EFFECT, RESTRICTIONS (targeting + the engine's inv
 invalid-usage / auto-deactivate flag names, quoted), RANGE (the game's own range columns **and** the
 trigger bound the mod actually uses), STATUS and the plain-English TRIGGER/logic.
 
-Generated 2026-11-22 16:32 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
+Generated 2026-11-28 15:35 by `tools/build_ability_database.py` (re-runnable; nothing hand-typed).
 
 ## Sources merged (nothing invented)
 
@@ -777,7 +777,7 @@ With the caster STANDING STILL and the game's usage rules met (flying where it m
 
 ### `enemy_wander` — 41 entries / 41 keys
 
-The caster STANDING STILL; the visible enemy infantry in range, STANDING STILL, whose blast covers the blob density line and the most value, with none of our units within radius + the simulated 95% reach + 10 m of it (no friendly test when the game marks the vortex as not hitting allies). Casts on that enemy (on its ground for a ground-only ability); re-checked before the cast.
+The caster STANDING STILL; the visible enemy infantry or cavalry (at least 10 riders) in range, STANDING STILL, whose blast covers the blob density line or at least half of the target unit's own living soldiers (never fewer than 20, round 219) and the most value, with none of our units within radius + the simulated 95% reach + 10 m of it (no friendly test when the game marks the vortex as not hitting allies). Casts on that enemy (on its ground for a ground-only ability); re-checked before the cast.
 
 **Plain English (the sentence the mod ships in that ability's tooltip):** *When armed and standing still, fires at a standing enemy blob worth the most, with none of our units within the blast's wandering reach.*
 
