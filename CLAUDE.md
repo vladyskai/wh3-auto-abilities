@@ -390,8 +390,17 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   byte-equal to round 219's (compare a new trace with the previous round's to prove a speed fix changes no
   cast), one rebased pin (harness 167 CA1, Frost Fang's card). NOT SEEN IN GAME, the polls' new cost NOT
   MEASURED. NOT TOUCHED: melee_vs_large and enemy_single_drain (1.0 and 0.7 ms per call), the 5 s safety walk.
-  The WORKSHOP ITEM STILL CARRIES ROUND 212. Next battle from byte 1,202,349,084 (re-measure): analyze_perf.py
-  and the 'PERF TRIG' lines.
+  FIELD-CONFIRMED (archive\logs\battle_20261128_r220_perf.txt, bytes 1,202,349,084-1,213,178,998, 209 s, the same
+  40-unit army): the polls' real work 27 ms/s (64 before), the evaluators 22 (61), enemy_wander 1.7 (23.7), all
+  five Brass Orb casters fired while RUNNING and none stopped, 0 errors. All five picked the SAME Outrider unit in
+  one poll (60 -> 14 riders): told to the user, no ruling. The Workshop build would cost about 47 ms/s in that
+  army: polls 27, the unit cards 16 (40 cards at 5 Hz), the 5 s safety walk 8 (the worst ticks, 50-62 ms).
+  USER 2026-11-28: "Publish now". RELEASE PACK BUILT (build_release.py --pack): smart_ability_autocast.pack md5
+  89db1c19... in the game's data folder (copy in archive\packs\), from the development script md5 fd0d9520...
+  WAITING: the user presses Update in TW Launcher (Legacy). Until he confirms, the Workshop carries round 212.
+  The local smart_ability_autocast.pack sits next to the subscribed copy again: remove it from the data folder
+  after the upload (it was removed for that reason in round 214). NEXT (proposed, not ruled): the 5 s safety
+  walk on the dial only, cheaper card reads. Next battle from byte 1,213,178,998 (re-measure).
 - ROUND 219 (2026-11-28, SIGN-OFF, TEST PACK INSTALLED: md5 d3e437f2...; workbook v85; tracker 10.96). FIELD on
   round 218 (archive\logs\battle_20261128_r218_perf.txt, bytes 1,172,897,502-1,188,201,797, 280 s, 40 units, 37
   active abilities): THE POLLS' REAL WORK IS 48.6 ms/s (62.9 measured, 13.4 log writes), worst seconds 102-113
