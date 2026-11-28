@@ -8708,3 +8708,38 @@ worlds, 1,777 casts) matches between the test build and the release build apart 
 pin: harness 58 C5, a selection only the card reports while the events are alive, 2 ticks -> 5 ticks. No workbook.
 
 **Not done:** the cost of one walk (15 ms) is unchanged. A unit's first selection still pays it once or twice.
+
+### 10.93 Round 216 (tuning) - the cost of the HUD walk (2026-11-28)
+
+**Field (the round-215 build; archive\logs\battle_20261128_r215_perf.txt, bytes 1,129,297,788-1,136,053,587; 123 s,
+21 units, the user's own PC):** the mod took 71 ms of every second (124 on the round-214 build).
+
+| Where | Measured |
+|---|---|
+| The walk storm before the first selection | gone after 2 s (walks per second: 10, 10, 0, 0, 1, 0 ...) |
+| The HUD walks | 157 in 123 s, 18.3 ms each (770 components), 21.9 ms per second, the worst UI ticks 60 to 63 ms |
+| Walks that found nothing | 142 of 159 logged: 56 before any selection, 43 right after the selection became empty, about 20 on a unit that owns none of our abilities, 26 on a group |
+| The unit cards | 40 to 85 ms per second until the first selection event (46 s in this battle), then 11 to 26 |
+| The test build's own log sweeps | 8.9 ms per second (not in the Workshop build) |
+| The polls (the ability checks) | 7.1 ms per second |
+
+**Change:**
+
+- `FOURTH.walk_start` / `FOURTH.walk_again`: the walk starts at the ability dial (`root:Find("SA_dial", false)`, the
+  pattern the inventory sweep has used in every battle). The whole `hud_battle` is walked when the dial is not found,
+  on the 5 s safety net, and when the dial walk claimed nothing while a selected unit still waits for a letter.
+- `FOURTH.walk_useful`: once the game's selection events are alive, no walk while no selected unit owns one of our
+  abilities (an empty selection included). The 5 s safety net stays.
+
+**Proof:** harness 214 full suite **8,569 checks / 0 failures** (once). RED on the pre-round snapshot: the walk enters
+the rest of the HUD although the dial holds the button (GREEN 0 times), 2 walks while a unit that owns nothing is
+selected and dropped (GREEN 0). The cast trace (2,219 worlds, 1,777 casts) matches between the test build and the
+release build apart from the 3 probe casts. Three rebased pins, all in harness 78: W3 (one of the three selected units
+now owns the ability, else no walk is due and the coalescing test would test nothing), W5a and W5b (a newly tracked
+unit while the selected unit owns nothing: 1 walk -> 0). No workbook.
+
+**Unproven in game:** that the engine's Find answers `SA_dial` from the UI root (the mock does not, so every older
+world keeps the whole-HUD walk). The test build logs `scan scope: dial` once when it does. The size of the dial walk
+(the `scan done: N component(s) visited` lines).
+
+**Not done:** the unit cards before the first selection event (read on every tick until an event arrives).

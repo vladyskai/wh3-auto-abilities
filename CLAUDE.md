@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `978269788df09dbc23d79d94922d5074`
-  (round 215, 2026-11-28, tuning: no walk storm before the first selection, the unit cards 5 times a second). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `ae5536f9d59216189350a468f4b92f09`
+  (round 216, 2026-11-28, tuning: the HUD walk starts at the ability dial, no walk while nothing of ours is selected). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_owncost_harness213/build_and_install215.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_walkscope_harness214/build_and_install216.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness213: 8,548 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness214: 8,569 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -375,6 +375,27 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 216 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 ae5536f9...). FIELD on round 215
+  (archive\logs\battle_20261128_r215_perf.txt, bytes 1,129,297,788-1,136,053,587, 123 s): 71 ms OF EVERY SECOND
+  (124 before). The deployment storm is gone after 2 s. 157 walks at 18.3 ms (770 components), worst ticks 60-63
+  ms. 142 OF 159 WALKS FOUND NOTHING: the active set is the WHOLE ARMY's abilities, so all_buttons_found() is
+  almost never true and EVERY selection event walks (43 after the selection became empty, about 20 on units that
+  own nothing of ours, 26 on groups, 56 before any selection: 20 boot walks + 24 in the 48-tick window the
+  re-list opens at combat start + the net). Cards: 40-85 ms/s until the first selection EVENT, then 11-26. BUILT:
+  FOURTH.walk_useful(walk, t) after the walk decision (events alive and no selected unit owns ours -> no walk,
+  the net stays, an unread unit keeps the walk), FOURTH.walk_start(hud) (root:Find('SA_dial', false) as inv_find
+  does it, the whole HUD when not found or on the net tick: FOURTH.walk_net is set by walk_useful because
+  ui_ticks is declared BELOW find_ability_buttons), FOURTH.walk_again() (the dial walk claimed nothing and a
+  selected unit waits -> the whole HUD in the same call). FOURTH.walk_claims uses an index loop: harness 78
+  counts 'ipairs(active_abilities_list())' (exactly 5). Harness 214: 8,569 / 0 (once), cast trace matches apart
+  from the 3 probe casts, 3 rebased pins (harness 78 W3, W5a, W5b). MOCK: root:Find answers only hud_battle and
+  the card panels, so a dial world overrides root.Find for 'SA_dial' (W.hud_battle._kids[1]._kids[1]). The live
+  copy's inventory sweep walks the mock's whole tree once on the first UI tick (comp._c.childcount counts it).
+  A walk world needs an owned ability the mock's dial never shows, else every button is claimed at boot and no
+  walk is ever due. UNPROVEN IN GAME: root:Find('SA_dial') answering (grep 'scan scope: dial' and the visit
+  counts in 'scan done:'). NOT DONE: the cards before the first event. The WORKSHOP ITEM STILL CARRIES ROUND
+  212. WAITING: the user's battle on this pack, then the release pack. Next battle from byte 1,136,053,587
+  (re-measure).
 - ROUND 215 (2026-11-28, TUNING, TEST PACK INSTALLED: md5 97826978...). FIELD, MEASURED (the round-214 probe,
   archive\logs\battle_20261128_r214_perf.txt, bytes 1,111,622,234-1,129,297,788, 147 s, 21 units, the user's PC):
   THE MOD TOOK 124 ms OF EVERY SECOND. (a) The DEPLOYMENT phase (46 s): 10 HUD walks a second = 150 ms/s, worst

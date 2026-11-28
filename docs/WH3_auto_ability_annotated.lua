@@ -24144,7 +24144,10 @@ local function find_ability_buttons()
 		if hud == nil then
 			return          -- the HUD is not on screen yet (early phases); keep trying
 		end
+		scan_component(FOURTH.walk_start(hud), 0)   -- ROUND 216: the dial first
+		if FOURTH.walk_again() then
 		scan_component(hud, 0)
+		end
 	end)
 
 	-- ITEM 1.4 - the scan just ran: a claim (or a fresh owned-key read) may
@@ -25572,6 +25575,79 @@ function FOURTH.cards_due(t)
 	return (t % 4) == 0
 end
 
+-- ============================================================================
+-- ROUND 216 - THE COST OF THE HUD WALK (measured on the round-215 build: 157
+-- walks in 123 s at 18 ms each, 142 of 159 found nothing).
+-- FOURTH.walk_useful: once the game's selection events are alive, no walk while
+-- no selected unit owns one of our abilities (the 5 s safety net stays).
+-- FOURTH.walk_start: the walk starts at the ability dial (SA_dial), found with
+-- the engine's own Find, the way the inventory sweep finds it. The whole HUD is
+-- walked when the dial is not found, on the safety net, and (FOURTH.walk_again)
+-- when the dial walk claimed nothing while a selected unit waits for a letter.
+-- ============================================================================
+function FOURTH.walk_useful(walk, t)
+	FOURTH.walk_net = ((t % 100) == 0)
+	if walk ~= true or FOURTH.walk_net then return walk end
+	if selection_callback_alive ~= true then return walk end
+	for i = 1, #selected_ui_ids do
+		local id = tostring(selected_ui_ids[i])
+		if owned_keys_by_unit[id] == nil then return walk end
+		local list = owned_abilities_by_unit[id]
+		if list ~= nil and #list > 0 then return walk end
+	end
+	return false
+end
+function FOURTH.walk_claims()
+	local n = 0
+	local list = active_abilities_list()
+	for i = 1, #list do   -- no ipairs here: harness 78 counts the paths that iterate the active list
+		local state = ability_state[list[i].marker]
+		if state ~= nil and state.button ~= nil then n = n + 1 end
+	end
+	return n
+end
+function FOURTH.walk_waiting(id)
+	local list = owned_abilities_by_unit[tostring(id)]
+	if list == nil then return false end
+	for _, ability in ipairs(list) do
+		if ability_state[ability.marker].button == nil then return true end
+	end
+	return false
+end
+function FOURTH.walk_start(hud)
+	local net = FOURTH.walk_net
+	FOURTH.walk_net = nil
+	FOURTH.walk_scoped = false
+	FOURTH.walk_before = FOURTH.walk_claims()
+	if net == true then return hud end
+	local ok, dial = pcall(function()
+		local raw = core:get_ui_root():Find("SA_dial", false)   -- false = do not assert when missing
+		if raw == nil or raw == false then return nil end
+		local d = UIComponent(raw)
+		if d == nil or d:Id() ~= "SA_dial" then return nil end
+		return d
+	end)
+	if not ok or dial == nil then return hud end
+	FOURTH.walk_scoped = true
+	-- (the live copy logs 'scan scope: dial' once per battle here)
+	return dial
+end
+function FOURTH.walk_again()
+	if FOURTH.walk_scoped ~= true then return false end
+	FOURTH.walk_scoped = false
+	if FOURTH.walk_claims() > FOURTH.walk_before then return false end
+	local waiting = false
+	if selection_callback_alive == true then
+		for i = 1, #selected_ui_ids do
+			if FOURTH.walk_waiting(selected_ui_ids[i]) then waiting = true end
+		end
+	elseif selected_unit_id ~= nil then
+		waiting = FOURTH.walk_waiting(selected_unit_id)
+	end   -- nothing selected that we know of: no wheel is shown, the dial walk was enough (the 5 s net walks it all)
+	-- (the live copy logs 'scan scope: the whole HUD after the dial' here)
+	return waiting
+end
+
 local function ui_tick()
 	ui_ticks = ui_ticks + 1
 
@@ -25712,6 +25788,7 @@ local function ui_tick()
 		else
 			walk_now = (ui_ticks % 100) == 0
 		end
+		walk_now = FOURTH.walk_useful(walk_now, ui_ticks)   -- ROUND 216: no walk while nothing of ours can be on the dial
 		if walk_now then
 			find_ability_buttons()
 		end
