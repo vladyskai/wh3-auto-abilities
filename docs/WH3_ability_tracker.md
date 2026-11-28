@@ -8846,3 +8846,47 @@ no rebased harness pin. Builder: the round-197 gate (the wanderers keep the plai
 new line. Workbook v85 (41 trigger texts).
 
 **Not seen in game. Not done:** the cost of the evaluators (waiting for the PERF TRIG lines), the 5 s safety walk.
+
+### 10.97 Round 220 - a placed effect does not stop its caster, the polls' speed fixes (2026-11-28)
+
+**Field (the round-219 build; archive\logs\battle_20261128_r219_perf.txt, bytes 1,188,201,797-1,202,349,084; 291 s,
+40 units, 37 active abilities).**
+
+- Round 219's rule works: 8 automatic Brass Orb casts (4 in the battle before), every caster used a second charge,
+  mostly on Hochland Long Rifles (35 to 43 men). One cast went onto Demigryph Knights in contact with the caster
+  (0 m). User ruling on protecting the caster of a placed blast: "No".
+- The user cast Brass Orb by hand with a Warlock Master (unit 1003, t = 62 s): the unit kept moving 10 m every 2 s
+  through the cast and for 18 s after. Brass Orb's wind_up_stance is cast_forward_medium, the same as Amber Bow, which
+  stopped Markus Wulfhart (round 190). **The animation does not decide it.**
+- The evaluators cost 61.3 ms of every second (the polls' real work 64.0, single seconds up to 449 ms):
+  enemy_wander 23.7 (2.44 ms per call), enemy_blob 11.5 (1.19), melee_vs_large 6.3 (1.04), enemy_single_drain 4.6
+  (0.74), every other family under 3.
+
+| Seen in battle | Stopped its caster | Delivery |
+|---|---|---|
+| Volley of High Arrows, Soporific Breath, Amber Bow | yes | a projectile shot by the caster |
+| Brass Orb, Gaze of Malice | no | a vortex placed at the target |
+| Book of Hoeth | no | no cast animation |
+
+**Rulings (2026-11-28):** all placed ones "Yes". Protect the caster "No". The speed fixes "build them".
+
+**Change:**
+
+- `tools\gen_anim_keys.py`: a key leaves the GENERATED ANIM set when its effect is a vortex with neither a projectile
+  nor a bombardment (`placed`). 51 keys left (18 enemy_wander entries, 17 enemy_wave, 7 melee_unwavering, 2
+  enemy_cone, 2 enemy_sweep, fly_dive, health_aura_ground, enemy_area_drain, melee_clear, enemy_blob_vortex), 183
+  stay. The 22 bombardments and the other animated kinds wait as before: not seen.
+- `FOURTH.locked_now(ui_id, ability)`: the poll returns before the evaluator while the mod knows the cast cannot go
+  out (a counted recharge unless the selected unit's button reads ready, the ability's own wind-up, a logged
+  back-off after the game refused it).
+- `FOURTH.blob_score_c` / `FOURTH.blob_friend_gap_c`: a target's soldiers under a blast and its friendly gap once per
+  map and blast size. `FOURTH.blob_shape` stores the unit id, `FOURTH.ww_target_still` reads is_moving() once per map.
+
+**Proof:** harness 218 full suite **8,646 checks / 0 failures**. RED on the pre-round snapshot: no cast from a
+walking Brass Orb caster (GREEN one), 12 to 24 distance reads by a caster whose Brass Orb is recharging (GREEN 0), the
+target's is_moving() read 25 times in 8 polls by three casters (GREEN 9). The cast trace (2,252 worlds, 1,792
+casts) matches between the test build and the release build apart from the 3 probe casts, and its first 2,244 worlds
+are byte-equal to round 219's trace: the speed fixes changed no cast. One rebased pin: harness 167 CA1 (Frost Fang's
+card no longer asks the caster to stand). Workbook v86 (51 trigger texts, 39 cards).
+
+**Not seen in game. Not measured yet:** what the polls cost now. **Still open:** the 5 s safety walk.

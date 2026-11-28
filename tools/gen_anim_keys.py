@@ -38,7 +38,24 @@ def derive(script_txt):
     usa = {r["key"]: r for r in tsv(os.path.join(GP.GAMEDATA, "unit_spec_abil.tsv"))}
     missing = sorted(k for k in keys if k not in usa)
     assert not missing, "mod keys missing from unit_special_abilities: %s" % missing[:5]
-    return sorted(k for k in keys if usa[k].get("wind_up_stance", "").strip())
+    return sorted(k for k in keys if usa[k].get("wind_up_stance", "").strip() and not placed(usa[k]))
+
+
+def placed(row):
+    """ROUND 220 (user ruling 2026-11-28, after his Brass Orb test: 'it didn't stop the unit when I cast', and 'Yes' to
+    'all placed ones'): an effect PLACED at its target (a vortex, with no projectile shot by the caster and no
+    bombardment) does not stop its caster, cast animation or not. Field: Brass Orb (cast_forward_medium, a vortex)
+    did not stop a Warlock Master (archive/logs/battle_20261128_r219_perf.txt, t = 62 s), Amber Bow (the SAME stance,
+    a projectile) stopped Markus Wulfhart, Gaze of Malice (a vortex) did not stop its caster."""
+    return bool(row.get("vortex", "").strip()) and not row.get("activated_projectile", "").strip() \
+        and not row.get("bombardment", "").strip()
+
+
+def placed_keys(script_txt):
+    """the mod keys round 220 took out of the ANIM set: a cast animation AND a placed effect"""
+    keys = mod_keys(script_txt)
+    usa = {r["key"]: r for r in tsv(os.path.join(GP.GAMEDATA, "unit_spec_abil.tsv"))}
+    return sorted(k for k in keys if usa[k].get("wind_up_stance", "").strip() and placed(usa[k]))
 
 
 def text(keys):

@@ -16,8 +16,8 @@ trigger evaluator for each entry, and casts when the evaluator says fire.
   Workshop build stands down while it is loaded. It was a Movie pack, which the game always loads) and installed as
   `zz_test_deadly_onslaught.pack` in
   `C:\Program Files (x86)\Steam\steamapps\common\Total War WARHAMMER III\data\`
-- Installed build: md5 `d3e437f21661e7c6b2d8064a0c779e22`
-  (round 219, 2026-11-28: the placed blasts take most of a unit and standing cavalry, the evaluators timed by family). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
+- Installed build: md5 `a0283f3e353a894075e1a72d1317c186`
+  (round 220, 2026-11-28: placed effects fire on the move, no evaluator call while a cast cannot go out). RPFM packs are not byte-reproducible: compare contents, not the md5. Always re-measure instead of trusting this line.
 - Game data: `gamedata\wh3\` inside the project (named once in `tools\gamedata_paths.py`;
   regenerate from the installed game with `tools\extract_gamedata.py`). NEVER read or write
   game data, harness inputs or check lists under Windows Temp: Temp cleanup emptied parts of it
@@ -162,7 +162,7 @@ RPFM drives the packing over a WebSocket on port 45127.
 ```
 cd C:/Users/vlady/Desktop/WH3_mod/tools/rpfm && ./rpfm_server.exe   # background, then wait
 sleep 4
-cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_cover_harness217/build_and_install219.py 2>&1 | tail -12
+cd C:/Users/vlady/Desktop/WH3_mod/tools && uv run --quiet --with websockets --with lupa python ../mod_source/releases/20261128_placed_harness218/build_and_install220.py 2>&1 | tail -12
 ```
 
 - Expect `installed md5 <hash>` and `IDENTICAL True`. The server exits itself after
@@ -194,7 +194,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness217: 8,627 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness218: 8,646 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -212,7 +212,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 ## 5. ENGINE FACTS (hard-won; do not rediscover)
 
 - `battle_unit:position()` is the unit CENTRE.
-- A cast stops its moving caster ONLY when the ability plays a cast animation (unit_special_abilities.wind_up_stance
+- ROUND 220 CORRECTION (field 2026-11-28): the animation does NOT decide. A cast stops its moving caster when the caster SHOOTS A PROJECTILE (Volley of High Arrows, Soporific Breath, Amber Bow stopped). A PLACED effect (a vortex, no projectile, no bombardment) does not, animation or not (Brass Orb, Gaze of Malice). ANIM = animated AND not placed (gen_anim_keys.placed). Bombardments and other animated kinds: NOT SEEN, they still wait. The old line: a cast stops its moving caster ONLY when the ability plays a cast animation (unit_special_abilities.wind_up_stance
   not empty; field 4 of 4, round 168). GENERATED FOURTH.ANIM_TEXT (tools\gen_anim_keys.py); FOURTH.blob_still is the
   one stand-still gate and asks it first. User ruling 2026-11-17: 'Option A, animation decides all'.
 - The ground plane is X/Z. `get_y()` is HEIGHT, so an X/Y read measures altitude. Horizontal
@@ -320,7 +320,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
 | `docs\WH3_ability_tracker.md` | the authoritative inventory: every ability, status, proposed activation |
 | `docs\WH3_battle_knowledge.md` | battle mechanics research (sourced; ASSUMPTION marks the unsourced): read it before proposing a trigger |
 | `docs\WH3_overnight_audit_2026-11-17.md` | the per-ability trigger scores (1-5), the restriction gaps, the open mechanics questions, feature ideas |
-| `docs\WH3_abilities_master_v85_2026-11-28.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v85.py`, verified by `tools\verify_xlsx_v85.py <v84 md5> <pack md5>` (v85 = v84 + the COVER sentence on the 41 enemy_wander rows. v84 = v83 + the Loons on enemy_wave_charge with the user's rule, the FROM THE CASTER sentence on the five breaths, 2 cards. v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
+| `docs\WH3_abilities_master_v86_2026-11-28.xlsx` | the current master spreadsheet (versioned, newest wins). Built by `tools\make_xlsx_v86.py`, verified by `tools\verify_xlsx_v86.py <v85 md5> <pack md5>` (v86 = v85 + the PLACED sentence on 51 rows, 39 cards. v85 = v84 + the COVER sentence on the 41 enemy_wander rows. v84 = v83 + the Loons on enemy_wave_charge with the user's rule, the FROM THE CASTER sentence on the five breaths, 2 cards. v83 = v82 + the RING sentence on the two Loons rows, Lamprey's Bite on enemy_wave, 3 cards. v82 = v81 + the SINGLE and CONE sentences on the 27 exact wave rows. v81 = v80 + the EXACT sentence on 27 wave rows, Tidecall and Wind Blast on enemy_wave. v80 = v79 + the FREE AIM sentence on the 30 enemy_wave rows. v79 = v78 + round 201: the 5 Master Runes EXCLUDED, Endless Whirlwind of Death x2 IMPLEMENTED, Numbers recomputed, Cards rebuilt. v78 = v77 + the round-199 sentences on 41 rows and 10 cards. v77 = v76 + the round-198 texts: 10 trigger texts and 3 cards. v76 = v75 + the FALLBACK sentence on the 70 blob-family rows. v75 implemented Scry-Orb. v74 added 2 rows and moved the 5 spell-bar runes to EXCLUDED. Numbers are recomputed from the rows by make_xlsx_v74's method, Cards come from the harness run); the `.ods` twin comes from headless LibreOffice (`soffice --headless --convert-to ods`) |
 | `docs\WH3_ability_database_master.md` | the master database, 1,800 rows, one per key: effect, restrictions, real range, 70% bound, status, plain-English trigger |
 | `docs\WH3_round*.md` | one document per round: the ruling, the change, the proof, the installed md5 |
 | `docs\WH3_auto_ability_annotated.lua` | the annotated copy of the source, edited identically to it |
@@ -375,6 +375,23 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 220 (2026-11-28, SIGN-OFF, TEST PACK INSTALLED: md5 a0283f3e...; workbook v86; tracker 10.97). FIELD on
+  round 219 (archive\logs\battle_20261128_r219_perf.txt, bytes 1,188,201,797-1,202,349,084, 291 s, 40 units): the
+  cover rule WORKS (8 Brass Orb casts, second charges used). THE EVALUATORS COST 61 ms/s: enemy_wander 23.7 (2.4
+  ms per call), enemy_blob 11.5, melee_vs_large 6.3, enemy_single_drain 4.6, the rest under 3 each. The user's
+  hand cast of Brass Orb did NOT stop a walking Warlock Master (same stance as Amber Bow, which stopped): see
+  ENGINE FACTS. RULINGS: all placed ones 'Yes', protect the caster of a placed blast 'No' (a cast at 0 m onto
+  enemies in contact with the caster happened), the speed fixes 'build them'. BUILT: gen_anim_keys.placed (51
+  keys out of ANIM, 183 stay), FOURTH.locked_now(ui_id, ability) BEFORE the evaluator in the poll's per-ability
+  closure ('if ... then return nil end': the pinned lines 'local reason = ability.evaluate(unit, routing)' /
+  'local want_fire = ...' in the reading copy must stay literal), FOURTH.blob_score_c / blob_friend_gap_c (one
+  slot per shape keyed by the map table and the blast size: the wander view and m are different tables),
+  s.id on every shape, e.c_still. Harness 218: 8,646 / 0, RED on all three, the cast trace's first 2,244 worlds
+  byte-equal to round 219's (compare a new trace with the previous round's to prove a speed fix changes no
+  cast), one rebased pin (harness 167 CA1, Frost Fang's card). NOT SEEN IN GAME, the polls' new cost NOT
+  MEASURED. NOT TOUCHED: melee_vs_large and enemy_single_drain (1.0 and 0.7 ms per call), the 5 s safety walk.
+  The WORKSHOP ITEM STILL CARRIES ROUND 212. Next battle from byte 1,202,349,084 (re-measure): analyze_perf.py
+  and the 'PERF TRIG' lines.
 - ROUND 219 (2026-11-28, SIGN-OFF, TEST PACK INSTALLED: md5 d3e437f2...; workbook v85; tracker 10.96). FIELD on
   round 218 (archive\logs\battle_20261128_r218_perf.txt, bytes 1,172,897,502-1,188,201,797, 280 s, 40 units, 37
   active abilities): THE POLLS' REAL WORK IS 48.6 ms/s (62.9 measured, 13.4 log writes), worst seconds 102-113
