@@ -8632,3 +8632,27 @@ after any cast. Roster unchanged: 982 entries / 1,035 keys, no workbook version.
 **Proof:** harness 210 full suite **8,510 checks / 0 failures**. RED on the pre-round snapshot: the new unit never
 casts and the frozen copy keeps casting. The cast trace of the whole suite (2,200 worlds, 1,771 casts) matches between
 the test build and the release build apart from the 3 probe casts. Not seen in game.
+
+### 10.90 Round 213 (tuning) - the cost of a selection (2026-11-28)
+
+**Field (a Workshop comment, 2026-11-26):** "Works as intended, but it does add quite a bit of framerate lag (w/o
+framerate counter noticing it) when selecting any own unit or unit groups during ongoing battle." The commenter runs
+overhauls (SFO), an ability-wheel UI mod and mount expansions, and has not tested the mod alone.
+
+**Reading of the code:** a selection change walks the whole battle HUD (600+ components) to find the ability buttons.
+While one ability of the selected unit has no button, the walk is repeated every 4th UI tick for 48 ticks: 13 full
+walks in 2.4 s, on every selection of that unit. A wheel that another mod rebuilt can make every claim fail, so every
+selection pays that. This is the likely cause. It is NOT measured in the game.
+
+**Change:** a unit whose button was still missing on the last tick of a window is remembered (`FOURTH.walk_quiet`).
+Its later selections walk once on the event and retry once 4 ticks later. The first window of each unit, the two
+cadences and the 5 s safety net are unchanged. No cast decision changes.
+
+**Proof:** harness 211 full suite **8,525 checks / 0 failures** (once). RED on the pre-round snapshot: 13 walks on
+the second and third selection, GREEN 2. The cast trace of the whole suite (2,204 worlds, 1,771 casts) matches between
+the test build and the release build apart from the 3 probe casts. One rebased pin: harness 79 B2c, the later
+selection of a unit whose button never came, 1 + the brisk retries -> 2. Tuning round: no workbook.
+
+**NOT DONE:** no pack is built or installed. The round's build script installs the logged test pack, which the user
+removed from the game on 2026-11-22 ("I just want the version that is in the workshop"). The release script
+(`mod_source\release\`) is regenerated from the new source. Packing it and updating the Workshop item wait for the user.

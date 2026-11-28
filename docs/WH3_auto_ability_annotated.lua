@@ -25536,6 +25536,25 @@ end, math.floor(FOURTH.AIR_DROP_FAST_S * 1000), "zz_test_deadly_onslaught_air_dr
 -- The UI tick's own counter (it also gates the scan retries below).
 local ui_ticks = 0
 
+-- ============================================================================
+-- ROUND 213 - THE COST OF A SELECTION (a Workshop comment, 2026-11-26: lag when
+-- selecting units). While a button of the selected unit is missing, the HUD
+-- walk is repeated every 4th UI tick for the 48-tick window after the
+-- selection: 12 full walks, on every selection of that unit. A unit whose
+-- button was still missing on the LAST tick of a window is remembered
+-- (FOURTH.walk_quiet): from then on a selection of it retries once, 4 ticks
+-- after the event. The first window, the immediate walk and the 5 s safety net
+-- are unchanged.
+-- ============================================================================
+FOURTH.walk_quiet = {}
+function FOURTH.brisk_due(t, window_end, walk)
+	if window_end < 0 then return walk end
+	local id = tostring(selected_unit_id)
+	if FOURTH.walk_quiet[id] == true then return (t - (window_end - 48)) == 4 end
+	if t == window_end then FOURTH.walk_quiet[id] = true end
+	return walk
+end
+
 local function ui_tick()
 	ui_ticks = ui_ticks + 1
 
@@ -25666,6 +25685,7 @@ local function ui_tick()
 			-- retry, not a permanent state - it stops with the window.
 			if brisk_walk_until < 0 or ui_ticks <= brisk_walk_until then
 				walk_now = (ui_ticks % 4) == 0
+				walk_now = FOURTH.brisk_due(ui_ticks, brisk_walk_until, walk_now)   -- ROUND 213: a unit whose button never came retries once
 			else
 				walk_now = (ui_ticks % 100) == 0
 			end

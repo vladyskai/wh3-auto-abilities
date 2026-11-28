@@ -193,7 +193,7 @@ uv run --with lupa python tools/run_harness.py mod_source/releases/<round>/harne
   harness against the pre-change source (or the annotated copy) with `--red <live.lua>
   <ann.lua>`, confirm the failure text matches what the user saw in battle, then run GREEN on
   the fixed source. A green suite that never went red proves nothing.
-- **Sign-off rounds run the FULL suite** (harness210: 8,510 checks; it takes about 2 minutes) and produce a workbook
+- **Sign-off rounds run the FULL suite** (harness211: 8,525 checks; it takes about 2 minutes) and produce a workbook
   version. **Tuning rounds run only the affected harness section** (the user approved this
   split), and you must state plainly that the full suite and workbook were skipped and what
   that leaves unverified. Never imply a full suite ran.
@@ -374,6 +374,23 @@ mod; `steam-workshop-research\references\rpfm-server-protocol.md` for the pack t
   LAST reviewer's finding E1 (VERIFIED in the code): a unit slower than 3 m/s can never be 'charging'
   (CHARGE_MIN_DISTANCE_M 12 and CHARGE_TIME_TO_CONTACT_S 4 need gap >= 12 and gap / speed <= 4): charge-only
   abilities never fire on slow foot units. A RULING IS NEEDED. Next battle from byte 1,052,150,771 (re-measure).
+- ROUND 213 (2026-11-28, TUNING, SOURCE ONLY: NO PACK BUILT OR INSTALLED). FIELD (Workshop comment 2026-11-26, a user
+  with SFO, an ability-wheel UI mod and mount expansions): framerate lag when selecting own units or groups in
+  battle. LIKELY CAUSE (code reading + harness count, NOT measured in game): the HUD walk (600+ components) repeats
+  every 4th UI tick for the 48-tick window while a button of the selected unit is missing = 13 full walks per
+  selection, every time. BUILT: FOURTH.brisk_due(t, window_end, walk) + FOURTH.walk_quiet[unit id]: a unit whose
+  button was still missing on the LAST tick of a window retries ONCE (4 ticks after the event) on later selections
+  (13 walks -> 2). The line 'walk_now = (ui_ticks % 4) == 0' stays (harness 78/79 pin it) and the new call follows
+  it. A FIRST attempt that spaced ALL retries (4, 12, 28 ticks) broke about a dozen anti-regression pins on the
+  letter's response time (W4a, L3f, E3a-c, B1a, B2a) and was dropped. Harness 211: 8,525 / 0 (once), the cast trace
+  matches apart from the 3 probe casts, one rebased pin (harness 79 B2c: 1 + brisk -> 2). The mock counts walks in
+  W.hud_walks (the HUD handle is cached, so counting root:Find('hud_battle') counts nothing). THE TEST PACK IS OUT
+  OF THE GAME since 2026-11-22 by the user's wish (copy in archive\packs\removed_from_game\): the round builder
+  (build_and_install213.py) was NOT run because it installs that pack. The release script is regenerated
+  (build_release.py without --pack). WAITING FOR THE USER: pack the release (build_release.py --pack writes
+  smart_ability_autocast.pack into the game's data folder) and press Update in the launcher. STILL UNEXAMINED cost
+  on the UI timer: fast_card_selection reads every unit card on every 50 ms tick, and the first-ever selection of
+  each unit still pays the 13 walks.
 - ROUND 212 (2026-11-22; `docs\WH3_round212_transformation.md`). INSTALLED: test pack md5 c0cff66c..., release pack
   md5 17d703e5..., harness 210: 8,510 / 0, the cast trace matches apart from the 3 probe casts, NO workbook (roster
   and trigger texts unchanged), tracker 10.89. NOT SEEN IN GAME. ENGINE FACT (the round-211 probe,
